@@ -9,15 +9,15 @@ export const SUPPORTED_LANGUAGES = ['en', 'es', 'pt', 'fr', 'de', 'it']
 export const UI = {
   en: {
     title: 'Wavefront assistant',
-    status: 'Answers from this site · replies instantly',
+    status: 'Simple answers from this site',
     loading: 'Loading site knowledge…',
     tabChat: 'Ask a question',
     tabForm: 'Request help',
-    placeholder: 'Ask anything, or say what you need built…',
+    placeholder: 'Type a word or ask a question',
     greeting:
-      'Hi. Ask me anything about Wavefront Studio: what we build, what it costs, how long it takes, or whether we work in your area. Or tell me what you are trying to fix and I will point you at the right page.',
+      'Hi. What do you need help with? Type a word such as website, SEO, app, prices, or contact. You can also tap a button below.',
     notFound:
-      'Sorry, I could not find that one. Try it in plain words — “I need a new website”, “how much is SEO”, “do you build apps”, “do you cover Tampa” — and I will find the page. Or I can pass you to the team.',
+      'I did not understand that. Try one or two words, such as “SEO”, “website”, “prices”, or “Tampa”. You can also tap a button below.',
     handoff:
       'Fill in the short form and someone at Wavefront Studio will reply. Your chat so far goes with it, so you will not have to explain it twice.',
     leadIn: '',
@@ -53,7 +53,7 @@ export const UI = {
     greeting:
       'Hola. Pregúntame lo que quieras sobre Wavefront Studio: qué construimos, cuánto cuesta, cuánto tarda o si trabajamos en tu zona. O dime qué quieres resolver y te indico la página correcta. Las páginas están publicadas en inglés.',
     notFound:
-      'Perdona, eso no lo encuentro. Dímelo con palabras sencillas — «necesito una web nueva», «cuánto cuesta el SEO», «hacéis apps», «trabajáis en Tampa» — y te busco la página. O te paso con el equipo.',
+      'No lo he entendido. Prueba con una o dos palabras, como «SEO», «sitio web», «precios» o «Tampa». También puedes pulsar un botón.',
     handoff:
       'Rellena el formulario corto y alguien de Wavefront Studio te responderá. Se envía tu conversación, así no tienes que explicarlo dos veces.',
     leadIn: 'Esto es lo que publica Wavefront Studio sobre eso. La página está en inglés:',
@@ -89,7 +89,7 @@ export const UI = {
     greeting:
       'Olá. Pergunte-me o que quiser sobre a Wavefront Studio: o que construímos, quanto custa, quanto demora, ou se trabalhamos na sua zona. Ou diga-me o que quer resolver e eu aponto a página certa. As páginas estão publicadas em inglês.',
     notFound:
-      'Desculpe, isso não encontrei. Diga por palavras simples — «preciso de um site novo», «quanto custa o SEO», «fazem apps», «trabalham em Tampa» — e eu procuro a página. Ou passo o seu caso à equipa.',
+      'Não entendi. Tente uma ou duas palavras, como «SEO», «site», «preços» ou «Tampa». Também pode tocar num botão.',
     handoff:
       'Preencha o formulário curto e alguém da Wavefront Studio responde. A sua conversa vai junto, para não ter de explicar duas vezes.',
     leadIn: 'É isto que a Wavefront Studio publica sobre o assunto. A página está em inglês:',
@@ -125,7 +125,7 @@ export const UI = {
     greeting:
       'Bonjour. Posez-moi n’importe quelle question sur Wavefront Studio : ce que nous construisons, le prix, les délais, ou si nous intervenons dans votre région. Ou dites-moi ce que vous cherchez à régler et je vous indique la bonne page. Les pages sont publiées en anglais.',
     notFound:
-      'Désolé, je ne trouve pas. Dites-le simplement — « il me faut un nouveau site », « combien coûte le SEO », « faites-vous des applis », « couvrez-vous Tampa » — et je trouverai la page. Ou je vous mets en relation avec l’équipe.',
+      'Je n’ai pas compris. Essayez un ou deux mots, comme « SEO », « site web », « prix » ou « Tampa ». Vous pouvez aussi toucher un bouton.',
     handoff:
       'Remplissez le court formulaire et quelqu’un de Wavefront Studio vous répondra. Votre conversation est jointe, vous n’aurez pas à répéter.',
     leadIn: 'Voici ce que Wavefront Studio publie à ce sujet. La page est en anglais :',
@@ -161,7 +161,7 @@ export const UI = {
     greeting:
       'Hallo. Fragen Sie mich alles über Wavefront Studio: was wir bauen, was es kostet, wie lange es dauert, oder ob wir in Ihrer Region arbeiten. Oder sagen Sie mir, was Sie lösen wollen, und ich zeige Ihnen die passende Seite. Die Seiten sind auf Englisch veröffentlicht.',
     notFound:
-      'Das finde ich leider nicht. Sagen Sie es mit einfachen Worten — „ich brauche eine neue Website“, „was kostet SEO“, „bauen Sie Apps“, „arbeiten Sie in Tampa“ — dann finde ich die Seite. Oder ich leite Sie an das Team weiter.',
+      'Das habe ich nicht verstanden. Versuchen Sie ein oder zwei Wörter wie „SEO“, „Website“, „Preise“ oder „Tampa“. Sie können auch eine Schaltfläche antippen.',
     handoff:
       'Füllen Sie das kurze Formular aus, dann antwortet jemand von Wavefront Studio. Ihr bisheriger Chat geht mit, Sie müssen nichts wiederholen.',
     leadIn: 'Das veröffentlicht Wavefront Studio dazu. Die Seite ist auf Englisch:',
@@ -197,7 +197,7 @@ export const UI = {
     greeting:
       'Ciao. Chiedimi quello che vuoi su Wavefront Studio: cosa costruiamo, quanto costa, quanto tempo serve, o se lavoriamo nella tua zona. Oppure dimmi cosa vuoi risolvere e ti indico la pagina giusta. Le pagine sono pubblicate in inglese.',
     notFound:
-      'Mi dispiace, questo non lo trovo. Dimmelo con parole semplici — «mi serve un sito nuovo», «quanto costa la SEO», «fate app», «lavorate a Tampa» — e ti trovo la pagina. Oppure ti passo al team.',
+      'Non ho capito. Prova con una o due parole, come «SEO», «sito web», «prezzi» o «Tampa». Puoi anche toccare un pulsante.',
     handoff:
       'Compila il modulo breve e qualcuno di Wavefront Studio ti risponderà. La conversazione viene allegata, così non devi ripetere.',
     leadIn: 'Ecco cosa pubblica Wavefront Studio in merito. La pagina è in inglese:',

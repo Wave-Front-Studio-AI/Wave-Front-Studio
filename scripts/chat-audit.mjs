@@ -21,6 +21,8 @@ const routeCases = [
   ['/web-development/', 'Can you make a WooCommerce store?'],
   ['/seo-service/', 'I want to rank higher on Google'],
   ['/seo-service/', 'Do you improve Google Business Profiles?'],
+  ['/seo-service/', 'seo'],
+  ['/seo-service/', 'what is seo'],
   ['/mobile-app-development/', 'Can you build an iPhone and Android app?'],
   ['/mobile-app-development/', 'We need an MVP for our startup'],
   ['/social-media-strategy/', 'Can you manage our Instagram content calendar?'],
@@ -73,7 +75,7 @@ const routeCases = [
 ]
 
 const edgeCases = [
-  ['fallback', 'help'],
+  ['help', 'help'],
   ['fallback', 'What is the weather in Sarasota?'],
   ['fallback', 'Who won the football game?'],
   ['fallback', 'Can you resell hosting to me?'],
@@ -87,6 +89,19 @@ const edgeCases = [
   ['fallback', 'What species is a palmetto?'],
 ]
 
+const easyCases = [
+  ['/web-development/', 'website'],
+  ['/mobile-app-development/', 'app'],
+  ['/social-media-strategy/', 'social media'],
+  ['/graphic-design/', 'logo'],
+  ['/digital-marketing/', 'marketing'],
+  ['/free-audit/', 'audit'],
+  ['/lead-capture/', 'leads'],
+  ['/ai-chatbot/', 'chatbot'],
+  ['/live-visualizer/', 'visualizer'],
+  ['/custom-calculators/', 'calculator'],
+]
+
 const languageCases = [
   'ok', 'si', 'no', 'per', 'que', 'hola', 'app', 'seo',
   'Hola, necesito una página web nueva',
@@ -98,15 +113,23 @@ const languageCases = [
   'Hola, I need a new website for my negocio',
 ]
 
-for (const [expected, question] of [...routeCases, ...edgeCases]) {
+let failures = 0
+
+for (const [expected, question] of [...routeCases, ...easyCases, ...edgeCases]) {
   const results = searchKnowledge(question, 4)
   const answer = answerQuestion(question)
   const links = answer.links?.map((link) => link.href) ?? []
-  const passed = expected === 'fallback'
+  const routed = expected === 'fallback'
     ? answer.spoken === 'notFound'
-    : links.includes(expected)
+    : expected === 'help'
+      ? /What do you need help with/i.test(answer.text)
+      : links.includes(expected)
+  const noLongDash = !/[—–]/.test(JSON.stringify(answer))
+  const passed = routed && noLongDash
+  if (!passed) failures += 1
   console.log(JSON.stringify({
     passed,
+    noLongDash,
     expected,
     question,
     language: answer.language,
@@ -121,3 +144,6 @@ console.log(JSON.stringify({ languageCases: languageCases.map((question) => ({
   detected: detectLanguage(question),
   translated: translateQuery(question),
 })) }))
+
+console.log(JSON.stringify({ total: routeCases.length + easyCases.length + edgeCases.length, failures }))
+if (failures) process.exitCode = 1

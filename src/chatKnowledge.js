@@ -53,7 +53,11 @@ function plainText(html) {
 
 function clip(text, limit) {
   const value = String(text ?? '').trim()
-  return value.length > limit ? `${value.slice(0, limit).trimEnd()}…` : value
+  if (value.length <= limit) return value
+  const slice = value.slice(0, limit + 1)
+  const wordBreak = slice.lastIndexOf(' ')
+  const end = wordBreak >= Math.floor(limit * 0.75) ? wordBreak : limit
+  return `${value.slice(0, end).trimEnd()}…`
 }
 
 const KEYWORD_WEIGHT = 4
@@ -361,6 +365,61 @@ export const knowledgeEntries = [
   ...legalEntries,
 ]
 
+// Very short questions should be the easiest ones to answer. These direct
+// routes keep common one- and two-word topics from being diluted by the many
+// pages that mention the same word (for example, SEO on every location page).
+const DIRECT_TOPIC_IDS = new Map([
+  ['website', 'service-web-development'],
+  ['websites', 'service-web-development'],
+  ['web design', 'service-web-development'],
+  ['website design', 'service-web-development'],
+  ['web development', 'service-web-development'],
+  ['new website', 'service-web-development'],
+  ['seo', 'service-seo-service'],
+  ['website seo', 'service-seo-service'],
+  ['search engine optimization', 'service-seo-service'],
+  ['search engine optimisation', 'service-seo-service'],
+  ['app', 'service-mobile-app-development'],
+  ['apps', 'service-mobile-app-development'],
+  ['mobile app', 'service-mobile-app-development'],
+  ['mobile apps', 'service-mobile-app-development'],
+  ['social media', 'service-social-media-strategy'],
+  ['graphic design', 'service-graphic-design'],
+  ['logo', 'service-graphic-design'],
+  ['branding', 'service-graphic-design'],
+  ['marketing', 'service-digital-marketing'],
+  ['digital marketing', 'service-digital-marketing'],
+  ['ads', 'service-digital-marketing'],
+  ['advertising', 'service-digital-marketing'],
+  ['audit', 'service-free-audit'],
+  ['free audit', 'service-free-audit'],
+  ['website audit', 'service-free-audit'],
+  ['leads', 'service-lead-capture'],
+  ['lead capture', 'service-lead-capture'],
+  ['chatbot', 'custom-ai-chatbot'],
+  ['chat bot', 'custom-ai-chatbot'],
+  ['ai chatbot', 'custom-ai-chatbot'],
+  ['visualizer', 'custom-live-visualizer'],
+  ['visualiser', 'custom-live-visualizer'],
+  ['live visualizer', 'custom-live-visualizer'],
+  ['live visualiser', 'custom-live-visualizer'],
+  ['calculator', 'custom-custom-calculators'],
+  ['calculators', 'custom-custom-calculators'],
+  ['custom calculator', 'custom-custom-calculators'],
+])
+
+function simpleTopic(value) {
+  return String(value ?? '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/^(?:what is|what does|what are|tell me about|do you do|can you help with|i need|we need|help with)\s+/, '')
+    .replace(/\s+(?:mean|means)$/, '')
+}
+
 /* ------------------------------------------------------------------ */
 /* Search                                                              */
 /* ------------------------------------------------------------------ */
@@ -426,6 +485,11 @@ function expandToken(token) {
 
 export function searchKnowledge(query, limit = 4, language) {
   const translated = translateQuery(query, language)
+  const directId = DIRECT_TOPIC_IDS.get(simpleTopic(translated))
+  if (directId) {
+    const entry = knowledgeEntries.find((candidate) => candidate.id === directId)
+    if (entry) return [{ ...entry, score: 100 }]
+  }
   const tokens = new Set(tokenize(translated))
   if (!tokens.size) return []
   const phrase = translated.trim().toLowerCase()
@@ -489,6 +553,36 @@ const cheapestTiers = PACKAGE_SERVICES.slice(0, 6)
   .join(', ')
 
 const INTENTS = [
+  {
+    id: 'help',
+    test: (text) => /^(help|help me|start|menu|options)\??$/i.test(text.trim()),
+    reply: () => ({
+      text: 'What do you need help with? Type one word, such as website, SEO, app, prices, or contact. You can also tap a button below.',
+      chips: openingChips,
+    }),
+  },
+  {
+    id: 'seo-explainer',
+    test: (text) => /^(?:(?:what is|what does|tell me about|do you do|can you help with|i need|we need|help with)\s+)?seo(?:\s+(?:mean|means))?\??$/i.test(text.trim()),
+    reply: () => ({
+      text: 'SEO stands for search engine optimization. It helps your website appear higher in Google when people search for services like yours. Wavefront can help with keywords, technical fixes, page improvements, local SEO, and Google Business Profile work.',
+      links: [{ label: 'Learn about website SEO', href: '/seo-service/' }],
+      chips: ['How much is SEO?', 'How long does SEO take?', 'Talk to a person'],
+    }),
+  },
+  {
+    id: 'growth-help',
+    test: (text) => /^(?:(?:i|we)\s+)?(?:need|want)\s+more\s+(?:customers|leads|sales|business)\.?$/i.test(text.trim()),
+    reply: () => ({
+      text: 'We can help. Would you like to get found on Google, run ads, improve social media, or improve your website? Choose one below.',
+      links: [
+        { label: 'SEO and Google', href: '/seo-service/' },
+        { label: 'Digital marketing and ads', href: '/digital-marketing/' },
+        { label: 'Website development', href: '/web-development/' },
+      ],
+      chips: ['SEO and Google', 'Paid ads', 'Social media', 'New website'],
+    }),
+  },
   {
     id: 'greeting',
     test: (text) => /^(hi|hey|hello|yo|good (morning|afternoon|evening)|howdy)\b/i.test(text.trim()),
@@ -607,7 +701,7 @@ const INTENTS = [
 
 function formatResults(results) {
   const [best, ...rest] = results
-  const spoken = clip(best.plain, 400)
+  const spoken = clip(best.plain, 300)
   const links = [{ label: best.linkLabel ?? `Read more: ${best.title}`, href: best.url }]
   const seen = new Set([best.url])
   for (const result of rest) {
@@ -643,22 +737,26 @@ const FALLBACK = {
 
 function localize(answer, language) {
   const copy = strings(language)
+  const simpleText = (value) => String(value ?? '').replace(/\s*[—–]\s*/g, ' - ').replace(/\s+/g, ' ').trim()
   // Hand-written intent links can repeat a destination; a visitor should never
   // see the same page offered twice.
   const seen = new Set()
-  const links = (answer.links ?? []).filter((link) => !seen.has(link.href) && seen.add(link.href))
-  const chips = copy.leadIn ? CHIPS[language] ?? answer.chips : answer.chips
+  const links = (answer.links ?? [])
+    .filter((link) => !seen.has(link.href) && seen.add(link.href))
+    .map((link) => ({ ...link, label: simpleText(link.label) }))
+  const chips = (copy.leadIn ? CHIPS[language] ?? answer.chips : answer.chips)?.map(simpleText)
   // Lines the assistant speaks in its own voice are written in each language;
   // wrapping "sorry, I could not find that" in "here is what Wavefront
   // publishes" would be nonsense.
   if (answer.spoken) {
-    const text = language === 'en' ? `${copy[answer.spoken]} ${contactLine}` : copy[answer.spoken]
+    const suffix = language === 'en' && answer.spoken === 'handoff' ? ` ${contactLine}` : ''
+    const text = simpleText(`${copy[answer.spoken]}${suffix}`)
     return { ...answer, links, text, chips, language }
   }
-  if (!copy.leadIn) return { ...answer, links, language }
+  if (!copy.leadIn) return { ...answer, links, text: simpleText(answer.text), chips, language }
   // Follow-up prompts are written by us, so they can be shown translated even
   // though the pages they lead to are English.
-  return { ...answer, links, text: `${copy.leadIn} ${answer.text}`, chips, language }
+  return { ...answer, links, text: simpleText(`${copy.leadIn} ${answer.text}`), chips, language }
 }
 
 // Answers a visitor question from published site content only.
@@ -694,7 +792,7 @@ export function answerQuestion(query, previousLanguage = 'en') {
   // greeting, pricing and contact intents always win because they are what the
   // visitor actually asked for.
   const generalLocationQuestion = intent?.id === 'locations' && !ordinaryPlaceContext && !/\b(free|setup|offer)\b/i.test(englishText)
-  const intentWins = intent && (results.length === 0 || results[0].score < 12 || generalLocationQuestion || ['human', 'greeting', 'thanks', 'contact'].includes(intent.id))
+  const intentWins = intent && (results.length === 0 || results[0].score < 12 || generalLocationQuestion || ['help', 'seo-explainer', 'growth-help', 'human', 'greeting', 'thanks', 'contact'].includes(intent.id))
   if (intentWins) return localize(intent.reply(), language)
   if (results.length) return localize(formatResults(results), language)
   return localize(FALLBACK, language)
