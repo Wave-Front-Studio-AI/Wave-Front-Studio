@@ -91,6 +91,10 @@ const edgeCases = [
 
 const easyCases = [
   ['/web-development/', 'website'],
+  ['/web-development/', 'web site'],
+  ['/web-development/', 'site'],
+  ['/web-development/', 'webiste'],
+  ['/web-development/', 'websight'],
   ['/mobile-app-development/', 'app'],
   ['/social-media-strategy/', 'social media'],
   ['/graphic-design/', 'logo'],
@@ -100,6 +104,18 @@ const easyCases = [
   ['/ai-chatbot/', 'chatbot'],
   ['/live-visualizer/', 'visualizer'],
   ['/custom-calculators/', 'calculator'],
+  ['/seo-service/', 'Google'],
+  ['/seo-service/', 'rank'],
+  ['/seo-service/', 's e o'],
+  ['/seo-service/', 'seoo'],
+  ['/contact/', 'phone'],
+  ['/contact/', 'email'],
+  ['/services/', 'what do you do'],
+  ['/faqs/', 'time'],
+  ['/build-your-package/', 'website cost'],
+  ['/ai-chatbot/', 'chatboat'],
+  ['/custom-calculators/', 'calcualtor'],
+  ['/contact/', 'contat'],
 ]
 
 const languageCases = [

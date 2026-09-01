@@ -371,11 +371,21 @@ export const knowledgeEntries = [
 const DIRECT_TOPIC_IDS = new Map([
   ['website', 'service-web-development'],
   ['websites', 'service-web-development'],
+  ['site', 'service-web-development'],
+  ['web site', 'service-web-development'],
+  ['web page', 'service-web-development'],
+  ['webpage', 'service-web-development'],
+  ['homepage', 'service-web-development'],
   ['web design', 'service-web-development'],
   ['website design', 'service-web-development'],
   ['web development', 'service-web-development'],
   ['new website', 'service-web-development'],
   ['seo', 'service-seo-service'],
+  ['google', 'service-seo-service'],
+  ['google search', 'service-seo-service'],
+  ['google ranking', 'service-seo-service'],
+  ['rank', 'service-seo-service'],
+  ['ranking', 'service-seo-service'],
   ['website seo', 'service-seo-service'],
   ['search engine optimization', 'service-seo-service'],
   ['search engine optimisation', 'service-seo-service'],
@@ -406,10 +416,29 @@ const DIRECT_TOPIC_IDS = new Map([
   ['calculator', 'custom-custom-calculators'],
   ['calculators', 'custom-custom-calculators'],
   ['custom calculator', 'custom-custom-calculators'],
+  ['phone', 'company-contact'],
+  ['phone number', 'company-contact'],
+  ['telephone', 'company-contact'],
+  ['email', 'company-contact'],
+  ['email address', 'company-contact'],
+  ['contact', 'company-contact'],
+])
+
+const COMMON_TERM_CORRECTIONS = new Map([
+  ['s e o', 'seo'],
+  ['seoo', 'seo'],
+  ['webiste', 'website'],
+  ['webstie', 'website'],
+  ['websitee', 'website'],
+  ['websight', 'website'],
+  ['chatboat', 'chatbot'],
+  ['chat bot', 'chatbot'],
+  ['calcualtor', 'calculator'],
+  ['contat', 'contact'],
 ])
 
 function simpleTopic(value) {
-  return String(value ?? '')
+  const normalized = String(value ?? '')
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
@@ -418,6 +447,7 @@ function simpleTopic(value) {
     .trim()
     .replace(/^(?:what is|what does|what are|tell me about|do you do|can you help with|i need|we need|help with)\s+/, '')
     .replace(/\s+(?:mean|means)$/, '')
+  return COMMON_TERM_CORRECTIONS.get(normalized) ?? normalized
 }
 
 /* ------------------------------------------------------------------ */
@@ -548,7 +578,15 @@ function has(text, ...words) {
   return words.some((word) => new RegExp(`\\b${word}\\b`, 'i').test(text))
 }
 
-const cheapestTiers = PACKAGE_SERVICES.slice(0, 6)
+function isDirectPricingQuestion(text) {
+  const value = String(text ?? '').trim().toLowerCase().replace(/[?.!]+$/, '')
+  if (/^(price|prices|pricing|cost|costs|fee|fees|rates|quote|budget|how much)$/.test(value)) return true
+  const topic = '(?:website|web site|seo|app|mobile app|chatbot|marketing|digital marketing|social media|graphic design|audit|lead capture|calculator|visualizer|visualiser|service|services)'
+  return new RegExp(`^(?:how much (?:does|do|is|are|would|will) )?(?:a |an |the |your )?${topic}(?: (?:cost|costs|price|prices|pricing|fee|fees|rates))?$`, 'i').test(value)
+    || /^how much (?:is|are|does|do|would|will) (?:it|this|that)$/.test(value)
+}
+
+const cheapestTiers = PACKAGE_SERVICES.slice(0, 3)
   .map((service) => `${service.name} from ${priceOf(service.tiers[0], service.billing)}`)
   .join(', ')
 
@@ -563,7 +601,7 @@ const INTENTS = [
   },
   {
     id: 'seo-explainer',
-    test: (text) => /^(?:(?:what is|what does|tell me about|do you do|can you help with|i need|we need|help with)\s+)?seo(?:\s+(?:mean|means))?\??$/i.test(text.trim()),
+    test: (text) => /^(seo|google|google search|google ranking|rank|ranking)$/i.test(simpleTopic(text)),
     reply: () => ({
       text: 'SEO stands for search engine optimization. It helps your website appear higher in Google when people search for services like yours. Wavefront can help with keywords, technical fixes, page improvements, local SEO, and Google Business Profile work.',
       links: [{ label: 'Learn about website SEO', href: '/seo-service/' }],
@@ -616,7 +654,7 @@ const INTENTS = [
     test: (text) => has(text, 'price', 'prices', 'pricing', 'cost', 'costs', 'budget', 'afford', 'expensive', 'cheap', 'fee', 'fees', 'rates', 'quote')
       || /how much/i.test(text),
     reply: () => ({
-      text: `Every service on the site is priced on the Build Your Package page — tick what you want, pick a tier, and the total updates as you go. Starting points: ${cheapestTiers}. Bundling brings it down (${OFFER.bundleTiers.map((tier) => `${tier.min}+ services saves ${tier.pct}%`).join(', ')}), and monthly services include the first month free.`,
+      text: `Choose the services you want on the Build Your Package page and it will show the total price. Starting points include ${cheapestTiers}. Monthly services include the first month free.`,
       links: [
         { label: 'Build your package and see the price', href: '/build-your-package/' },
         { label: 'Free setup this quarter', href: '/free-setup/' },
@@ -627,10 +665,15 @@ const INTENTS = [
   {
     id: 'contact',
     test: (text) => has(text, 'contact', 'address', 'located', 'location', 'office')
+      || /^(phone|phone number|telephone|email|email address|contact us)\??$/i.test(text.trim())
       || /\b(instagram|social)\s+(profile|account|handle|link)\b/i.test(text)
       || /\bhow (can|do) (i|we) (reach|contact|call|email)\b/i.test(text)
       || /\b(your|wavefront'?s) (email|phone|telephone|number)\b/i.test(text),
-    reply: () => ({ text: contactLine, links: CONTACT_LINKS, chips: ['Request help'] }),
+    reply: (text) => {
+      const emailFirst = /^email\b/i.test(text.trim())
+      const links = emailFirst ? [CONTACT_LINKS[1], CONTACT_LINKS[0], CONTACT_LINKS[2]] : CONTACT_LINKS
+      return { text: contactLine, links, chips: ['Request help'] }
+    },
   },
   {
     // "who are you" is nothing but stop words, so the index cannot answer it.
@@ -650,12 +693,13 @@ const INTENTS = [
   {
     id: 'services-list',
     test: (text) => /\b(what|which)\b.*\b(services|do you offer|do you build|can you build|can you do|offerings)\b/i.test(text)
-      || /^(services|your services)\b/i.test(text.trim()),
+      || /^(service|services|your services|what do you do|what can you do|options)\??$/i.test(text.trim()),
     reply: () => ({
-      text: `Nine service pages and three custom tools. Services: ${serviceNames}. Custom works: ${customWorkNames}. Tell me which one you are thinking about, or what you are trying to fix, and I will point at the page.`,
+      text: `${serviceLinks.length} service pages and ${customWorkLinks.length} custom tools. Services: ${serviceNames}. Custom works: ${customWorkNames}. Tell me which one you are thinking about, or what you are trying to fix, and I will point at the page.`,
       links: [
+        { label: 'See all services', href: '/services/' },
+        { label: 'See all custom tools', href: '/custom-works/' },
         { label: 'Build your package and see the price', href: '/build-your-package/' },
-        { label: 'What we offer', href: '/about/' },
       ],
       chips: ['I need a new website', 'I want to rank on Google', 'Tell me about the AI chatbot', 'Talk to a person'],
     }),
@@ -674,6 +718,7 @@ const INTENTS = [
   {
     id: 'timeline',
     test: (text) => /\bhow long\b/i.test(text)
+      || /^(time|timing|turnaround)\??$/i.test(text.trim())
       || /\b(timeline|turnaround|lead time|how quickly|how fast|when will it be (ready|done)|delivery time)\b/i.test(text),
     reply: () => ({
       text: timelineAnswer,
@@ -792,8 +837,9 @@ export function answerQuestion(query, previousLanguage = 'en') {
   // greeting, pricing and contact intents always win because they are what the
   // visitor actually asked for.
   const generalLocationQuestion = intent?.id === 'locations' && !ordinaryPlaceContext && !/\b(free|setup|offer)\b/i.test(englishText)
-  const intentWins = intent && (results.length === 0 || results[0].score < 12 || generalLocationQuestion || ['help', 'seo-explainer', 'growth-help', 'human', 'greeting', 'thanks', 'contact'].includes(intent.id))
-  if (intentWins) return localize(intent.reply(), language)
+  const directPricing = intent?.id === 'pricing' && isDirectPricingQuestion(englishText)
+  const intentWins = intent && (results.length === 0 || results[0].score < 12 || generalLocationQuestion || directPricing || ['help', 'seo-explainer', 'growth-help', 'human', 'greeting', 'thanks', 'contact'].includes(intent.id))
+  if (intentWins) return localize(intent.reply(englishText), language)
   if (results.length) return localize(formatResults(results), language)
   return localize(FALLBACK, language)
 }
