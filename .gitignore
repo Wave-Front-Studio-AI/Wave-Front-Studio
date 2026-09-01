@@ -1,0 +1,12 @@
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.*
+!.env.example
+server/.env
+.DS_Store
+.claude/
+.vercel/
+ASSISTANT_AUDIT.md

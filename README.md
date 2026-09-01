@@ -51,9 +51,10 @@ Enquiries are delivered by `src/formSubmission.js` to `VITE_LEAD_ENDPOINT` (or
 success reply counts as delivery. Forms do not send email and never open a
 visitor's email client.
 
-Local development proxies `/api/lead` to the server-side lead service. In
-production, proxy the same path to that service or set `VITE_LEAD_ENDPOINT` to
-its public HTTPS URL.
+Local development proxies `/api/lead` to the server-side lead service. Vercel
+deploys `api/lead.js` as the same-origin production endpoint. Other hosts must
+proxy the same path to the lead service or set `VITE_LEAD_ENDPOINT` to its
+public HTTPS URL.
 
 ### Base44 lead storage
 
@@ -77,6 +78,12 @@ Run the API locally with `npm run leads`; run its contract tests with
 `dist/` is a plain static folder — every route is a real `index.html`, so it works
 on Netlify, Vercel, Cloudflare Pages, S3, or any web host. Point unknown paths at
 `dist/404.html` if your host supports a custom 404.
+
+For Vercel, import the GitHub repository and leave the project root at the
+repository root. `vercel.json` runs the production build and publishes `dist/`.
+Add `BASE44_APP_ID` and `BASE44_API_KEY` as encrypted Production environment
+variables before testing forms; add any optional values from
+`server/.env.example` when their defaults are not appropriate.
 
 ## Editing content
 
