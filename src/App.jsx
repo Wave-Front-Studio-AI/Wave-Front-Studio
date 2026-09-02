@@ -17,6 +17,7 @@ const CustomWorksHubPage = lazy(() => import('./pages/HubPages.jsx').then((modul
 const ServiceRoute = lazy(() => import('./pages/ServiceRoute.jsx'))
 const CustomWorkRoute = lazy(() => import('./pages/CustomWorkRoute.jsx'))
 const LongformRoute = lazy(() => import('./pages/LongformRoute.jsx'))
+const PlatformPage = lazy(() => import('./pages/PlatformPage.jsx'))
 
 // `path` is supplied by the prerenderer; in the browser the route comes from the
 // address bar.
@@ -76,6 +77,8 @@ function renderRoute(route) {
       return <BuildYourPackage />
     case 'locations':
       return <LongformRoute kind={route.kind} />
+    case 'platform':
+      return <PlatformPage />
     case 'services-hub':
       return <ServicesHubPage />
     case 'custom-works-hub':

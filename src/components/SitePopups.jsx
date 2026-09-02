@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { ArrowIcon } from './Icons.jsx'
 import { contact } from '../data/site.js'
 import { deliverLead } from '../formSubmission.js'
+import { useCurrentPath } from '../routeContext.js'
 
 // Shown once per visit unless the visitor dismisses it. Storage can throw in
 // private modes, so every read and write is guarded.
@@ -139,10 +140,18 @@ function AuditPopup({ open, onClose }) {
   )
 }
 
+// Pages that must stay readable with nothing overlaying them. /platform/ is the
+// public app home page Google's OAuth reviewers open logged out, so no modal may
+// cover it.
+const noPopupPaths = new Set(['/platform'])
+
 export default function SitePopups() {
+  const path = useCurrentPath()
   const [open, setOpen] = useState(false)
+  const suppressed = noPopupPaths.has(path)
 
   useEffect(() => {
+    if (suppressed) return undefined
     if (seen('wf-audit') || dismissed('wf-audit-dismissed')) return undefined
 
     const onLeave = (event) => {
@@ -153,7 +162,7 @@ export default function SitePopups() {
 
     document.addEventListener('mouseout', onLeave)
     return () => document.removeEventListener('mouseout', onLeave)
-  }, [])
+  }, [suppressed])
 
   const closePermanently = () => {
     markDismissed('wf-audit-dismissed')
