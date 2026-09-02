@@ -36,6 +36,7 @@ export const customWorkLinks = [
 export const resourceLinks = [
   ['Our Blogs', '/blog/'],
   ['Lost Lead Calculator', '/lost-lead-calculator/'],
+  ['Build Your Package', '/package-builder/'],
   ['Free Setup This Quarter', '/free-setup/'],
 ]
 
@@ -66,6 +67,7 @@ export const footerNav = {
     ['AI Chatbot', '/ai-chatbot/'],
     ['Live Visualizer', '/live-visualizer/'],
     ['Custom Calculators', '/custom-calculators/'],
+    ['Build Your Package', '/package-builder/'],
     ['Contact Us', '/contact/'],
     ['FAQs', '/faqs/'],
     ['Where We Work', '/locations/'],

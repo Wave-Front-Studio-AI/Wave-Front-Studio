@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import Layout from '../components/Layout.jsx'
-import { ArrowIcon } from '../components/Icons.jsx'
 import { CtaBand, Reveal, SectionHeading } from '../components/shared.jsx'
 import { contact } from '../data/site.js'
 

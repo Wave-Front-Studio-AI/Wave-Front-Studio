@@ -34,7 +34,7 @@ export const routes = [
   { path: '/blog/', kind: 'blog' },
   { path: '/lost-lead-calculator/', kind: 'calculator' },
   { path: '/free-setup/', kind: 'free-setup' },
-  { path: '/build-your-package/', kind: 'packages' },
+  { path: '/package-builder/', kind: 'packages' },
   { path: '/locations/', kind: 'locations' },
   { path: '/services/', kind: 'services-hub' },
   { path: '/custom-works/', kind: 'custom-works-hub' },

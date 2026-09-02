@@ -152,7 +152,7 @@ const companyEntries = [
     linkLabel: 'Open the Lost Lead Calculator',
   },
   {
-    id: 'company-build-your-package', title: 'Build Your Package', url: '/build-your-package/', kind: 'company',
+    id: 'company-build-your-package', title: 'Build Your Package', url: '/package-builder/', kind: 'company',
     keywords: ['build your package', 'package', 'bundle', 'configurator', 'quote', 'estimate', 'pricing', 'price', 'cost', 'how much', 'budget', 'tiers'],
     body: `Tick the services you want and pick a tier — your total updates instantly. Tap the info icon on any service to see exactly what each tier includes. The more you bundle, the more you save: ${OFFER.bundleTiers.map((tier) => `${tier.min}+ services saves ${tier.pct}%`).join(', ')}. Monthly services include the first month free. Twenty services are priced on the page across websites and development, marketing and growth, AI and automation, branding and design, print and collateral, and video and podcast.`,
     linkLabel: 'Build your package and see the price',
@@ -281,7 +281,7 @@ const packageEntries = PACKAGE_SERVICES.map((service) => {
   return makeEntry({
     id: `package-${service.id}`,
     title: `${service.name} — pricing`,
-    url: '/build-your-package/',
+      url: '/package-builder/',
     kind: 'pricing',
     keywords: [service.name, 'price', 'pricing', 'cost', 'how much', 'rate', 'quote', 'budget', 'tier', 'package'],
     body: `${service.blurb} Tiers: ${tiers}.${addons ? ` Add-ons: ${addons}.` : ''}${delivery ? ` ${delivery[0]}: ${delivery.slice(1).join(' / ')}.` : ''} Prices update live on the Build Your Package page, where bundling ${OFFER.bundleTiers.map((tier) => `${tier.min}+ services saves ${tier.pct}%`).join(', ')}.`,
@@ -656,7 +656,7 @@ const INTENTS = [
     reply: () => ({
       text: `Choose the services you want on the Build Your Package page and it will show the total price. Starting points include ${cheapestTiers}. Monthly services include the first month free.`,
       links: [
-        { label: 'Build your package and see the price', href: '/build-your-package/' },
+      { label: 'Build your package and see the price', href: '/package-builder/' },
         { label: 'Free setup this quarter', href: '/free-setup/' },
       ],
       chips: ['What do you build?', 'How long does it take?', 'Talk to a person'],
@@ -699,7 +699,7 @@ const INTENTS = [
       links: [
         { label: 'See all services', href: '/services/' },
         { label: 'See all custom tools', href: '/custom-works/' },
-        { label: 'Build your package and see the price', href: '/build-your-package/' },
+      { label: 'Build your package and see the price', href: '/package-builder/' },
       ],
       chips: ['I need a new website', 'I want to rank on Google', 'Tell me about the AI chatbot', 'Talk to a person'],
     }),
@@ -724,7 +724,7 @@ const INTENTS = [
       text: timelineAnswer,
       links: [
         { label: 'Every question we get asked', href: '/faqs/' },
-        { label: 'Per-tier delivery estimates', href: '/build-your-package/' },
+      { label: 'Per-tier delivery estimates', href: '/package-builder/' },
       ],
       chips: ['How much does it cost?', 'Talk to a person'],
     }),
@@ -771,7 +771,7 @@ function formatResults(results) {
 const FALLBACK = {
   text: '',
   links: [
-    { label: 'Build your package and see the price', href: '/build-your-package/' },
+      { label: 'Build your package and see the price', href: '/package-builder/' },
     { label: 'Every question we get asked', href: '/faqs/' },
     ...CONTACT_LINKS.slice(0, 2),
   ],

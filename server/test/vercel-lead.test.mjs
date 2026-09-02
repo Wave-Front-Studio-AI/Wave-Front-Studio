@@ -49,3 +49,20 @@ test('Vercel lead endpoint enforces the request-size limit', async () => {
   await handler({ method: 'POST', headers: {}, body: { email: 'ada@example.com', message: 'x'.repeat(33 * 1024) }, socket: {} }, response)
   assert.equal(response.statusCode, 413)
 })
+
+test('Vercel lead endpoint rejects disallowed browser origins', async () => {
+  const response = responseMock()
+  await handler({ method: 'OPTIONS', headers: { origin: 'https://attacker.example', host: 'wavefrontstudiollc.com' } }, response)
+
+  assert.equal(response.statusCode, 403)
+  assert.deepEqual(response.body, { ok: false, error: 'Origin not allowed.' })
+  assert.equal(response.headers['access-control-allow-origin'], undefined)
+})
+
+test('Vercel lead endpoint permits the deployment same origin', async () => {
+  const response = responseMock()
+  await handler({ method: 'OPTIONS', headers: { origin: 'https://preview.example', host: 'preview.example' } }, response)
+
+  assert.equal(response.statusCode, 204)
+  assert.equal(response.headers['access-control-allow-origin'], 'https://preview.example')
+})

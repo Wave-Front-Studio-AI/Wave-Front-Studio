@@ -3,7 +3,7 @@
 // VITE_LEAD_ENDPOINT — a JSON endpoint that accepts the whole submission.
 // Local development uses Vite's /api proxy. In production, either proxy this
 // same path to the lead service or set VITE_LEAD_ENDPOINT to its HTTPS URL.
-const LEAD_ENDPOINT = import.meta.env.VITE_LEAD_ENDPOINT || '/api/lead'
+const LEAD_ENDPOINT = import.meta.env.VITE_LEAD_ENDPOINT || '/api/lead/'
 
 function normalizeWebsite(value) {
   const website = typeof value === 'string' ? value.trim() : ''

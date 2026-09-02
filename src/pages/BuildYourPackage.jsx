@@ -243,7 +243,7 @@ export default function BuildYourPackage() {
         title: 'Build Your Package | Wavefront Studio',
         description:
           'Tick the services you want and pick a tier — your total updates instantly. The more you bundle, the more you save.',
-        canonical: '/build-your-package/',
+        canonical: '/package-builder/',
       }}
     >
       <section className="page-hero">
