@@ -34,21 +34,26 @@ export const customWorkLinks = [
 ]
 
 export const resourceLinks = [
-  ['Our Blogs', '/blog/'],
   ['Lost Lead Calculator', '/lost-lead-calculator/'],
   ['Build Your Package', '/package-builder/'],
   ['Free Setup This Quarter', '/free-setup/'],
 ]
 
-// Mirrors the live header menu, in the live order.
+// Four top-level items. Portfolio and Contact Us sit under About, Custom Works
+// under Our Services, so the bar stays short and every destination is one hover
+// away. The 404 page flattens this list, so no href may appear twice.
 export const primaryNav = [
-  { label: 'Home', href: '/' },
-  { label: 'Portfolio', href: '/portfolio/' },
-  { label: 'About', href: '/about/' },
-  { label: 'Our Services', href: '/services/', children: serviceLinks },
-  { label: 'Custom Works', href: '/custom-works/', children: customWorkLinks },
+  {
+    label: 'About',
+    href: '/about/',
+    children: [
+      ['Portfolio', '/portfolio/'],
+      ['Contact Us', '/contact/'],
+    ],
+  },
+  { label: 'Our Services', href: '/services/', children: [...serviceLinks, ['Custom Works', '/custom-works/']] },
   { label: 'Resources', href: null, children: resourceLinks },
-  { label: 'Contact Us', href: '/contact/' },
+  { label: 'Blog', href: '/blog/' },
 ]
 
 export const footerNav = {
