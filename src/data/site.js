@@ -1,7 +1,10 @@
 // Every string in this file is taken from wavefrontstudiollc.com. Nothing here is
 // invented: if the live site does not say it, it is not here.
 
-export const siteOrigin = 'https://wavefrontstudiollc.com'
+// www is what actually serves: the apex 308-redirects here. Every absolute URL
+// the site declares about itself — canonical, og:url, JSON-LD, sitemap, robots —
+// is built from this, so it has to name the host that answers with a 200.
+export const siteOrigin = 'https://www.wavefrontstudiollc.com'
 
 export const contact = {
   phone: '+1 (941) 415 2595',
