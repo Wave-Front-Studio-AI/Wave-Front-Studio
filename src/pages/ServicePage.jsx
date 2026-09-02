@@ -26,7 +26,7 @@ function ServiceHeroMedia({ hero }) {
     videoRef.current?.play().catch(() => {})
   }, [hero.video])
 
-  if (!hero.video) return <img src={hero.image} alt={hero.alt} loading="eager" />
+  if (!hero.video) return <img src={hero.image} alt={hero.alt} loading="eager" fetchPriority="high" />
 
   return (
     <video

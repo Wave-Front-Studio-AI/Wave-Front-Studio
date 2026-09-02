@@ -62,7 +62,7 @@ export default function SiteFooter() {
       <div className="page-frame footer-directory">
         <div className="footer-intro">
           <a className="footer-brand" href="/" aria-label="Wavefront Studio home">
-            <img src="/wave-logo-white.png" alt="Wavefront Studio" width="1591" height="498" />
+            <img src="/wave-logo-white.webp" alt="Wavefront Studio" width="1591" height="498" loading="lazy" />
           </a>
           <p>{footerCopy.tagline}</p>
           <div className="footer-social">

@@ -113,7 +113,7 @@ export const customCalculators = {
     total: '$897.50',
     actions: ['📧 Email Results', '📄 Export as PDF', '💾 Save Calculation', '📋 Add to Job Pricing'],
     cartLabel: 'Add All to Cart',
-    image: '/images/calc.png',
+    image: '/images/calc.webp',
   },
   features: {
     eyebrow: 'Key Features',

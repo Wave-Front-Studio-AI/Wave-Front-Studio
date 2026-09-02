@@ -33,7 +33,7 @@ function LiveSystemPanel({ items }) {
   return (
     <div className="live-panel">
       <div className="live-panel-bar">
-        <img src="/wave-logo.png" alt="Wavefront Studio" />
+        <img src="/wave-logo.webp" alt="Wavefront Studio" />
         <span>
           <i aria-hidden="true" /> Live system
         </span>
@@ -309,7 +309,7 @@ export default function CustomWorkPage({ work }) {
     if (work.showcase) {
       return (
         <div className="service-media is-frame">
-          <img src={work.showcase.after.image} alt={work.showcase.after.caption} loading="eager" />
+          <img src={work.showcase.after.image} alt={work.showcase.after.caption} loading="eager" fetchPriority="high" />
           <span className="service-media-tag">{work.showcase.after.tag}</span>
         </div>
       )
@@ -317,7 +317,7 @@ export default function CustomWorkPage({ work }) {
     if (work.demo) {
       return (
         <div className="service-media is-frame">
-          <img src={work.demo.image} alt={work.demo.panelTitle} loading="eager" />
+          <img src={work.demo.image} alt={work.demo.panelTitle} loading="eager" fetchPriority="high" />
           <span className="service-media-tag">{work.demo.panelTitle}</span>
         </div>
       )

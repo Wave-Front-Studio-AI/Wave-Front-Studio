@@ -95,7 +95,7 @@ export const testimonials = [
     role: 'CEO',
     company: 'CEO of ResinRock',
     href: 'http://resinrock.com',
-    image: '/images/Tony-Dyke.jpg',
+    image: '/images/Tony-Dyke.webp',
   },
   {
     quote: 'Our Google rankings completely transformed after working with Wavefront. We went from page five to page one in just a few months. The SEO strategy they built for us is still delivering results every single day.',
@@ -103,7 +103,7 @@ export const testimonials = [
     role: 'CEO',
     company: 'CEO',
     href: null,
-    image: '/images/Team-1-1.jpg',
+    image: '/images/Team-1-1.webp',
   },
   {
     quote: 'They built us an automated lead system that captures enquiries from multiple websites and assigns them to the nearest available installer instantly. It saves us hours every single day and our response time has never been faster.',
@@ -111,7 +111,7 @@ export const testimonials = [
     role: 'COO',
     company: 'COO',
     href: null,
-    image: '/images/Screenshot-2026-04-03-at-12.11.26-AM.jpg',
+    image: '/images/Screenshot-2026-04-03-at-12.11.26-AM.webp',
   },
 ]
 
@@ -122,11 +122,11 @@ export const testimonialsHeading = {
 }
 
 export const clientLogos = [
-  { src: '/images/clients/resin-rock.png', alt: 'ResinRock company logo', className: 'is-light-wordmark' },
-  { src: '/images/clients/glow-surfaces.png', alt: 'Glow Surfaces company logo', className: 'is-light-wordmark' },
-  { src: '/images/clients/rr-leads.png', alt: 'RR Leads company logo', className: 'is-light-wordmark' },
-  { src: '/images/clients/titan-surfacing.png', alt: 'Titan Surfacing company logo' },
-  { src: '/images/F.png', alt: 'Resin Rubber company logo', className: 'is-monochrome' },
+  { src: '/images/clients/resin-rock.webp', alt: 'ResinRock company logo', className: 'is-light-wordmark' },
+  { src: '/images/clients/glow-surfaces.webp', alt: 'Glow Surfaces company logo', className: 'is-light-wordmark' },
+  { src: '/images/clients/rr-leads.webp', alt: 'RR Leads company logo', className: 'is-light-wordmark' },
+  { src: '/images/clients/titan-surfacing.webp', alt: 'Titan Surfacing company logo' },
+  { src: '/images/F.webp', alt: 'Resin Rubber company logo', className: 'is-monochrome' },
 ]
 
 export const projects = [
@@ -137,7 +137,7 @@ export const projects = [
     home: 'Designed and developed 12+ interconnected websites for ResinRock – including product pages, custom calculators, a rubber division site, and landing pages – all built for performance, SEO, and seamless user experience.',
     portfolio: 'A full-scale digital ecosystem of 12+ websites – from product showcases and custom calculators to a dedicated rubber division site and high-converting landing pages – all built to work together seamlessly.',
     href: 'http://resinrock.com',
-    image: '/images/digital-3d-creator-improving-industrial-prototype-component.jpg',
+    image: '/images/digital-3d-creator-improving-industrial-prototype-component.webp',
     alt: '3D creator improving an industrial prototype component using digital design tools',
   },
   {
@@ -147,7 +147,7 @@ export const projects = [
     home: 'Built a fully automated lead management system that captures enquiries from multiple websites and instantly assigns them to the nearest available installer – eliminating manual follow-ups and speeding up response times.',
     portfolio: 'A custom-built automation system that collects incoming enquiries across multiple websites and intelligently routes them to the nearest available installer in real time – zero manual work, faster response, more conversions.',
     href: 'http://resinrockleads.com',
-    image: '/images/architect-holding-digital-tablet-with-building-model.jpg',
+    image: '/images/architect-holding-digital-tablet-with-building-model.webp',
     alt: 'Architect holding a digital tablet displaying a building model',
   },
   {
@@ -157,7 +157,7 @@ export const projects = [
     home: 'Executed a comprehensive SEO strategy including technical optimization, keyword targeting, and content structuring – successfully ranking ResinRock on the first page of Google for key industry search terms.',
     portfolio: 'A complete SEO overhaul covering technical fixes, keyword research, on-page optimization, and content strategy – taking ResinRock from low visibility to Google’s first page for competitive industry keywords.',
     href: 'http://resinrock.com',
-    image: '/images/professional-woman-photo-retoucher-working-with-digital-assets.jpg',
+    image: '/images/professional-woman-photo-retoucher-working-with-digital-assets.webp',
     alt: 'Professional photo retoucher working with digital assets on a multi-monitor setup',
   },
 ]

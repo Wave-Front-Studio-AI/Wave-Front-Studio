@@ -85,7 +85,7 @@ export default function Home() {
         '@type': 'Organization',
         name: 'Wavefront Studio LLC',
         url: `${siteOrigin}/`,
-        logo: `${siteOrigin}/wave-logo.png`,
+        logo: `${siteOrigin}/wave-logo.webp`,
         telephone: '+1 941-415-2595',
         email: 'info@wavefrontstudiollc.com',
         address: { '@type': 'PostalAddress', addressLocality: 'Sarasota', addressRegion: 'FL', postalCode: '34234', addressCountry: 'US' },
@@ -130,7 +130,14 @@ export default function Home() {
           </div>
           <div className="hero-visual">
             <div className="hero-visual-frame">
-              <img src="/images/creative-work-on-digital-gadgets-in-the-studio-1.jpg" alt="Wavefront Studio team collaborating on digital gadgets in the studio" />
+              <img
+                src="/images/creative-work-on-digital-gadgets-in-the-studio-1.webp"
+                alt="Wavefront Studio team collaborating on digital gadgets in the studio"
+                width="1280"
+                height="854"
+                loading="eager"
+                fetchPriority="high"
+              />
             </div>
             <div className="hero-badge">
               <span>Years</span>
@@ -139,8 +146,8 @@ export default function Home() {
               </strong>
             </div>
             <div className="hero-visual-tiles" aria-hidden="true">
-              <img src="/images/architect-holding-digital-tablet-with-building-model.jpg" alt="" />
-              <img src="/images/digital-3d-creator-improving-industrial-prototype-component.jpg" alt="" />
+              <img src="/images/architect-holding-digital-tablet-with-building-model.webp" alt="" loading="lazy" />
+              <img src="/images/digital-3d-creator-improving-industrial-prototype-component.webp" alt="" loading="lazy" />
             </div>
           </div>
         </div>
@@ -162,7 +169,7 @@ export default function Home() {
       <section className="about-chapter chapter" id="about">
         <div className="page-frame service-split">
           <Reveal className="about-media">
-            <img src="/images/happy-creative-marketing-team-working-on-new-business-project-in-the-office-.jpg" alt="Happy creative marketing team collaborating on a new business project in the office" loading="lazy" />
+            <img src="/images/happy-creative-marketing-team-working-on-new-business-project-in-the-office-.webp" alt="Happy creative marketing team collaborating on a new business project in the office" loading="lazy" />
           </Reveal>
           <div>
             <SectionHeading eyebrow="About Us" title="Creating Digital Solutions That Stand the Test of Time" align="stack" />
@@ -256,7 +263,7 @@ export default function Home() {
           </div>
           <Reveal className="about-media">
             <img
-              src="/images/creative-digital-development-agency-brainstorming-about-mobile-app-interface-wireframe-design-on.jpg"
+              src="/images/creative-digital-development-agency-brainstorming-about-mobile-app-interface-wireframe-design-on.webp"
               alt="Digital development agency team brainstorming mobile app interface wireframe design"
               loading="lazy"
             />
@@ -323,7 +330,7 @@ export default function Home() {
       <section className="partnership-chapter chapter">
         <div className="page-frame service-split is-reverse">
           <Reveal className="about-media">
-            <img src="/images/business-people-using-a-digital-tablet.jpg" alt="Business people using a digital tablet" loading="lazy" />
+            <img src="/images/business-people-using-a-digital-tablet.webp" alt="Business people using a digital tablet" loading="lazy" />
           </Reveal>
           <div>
             <SectionHeading eyebrow="Partnership" title="A digital agency that’s with you every step of the way" align="stack" />

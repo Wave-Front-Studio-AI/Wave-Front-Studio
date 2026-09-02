@@ -64,7 +64,7 @@ export default function Navigation() {
 
       <div className={`site-nav ${scrolled ? 'is-scrolled' : ''}`}>
         <a className="brand-lockup" href="/" aria-label="Wavefront Studio home">
-          <img src="/wave-logo.png" alt="Wavefront Studio" width="1591" height="498" />
+          <img src="/wave-logo.webp" alt="Wavefront Studio" width="1591" height="498" />
         </a>
 
         <nav className="nav-links" aria-label="Main menu" onMouseLeave={scheduleClose}>

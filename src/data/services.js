@@ -10,10 +10,10 @@ export const services = [
     metaTitle: 'Custom Website Development Services | Wavefront Studio',
     metaDescription: 'We design and develop every type of website your business needs - from B2B corporate sites and e-commerce stores to personal portfolios, SaaS platforms, landing pages, and multi-site ecosystems.',
     hero: {
-      image: '/images/creative-digital-development-agency-brainstorming-about-mobile-app-interface-wireframe-design-on.jpg',
+      image: '/images/creative-digital-development-agency-brainstorming-about-mobile-app-interface-wireframe-design-on.webp',
       alt: 'Digital development agency team brainstorming mobile app interface wireframe design',
       video: '/videos/web-development-ad.mp4',
-      poster: '/videos/web-development-poster.jpg',
+      poster: '/videos/web-development-poster.webp',
     },
     approach: {
       title: 'Web Development - The Wavefront Way',
@@ -22,7 +22,7 @@ export const services = [
         'Our team works with WordPress, Shopify, WooCommerce, custom HTML/CSS, and modern JavaScript frameworks to deliver websites that load fast, rank higher on Google, and work flawlessly across all devices. You stay involved at every stage - from strategy and wireframes to design, development, and final launch - so the end result is exactly what your business needs to grow.',
       ],
       image: {
-        image: '/images/professional-woman-photo-retoucher-working-with-digital-assets.jpg',
+        image: '/images/professional-woman-photo-retoucher-working-with-digital-assets.webp',
         alt: 'Professional photo retoucher working with digital assets on a multi-monitor setup',
       },
     },
@@ -42,7 +42,7 @@ export const services = [
         'Every website we build is engineered for results - not just aesthetics. We structure your site architecture for maximum SEO performance, integrate lead capture forms and call-to-action elements in the right places, and optimize every page for speed and mobile responsiveness. Whether your customers find you through Google, social media, or paid ads - your website will be ready to convert them the moment they land.',
         'We don’t disappear after launch either. From ongoing maintenance, security updates, and performance monitoring to content updates and new feature additions - we stay with you as your business grows. Need to add a new product line, expand to a new market, or integrate a custom tool like a calculator or chatbot? We scale your website alongside your business - so it never falls behind.',
       ],
-      image: '/images/hard-at-work-on-their-latest-designs.jpg',
+      image: '/images/hard-at-work-on-their-latest-designs.webp',
       alt: 'hard at work on their latest designs',
     },
     cta: {
@@ -59,11 +59,11 @@ export const services = [
     metaTitle: 'SEO Services – Rank Higher on Google | Wavefront Studio',
     metaDescription: 'We build a complete SEO strategy designed to get your business on the first page of Google and keep it there - keyword research, technical audits, on-page optimization, and high-quality link building.',
     hero: {
-      image: '/images/Banner.png',
+      image: '/images/Banner.webp',
       alt: 'Digital interfaces used for search optimisation planning',
       video: '/videos/seo-google-presence-ad.mp4',
-      poster: '/videos/seo-google-presence-poster.jpg',
-      hubImage: '/images/creative-digital-editor-editing-movie-footage.jpg',
+      poster: '/videos/seo-google-presence-poster.webp',
+      hubImage: '/images/creative-digital-editor-editing-movie-footage.webp',
       hubAlt: 'Digital specialist reviewing creative content for search optimisation',
     },
     approach: {
@@ -73,7 +73,7 @@ export const services = [
         'Our SEO strategies are built on data, not guesswork. We analyze what your target audience is actually searching for, identify the gaps in your current rankings, and create a step-by-step plan to close them. Whether you’re a local business trying to dominate Google Maps or a national brand competing for high-volume keywords - we tailor every strategy to your specific market and goals.',
       ],
       image: {
-        image: '/images/creative-digital-editor-editing-movie-footage.jpg',
+        image: '/images/creative-digital-editor-editing-movie-footage.webp',
         alt: 'creative digital editor editing movie footage',
       },
     },
@@ -93,7 +93,7 @@ export const services = [
         'Technical SEO is where most agencies cut corners - but not us. We dive deep into your site’s structure, fixing crawl errors, improving page speed, optimizing mobile performance, cleaning up broken links, and ensuring Google can index every important page properly. A beautiful website means nothing if search engines can’t find it - and we make sure they always do.',
         'SEO is not a one-time project - it’s an ongoing growth engine. We provide monthly reporting, keyword tracking, content recommendations, and continuous optimization to make sure your rankings keep climbing. Our work with brands like ResinRock - taking them from low visibility to the first page of Google for competitive industry terms - proves that a solid SEO strategy delivers long-term, compounding results.',
       ],
-      image: '/images/professional-agency-workers-designing-industrial-prototype-on-creative-software.jpg',
+      image: '/images/professional-agency-workers-designing-industrial-prototype-on-creative-software.webp',
       alt: 'professional agency workers designing industrial prototype on creative software',
     },
     plans: {
@@ -178,7 +178,7 @@ export const services = [
     metaTitle: 'Custom Mobile App Development | Wavefront Studio LLC',
     metaDescription: 'We design and develop custom mobile applications for iOS and Android that are fast, intuitive, and built to solve real business problems.',
     hero: {
-      image: '/images/meeting-woman-and-man-with-tablet-happy-conversation-at-creative-marketing-agency-office-coachin.jpg',
+      image: '/images/meeting-woman-and-man-with-tablet-happy-conversation-at-creative-marketing-agency-office-coachin.webp',
       alt: 'meeting woman and man with tablet happy conversation at creative marketing agency office',
     },
     approach: {
@@ -188,7 +188,7 @@ export const services = [
         'Our development process covers everything from initial concept and UX wireframing to full design, coding, testing, and app store submission. We work with React Native, Flutter, and native development to choose the best approach for your project - whether that means a cross-platform app to save time and budget or a fully native experience for maximum performance.',
       ],
       image: {
-        image: '/images/woman-in-a-travel-agency-booking-a-trip-looking-at-the-covid-passport.jpg',
+        image: '/images/woman-in-a-travel-agency-booking-a-trip-looking-at-the-covid-passport.webp',
         alt: 'woman in a travel agency booking a trip looking at the covid passport',
       },
     },
@@ -208,7 +208,7 @@ export const services = [
         'Every app we build is designed around the user experience first. We obsess over smooth navigation, fast load times, clean interfaces, and intuitive workflows - because an app people don’t enjoy using is an app people uninstall. From onboarding screens and push notifications to in-app payments and real-time data syncing - every feature is tested and polished before it reaches your customers.',
         'Launch is just the beginning. We provide ongoing support including bug fixes, performance monitoring, feature updates, and OS compatibility checks to make sure your app stays fast, secure, and up to date. Whether you need to add new functionality, integrate third-party APIs, or expand to a new platform - we’re your long-term development partner, not a one-time vendor.',
       ],
-      image: '/images/business-portrait-women-in-office-and-tablet-planning-in-digital-marketing-agency-social-media-ma-1.jpg',
+      image: '/images/business-portrait-women-in-office-and-tablet-planning-in-digital-marketing-agency-social-media-ma-1.webp',
       alt: 'business portrait women in office and tablet planning in digital marketing agency',
     },
     cta: {
@@ -224,14 +224,14 @@ export const services = [
     subhead: 'Grow Your Audience, Build Your Brand, Drive Sales',
     metaTitle: 'Social Media Management & Strategy | Wavefront Studio',
     metaDescription: 'We build and manage complete social media strategies that grow your audience, build real engagement, and turn followers into paying customers.',
-    hero: { image: '/images/Social-MEDIA-2.jpg', alt: 'Social media content and campaign planning for business growth' },
+    hero: { image: '/images/Social-MEDIA-2.webp', alt: 'Social media content and campaign planning for business growth' },
     approach: {
       title: 'How We Grow Brands on Social Media',
       paragraphs: [
         'We build and manage complete social media strategies that do more than just post content - they grow your audience, build real engagement, and turn followers into paying customers. From Instagram and Facebook to TikTok, LinkedIn, and YouTube - we create platform-specific strategies tailored to where your audience actually spends their time and what makes them take action.',
         'Our process starts with understanding your brand, your competitors, and your target audience. We then develop a content calendar, define your brand voice, plan campaigns, and create scroll-stopping visuals and copy that align with your business goals. Whether you want more brand awareness, more leads, or more direct sales from social media - every post, reel, and story we create is built with that objective in mind.',
       ],
-      image: { image: '/images/Team-1-1-1.jpg', alt: 'Wavefront Studio social media team' },
+      image: { image: '/images/Team-1-1-1.webp', alt: 'Wavefront Studio social media team' },
     },
     features: [
       'Content calendar planning and scheduling',
@@ -262,7 +262,7 @@ export const services = [
         'We don’t just post and hope for the best. Our team actively monitors performance, tracks engagement metrics, and adjusts strategy based on what’s actually working. From organic content and hashtag strategies to paid promotions and influencer collaborations - we combine creativity with data to make sure your social media presence keeps growing month after month, not just staying flat.',
         'Managing social media takes time that most business owners don’t have - and that’s exactly why we exist. We handle everything from content creation and scheduling to community management, comment responses, and DM handling. You focus on running your business while we make sure your brand stays active, visible, and engaging across every platform - consistently and professionally.',
       ],
-      image: '/images/social-media-revolution.jpg',
+      image: '/images/social-media-revolution.webp',
       alt: 'social media revolution',
     },
     cta: {
@@ -279,9 +279,9 @@ export const services = [
     metaTitle: 'Professional Graphic Design Services | Wavefront Studio',
     metaDescription: 'We create visual identities that communicate who you are, what you stand for, and why customers should choose you.',
     hero: {
-      image: '/images/Banner.png',
+      image: '/images/Banner.webp',
       alt: 'Creative graphic design presentation',
-      hubImage: '/images/professional-agency-workers-designing-industrial-prototype-on-creative-software.jpg',
+      hubImage: '/images/professional-agency-workers-designing-industrial-prototype-on-creative-software.webp',
       hubAlt: 'Graphic design team developing a visual concept in creative software',
     },
     approach: {
@@ -291,7 +291,7 @@ export const services = [
         'Our designers take the time to understand your business, your audience, and your competition before creating anything. We study your industry, analyze what works in your market, and then design visuals that set you apart - not blend you in. Whether you’re building a brand from zero or refreshing an outdated identity - we deliver designs that feel premium, professional, and uniquely yours.',
       ],
       image: {
-        image: '/images/professional-agency-workers-designing-industrial-prototype-on-creative-software.jpg',
+        image: '/images/professional-agency-workers-designing-industrial-prototype-on-creative-software.webp',
         alt: 'professional agency workers designing industrial prototype on creative software',
       },
     },
@@ -327,7 +327,7 @@ export const services = [
     subhead: 'Data-Driven Strategies That Generate Real Results',
     metaTitle: 'Digital Marketing Services | Wavefront Studio LLC',
     metaDescription: 'We build complete digital marketing strategies rooted in data, targeting, and continuous optimization - from Google Ads and paid social to email marketing and funnel building.',
-    hero: { image: '/images/Digital-Marketing3.jpeg', alt: 'Digital marketing campaign strategy and performance analysis' },
+    hero: { image: '/images/Digital-Marketing3.webp', alt: 'Digital marketing campaign strategy and performance analysis' },
     approach: {
       title: 'How We Drive Growth for Your Business',
       paragraphs: [
@@ -335,7 +335,7 @@ export const services = [
         'Our process begins with understanding your business, your audience, and your competition. We research where your ideal customers spend their time online, what triggers them to take action, and how your competitors are reaching them. Then we build a custom marketing plan that puts your brand in front of the right people, with the right message, at the right time - across every channel that matters.',
       ],
       image: {
-        image: '/images/creative-digital-editor-editing-movie-footage.jpg',
+        image: '/images/creative-digital-editor-editing-movie-footage.webp',
         alt: 'creative digital editor editing movie footage',
       },
     },
@@ -355,7 +355,7 @@ export const services = [
         'We treat your marketing budget like our own money - every dollar has a job. Our team sets up detailed tracking and attribution so you can see exactly which campaigns are driving calls, form submissions, purchases, and revenue. We run continuous A/B tests on ad copy, creatives, audiences, and landing pages to find what converts best - then scale the winners and cut the losers. No wasted spend, no vanity metrics - just real business growth you can measure.',
         'Digital marketing isn’t a one-time setup - it’s an ongoing engine that needs constant fuel and fine-tuning. We provide monthly strategy calls, transparent performance reports, and clear recommendations on what to do next. Whether you need to launch a new product, enter a new market, promote a seasonal offer, or simply keep a steady flow of leads coming in - we adapt your strategy as your business evolves and make sure your marketing never falls behind your ambition.',
       ],
-      image: '/images/Digital-Marketing4.jpg',
+      image: '/images/Digital-Marketing4.webp',
       alt: 'Digital marketing team at work',
     },
     cta: {
@@ -375,7 +375,7 @@ export const services = [
       image: '/images/screen.webp',
       alt: 'Website performance review for a free Wavefront Studio audit',
       video: '/videos/free-audit-ad.mp4',
-      poster: '/videos/free-audit-poster.jpg',
+      poster: '/videos/free-audit-poster.webp',
     },
     primaryCta: { label: 'Get My Free Audit', href: '#service-form' },
     form: {
@@ -391,7 +391,7 @@ export const services = [
         'We look at the same experience your customers and search engines see: loading behavior, mobile layout, technical signals, local visibility, calls to action, contact paths, and what happens when somebody visits outside business hours. The goal is a useful starting point, not a wall of automated warnings without context.',
       ],
       image: {
-        image: '/images/professional-woman-photo-retoucher-working-with-digital-assets.jpg',
+        image: '/images/professional-woman-photo-retoucher-working-with-digital-assets.webp',
         alt: 'Specialist reviewing website performance across multiple screens',
       },
     },
@@ -416,7 +416,7 @@ export const services = [
         'You receive a focused review of what is working, what is creating friction, and which changes deserve attention first. Recommendations are ranked by likely business impact so you can separate meaningful improvements from low-priority polish.',
         'There is no obligation to hire Wavefront after the audit. You can use the findings yourself, hand them to your current team, or ask us to scope the work. If a deeper technical test or access to private analytics is needed, we will explain that clearly before recommending it.',
       ],
-      image: '/images/creative-digital-editor-editing-movie-footage.jpg',
+      image: '/images/creative-digital-editor-editing-movie-footage.webp',
       alt: 'Digital specialist reviewing website content and performance on screen',
     },
     faqs: [
@@ -444,7 +444,7 @@ export const services = [
       image: '/images/digital-marketing-wavefront-studios.webp',
       alt: 'Wavefront Studio digital marketing and lead capture workflow',
       video: '/videos/lead-capture-ad.mp4',
-      poster: '/videos/lead-capture-poster.jpg',
+      poster: '/videos/lead-capture-poster.webp',
     },
     primaryCta: { label: 'Plan My Lead System', href: '#service-form' },
     form: {
@@ -460,7 +460,7 @@ export const services = [
         'Wavefront builds the flow around your real sales process: service type, location, availability, urgency, budget, scheduling, and ownership rules. Each step has a clear fallback, and sensitive or complex enquiries can be handed to a person with the useful context already assembled.',
       ],
       image: {
-        image: '/images/architect-holding-digital-tablet-with-building-model.jpg',
+        image: '/images/architect-holding-digital-tablet-with-building-model.webp',
         alt: 'Business specialist reviewing a new enquiry on a digital tablet',
       },
     },
@@ -485,7 +485,7 @@ export const services = [
         'The finished system connects the customer-facing form or conversation to the tools your team uses behind the scenes. Instead of copying details between inboxes and spreadsheets, staff receive a consistent record with the contact information, request, source, consent, and next action already attached.',
         'Lead capture improves response and organization, but it does not guarantee lead volume or sales. We measure the parts the system can control—successful submissions, routing, delivery time, completion, and handoff quality—then refine the flow as real enquiries reveal where people hesitate or drop out.',
       ],
-      image: '/images/business-people-using-a-digital-tablet.jpg',
+      image: '/images/business-people-using-a-digital-tablet.webp',
       alt: 'Business team reviewing organized lead information on a tablet',
     },
     faqs: [

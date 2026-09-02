@@ -29,7 +29,11 @@ export function AboutPage() {
       <section className="about-chapter chapter">
         <div className="page-frame service-split">
           <Reveal className="about-media has-badge">
-            <img src="/images/young-web-designers-working-together-at-modern-office.jpg" alt="young web designers working together at modern office" />
+            <img
+              src="/images/young-web-designers-working-together-at-modern-office.webp"
+              alt="young web designers working together at modern office"
+              loading="lazy"
+            />
             <div className="hero-badge">
               <span>Years</span>
               <strong>
@@ -123,8 +127,17 @@ export function PortfolioPage() {
             </a>
           </div>
           <div className="page-hero-media">
-            <img src="/images/young-man-talking-on-phone-at-home-office-and-take-care-of-baby.jpg" alt="young man talking on phone at home office and take care of baby" />
-            <img src="/images/business-people-using-a-digital-tablet.jpg" alt="business people using a digital tablet" />
+            <img
+              src="/images/young-man-talking-on-phone-at-home-office-and-take-care-of-baby.webp"
+              alt="young man talking on phone at home office and take care of baby"
+              loading="eager"
+              fetchPriority="high"
+            />
+            <img
+              src="/images/business-people-using-a-digital-tablet.webp"
+              alt="business people using a digital tablet"
+              loading="lazy"
+            />
           </div>
         </div>
       </section>

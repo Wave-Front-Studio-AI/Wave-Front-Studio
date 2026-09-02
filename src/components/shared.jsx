@@ -169,7 +169,7 @@ export function CtaBand({ eyebrow, title, copy, label = 'Get a Free Consultation
   return (
     <section className="cta-band">
       <div className="page-frame">
-        <img className="cta-mark" src="/wave-logo-white.png" alt="" width="1591" height="498" />
+        <img className="cta-mark" src="/wave-logo-white.webp" alt="" width="1591" height="498" loading="lazy" />
         {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
         <h2>{title}</h2>
         {copy ? <p>{copy}</p> : null}
@@ -230,7 +230,7 @@ export function FaqAccordion({ items, heading, deskLabel = 'Wavefront Studio', d
                   <div className="faq-answer" id={panelId} aria-hidden={!isOpen}>
                     <div className="faq-answer-inner">
                       <span className="faq-agent-mark">
-                        <img src="/wave-logo.png" alt="" />
+                        <img src="/wave-logo.webp" alt="" loading="lazy" />
                       </span>
                       <div className="faq-answer-bubble">
                         <span>Wavefront</span>

@@ -15,7 +15,7 @@ const customWorkImages = {
     alt: 'Live product visualizer showing a finished product preview',
   },
   'custom-calculators': {
-    src: '/images/calc.png',
+    src: '/images/calc.webp',
     alt: 'Custom online calculator interface built by Wavefront Studio',
   },
 }
@@ -24,7 +24,7 @@ function HubCard({ item, index, kind }) {
   const image = kind === 'service'
     ? { src: item.hero.hubImage || item.hero.image, alt: item.hero.hubAlt || item.hero.alt }
     : customWorkImages[item.slug] || {
-        src: '/wave-logo.png',
+        src: '/wave-logo.webp',
         alt: `${item.nav || item.name} by Wavefront Studio`,
       }
 

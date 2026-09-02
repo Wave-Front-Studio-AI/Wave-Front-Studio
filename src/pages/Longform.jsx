@@ -74,7 +74,7 @@ export function BlogPost({ post }) {
     datePublished: post.date,
     url: `${siteOrigin}${canonical}`,
     author: { '@type': 'Organization', name: 'Wavefront Studio LLC' },
-    publisher: { '@type': 'Organization', name: 'Wavefront Studio LLC', logo: { '@type': 'ImageObject', url: `${siteOrigin}/wave-logo.png` } },
+    publisher: { '@type': 'Organization', name: 'Wavefront Studio LLC', logo: { '@type': 'ImageObject', url: `${siteOrigin}/wave-logo.webp` } },
   }
 
   return (
