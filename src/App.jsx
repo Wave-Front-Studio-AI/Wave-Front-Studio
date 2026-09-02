@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import Home from './pages/Home.jsx'
 import NotFound from './pages/NotFound.jsx'
 import { matchRoute } from './routes.js'
@@ -42,9 +43,12 @@ export default function App({ path }) {
 
   const page = renderRoute(route)
   return (
-    <RouteContext.Provider value={pathname}>
-      <Suspense fallback={null}>{page}</Suspense>
-    </RouteContext.Provider>
+    <>
+      <RouteContext.Provider value={pathname}>
+        <Suspense fallback={null}>{page}</Suspense>
+      </RouteContext.Provider>
+      <Analytics />
+    </>
   )
 }
 
