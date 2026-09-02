@@ -14,7 +14,9 @@ const template = await readFile(resolve(dist, 'index.html'), 'utf8')
 const escape = (value) =>
   String(value ?? '').replace(/[&<>'"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[ch])
 
-const ogImage = `${siteOrigin}/wave-logo.png`
+// public/ ships wave-logo.webp; the .png this used to name has never existed,
+// so every share card resolved a 404 image.
+const ogImage = `${siteOrigin}/wave-logo.webp`
 
 function buildHead({ title, description, canonical, schema }) {
   const url = `${siteOrigin}${canonical || '/'}`
