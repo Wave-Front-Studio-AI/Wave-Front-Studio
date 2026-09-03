@@ -19,6 +19,65 @@
       gtag('js', new Date());
       gtag('config', 'G-1FYC3V0JYT');
     </script>
+    <!-- Meta Pixel -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+
+      fbq('init', '1993858451301943');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1993858451301943&ev=PageView&noscript=1" /></noscript>
+    <script>
+      // PageView on a client-side route change. Navigation is plain anchors and
+      // full document loads today, so the base snippet above already counts
+      // every page; this keeps the pixel honest if a client router is added.
+      (function () {
+        var last = location.pathname + location.search;
+
+        function firePageView() {
+          var current = location.pathname + location.search;
+          if (current === last) return;
+          last = current;
+          if (typeof window.fbq === 'function') {
+            window.fbq('track', 'PageView');
+          }
+        }
+
+        var _push = history.pushState;
+        var _replace = history.replaceState;
+
+        history.pushState = function () {
+          _push.apply(this, arguments);
+          firePageView();
+        };
+
+        history.replaceState = function () {
+          _replace.apply(this, arguments);
+          firePageView();
+        };
+
+        window.addEventListener('popstate', firePageView);
+      })();
+    </script>
+    <script>
+      // Contact on a click of any phone or email link, anywhere on the site.
+      document.addEventListener('click', function (e) {
+        var link = e.target.closest && e.target.closest('a[href^="tel:"], a[href^="mailto:"]');
+        if (!link || typeof window.fbq !== 'function') return;
+
+        window.fbq('track', 'Contact', {
+          content_name: link.getAttribute('href').indexOf('tel:') === 0 ? 'Phone' : 'Email'
+        });
+      }, true);
+    </script>
   </head>
   <body>
     <div id="root"></div>
