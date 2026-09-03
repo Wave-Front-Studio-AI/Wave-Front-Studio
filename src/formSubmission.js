@@ -27,6 +27,11 @@ async function deliverToApi(payload) {
     if (!response.ok || result.ok !== true || result.stored !== true) {
       throw new Error(result.error || 'The lead API did not confirm that the submission was stored.')
     }
+    // Only once the API confirms the lead was stored, so the Meta conversion
+    // counts submissions that landed rather than attempts.
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'Lead', { content_name: window.location.pathname })
+    }
     return true
   } catch (error) {
     throw error instanceof Error ? error : new Error('The lead API is not available.')
