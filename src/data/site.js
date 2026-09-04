@@ -85,6 +85,10 @@ export const footerNav = {
     ['Privacy Policy', '/privacy-policy/'],
     ['Cookie Policy', '/cookie-policy/'],
     ['SMS Policy', '/sms-policy/'],
+    // Meta Platform Terms 3.d.i.1 wants the deletion route "easily accessible
+    // and clearly marked", which means a link of its own rather than a
+    // paragraph inside the privacy policy.
+    ['Delete Your Data', '/data-deletion/'],
     // The CPRA opt-out link. Its wording is set by the statute, so it is spelled
     // out in full rather than shortened to fit the row.
     ['Do Not Sell or Share My Personal Information', '/do-not-sell/'],

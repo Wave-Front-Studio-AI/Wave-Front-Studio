@@ -19,6 +19,7 @@ const CustomWorkRoute = lazy(() => import('./pages/CustomWorkRoute.jsx'))
 const LongformRoute = lazy(() => import('./pages/LongformRoute.jsx'))
 const PlatformPage = lazy(() => import('./pages/PlatformPage.jsx'))
 const DoNotSell = lazy(() => import('./pages/DoNotSell.jsx'))
+const DataDeletion = lazy(() => import('./pages/DataDeletion.jsx'))
 
 // `path` is supplied by the prerenderer; in the browser the route comes from the
 // address bar.
@@ -82,6 +83,8 @@ function renderRoute(route) {
       return <PlatformPage />
     case 'do-not-sell':
       return <DoNotSell />
+    case 'data-deletion':
+      return <DataDeletion />
     case 'services-hub':
       return <ServicesHubPage />
     case 'custom-works-hub':
