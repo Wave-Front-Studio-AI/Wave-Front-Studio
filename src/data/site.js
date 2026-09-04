@@ -85,6 +85,9 @@ export const footerNav = {
     ['Privacy Policy', '/privacy-policy/'],
     ['Cookie Policy', '/cookie-policy/'],
     ['SMS Policy', '/sms-policy/'],
+    // The CPRA opt-out link. Its wording is set by the statute, so it is spelled
+    // out in full rather than shortened to fit the row.
+    ['Do Not Sell or Share My Personal Information', '/do-not-sell/'],
   ],
 }
 

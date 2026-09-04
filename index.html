@@ -11,27 +11,91 @@
     <link rel="icon" href="/favicon.webp" type="image/webp" />
     <link rel="apple-touch-icon" href="/favicon.webp" />
     <link rel="stylesheet" href="/fonts/fonts.css" />
+    <script>
+      // The visitor's opt-out of sale or sharing, resolved before any tracker
+      // loads. Deciding this later would be too late: the pixel sets its cookie
+      // and sends a PageView the moment it initialises.
+      //
+      // /do-not-sell/ reads and writes this; the suppression itself happens
+      // here, one page load earlier.
+      (function () {
+        var KEY = 'wf-privacy-opt-out';
+        var stored = null;
+        try {
+          stored = window.localStorage.getItem(KEY);
+        } catch (e) {
+          // Private mode and blocked storage both throw. Treat as no choice.
+        }
+
+        // Global Privacy Control is a recognised opt-out signal under the CPRA,
+        // so it opts the visitor out on its own. An explicit "allow" made on
+        // /do-not-sell/ wins over it, because that is the visitor overriding
+        // their browser default on this specific site, which the regulation
+        // permits. Absent that, the browser signal stands.
+        var gpc = window.navigator.globalPrivacyControl === true;
+        var optedOut = stored === '1' || (gpc && stored !== '0');
+
+        window.wfPrivacy = {
+          gpc: gpc,
+          stored: stored,
+          optedOut: optedOut,
+          choose: function (out) {
+            try {
+              window.localStorage.setItem(KEY, out ? '1' : '0');
+            } catch (e) {
+              return false;
+            }
+            return true;
+          },
+          // Drops the Meta identifier already in the browser, so opting out
+          // stops the existing _fbp being sent rather than only stopping new
+          // ones being written.
+          forgetPixelCookie: function () {
+            var bases = '_fbp=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+            var host = window.location.hostname;
+            document.cookie = bases;
+            document.cookie = bases + '; domain=' + host;
+            if (host.indexOf('.') !== -1) {
+              document.cookie = bases + '; domain=.' + host.replace(/^www\./, '');
+            }
+          }
+        };
+      })();
+    </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1FYC3V0JYT"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      // Analytics keeps running for an opted-out visitor: it is our own
+      // measurement of our own site, not a sale or a share. Everything Google
+      // could use to build or target advertising is denied instead.
+      gtag('consent', 'default', {
+        ad_storage: window.wfPrivacy.optedOut ? 'denied' : 'granted',
+        ad_user_data: window.wfPrivacy.optedOut ? 'denied' : 'granted',
+        ad_personalization: window.wfPrivacy.optedOut ? 'denied' : 'granted',
+        analytics_storage: 'granted'
+      });
       gtag('js', new Date());
       gtag('config', 'G-1FYC3V0JYT');
     </script>
     <!-- Meta Pixel -->
     <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
+      // Skipped entirely for an opted-out visitor: fbevents.js is never
+      // fetched, no _fbp cookie is written and no beacon is sent.
+      if (!window.wfPrivacy.optedOut) {
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
 
-      fbq('init', '1993858451301943');
-      fbq('track', 'PageView');
+        fbq('init', '1993858451301943');
+        fbq('track', 'PageView');
+      }
     </script>
     <noscript><img height="1" width="1" style="display:none"
       src="https://www.facebook.com/tr?id=1993858451301943&ev=PageView&noscript=1" /></noscript>
@@ -39,6 +103,7 @@
       // PageView on a client-side route change. Navigation is plain anchors and
       // full document loads today, so the base snippet above already counts
       // every page; this keeps the pixel honest if a client router is added.
+      // Inert when the visitor has opted out, because fbq is then undefined.
       (function () {
         var last = location.pathname + location.search;
 

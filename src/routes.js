@@ -38,6 +38,7 @@ export const routes = [
   { path: '/locations/', kind: 'locations' },
   { path: '/services/', kind: 'services-hub' },
   { path: '/platform/', kind: 'platform' },
+  { path: '/do-not-sell/', kind: 'do-not-sell' },
   { path: '/custom-works/', kind: 'custom-works-hub' },
   ...serviceSlugs.map((slug) => ({ path: `/${slug}/`, kind: 'service', slug })),
   ...customWorkSlugs.map((slug) => ({ path: `/${slug}/`, kind: 'custom-work', slug })),
