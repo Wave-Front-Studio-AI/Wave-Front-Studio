@@ -41,12 +41,27 @@ export function BlogIndex() {
             {posts.map((post, index) => (
               <Reveal as="article" key={post.slug} delay={index * 60} className="post-row">
                 <a href={`/${post.slug}/`}>
-                  <time dateTime={post.date}>{formatDate(post.date)}</time>
-                  <h2>{post.title}</h2>
-                  <p>{post.excerpt}</p>
-                  <span className="text-link">
-                    Read the article <ArrowIcon />
-                  </span>
+                  {post.image ? (
+                    // Decorative: the title sits beside it, so an alt text here
+                    // would only repeat what a screen reader is about to read.
+                    <img
+                      className="post-row-image"
+                      src={post.image}
+                      alt=""
+                      width="1200"
+                      height="630"
+                      loading={index < 2 ? 'eager' : 'lazy'}
+                      decoding="async"
+                    />
+                  ) : null}
+                  <div className="post-row-body">
+                    <time dateTime={post.date}>{formatDate(post.date)}</time>
+                    <h2>{post.title}</h2>
+                    <p>{post.excerpt}</p>
+                    <span className="text-link">
+                      Read the article <ArrowIcon />
+                    </span>
+                  </div>
                 </a>
               </Reveal>
             ))}
@@ -75,6 +90,7 @@ export function BlogPost({ post }) {
     url: `${siteOrigin}${canonical}`,
     author: { '@type': 'Organization', name: 'Wavefront Studio LLC' },
     publisher: { '@type': 'Organization', name: 'Wavefront Studio LLC', logo: { '@type': 'ImageObject', url: `${siteOrigin}/wave-logo.webp` } },
+    ...(post.image ? { image: `${siteOrigin}${post.image}` } : {}),
   }
 
   return (
@@ -87,6 +103,19 @@ export function BlogPost({ post }) {
           <time dateTime={post.date}>{formatDate(post.date)}</time>
           <h1>{post.title}</h1>
           <p>{post.excerpt}</p>
+          {post.image ? (
+            // Below the title rather than behind it: the cards vary in contrast,
+            // and text over them would be a legibility gamble on every post.
+            <img
+              className="article-banner"
+              src={post.image}
+              alt=""
+              width="1200"
+              height="630"
+              loading="eager"
+              decoding="async"
+            />
+          ) : null}
         </div>
       </section>
 

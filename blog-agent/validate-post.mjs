@@ -62,12 +62,12 @@ export async function validate(post, { existingSlugs, routePaths, source, alread
   const err = (m) => errors.push(m)
   const warn = (m) => warnings.push(m)
 
-  for (const field of ['slug', 'title', 'date', 'excerpt', 'content']) {
+  for (const field of ['slug', 'title', 'date', 'excerpt', 'image', 'content']) {
     if (typeof post?.[field] !== 'string' || !post[field].trim()) err(`missing or empty field: ${field}`)
   }
   if (errors.length) return { errors, warnings }
 
-  const { slug, title, date, excerpt, content } = post
+  const { slug, title, date, excerpt, image, content } = post
 
   // --- identity
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) err(`slug is not lowercase-kebab: ${slug}`)
@@ -77,6 +77,17 @@ export async function validate(post, { existingSlugs, routePaths, source, alread
   }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) err(`date is not YYYY-MM-DD: ${date}`)
   if (Number.isNaN(Date.parse(`${date}T00:00:00`))) err(`date is not a real date: ${date}`)
+
+  // --- card image, used both as the /blog/ thumbnail and the banner on the post
+  if (image !== `/images/blog/${slug}.webp`) {
+    err(`image should be /images/blog/${slug}.webp, got ${image}`)
+  } else {
+    try {
+      await access(resolve(root, 'public', image.slice(1)))
+    } catch {
+      err(`card not generated yet: add a motif for "${slug}" to scripts/make-post-cards.mjs, then run npm run cards`)
+    }
+  }
 
   // --- length
   const words = countWords(content)

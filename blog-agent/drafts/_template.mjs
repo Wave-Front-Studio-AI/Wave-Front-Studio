@@ -22,8 +22,13 @@ export default {
   // description, so it has to read as a sentence rather than a summary.
   excerpt: 'One or two sentences that say what the reader gets, in the same voice as the post itself.',
 
-  // Inline HTML. No <h1> — the template renders the title. No featured image
-  // either; inline <img> is allowed but rare, and the file must exist in public/.
+  // Always /images/blog/<slug>.webp. Add a motif for this slug to
+  // scripts/make-post-cards.mjs, then run: npm run cards
+  image: '/images/blog/your-slug-here.webp',
+
+  // Inline HTML. No <h1> — the template renders the title. The card image above
+  // is rendered separately; an inline <img> here is allowed but rare, and the
+  // file must exist in public/.
   content: [
     '<div class="lf-article">',
 

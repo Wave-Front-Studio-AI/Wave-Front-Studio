@@ -57,13 +57,35 @@ figures), `<figure><table>` (one comparison table), `<blockquote class="lf-quote
 
 ## Images
 
-There is **no featured image** — the template renders none, so do not write one
-into the frontmatter or the body expecting a hero. Inline `<img>` is allowed but
-rare (one of eleven posts). If you use one it must live in `public/images/`,
-carry real alt text, and set `loading="lazy"` with explicit width and height.
+Every post has one **card image** at `/images/blog/<slug>.webp`, declared in the
+`image` field. It does double duty: the thumbnail on `/blog/` and the banner
+below the title on the post itself. The validator refuses a post whose card is
+missing, so generate it before publishing.
 
-This is the biggest difference from the AI Site blog, which requires a hero and
-two infographics per article. Do not carry that habit across.
+Cards are drawn, not photographed, by `scripts/make-post-cards.mjs`. They share a
+gradient, a cyan glow and the rotated square from `.kinetic-button`, so the list
+on `/blog/` reads as one family; what changes per post is a plain geometric motif
+standing for the subject. Adding a post means adding one entry to `MOTIFS` in
+that file, then:
+
+```bash
+npm run cards           # draws any card that does not exist yet
+npm run cards -- --force   # redraws all of them, e.g. after a palette change
+```
+
+The palette is copied from `:root` in `src/styles.css` — if the brand colours
+change, update it there too. Cards carry **no text**: the brand fonts ship as
+woff2, which the SVG rasteriser cannot load, and the title sits next to the image
+in HTML anyway. They are also decorative, so both `<img>` tags use `alt=""`
+rather than repeating the headline to a screen reader.
+
+Inline `<img>` inside the body is allowed but rare (one of eleven posts). If you
+use one it must live in `public/images/`, carry real alt text, and set
+`loading="lazy"` with explicit width and height.
+
+This still differs from the AI Site blog, which requires a photographic-style
+hero plus two content-bearing infographics per article. One abstract card here;
+do not carry that habit across.
 
 ## Voice
 

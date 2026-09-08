@@ -87,7 +87,7 @@ const eolOf = (src) => (src.includes('\r\n') ? '\r\n' : '\n')
 
 // Match the two-space object style already in posts.js.
 const asObjectLiteral = (post, eol) => {
-  const keys = ['slug', 'title', 'date', 'excerpt', 'content']
+  const keys = ['slug', 'title', 'date', 'excerpt', 'image', 'content']
   return [
     '  {',
     ...keys.map((key, i) =>
