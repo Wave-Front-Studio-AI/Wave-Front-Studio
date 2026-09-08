@@ -21,6 +21,8 @@ const postSlugs = [
   'build-a-calculator-that-sells-for-you', 'seo-keeps-working-after-you-stop-paying',
   'posting-is-not-a-social-media-strategy', 'let-them-see-it-before-they-buy-it',
   'why-cheap-design-costs-more',
+  'google-business-profile-does-more-than-your-website',
+  'nobody-waits-for-a-slow-website',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
