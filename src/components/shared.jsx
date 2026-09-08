@@ -279,6 +279,7 @@ export function EnquiryForm({
         source,
         fields: [
           ['Name', 'name'],
+          ['Company', 'company'],
           ['Phone', 'phone'],
           ['Email', 'email'],
           ['Website', 'website'],
@@ -333,8 +334,21 @@ export function EnquiryForm({
         <input required name="name" type="text" autoComplete="name" placeholder="Your name" />
       </label>
       <label>
+        <span>Company</span>
+        <input required name="company" type="text" autoComplete="organization" placeholder="Your company" />
+      </label>
+      <label>
         <span>Phone</span>
-        <input name="phone" type="tel" autoComplete="tel" placeholder="(941) 555-0123" />
+        <input
+          required
+          name="phone"
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel"
+          pattern="(?:[^\d]*\d){7,}[^\d]*"
+          title="Enter a phone number with at least 7 digits."
+          placeholder="(941) 555-0123"
+        />
       </label>
       <label>
         <span>Email</span>

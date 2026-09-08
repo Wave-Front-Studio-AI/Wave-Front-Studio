@@ -83,6 +83,7 @@ function AuditPopup({ open, onClose }) {
         source: 'audit-popup',
         fields: [
           ['Name', 'name'],
+          ['Company', 'company'],
           ['Email', 'email'],
           ['Phone', 'phone'],
           ['Website URL', 'website'],
@@ -111,12 +112,24 @@ function AuditPopup({ open, onClose }) {
           <input required name="name" type="text" autoComplete="name" />
         </label>
         <label>
+          <span>Company</span>
+          <input required name="company" type="text" autoComplete="organization" />
+        </label>
+        <label>
           <span>Email</span>
           <input required name="email" type="email" autoComplete="email" />
         </label>
         <label>
           <span>Phone</span>
-          <input name="phone" type="tel" autoComplete="tel" />
+          <input
+            required
+            name="phone"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            pattern="(?:[^\d]*\d){7,}[^\d]*"
+            title="Enter a phone number with at least 7 digits."
+          />
         </label>
         <label>
           <span>Website URL</span>

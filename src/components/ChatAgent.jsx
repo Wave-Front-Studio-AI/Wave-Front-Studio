@@ -409,17 +409,24 @@ export default function ChatAgent() {
                 </label>
                 <label>
                   <span>{copy.company}</span>
-                  <input name="company" autoComplete="organization" maxLength={200} />
+                  <input required name="company" autoComplete="organization" maxLength={200} />
                 </label>
                 <label>
                   <span>{copy.email}</span>
                   <input required type="email" name="email" autoComplete="email" maxLength={254} />
                 </label>
                 <label>
-                  <span>
-                    {copy.phone} <small>{copy.optional}</small>
-                  </span>
-                  <input type="tel" name="phone" autoComplete="tel" maxLength={40} />
+                  <span>{copy.phone}</span>
+                  <input
+                    required
+                    type="tel"
+                    name="phone"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    pattern="(?:[^\d]*\d){7,}[^\d]*"
+                    title="Enter a phone number with at least 7 digits."
+                    maxLength={40}
+                  />
                 </label>
                 <label className="chat-form-wide">
                   <span>{copy.topic}</span>

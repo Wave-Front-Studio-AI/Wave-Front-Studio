@@ -119,6 +119,7 @@ function ClaimForm() {
         source: 'free-setup',
         fields: [
           ['Name', 'name'],
+          ['Company', 'company'],
           ['Email', 'email'],
           ['Phone', 'phone'],
           ['Interested in', null, wanted],
@@ -143,7 +144,7 @@ function ClaimForm() {
           Send us a line telling us which service you want and what you’re trying to fix. We read every enquiry ourselves — there is no
           queue and no sales team in between.
         </p>
-        <p className="claim-hint">Two fields are all we need. Tick whichever of the three you want the setup fee waived on.</p>
+        <p className="claim-hint">A few details are all we need. Tick whichever of the three you want the setup fee waived on.</p>
       </div>
 
       <label>
@@ -151,12 +152,24 @@ function ClaimForm() {
               <input required name="name" type="text" autoComplete="name" />
       </label>
       <label>
+        <span>Company (required)</span>
+        <input required name="company" type="text" autoComplete="organization" />
+      </label>
+      <label>
         <span>Email (required)</span>
         <input required name="email" type="email" autoComplete="email" />
       </label>
       <label>
-        <span>Phone (optional — quickest way for us to reach you)</span>
-        <input name="phone" type="tel" autoComplete="tel" />
+        <span>Phone (required — quickest way for us to reach you)</span>
+        <input
+          required
+          name="phone"
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel"
+          pattern="(?:[^\d]*\d){7,}[^\d]*"
+          title="Enter a phone number with at least 7 digits."
+        />
       </label>
 
       <fieldset className="claim-choices">
