@@ -12,7 +12,10 @@
     "preview": "vite preview",
     "check": "eslint src",
     "leads": "node --env-file-if-exists=.env server/lead-service.mjs",
-    "leads:test": "node --test server/test/*.test.mjs"
+    "leads:test": "node --test server/test/*.test.mjs",
+    "blog:check": "node blog-agent/validate-post.mjs",
+    "blog:audit": "node blog-agent/validate-post.mjs --live",
+    "blog:publish": "node blog-agent/publish-post.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
