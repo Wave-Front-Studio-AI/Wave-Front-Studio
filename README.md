@@ -85,6 +85,13 @@ Add `BASE44_APP_ID` and `BASE44_API_KEY` as encrypted Production environment
 variables before testing forms; add any optional values from
 `server/.env.example` when their defaults are not appropriate.
 
+## Legacy email signature image
+
+Existing email signatures load `/wp-content/uploads/2026/04/Wavefront-studio.jpg`.
+Keep `public/wp-content/uploads/2026/04/Wavefront-studio.jpg` at that exact path
+and filename. It is a JPEG copy of `public/wave-logo.webp` on a white background;
+Vite copies it unchanged into `dist/`, so email clients can load it directly.
+
 ## Editing content
 
 Text lives in the `src/data` files, not in the components. The two exceptions are
