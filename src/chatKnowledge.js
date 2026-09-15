@@ -270,6 +270,7 @@ const planEntries = [...services, ...customWorks]
 /* ------------------------------------------------------------------ */
 
 function priceOf(tier, billing) {
+  if (tier.custom) return 'custom quote: enter map/setup price, price per installer page, page count (or mark to be confirmed), and project details'
   if (billing === 'monthly') return `$${tier.m.toLocaleString('en-US')}/month`
   if (billing === 'hybrid') {
     const setup = tier.s ? `$${tier.s.toLocaleString('en-US')} setup` : ''
@@ -284,7 +285,7 @@ const packageEntries = PACKAGE_SERVICES.map((service) => {
   const addons = (service.addons ?? []).map((addon) => `${addon.l} $${addon.p.toLocaleString('en-US')} ${addon.t === 'monthly' ? 'per month' : 'one-time'}`).join('; ')
   const delivery = (PACKAGE_DETAILS[service.id] ?? []).find((row) => /delivery|timeline/i.test(row[0]))
   const pageBundles = service.id === 'landing'
-    ? ` One page is included in each tier's base price. Page bundles apply to any tier and are added once to that base price: ${LANDING_PAGE_BUNDLES.filter((bundle) => bundle.price > 0).map((bundle) => `${bundle.pages} pages total +$${bundle.price.toLocaleString('en-US')}`).join('; ')}. Grow with 25 pages is $1,000 before bundle discounts.`
+    ? ` Launch, Grow, and Scale include one page in the base price. Page bundles apply to those three tiers and are added once to that base price: ${LANDING_PAGE_BUNDLES.filter((bundle) => bundle.price > 0).map((bundle) => `${bundle.pages} pages total +$${bundle.price.toLocaleString('en-US')}`).join('; ')}. Grow with 25 pages is $1,000 before bundle discounts. Custom uses only the entered map/setup fee plus the entered per-page price times the page count; standard tier and bundle prices do not apply.`
     : ''
   return makeEntry({
     id: `package-${service.id}`,

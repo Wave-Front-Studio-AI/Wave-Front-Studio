@@ -83,7 +83,7 @@ export const SERVICES = [
   {
     "id": "landing",
     "name": "Landing Pages",
-    "blurb": "Choose Launch, Grow, or Scale, then add a page bundle. Grow and Scale include SEO targeting high-intent keywords and phrases. Scale adds custom design and conversion tracking.",
+    "blurb": "Choose a tier and page bundle, or enter your own scope and pricing with Custom. Grow and Scale include high-intent SEO. Scale adds custom design and conversion tracking.",
     "billing": "onetime",
     "tiers": [
       {
@@ -103,6 +103,13 @@ export const SERVICES = [
         "s": LANDING_PAGE_PRICES.Scale,
         "m": 0,
         "note": "SEO + custom design + conversion tracking"
+      },
+      {
+        "n": "Custom",
+        "custom": true,
+        "s": 0,
+        "m": 0,
+        "note": "Map setup, per-page pricing & project details"
       }
     ],
     "addons": []
@@ -1126,38 +1133,45 @@ export const DETAILS = {
       "Pages included in base price",
       "1",
       "1",
-      "1"
+      "1",
+      "Set in quote"
     ],
     [
       "Landing page build",
       "✓",
       "✓",
-      "✓"
+      "✓",
+      "As scoped"
     ],
     [
       "High-intent keyword & phrase targeting",
       "—",
       "✓",
-      "✓"
+      "✓",
+      "As scoped"
     ],
     [
       "SEO content focused on enquiries",
       "—",
       "✓",
-      "✓"
+      "✓",
+      "As scoped"
     ],
     [
       "Custom page design",
       "—",
       "—",
-      "✓"
+      "✓",
+      "As scoped"
     ],
     [
       "Conversion tracking",
       "—",
       "—",
-      "✓"
-    ]
+      "✓",
+      "As scoped"
+    ],
+    ["Map setup & per-page pricing", "—", "—", "—", "Set in quote"]
   ],
   "seo": [
     [

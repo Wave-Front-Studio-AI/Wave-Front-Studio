@@ -1,5 +1,6 @@
 import { jsPDF } from 'jspdf'
 import { contact } from './data/site.js'
+import { money } from './packageQuote.js'
 
 const COLORS = {
   ink: '#0d1b2a',
@@ -13,8 +14,7 @@ const COLORS = {
 const MARGIN = 44
 const RIGHT = 568
 const WIDTH = RIGHT - MARGIN
-const BOTTOM = 682
-const money = (value) => `$${Math.round(value).toLocaleString('en-US')}`
+const BOTTOM = 700
 const plain = (value) => String(value).replace(/[\u2010-\u2015]/g, '-').replace(/\u00a0/g, ' ')
 
 function base64(bytes) {
@@ -50,6 +50,8 @@ export async function loadQuoteBrandAssets() {
 // Generating the file never sends the visitor's selections to a server.
 export function createQuotePdf(quote, assets, createdAt = new Date()) {
   if (!quote.count || !quote.rows.length) throw new Error('Select a service before downloading a quote.')
+  if (quote.errors?.length) throw new Error('Complete the custom quote details before downloading.')
+  const pendingPages = quote.pendingPageRate !== undefined
 
   const doc = new jsPDF({ unit: 'pt', format: 'letter', compress: true, putOnlyUsedFonts: true })
   doc.addFileToVFS('Outfit-Regular.ttf', base64(assets.regular))
@@ -90,7 +92,12 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
     doc.line(MARGIN, 107, RIGHT, 107)
     text(continued ? 'Your package, continued' : 'Your Wavefront package', MARGIN, 142, { size: 25, bold: true })
     text(`${quote.count} service${quote.count === 1 ? '' : 's'} selected  /  All prices in USD`, MARGIN, 163, { color: COLORS.muted })
-    y = 185
+    y = 180
+    if (quote.clientName?.trim()) {
+      const client = lines(`Prepared for: ${quote.clientName.trim().slice(0, 100)}`, WIDTH, 11, true)
+      text(client, MARGIN, y, { size: 11, bold: true, lineHeightFactor: 15 / 11 })
+      y += client.length * 15 + 6
+    }
   }
 
   function ensureSpace(height) {
@@ -115,7 +122,7 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
     const indent = row.sub ? 24 : 12
     const label = lines(`${row.sub ? '+ ' : ''}${row.label}`, 322 - indent, 10.5, !row.sub)
     const amount = lines(row.amount, 165, 10.5, true)
-    const height = Math.max(label.length, amount.length) * 14 + 20
+    const height = Math.max(label.length, amount.length) * 14 + 14
     if (ensureSpace(height + (row.sub ? 34 : 0))) {
       tableHeader()
       if (row.sub) {
@@ -132,16 +139,33 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
     text(label, MARGIN + indent, y + 21, { size: 10.5, bold: !row.sub, color: row.sub ? COLORS.muted : COLORS.ink, lineHeightFactor: 14 / 10.5 })
     text(amount, RIGHT - 12, y + 21, { size: 10.5, bold: true, align: 'right', lineHeightFactor: 14 / 10.5 })
     y += height
+    if (row.description) {
+      const scope = lines(row.description, WIDTH - 24, 9)
+      let offset = 0
+      while (offset < scope.length) {
+        if (ensureSpace(30)) {
+          tableHeader()
+          text('Project details, continued', MARGIN + 12, y + 16, { size: 9, bold: true, color: COLORS.muted })
+          y += 28
+        }
+        const capacity = Math.max(1, Math.floor((BOTTOM - y - 12) / 13))
+        const chunk = scope.slice(offset, offset + capacity)
+        text(chunk, MARGIN + 12, y + 13, { size: 9, color: COLORS.muted, lineHeightFactor: 13 / 9 })
+        y += chunk.length * 13 + 8
+        offset += chunk.length
+      }
+    }
     doc.setDrawColor(COLORS.line)
     doc.line(MARGIN, y, RIGHT, y)
   })
 
-  y += 24
+  y += 16
   const savings = quote.bundleAmount + quote.firstMonthsFree
-  ensureSpace(148 + (quote.pct > 0 ? 22 : 0) + (quote.monthly > 0 ? 44 : 0) + (savings > 0 ? 22 : 0))
+  const pendingNote = pendingPages ? lines(`Plus ${money(quote.pendingPageRateAfter)} per installer page${quote.pct ? ` after the ${quote.pct}% bundle discount` : ''}. Page count and final total to be confirmed.`, WIDTH, 9) : []
+  ensureSpace(148 + (quote.pct > 0 ? 22 : 0) + (quote.monthly > 0 ? 44 : 0) + (savings > 0 ? 22 : 0) + pendingNote.length * 13 + (pendingPages ? 12 : 0))
   text('YOUR INVESTMENT', MARGIN, y + 9, { size: 9, bold: true, color: COLORS.blue })
-  y += 33
-  text('One-time subtotal', MARGIN, y)
+  y += 29
+  text(pendingPages ? 'Fixed fees subtotal (excludes installer pages)' : 'One-time subtotal', MARGIN, y)
   text(money(quote.one), RIGHT, y, { bold: true, align: 'right' })
   if (quote.pct > 0) {
     y += 22
@@ -153,30 +177,40 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
   doc.roundedRect(MARGIN, y, WIDTH, 82, 8, 8, 'F')
   doc.setFillColor(COLORS.cyan)
   doc.rect(MARGIN + 20, y + 65, 35, 3, 'F')
-  text('ONE-TIME TOTAL', MARGIN + 20, y + 22, { size: 9, color: COLORS.cyan })
-  text(money(quote.oneAfter), MARGIN + 20, y + 54, { size: 29, bold: true, color: COLORS.white })
+  text(pendingPages ? 'FIXED ONE-TIME FEES' : 'ONE-TIME TOTAL', MARGIN + 20, y + 22, { size: 9, color: COLORS.cyan })
+  const totalText = money(quote.oneAfter)
+  doc.setFont('Outfit', 'bold')
+  doc.setFontSize(29)
+  const totalSize = Math.min(29, 29 * 255 / doc.getTextWidth(totalText))
+  text(totalText, MARGIN + 20, y + 54, { size: totalSize, bold: true, color: COLORS.white })
   text('ONGOING', MARGIN + 300, y + 22, { size: 9, color: COLORS.cyan })
   text(`${money(quote.monthly)} /mo`, MARGIN + 300, y + 54, { size: 24, bold: true, color: COLORS.white })
-  y += 104
+  y += 96
+  if (pendingPages) {
+    text(pendingNote, MARGIN, y, { size: 9, color: COLORS.muted, lineHeightFactor: 13 / 9 })
+    y += pendingNote.length * 13 + 12
+  }
   if (quote.monthly > 0) {
     if (quote.firstMonthsFree > 0) {
       text('Free-month savings', MARGIN, y)
       text(money(quote.firstMonthsFree), RIGHT, y, { bold: true, align: 'right' })
       y += 22
     }
-    text('Estimated first-year total (after savings)', MARGIN, y)
-    text(money(quote.oneAfter + quote.monthly * 12 - quote.firstMonthsFree), RIGHT, y, { bold: true, align: 'right' })
-    y += 22
+    if (!pendingPages) {
+      text('Estimated first-year total (after savings)', MARGIN, y)
+      text(money(quote.oneAfter + quote.monthly * 12 - quote.firstMonthsFree), RIGHT, y, { bold: true, align: 'right' })
+      y += 22
+    }
   }
   if (savings > 0) {
-    text('Total savings', MARGIN, y, { bold: true })
+    text(pendingPages ? 'Savings on fixed fees and first month' : 'Total savings', MARGIN, y, { bold: true })
     text(money(savings), RIGHT, y, { bold: true, color: COLORS.blue, align: 'right' })
-    y += 22
+    y += 12
   }
 
-  const notes = lines('Estimates for standard scopes. Final scope and quote are confirmed on a quick call. One-time builds are typically billed 50% to start and 50% on delivery. Monthly services have a recommended three-month minimum. Ad spend is billed separately by the ad platform.', WIDTH, 9)
-  y += 12
-  ensureSpace(notes.length * 13 + 67)
+  const notes = lines('Final scope and pricing are confirmed before work begins. One-time work is typically billed 50% to start and 50% on delivery. Monthly services have a recommended three-month minimum. Ad spend is separate.', WIDTH, 9)
+  y += 8
+  ensureSpace(notes.length * 13 + 43)
   text('NEXT STEPS', MARGIN, y + 9, { size: 9, bold: true, color: COLORS.blue })
   text(`Share this quote with ${contact.email} to confirm your package.`, MARGIN, y + 29, { size: 10 })
   text(notes, MARGIN, y + 52, { size: 9, color: COLORS.muted, lineHeightFactor: 13 / 9 })

@@ -8,7 +8,7 @@ import { addonQty, calculateQuote, defaultOptionIndex, landingPageBundle, money,
 const serviceById = Object.fromEntries(SERVICES.map((service) => [service.id, service]))
 
 function fromLabel(service) {
-  const minSetup = Math.min(...service.tiers.map((tier) => tier.s))
+  const minSetup = Math.min(...service.tiers.filter((tier) => !tier.custom).map((tier) => tier.s))
   const monthlies = service.tiers.filter((tier) => tier.m > 0).map((tier) => tier.m)
   const minMonthly = monthlies.length ? Math.min(...monthlies) : 0
   if (service.billing === 'monthly') return `${money(minMonthly)}/mo`
@@ -45,7 +45,7 @@ function DetailsModal({ service, onClose, onSelect }) {
           {service.tiers.map((tier) => (
             <div key={tier.n}>
               <span>{tier.n}</span>
-              <strong>{tierPrice(tier)}{service.id === 'landing' ? ' base' : ''}</strong>
+              <strong>{tierPrice(tier)}{service.id === 'landing' && !tier.custom ? ' base' : ''}</strong>
             </div>
           ))}
         </div>
@@ -79,7 +79,7 @@ function DetailsModal({ service, onClose, onSelect }) {
         ) : null}
         {service.id === 'landing' ? (
           <div className="pkg-modal-addons">
-            <span className="pkg-label">Page bundles for any tier</span>
+            <span className="pkg-label">Page bundles for Launch, Grow &amp; Scale</span>
             <p>Added to your tier price. Each bundle is the total number of pages.</p>
             {LANDING_PAGE_BUNDLES.filter((bundle) => bundle.price > 0).map((bundle) => (
               <span key={bundle.pages}>{bundle.pages} pages — <b>+{money(bundle.price)}</b></span>
@@ -115,13 +115,14 @@ export default function BuildYourPackage() {
   const [modal, setModal] = useState(null)
   const [toast, setToast] = useState('')
   const [pdfStatus, setPdfStatus] = useState('idle')
+  const [clientName, setClientName] = useState('')
 
   async function downloadPdf() {
-    if (!quote.count || pdfStatus === 'loading') return
+    if (!quote.count || quote.errors?.length || pdfStatus === 'loading') return
     setPdfStatus('loading')
     try {
       const { downloadQuotePdf } = await import('../quotePdf.js')
-      await downloadQuotePdf(quote)
+      await downloadQuotePdf({ ...quote, clientName: clientName.trim() })
       setPdfStatus('idle')
       setToast('Your quote PDF is ready')
     } catch {
@@ -163,6 +164,10 @@ export default function BuildYourPackage() {
     setState((current) => ({ ...current, landing: { ...current.landing, pages: landingPageBundle(value).pages } }))
   }
 
+  function setCustomField(field, value) {
+    setState((current) => ({ ...current, landing: { ...current.landing, custom: { ...current.landing.custom, [field]: value } } }))
+  }
+
   function toggleAddon(id, addonIndex) {
     setState((current) => {
       const entry = current[id] || { tier: 1, addons: [], opts: {} }
@@ -182,6 +187,8 @@ export default function BuildYourPackage() {
   }
 
   const quote = useMemo(() => calculateQuote(state), [state])
+  const pendingPages = quote.pendingPageRate !== undefined
+  const pendingNote = pendingPages ? `Plus ${money(quote.pendingPageRateAfter)} per installer page${quote.pct ? ` after the ${quote.pct}% bundle discount` : ''}. Page count and final total to be confirmed.` : ''
 
   const nextTier = [...OFFER.bundleTiers].sort((a, b) => a.min - b.min).find((tier) => quote.count < tier.min)
   const maxMin = Math.max(...OFFER.bundleTiers.map((tier) => tier.min))
@@ -197,16 +204,18 @@ export default function BuildYourPackage() {
   }, [state, quote.count])
 
   function emailQuote() {
+    if (quote.errors?.length) return
     if (!quote.count) {
       setToast('Select a service first')
       return
     }
-    const lines = quote.rows.map((row) => `${row.sub ? '  + ' : ''}${row.label} — ${row.amount}`)
-    let body = `Hi Wavefront Studio,\n\nI would like to lock in this package:\n\n${lines.join('\n')}\n\n---\nOne-time total: ${money(
+    const lines = quote.rows.map((row) => `${row.sub ? '  + ' : ''}${row.label} — ${row.amount}${row.description ? `\n${row.description}` : ''}`)
+    let body = `Hi Wavefront Studio,\n\nI would like to lock in this package:${clientName.trim() ? `\nPrepared for: ${clientName.trim()}` : ''}\n\n${lines.join('\n')}\n\n---\n${pendingPages ? 'Fixed one-time fees' : 'One-time total'}: ${money(
       quote.oneAfter,
     )}`
     if (quote.pct > 0) body += ` (after ${quote.pct}% bundle discount, saving ${money(quote.bundleAmount)})`
     body += `\nMonthly: ${money(quote.monthly)}/mo`
+    if (pendingNote) body += `\n${pendingNote}`
     if (quote.firstMonthsFree > 0) body += `\nLimited-time: first month free (${money(quote.firstMonthsFree)} saved)`
     body += '\n\nPlease hold this price for me. My details:\nName:\nPhone:\nWebsite:'
     window.location.href = `mailto:${OFFER.contactEmail}?subject=${encodeURIComponent('My Wavefront Package Quote')}&body=${encodeURIComponent(body)}`
@@ -239,7 +248,7 @@ export default function BuildYourPackage() {
         <div className="package-mini">
           <div className="page-frame">
             <span>
-              One-time <b>{money(quote.oneAfter)}</b>
+              {quote.errors?.length ? 'Complete custom details' : <>{pendingPages ? 'Fixed fees' : 'One-time'} <b>{money(quote.oneAfter)}</b>{pendingPages ? ' + pages' : ''}</>}
             </span>
             <span>
               Monthly <b>{money(quote.monthly)}</b>
@@ -322,17 +331,41 @@ export default function BuildYourPackage() {
                               >
                                 {index === 1 ? <span className="package-pop">POPULAR</span> : null}
                                 <strong>{tier.n}</strong>
-                                <b>{tierPrice(tier)}{id === 'landing' ? ' base' : ''}</b>
+                                <b>{tierPrice(tier)}{id === 'landing' && !tier.custom ? ' base' : ''}</b>
                                 <small>{tier.note}</small>
                               </button>
                             ))}
                           </div>
 
-                          {id === 'landing' ? (
+                          {id === 'landing' && service.tiers[entry.tier].custom ? (
+                            <fieldset className="package-custom">
+                              <legend>Custom landing page quote</legend>
+                              <p>Enter your map fee and page pricing. These replace the standard tier and bundle prices.</p>
+                              <div className="package-custom-prices">
+                                <label htmlFor="custom-map-price">Map / setup price ($)
+                                  <input id="custom-map-price" type="number" min="0" max="1000000" step="1" inputMode="numeric" placeholder="e.g. 750" value={entry.custom?.setup ?? ''} onChange={(event) => setCustomField('setup', event.target.value)} />
+                                </label>
+                                <label htmlFor="custom-page-price">Price per installer page ($)
+                                  <input id="custom-page-price" type="number" min="0" max="1000000" step="1" inputMode="numeric" placeholder="e.g. 100" value={entry.custom?.perPage ?? ''} onChange={(event) => setCustomField('perPage', event.target.value)} />
+                                </label>
+                                <label htmlFor="custom-page-count">Number of installer pages
+                                  <input id="custom-page-count" type="number" min="1" max="9999" step="1" inputMode="numeric" disabled={entry.custom?.pagesTbc === true} value={entry.custom?.pages ?? 1} onChange={(event) => setCustomField('pages', event.target.value)} />
+                                </label>
+                              </div>
+                              <label className="package-custom-tbc" htmlFor="custom-pages-tbc">
+                                <input id="custom-pages-tbc" type="checkbox" checked={entry.custom?.pagesTbc === true} onChange={(event) => setCustomField('pagesTbc', event.target.checked)} />
+                                Page count to be confirmed
+                              </label>
+                              <label htmlFor="custom-project-details">Project details for the quote
+                                <textarea id="custom-project-details" rows="5" maxLength="2000" placeholder="Describe the map, installer pages, and what is included." value={entry.custom?.details ?? ''} onChange={(event) => setCustomField('details', event.target.value)} />
+                              </label>
+                              <p>Use $0 if a charge does not apply. Prices are one-time charges in USD.</p>
+                            </fieldset>
+                          ) : id === 'landing' ? (
                             <div className="package-page-bundle">
                               <div>
                                 <label htmlFor="landing-page-bundle">How many landing pages?</label>
-                                <p id="landing-bundle-help">One page is included. Bundle costs are added to your tier price and apply to any tier.</p>
+                                <p id="landing-bundle-help">One page is included. Bundle costs are added to your Launch, Grow, or Scale price.</p>
                               </div>
                               <select id="landing-page-bundle" value={pageBundle.pages} aria-describedby="landing-bundle-help landing-page-cost" onChange={(event) => setPageBundle(event.target.value)}>
                                 {LANDING_PAGE_BUNDLES.map((bundle) => (
@@ -400,6 +433,9 @@ export default function BuildYourPackage() {
 
           <aside className="package-quote" id="quote">
             <h2>Your Quote</h2>
+            <label className="package-client" htmlFor="quote-client">Prepared for <span>(optional)</span>
+              <input id="quote-client" type="text" maxLength="100" placeholder="Client or company name" value={clientName} onChange={(event) => setClientName(event.target.value)} />
+            </label>
             {quote.count === 0 ? (
               <p className="package-empty">No services selected yet. Pick some on the left.</p>
             ) : (
@@ -407,14 +443,14 @@ export default function BuildYourPackage() {
                 <div className="package-lines">
                   {quote.rows.map((row, index) => (
                     <div key={`${row.label}-${index}`} className={row.sub ? 'is-sub' : ''}>
-                      <span>{row.sub ? `+ ${row.label}` : row.label}</span>
+                      <span>{row.sub ? `+ ${row.label}` : row.label}{row.description ? <small className="package-scope">{row.description}</small> : null}</span>
                       <b>{row.amount}</b>
                     </div>
                   ))}
                 </div>
-                <div className="package-totals">
+                {quote.errors?.length ? <div className="package-pdf-error" id="custom-quote-errors" aria-live="polite">{quote.errors.map((error) => <p key={error}>{error}</p>)}</div> : <div className="package-totals">
                   <div>
-                    <span>One-time subtotal</span>
+                    <span>{pendingPages ? 'Fixed fees subtotal' : 'One-time subtotal'}</span>
                     <b>{money(quote.one)}</b>
                   </div>
                   {quote.pct > 0 ? (
@@ -424,7 +460,7 @@ export default function BuildYourPackage() {
                     </div>
                   ) : null}
                   <div className="is-total">
-                    <span>One-time total</span>
+                    <span>{pendingPages ? 'Fixed one-time fees' : 'One-time total'}</span>
                     <b>{money(quote.oneAfter)}</b>
                   </div>
                   <div className="is-total">
@@ -434,10 +470,11 @@ export default function BuildYourPackage() {
                       <small>/mo</small>
                     </b>
                   </div>
-                  {quote.monthly > 0 ? (
+                  {pendingPages ? <p className="package-firstyear">{pendingNote}</p> : null}
+                  {quote.monthly > 0 && !pendingPages ? (
                     <p className="package-firstyear">Est. first-year total: {money(firstYear)} (incl. first month free)</p>
                   ) : null}
-                </div>
+                </div>}
               </>
             )}
 
@@ -445,9 +482,9 @@ export default function BuildYourPackage() {
               className="kinetic-button group package-pdf-button"
               type="button"
               onClick={downloadPdf}
-              disabled={!quote.count || pdfStatus === 'loading'}
+              disabled={!quote.count || Boolean(quote.errors?.length) || pdfStatus === 'loading'}
               aria-busy={pdfStatus === 'loading'}
-              aria-describedby={pdfStatus === 'error' ? 'quote-pdf-error' : undefined}
+              aria-describedby={quote.errors?.length ? 'custom-quote-errors' : pdfStatus === 'error' ? 'quote-pdf-error' : undefined}
             >
               <span>{pdfStatus === 'loading' ? 'Preparing PDF...' : 'Download PDF'}</span>
               <span className="button-island">
@@ -462,7 +499,7 @@ export default function BuildYourPackage() {
               </p>
             ) : null}
 
-            <button className="kinetic-button light group package-email-button" type="button" onClick={emailQuote}>
+            <button className="kinetic-button light group package-email-button" type="button" onClick={emailQuote} disabled={Boolean(quote.errors?.length)} aria-describedby={quote.errors?.length ? 'custom-quote-errors' : undefined}>
               <span>Email me this quote</span>
               <span className="button-island">
                 <ArrowIcon className="size-4" />

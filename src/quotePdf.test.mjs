@@ -44,6 +44,7 @@ test('one-time-only and monthly-only selections both export', () => {
 test('a full-catalog quote including every add-on continues across pages', () => {
   const state = Object.fromEntries(SERVICES.map((service) => [service.id, {
     tier: service.tiers.length - 1, pages: 300, addons: service.addons.map((_, index) => index), opts: {},
+    custom: { setup: 750, perPage: 100, pages: 300, details: 'Installer map and company pages on the main website.' },
   }]))
   const doc = createQuotePdf(calculateQuote(state), assets, date)
   assert.ok(doc.getNumberOfPages() > 2)
@@ -63,6 +64,25 @@ test('landing page bundles and email plans export together on one branded page',
 
 test('an empty selection cannot become a quote', () => {
   assert.throws(() => createQuotePdf({ ...quote, count: 0, rows: [] }, assets, date), /Select a service/)
+})
+
+test('custom scope and client names export, with unknown quantities kept open', () => {
+  const custom = calculateQuote({
+    landing: { tier: 3, custom: { setup: 750, perPage: 100, pagesTbc: true, details: 'Clickable installer map. Each company has a page on the main website.' } },
+    email: { tier: 0, addons: [] },
+  })
+  const doc = createQuotePdf({ ...custom, clientName: 'Seal n Lock' }, assets, date)
+  assert.ok(doc.getNumberOfPages() <= 2)
+  assert.throws(() => createQuotePdf(calculateQuote({ landing: { tier: 3 } }), assets, date), /Complete the custom quote/)
+})
+
+test('long custom scope paginates without changing quote details', () => {
+  const custom = { ...quote, clientName: 'A client with a long name '.repeat(4), rows: [{ label: 'Landing Pages - Custom map/setup', amount: '$750', description: 'Installer details\n'.repeat(110) }, { label: 'Installer pages', amount: '$100 per page', sub: true }] }
+  const original = structuredClone(custom)
+  const doc = createQuotePdf(custom, assets, date)
+  assert.ok(doc.getNumberOfPages() >= 4)
+  assert.ok(doc.getNumberOfPages() <= 8)
+  assert.deepEqual(custom, original)
 })
 
 test('branding failures can be retried and successful assets are cached', async (t) => {

@@ -46,7 +46,9 @@ would disclose the visitor's conversation to another service.
 
 ## Quote PDF downloads
 
-Landing Pages includes one page at the tier's base price. Any tier can add a bundle: 10 pages for $250, 25 for $500, 75 for $1,000, 125 for $1,500, or 300 for $3,000. Each bundle sets the total page count and adds its price once to the base price (Grow + 25 pages = $1,000). Landing Pages still counts as one service for bundle discounts. The page, email quote, and PDF all use the shared calculation in `src/packageQuote.js`.
+Landing Pages includes one page at the Launch, Grow, or Scale base price. Those three tiers can add a bundle: 10 pages for $250, 25 for $500, 75 for $1,000, 125 for $1,500, or 300 for $3,000. Each bundle sets the total page count and adds its price once to the base price (Grow + 25 pages = $1,000). Landing Pages still counts as one service for bundle discounts. The page, email quote, and PDF all use the shared calculation in `src/packageQuote.js`.
+
+The Custom landing page option replaces standard tier/bundle pricing with an editable map/setup fee, per-installer-page price, page count, and project details. Both prices must be entered in whole USD (0 is allowed for one of them). Incomplete quotes cannot be exported. The page count can be marked as to be confirmed; then exports show fixed fees and the per-page rate separately without claiming a final total. Existing bundle discounts apply to both the fixed fees and eventual page charges. The optional Prepared for field names the client on the PDF and in the email. Project details remain plain text and paginate in the PDF. No selections or client details are saved or uploaded.
 
 Email Marketing is a separate service with a $500 one-time setup fee for either plan: $250/month for one email per month or $450/month for two emails per week. Both plans include analytics and participate in the existing bundle and free-month offers. The setup fee contributes to one-time totals and setup discounts; free-month savings only apply to the recurring charge.
 

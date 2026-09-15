@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { calculateQuote, landingPageBundle } from './packageQuote.js'
+import { calculateQuote, customLandingQuote, landingPageBundle, money } from './packageQuote.js'
 
 const selected = (tier = 1, pages = 1) => ({ tier, pages, addons: [], opts: {} })
 
@@ -66,4 +66,47 @@ test('email plans add one setup fee and keep recurring charges separate', () => 
     assert.equal(combined.oneAfter, 1425)
     assert.equal(combined.monthly, price)
   }
+})
+
+const custom = { setup: '750', perPage: '100', pages: '10', details: 'Clickable installer map. Company pages stay on the main website.' }
+
+test('custom pages replace standard bundles and keep setup, page charges, and email separate', () => {
+  const state = { landing: { ...selected(3, 300), custom }, email: selected(0) }
+  const before = structuredClone(state)
+  const quote = calculateQuote(state)
+  assert.equal(quote.one, 2250)
+  assert.equal(quote.oneAfter, 2137.5)
+  assert.equal(quote.monthly, 250)
+  assert.equal(quote.count, 2)
+  assert.equal(quote.rows[0].amount, '$750')
+  assert.equal(quote.rows[0].description, custom.details)
+  assert.equal(quote.rows[1].amount, '$1,000')
+  assert.equal(quote.rows[2].description, '1 email per month + analytics')
+  assert.equal(money(quote.oneAfter), '$2,137.50')
+  assert.deepEqual(state, before)
+})
+
+test('unconfirmed page counts quote fixed fees and a rate without inventing a quantity', () => {
+  const quote = calculateQuote({ landing: { ...selected(3, 300), custom: { ...custom, pages: '', pagesTbc: true } }, email: selected(0) })
+  assert.equal(quote.one, 1250)
+  assert.equal(quote.bundleAmount, 62.5)
+  assert.equal(quote.oneAfter, 1187.5)
+  assert.equal(quote.pendingPageRate, 100)
+  assert.equal(quote.pendingPageRateAfter, 95)
+  assert.equal(quote.monthly, 250)
+  assert.equal(quote.firstMonthsFree, 250)
+  assert.equal(quote.rows[1].amount, '$100 per page')
+  assert.match(quote.rows[1].label, /to be confirmed/)
+  assert.equal(quote.errors, undefined)
+})
+
+test('invalid custom prices, counts, or missing scope cannot produce an exportable quote', () => {
+  for (const fields of [{ setup: '' }, { setup: ' ' }, { setup: null }, { perPage: '-1' }, { setup: 'Infinity' }, { setup: 1000001 }, { perPage: '1.5' }, { setup: 0, perPage: 0 }, { pages: '' }, { pages: 0 }, { pages: 1.5 }, { pages: 10000 }, { details: ' ' }]) {
+    const quote = calculateQuote({ landing: { ...selected(3), custom: { ...custom, ...fields } } })
+    assert.ok(quote.errors?.length, JSON.stringify(fields))
+    assert.equal(quote.rows[0].amount, 'Details needed')
+  }
+  assert.equal(customLandingQuote({ ...custom, setup: 0 }).errors.length, 0)
+  assert.equal(customLandingQuote({ ...custom, perPage: 0 }).errors.length, 0)
+  assert.ok(customLandingQuote().errors.length)
 })
