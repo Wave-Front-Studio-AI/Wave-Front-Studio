@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises'
 import test from 'node:test'
 import { createQuotePdf, loadQuoteBrandAssets } from './quotePdf.js'
 import { SERVICES } from './data/generated/packages.js'
+import { calculateQuote } from './packageQuote.js'
 
 const assets = {
   logo: new Uint8Array(await readFile(new URL('../public/wp-content/uploads/2026/04/Wavefront-studio.jpg', import.meta.url))),
@@ -41,13 +42,22 @@ test('one-time-only and monthly-only selections both export', () => {
 })
 
 test('a full-catalog quote including every add-on continues across pages', () => {
-  const rows = SERVICES.flatMap((service) => [
-    { label: `${service.name} — Scale`, amount: '$35,000 + $1,500/mo' },
-    ...service.addons.map((addon) => ({ label: `${addon.l} — selected option`, amount: '$1,200/mo', sub: true })),
-  ])
-  const doc = createQuotePdf({ ...quote, count: SERVICES.length, rows }, assets, date)
+  const state = Object.fromEntries(SERVICES.map((service) => [service.id, {
+    tier: service.tiers.length - 1, pages: 300, addons: service.addons.map((_, index) => index), opts: {},
+  }]))
+  const doc = createQuotePdf(calculateQuote(state), assets, date)
   assert.ok(doc.getNumberOfPages() > 2)
   assert.ok(doc.getNumberOfPages() < 15)
+})
+
+test('landing page bundles and email plans export together on one branded page', () => {
+  const bundleQuote = calculateQuote({
+    landing: { tier: 1, pages: 25, addons: [], opts: {} },
+    email: { tier: 1, addons: [], opts: {} },
+  })
+  assert.equal(bundleQuote.rows[0].amount, '$1,000')
+  assert.equal(bundleQuote.rows[1].amount, '$450/mo')
+  assert.equal(createQuotePdf(bundleQuote, assets, date).getNumberOfPages(), 1)
 })
 
 test('an empty selection cannot become a quote', () => {

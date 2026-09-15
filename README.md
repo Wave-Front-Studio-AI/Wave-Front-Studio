@@ -46,7 +46,9 @@ would disclose the visitor's conversation to another service.
 
 ## Quote PDF downloads
 
-Landing Pages supports 1–999 pages per selected tier. Prices are per page, and page quantities count as one service for bundle discounts. The page, email quote, and PDF all use the shared calculation in `src/packageQuote.js`.
+Landing Pages includes one page at the tier's base price. Any tier can add a bundle: 10 pages for $250, 25 for $500, 75 for $1,000, 125 for $1,500, or 300 for $3,000. Each bundle sets the total page count and adds its price once to the base price (Grow + 25 pages = $1,000). Landing Pages still counts as one service for bundle discounts. The page, email quote, and PDF all use the shared calculation in `src/packageQuote.js`.
+
+Email Marketing is a separate monthly service: $250/month for one email per month or $450/month for two emails per week. Both plans include analytics and participate in the existing bundle and free-month offers.
 
 The package builder's **Download PDF** button exports the current quote in the
 visitor's browser. It includes selected tiers and add-ons, one-time and monthly

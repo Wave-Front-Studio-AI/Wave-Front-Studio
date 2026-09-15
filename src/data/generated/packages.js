@@ -1,6 +1,16 @@
 // Generated from the Build Your Package configurator on wavefrontstudiollc.com.
 const LANDING_PAGE_PRICES = { Launch: 100, Grow: 500, Scale: 1500 }
 
+// Each bundle sets the total page count; its cost is added to the chosen tier.
+export const LANDING_PAGE_BUNDLES = [
+  { pages: 1, price: 0 },
+  { pages: 10, price: 250 },
+  { pages: 25, price: 500 },
+  { pages: 75, price: 1000 },
+  { pages: 125, price: 1500 },
+  { pages: 300, price: 3000 },
+]
+
 export const OFFER = {
   "countdownHours": 72,
   "firstMonthsFree": 1,
@@ -73,7 +83,7 @@ export const SERVICES = [
   {
     "id": "landing",
     "name": "Landing Pages",
-    "blurb": "Priced per page — choose how many you need. Grow and Scale include SEO targeting high-intent keywords and phrases. Scale adds custom design and conversion tracking.",
+    "blurb": "Choose Launch, Grow, or Scale, then add a page bundle. Grow and Scale include SEO targeting high-intent keywords and phrases. Scale adds custom design and conversion tracking.",
     "billing": "onetime",
     "tiers": [
       {
@@ -342,6 +352,27 @@ export const SERVICES = [
         "t": "onetime"
       }
     ]
+  },
+  {
+    "id": "email",
+    "name": "Email Marketing",
+    "blurb": "Email campaigns with analytics, sent monthly or twice a week.",
+    "billing": "monthly",
+    "tiers": [
+      {
+        "n": "Monthly",
+        "s": 0,
+        "m": 250,
+        "note": "1 email per month + analytics"
+      },
+      {
+        "n": "Twice weekly",
+        "s": 0,
+        "m": 450,
+        "note": "2 emails per week + analytics"
+      }
+    ],
+    "addons": []
   },
   {
     "id": "bot",
@@ -1005,6 +1036,7 @@ export const PAIRS = {
   "social": "video",
   "design": "logo",
   "mkt": "lead",
+  "email": "landing",
   "bot": "agent",
   "viz": "web",
   "calc": "web",
@@ -1022,6 +1054,10 @@ export const PAIRS = {
 }
 
 export const DETAILS = {
+  "email": [
+    ["Email campaigns", "1 per month", "2 per week"],
+    ["Analytics included", "✓", "✓"]
+  ],
   "web": [
     [
       "Pages included",
@@ -1085,6 +1121,12 @@ export const DETAILS = {
     ]
   ],
   "landing": [
+    [
+      "Pages included in base price",
+      "1",
+      "1",
+      "1"
+    ],
     [
       "Landing page build",
       "✓",
@@ -2104,6 +2146,7 @@ export const CATEGORIES = [
       "seo",
       "social",
       "mkt",
+      "email",
       "lead",
       "tradeshow"
     ]

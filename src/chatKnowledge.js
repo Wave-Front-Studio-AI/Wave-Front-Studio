@@ -11,7 +11,7 @@ import { locations as allLocations, locationsHub } from './data/generated/locati
 import { isLive } from './data/schedule.js'
 import { legalPages } from './data/generated/legal.js'
 import { posts } from './data/generated/posts.js'
-import { OFFER, SERVICES as PACKAGE_SERVICES, DETAILS as PACKAGE_DETAILS } from './data/generated/packages.js'
+import { LANDING_PAGE_BUNDLES, OFFER, SERVICES as PACKAGE_SERVICES, DETAILS as PACKAGE_DETAILS } from './data/generated/packages.js'
 import { freeSetupFaqs, siteFaqs } from './data/faqs.js'
 import { CHIPS, strings } from './chatLocale.js'
 import { FOREIGN_STOP_WORDS, detectLanguage, translateQuery } from './chatLanguage.js'
@@ -283,13 +283,16 @@ const packageEntries = PACKAGE_SERVICES.map((service) => {
   const tiers = service.tiers.map((tier) => `${tier.n} ${priceOf(tier, service.billing)} (${tier.note})`).join(', ')
   const addons = (service.addons ?? []).map((addon) => `${addon.l} $${addon.p.toLocaleString('en-US')} ${addon.t === 'monthly' ? 'per month' : 'one-time'}`).join('; ')
   const delivery = (PACKAGE_DETAILS[service.id] ?? []).find((row) => /delivery|timeline/i.test(row[0]))
+  const pageBundles = service.id === 'landing'
+    ? ` One page is included in each tier's base price. Page bundles apply to any tier and are added once to that base price: ${LANDING_PAGE_BUNDLES.filter((bundle) => bundle.price > 0).map((bundle) => `${bundle.pages} pages total +$${bundle.price.toLocaleString('en-US')}`).join('; ')}. Grow with 25 pages is $1,000 before bundle discounts.`
+    : ''
   return makeEntry({
     id: `package-${service.id}`,
     title: `${service.name} — pricing`,
       url: '/package-builder/',
     kind: 'pricing',
     keywords: [service.name, 'price', 'pricing', 'cost', 'how much', 'rate', 'quote', 'budget', 'tier', 'package'],
-    body: `${service.blurb} Tiers: ${tiers}.${addons ? ` Add-ons: ${addons}.` : ''}${delivery ? ` ${delivery[0]}: ${delivery.slice(1).join(' / ')}.` : ''} Prices update live on the Build Your Package page, where bundling ${OFFER.bundleTiers.map((tier) => `${tier.min}+ services saves ${tier.pct}%`).join(', ')}.`,
+    body: `${service.blurb} Tiers: ${tiers}.${pageBundles}${addons ? ` Add-ons: ${addons}.` : ''}${delivery ? ` ${delivery[0]}: ${delivery.slice(1).join(' / ')}.` : ''} Prices update live on the Build Your Package page, where bundling ${OFFER.bundleTiers.map((tier) => `${tier.min}+ services saves ${tier.pct}%`).join(', ')}.`,
     linkLabel: 'See it in Build Your Package',
   })
 })

@@ -1,4 +1,4 @@
-import { OFFER, SERVICES } from './data/generated/packages.js'
+import { LANDING_PAGE_BUNDLES, OFFER, SERVICES } from './data/generated/packages.js'
 
 export const money = (n) => `$${Math.round(n).toLocaleString('en-US')}`
 
@@ -15,9 +15,8 @@ export function tierPrice(tier) {
   return tier.s > 0 ? money(tier.s) : `${money(tier.m)}/mo`
 }
 
-export function normalizePageCount(value) {
-  const count = Number(value)
-  return Number.isFinite(count) ? Math.max(1, Math.min(999, Math.floor(count))) : 1
+export function landingPageBundle(pages) {
+  return LANDING_PAGE_BUNDLES.find((bundle) => bundle.pages === Number(pages)) ?? LANDING_PAGE_BUNDLES[0]
 }
 
 // All quote formats share this calculation, including page quantities and savings.
@@ -32,11 +31,11 @@ export function calculateQuote(state) {
     if (!entry) continue
     count += 1
     const tier = service.tiers[entry.tier]
-    const quantity = service.id === 'landing' ? normalizePageCount(entry.quantity ?? 1) : 1
-    const total = { s: tier.s * quantity, m: tier.m * quantity }
+    const bundle = service.id === 'landing' ? landingPageBundle(entry.pages) : null
+    const total = { s: tier.s + (bundle?.price ?? 0), m: tier.m }
     one += total.s
     monthly += total.m
-    const pageLabel = service.id === 'landing' ? ` · ${quantity} page${quantity === 1 ? '' : 's'}` : ''
+    const pageLabel = bundle ? ` · ${bundle.pages} page${bundle.pages === 1 ? '' : 's'}` : ''
     rows.push({ label: `${service.name} — ${tier.n}${pageLabel}`, amount: tierPrice(total) })
 
     for (const addonIndex of [...entry.addons].sort((a, b) => a - b)) {

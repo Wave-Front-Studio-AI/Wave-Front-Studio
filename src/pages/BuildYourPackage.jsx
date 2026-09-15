@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { CATEGORIES, DETAILS, OFFER, PAIRS, SERVICES } from '../data/generated/packages.js'
+import { CATEGORIES, DETAILS, LANDING_PAGE_BUNDLES, OFFER, PAIRS, SERVICES } from '../data/generated/packages.js'
 import { contact } from '../data/site.js'
-import { addonQty, calculateQuote, defaultOptionIndex, money, normalizePageCount, tierPrice } from '../packageQuote.js'
+import { addonQty, calculateQuote, defaultOptionIndex, landingPageBundle, money, tierPrice } from '../packageQuote.js'
 
 const serviceById = Object.fromEntries(SERVICES.map((service) => [service.id, service]))
 
@@ -13,7 +13,7 @@ function fromLabel(service) {
   const minMonthly = monthlies.length ? Math.min(...monthlies) : 0
   if (service.billing === 'monthly') return `${money(minMonthly)}/mo`
   if (service.billing === 'hybrid') return `${money(minSetup)} + ${money(minMonthly)}/mo`
-  return `${money(minSetup)}${service.id === 'landing' ? ' / page' : ''}`
+  return money(minSetup)
 }
 
 function DetailsModal({ service, onClose, onSelect }) {
@@ -41,11 +41,11 @@ function DetailsModal({ service, onClose, onSelect }) {
           <h3 id="pkg-modal-title">{service.name}</h3>
           <p>{service.blurb}</p>
         </div>
-        <div className="pkg-modal-prices">
+        <div className="pkg-modal-prices" style={{ '--tier-count': service.tiers.length }}>
           {service.tiers.map((tier) => (
             <div key={tier.n}>
               <span>{tier.n}</span>
-              <strong>{tierPrice(tier)}{service.id === 'landing' ? ' / page' : ''}</strong>
+              <strong>{tierPrice(tier)}{service.id === 'landing' ? ' base' : ''}</strong>
             </div>
           ))}
         </div>
@@ -77,6 +77,15 @@ function DetailsModal({ service, onClose, onSelect }) {
             </table>
           </div>
         ) : null}
+        {service.id === 'landing' ? (
+          <div className="pkg-modal-addons">
+            <span className="pkg-label">Page bundles for any tier</span>
+            <p>Added to your tier price. Each bundle is the total number of pages.</p>
+            {LANDING_PAGE_BUNDLES.filter((bundle) => bundle.price > 0).map((bundle) => (
+              <span key={bundle.pages}>{bundle.pages} pages — <b>+{money(bundle.price)}</b></span>
+            ))}
+          </div>
+        ) : null}
         {service.addons.length ? (
           <div className="pkg-modal-addons">
             <span className="pkg-label">Optional add-ons</span>
@@ -101,7 +110,7 @@ function DetailsModal({ service, onClose, onSelect }) {
 }
 
 export default function BuildYourPackage() {
-  // state[id] = { tier, quantity, addons: [], opts: { [addonIndex]: optionIndex } }
+  // state[id] = { tier, pages, addons: [], opts: { [addonIndex]: optionIndex } }
   const [state, setState] = useState({})
   const [modal, setModal] = useState(null)
   const [toast, setToast] = useState('')
@@ -150,8 +159,8 @@ export default function BuildYourPackage() {
     setState((current) => ({ ...current, [id]: { ...(current[id] || { addons: [], opts: {} }), tier } }))
   }
 
-  function setPageCount(value) {
-    setState((current) => ({ ...current, landing: { ...current.landing, quantity: value === '' ? '' : normalizePageCount(value) } }))
+  function setPageBundle(value) {
+    setState((current) => ({ ...current, landing: { ...current.landing, pages: landingPageBundle(value).pages } }))
   }
 
   function toggleAddon(id, addonIndex) {
@@ -274,7 +283,7 @@ export default function BuildYourPackage() {
                   if (!service) return null
                   const entry = state[id]
                   const on = Boolean(entry)
-                  const pageCount = normalizePageCount(entry?.quantity ?? 1)
+                  const pageBundle = id === 'landing' ? landingPageBundle(entry?.pages) : null
                   return (
                     <article className={`package-card ${on ? 'is-on' : ''}`} key={id}>
                       <div className="package-card-head">
@@ -302,7 +311,7 @@ export default function BuildYourPackage() {
 
                       {on ? (
                         <div className="package-card-body">
-                          <div className="package-tiers">
+                          <div className="package-tiers" style={{ '--tier-count': service.tiers.length }}>
                             {service.tiers.map((tier, index) => (
                               <button
                                 key={tier.n}
@@ -313,25 +322,30 @@ export default function BuildYourPackage() {
                               >
                                 {index === 1 ? <span className="package-pop">POPULAR</span> : null}
                                 <strong>{tier.n}</strong>
-                                <b>{tierPrice(tier)}{id === 'landing' ? ' / page' : ''}</b>
+                                <b>{tierPrice(tier)}{id === 'landing' ? ' base' : ''}</b>
                                 <small>{tier.note}</small>
                               </button>
                             ))}
                           </div>
 
                           {id === 'landing' ? (
-                            <div className="package-quantity">
+                            <div className="package-page-bundle">
                               <div>
-                                <label htmlFor="landing-page-count">How many landing pages?</label>
-                                <p id="landing-page-cost">
-                                  {pageCount} page{pageCount === 1 ? '' : 's'} × {money(service.tiers[entry.tier].s)} each = <b>{money(pageCount * service.tiers[entry.tier].s)}</b>
-                                </p>
+                                <label htmlFor="landing-page-bundle">How many landing pages?</label>
+                                <p id="landing-bundle-help">One page is included. Bundle costs are added to your tier price and apply to any tier.</p>
                               </div>
-                              <div className="package-quantity-controls">
-                                <button type="button" aria-label="Remove one landing page" disabled={pageCount <= 1} onClick={() => setPageCount(pageCount - 1)}>−</button>
-                                <input id="landing-page-count" type="number" inputMode="numeric" min="1" max="999" step="1" value={entry.quantity ?? 1} aria-describedby="landing-page-cost" onChange={(event) => setPageCount(event.target.value)} onBlur={() => setPageCount(pageCount)} />
-                                <button type="button" aria-label="Add one landing page" disabled={pageCount >= 999} onClick={() => setPageCount(pageCount + 1)}>+</button>
-                              </div>
+                              <select id="landing-page-bundle" value={pageBundle.pages} aria-describedby="landing-bundle-help landing-page-cost" onChange={(event) => setPageBundle(event.target.value)}>
+                                {LANDING_PAGE_BUNDLES.map((bundle) => (
+                                  <option key={bundle.pages} value={bundle.pages}>
+                                    {bundle.pages === 1 ? '1 page — included' : `${bundle.pages} pages total — +${money(bundle.price)}`}
+                                  </option>
+                                ))}
+                              </select>
+                              <p id="landing-page-cost" className="package-bundle-total" aria-live="polite">
+                                {service.tiers[entry.tier].n} {money(service.tiers[entry.tier].s)}
+                                {pageBundle.price > 0 ? ` + ${pageBundle.pages}-page bundle ${money(pageBundle.price)}` : ' · 1 page'}
+                                {' = '}<b>{money(service.tiers[entry.tier].s + pageBundle.price)}</b>
+                              </p>
                             </div>
                           ) : null}
 
