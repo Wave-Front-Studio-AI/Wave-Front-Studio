@@ -159,7 +159,7 @@ const companyEntries = [
   {
     id: 'company-build-your-package', title: 'Build Your Package', url: '/package-builder/', kind: 'company',
     keywords: ['build your package', 'package', 'bundle', 'configurator', 'quote', 'estimate', 'pricing', 'price', 'cost', 'how much', 'budget', 'tiers'],
-    body: `Tick the services you want and pick a tier — your total updates instantly. Tap the info icon on any service to see exactly what each tier includes. The more you bundle, the more you save: ${OFFER.bundleTiers.map((tier) => `${tier.min}+ services saves ${tier.pct}%`).join(', ')}. Monthly services include the first month free. Twenty services are priced on the page across websites and development, marketing and growth, AI and automation, branding and design, print and collateral, and video and podcast.`,
+    body: `Tick the services you want and pick a tier — your total updates instantly. Tap the info icon on any service to see exactly what each tier includes. The more you bundle, the more you save: ${OFFER.bundleTiers.map((tier) => `${tier.min}+ services saves ${tier.pct}%`).join(', ')}. Monthly services include the first month free. ${PACKAGE_SERVICES.length} services are priced on the page across websites and development, marketing and growth, AI and automation, branding and design, print and collateral, and video and podcast.`,
     linkLabel: 'Build your package and see the price',
   },
 ].map(makeEntry)

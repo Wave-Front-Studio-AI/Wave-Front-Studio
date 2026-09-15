@@ -1,4 +1,6 @@
 // Generated from the Build Your Package configurator on wavefrontstudiollc.com.
+const LANDING_PAGE_PRICES = { Launch: 100, Grow: 500, Scale: 1500 }
+
 export const OFFER = {
   "countdownHours": 72,
   "firstMonthsFree": 1,
@@ -67,6 +69,33 @@ export const SERVICES = [
         "t": "monthly"
       }
     ]
+  },
+  {
+    "id": "landing",
+    "name": "Landing Pages",
+    "blurb": "Landing pages for campaigns, products, and offers. Grow and Scale include SEO targeting high-intent keywords and phrases, designed to turn search visitors into enquiries.",
+    "billing": "onetime",
+    "tiers": [
+      {
+        "n": "Launch",
+        "s": LANDING_PAGE_PRICES.Launch,
+        "m": 0,
+        "note": `Starting at $${LANDING_PAGE_PRICES.Launch}`
+      },
+      {
+        "n": "Grow",
+        "s": LANDING_PAGE_PRICES.Grow,
+        "m": 0,
+        "note": "High-intent SEO for conversions"
+      },
+      {
+        "n": "Scale",
+        "s": LANDING_PAGE_PRICES.Scale,
+        "m": 0,
+        "note": "High-intent SEO for conversions"
+      }
+    ],
+    "addons": []
   },
   {
     "id": "seo",
@@ -303,8 +332,8 @@ export const SERVICES = [
         "t": "monthly"
       },
       {
-        "l": "Landing page build",
-        "p": 600,
+        "l": "Landing page build (Launch)",
+        "p": LANDING_PAGE_PRICES.Launch,
         "t": "onetime"
       },
       {
@@ -970,6 +999,7 @@ export const SERVICES = [
 
 export const PAIRS = {
   "web": "seo",
+  "landing": "mkt",
   "seo": "mkt",
   "app": "bot",
   "social": "video",
@@ -2029,6 +2059,7 @@ export const CATEGORIES = [
     "label": "Websites & Development",
     "ids": [
       "web",
+      "landing",
       "app",
       "calc",
       "viz",
