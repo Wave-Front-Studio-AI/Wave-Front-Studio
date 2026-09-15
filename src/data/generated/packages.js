@@ -356,18 +356,18 @@ export const SERVICES = [
   {
     "id": "email",
     "name": "Email Marketing",
-    "blurb": "Email campaigns with analytics, sent monthly or twice a week.",
-    "billing": "monthly",
+    "blurb": "Email campaigns with analytics, sent monthly or twice a week. Both plans have a $500 one-time setup fee.",
+    "billing": "hybrid",
     "tiers": [
       {
         "n": "Monthly",
-        "s": 0,
+        "s": 500,
         "m": 250,
         "note": "1 email per month + analytics"
       },
       {
         "n": "Twice weekly",
-        "s": 0,
+        "s": 500,
         "m": 450,
         "note": "2 emails per week + analytics"
       }
@@ -1055,6 +1055,7 @@ export const PAIRS = {
 
 export const DETAILS = {
   "email": [
+    ["One-time setup fee", "$500", "$500"],
     ["Email campaigns", "1 per month", "2 per week"],
     ["Analytics included", "✓", "✓"]
   ],

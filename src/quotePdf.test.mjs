@@ -56,7 +56,8 @@ test('landing page bundles and email plans export together on one branded page',
     email: { tier: 1, addons: [], opts: {} },
   })
   assert.equal(bundleQuote.rows[0].amount, '$1,000')
-  assert.equal(bundleQuote.rows[1].amount, '$450/mo')
+  assert.equal(bundleQuote.rows[1].amount, '$500 + $450/mo')
+  assert.equal(bundleQuote.oneAfter, 1425)
   assert.equal(createQuotePdf(bundleQuote, assets, date).getNumberOfPages(), 1)
 })
 

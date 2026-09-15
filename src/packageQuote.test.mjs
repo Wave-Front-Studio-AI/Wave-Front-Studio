@@ -50,17 +50,20 @@ test('recurring add-ons remain independent of landing page bundles', () => {
   assert.deepEqual(calculateQuote({}), { one: 0, monthly: 0, count: 0, pct: 0, bundleAmount: 0, oneAfter: 0, firstMonthsFree: 0, rows: [] })
 })
 
-test('email plans charge monthly and combine with landing page bundles', () => {
+test('email plans add one setup fee and keep recurring charges separate', () => {
   for (const [tier, price, label] of [[0, 250, 'Monthly'], [1, 450, 'Twice weekly']]) {
     const email = calculateQuote({ email: selected(tier) })
-    assert.equal(email.one, 0)
+    assert.equal(email.one, 500)
+    assert.equal(email.oneAfter, 500)
     assert.equal(email.monthly, price)
     assert.equal(email.firstMonthsFree, price)
     assert.equal(email.rows[0].label, `Email Marketing — ${label}`)
-    assert.equal(email.rows[0].amount, `$${price}/mo`)
+    assert.equal(email.rows[0].amount, `$500 + $${price}/mo`)
     const combined = calculateQuote({ landing: selected(1, 25), email: selected(tier) })
     assert.equal(combined.count, 2)
-    assert.equal(combined.oneAfter, 950)
+    assert.equal(combined.one, 1500)
+    assert.equal(combined.bundleAmount, 75)
+    assert.equal(combined.oneAfter, 1425)
     assert.equal(combined.monthly, price)
   }
 })
