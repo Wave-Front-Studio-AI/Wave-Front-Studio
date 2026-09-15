@@ -6,7 +6,7 @@ export const liveVisualizer = {
   eyebrow: 'Live Product Visualizer',
   name: 'Let Your Customers See It Before They Buy It',
   metaTitle: 'Live Product Visualizer Tool | Wavefront Studio LLC',
-  metaDescription: 'Our custom-built live visualizer lets your customers upload photos of their own homes, spaces, or projects - and instantly preview your products, materials, and colors on them in real time.',
+  metaDescription: 'Let customers upload a photo of their own home or space and preview your products, materials and colors on it in real time. Custom built for your range.',
   intro: 'Our custom-built live visualizer lets your customers upload photos of their own homes, spaces, or projects - and instantly preview your products, materials, and colors on them in real time.',
   primaryCta: 'Get Your Visualizer Built',
   steps: {
@@ -72,7 +72,7 @@ export const customCalculators = {
   eyebrow: 'Custom Web Calculators',
   name: 'We Build Smart Calculators That Sell for You',
   metaTitle: 'Custom Web Calculators with Ordering System | Wavefront Studio',
-  metaDescription: 'From instant quoting and material estimation to pricing tools and ordering systems - we build fully custom web calculators that turn your website visitors into paying customers.',
+  metaDescription: 'Custom web calculators for instant quotes, material estimates and pricing, with a built-in ordering system that turns visitors into customers.',
   intro: 'From instant quoting and material estimation to pricing tools and ordering systems - we build fully custom web calculators that turn your website visitors into paying customers.',
   primaryCta: 'Get Your Calculator Built',
   steps: {
@@ -159,7 +159,7 @@ export const aiChatbot = {
   eyebrow: 'AI-Powered Automation',
   name: 'Your Complete AI Marketing Operating System',
   metaTitle: 'AI Chatbot Integration & Automation | Wavefront Studio',
-  metaDescription: 'One platform to manage all your marketing channels, leads, customer communication, and content creation - powered by AI and built to grow your business on autopilot.',
+  metaDescription: 'An AI chatbot for your website plus one inbox for your leads, messages and marketing channels, trained on your business and answering 24/7.',
   intro: 'One platform to manage all your marketing channels, leads, customer communication, and content creation - powered by AI and built to grow your business on autopilot.',
   primaryCta: 'Contact Us',
   features: {

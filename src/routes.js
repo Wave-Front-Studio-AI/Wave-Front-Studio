@@ -1,3 +1,5 @@
+import { isLive } from './data/schedule.js'
+
 // Route metadata stays deliberately lightweight. Page content is loaded only by
 // the matching route family, so the home page does not download every location
 // and article merely to decide which URL is active.
@@ -11,8 +13,20 @@ const locationSlugs = [
   'web-design-las-vegas-nv', 'web-design-charlotte-nc', 'web-design-sarasota-fl',
   'web-design-lakewood-ranch-fl', 'web-design-bradenton-fl', 'web-design-venice-fl',
   'web-design-north-port-fl', 'web-design-palmetto-fl', 'web-design-osprey-nokomis-fl',
-  'web-design-englewood-fl', 'web-design-tampa-fl', 'web-design-st-petersburg-fl',
+  'web-design-englewood-fl', 'web-design-port-charlotte-fl', 'web-design-punta-gorda-fl',
+  'web-design-parrish-ellenton-fl', 'web-design-anna-maria-island-fl', 'web-design-longboat-key-fl',
+  'web-design-tampa-fl', 'web-design-st-petersburg-fl',
   'web-design-charleston-sc', 'web-design-nashville-tn', 'web-design-raleigh-nc',
+  // National city guides, released on the dates in src/data/schedule.js.
+  'web-design-miami-fl', 'web-design-orlando-fl', 'web-design-houston-tx', 'web-design-dallas-tx',
+  'web-design-austin-tx', 'web-design-san-antonio-tx', 'web-design-los-angeles-ca', 'web-design-san-diego-ca',
+  'web-design-new-york-ny', 'web-design-atlanta-ga',
+]
+// State guides, also released on scheduled dates.
+const stateSlugs = [
+  'web-design-florida', 'web-design-texas', 'web-design-california', 'web-design-new-york',
+  'web-design-georgia', 'web-design-north-carolina', 'web-design-arizona', 'web-design-tennessee',
+  'web-design-colorado', 'web-design-south-carolina',
 ]
 const legalSlugs = ['terms-of-use', 'privacy-policy', 'cookie-policy', 'sms-policy']
 const postSlugs = [
@@ -45,7 +59,8 @@ export const routes = [
   { path: '/custom-works/', kind: 'custom-works-hub' },
   ...serviceSlugs.map((slug) => ({ path: `/${slug}/`, kind: 'service', slug })),
   ...customWorkSlugs.map((slug) => ({ path: `/${slug}/`, kind: 'custom-work', slug })),
-  ...locationSlugs.map((slug) => ({ path: `/${slug}/`, kind: 'location', slug })),
+  ...locationSlugs.filter(isLive).map((slug) => ({ path: `/${slug}/`, kind: 'location', slug })),
+  ...stateSlugs.filter(isLive).map((slug) => ({ path: `/${slug}/`, kind: 'state', slug })),
   ...legalSlugs.map((slug) => ({ path: `/${slug}/`, kind: 'legal', slug })),
   ...postSlugs.map((slug) => ({ path: `/${slug}/`, kind: 'post', slug })),
 ]

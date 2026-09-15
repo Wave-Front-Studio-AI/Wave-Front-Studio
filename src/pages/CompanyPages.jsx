@@ -3,6 +3,7 @@ import { ArrowIcon } from '../components/Icons.jsx'
 import { CtaBand, Counter, EnquiryForm, FaqAccordion, Reveal, SectionHeading, SupportCallout, Testimonials } from '../components/shared.jsx'
 import { contact, offerings, offeringsHeading, projects, siteOrigin } from '../data/site.js'
 import { siteFaqs as faqItems } from '../data/faqs.js'
+import { breadcrumbs, pageGraph } from '../data/seo.js'
 
 /* ------------------------------------------------------------------ */
 /* About                                                               */
@@ -272,15 +273,19 @@ export function ContactPage() {
 /* ------------------------------------------------------------------ */
 
 export function FaqsPage() {
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqItems.map(([name, text]) => ({
-      '@type': 'Question',
-      name,
-      acceptedAnswer: { '@type': 'Answer', text },
-    })),
-  }
+  const schema = pageGraph(
+    {
+      '@type': 'FAQPage',
+      '@id': `${siteOrigin}/faqs/#faq`,
+      url: `${siteOrigin}/faqs/`,
+      mainEntity: faqItems.map(([name, text]) => ({
+        '@type': 'Question',
+        name,
+        acceptedAnswer: { '@type': 'Answer', text },
+      })),
+    },
+    breadcrumbs([['Home', '/'], ['FAQs', '/faqs/']]),
+  )
 
   return (
     <Layout

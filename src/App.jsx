@@ -93,6 +93,7 @@ function renderRoute(route) {
       return <ServiceRoute slug={route.slug} />
     case 'custom-work':
       return <CustomWorkRoute slug={route.slug} />
+    case 'state':
     case 'location':
       return <LongformRoute kind={route.kind} slug={route.slug} />
     case 'legal':

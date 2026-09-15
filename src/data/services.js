@@ -8,7 +8,7 @@ export const services = [
     name: 'Website Development',
     subhead: 'Fast, Responsive & Built to Convert',
     metaTitle: 'Custom Website Development Services | Wavefront Studio',
-    metaDescription: 'We design and develop every type of website your business needs - from B2B corporate sites and e-commerce stores to personal portfolios, SaaS platforms, landing pages, and multi-site ecosystems.',
+    metaDescription: 'We design and build websites that load fast and bring in enquiries: business sites, online stores, SaaS platforms, landing pages and multi-site setups.',
     hero: {
       image: '/images/creative-digital-development-agency-brainstorming-about-mobile-app-interface-wireframe-design-on.webp',
       alt: 'Digital development agency team brainstorming mobile app interface wireframe design',
@@ -57,7 +57,7 @@ export const services = [
     name: 'Search Engine Optimisation',
     subhead: 'Rank Higher, Get Found, Grow Organically',
     metaTitle: 'SEO Services – Rank Higher on Google | Wavefront Studio',
-    metaDescription: 'We build a complete SEO strategy designed to get your business on the first page of Google and keep it there - keyword research, technical audits, on-page optimization, and high-quality link building.',
+    metaDescription: 'We build SEO strategies to get you onto Google’s first page and keep you there, with keyword research, technical audits, on-page fixes and link building.',
     hero: {
       image: '/images/Banner.webp',
       alt: 'Digital interfaces used for search optimisation planning',
@@ -326,7 +326,7 @@ export const services = [
     name: 'Digital Marketing',
     subhead: 'Data-Driven Strategies That Generate Real Results',
     metaTitle: 'Digital Marketing Services | Wavefront Studio LLC',
-    metaDescription: 'We build complete digital marketing strategies rooted in data, targeting, and continuous optimization - from Google Ads and paid social to email marketing and funnel building.',
+    metaDescription: 'Google Ads, paid social, email and funnels, planned from your data and adjusted as results come in, so you can see which spend brings in customers.',
     hero: { image: '/images/Digital-Marketing3.webp', alt: 'Digital marketing campaign strategy and performance analysis' },
     approach: {
       title: 'How We Drive Growth for Your Business',
@@ -370,7 +370,7 @@ export const services = [
     name: 'Free Website Performance Audit',
     subhead: 'See What Your Website Is Costing You',
     metaTitle: 'Free Website Performance Audit | Wavefront Studio',
-    metaDescription: 'Get a free website performance audit covering mobile usability, technical health, search visibility, and the path from visitor to enquiry, with clear priorities for what to fix first.',
+    metaDescription: 'A free audit of your website’s mobile usability, technical health, search visibility and enquiry path, with a clear list of what to fix first.',
     hero: {
       image: '/images/screen.webp',
       alt: 'Website performance review for a free Wavefront Studio audit',
@@ -439,7 +439,7 @@ export const services = [
     name: 'Lead Capture Systems',
     subhead: 'Capture, Qualify & Route Enquiries While Interest Is High',
     metaTitle: 'Lead Capture Systems & Automation | Wavefront Studio',
-    metaDescription: 'Custom lead capture systems that collect enquiries across your website and digital channels, qualify each opportunity, create clean CRM records, and route alerts to the right person.',
+    metaDescription: 'Lead capture systems that collect enquiries from your website and other channels, qualify each one, create clean CRM records and alert the right person.',
     hero: {
       image: '/images/digital-marketing-wavefront-studios.webp',
       alt: 'Wavefront Studio digital marketing and lead capture workflow',

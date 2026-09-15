@@ -1,0 +1,25 @@
+name: Scheduled publish
+
+# Rebuilds the live site each weekday morning so any page whose date in
+# src/data/schedule.js has arrived goes live. Needs the repository secret
+# VERCEL_DEPLOY_HOOK: a deploy hook URL created in Vercel under
+# Project > Settings > Git > Deploy Hooks, pointed at the main branch.
+
+on:
+  schedule:
+    - cron: '0 12 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger a production deploy
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::warning::VERCEL_DEPLOY_HOOK is not set, so nothing was rebuilt."
+            exit 0
+          fi
+          curl --fail --silent --show-error -X POST "$HOOK"

@@ -585,6 +585,9 @@ p { margin: 0; }
 .service-media.is-frame img { border-radius: 18px; aspect-ratio: 16 / 10; object-fit: cover; }
 .service-media-tag { position: absolute; bottom: 18px; left: 18px; padding: 8px 14px; border-radius: 999px; background: rgba(13, 27, 42, 0.72); color: var(--white); font-size: 0.72rem; font-weight: 600; backdrop-filter: blur(6px); }
 .service-subhead { max-width: 48ch; margin-top: 18px; color: var(--muted); font-size: clamp(1rem, 1.3vw, 1.16rem); line-height: 1.66; }
+/* Place headlines name a service range and a city, so they run longer than a
+   service name. A smaller size keeps them to three lines beside the form. */
+.place-page .service-entry h1 { max-width: 20ch; font-size: clamp(2.2rem, 3.7vw, 3.5rem); line-height: 1.06; }
 
 .service-approach-media img { display: block; width: 100%; aspect-ratio: 4 / 3.2; border-radius: 26px; object-fit: cover; box-shadow: var(--shadow-lift); }
 

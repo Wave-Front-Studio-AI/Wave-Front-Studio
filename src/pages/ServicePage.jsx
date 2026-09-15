@@ -5,9 +5,10 @@ import { CtaBand, EnquiryForm, FaqAccordion, Reveal, SectionHeading, SupportCall
 import { services } from '../data/services.js'
 import { customWorks } from '../data/customWorks.js'
 import { siteOrigin } from '../data/site.js'
+import { breadcrumbs, byOrganization, pageGraph } from '../data/seo.js'
 
 // Decorative wave that runs behind the entry section. Purely visual.
-function EntryMotif() {
+export function EntryMotif() {
   return (
     <div className="entry-motif" aria-hidden="true">
       <svg viewBox="0 0 1600 240" preserveAspectRatio="none">
@@ -18,7 +19,7 @@ function EntryMotif() {
   )
 }
 
-function ServiceHeroMedia({ hero }) {
+export function ServiceHeroMedia({ hero }) {
   const videoRef = useRef(null)
 
   useEffect(() => {
@@ -123,37 +124,32 @@ function RelatedServices({ current }) {
 
 export default function ServicePage({ service }) {
   const canonical = `/${service.slug}/`
-  const schema = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Service',
-        name: service.name,
-        serviceType: service.name,
-        description: service.metaDescription,
-        url: `${siteOrigin}${canonical}`,
-        areaServed: 'Worldwide',
-        provider: { '@type': 'Organization', name: 'Wavefront Studio LLC', url: `${siteOrigin}/` },
-      },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Wavefront Studio', item: `${siteOrigin}/` },
-          { '@type': 'ListItem', position: 2, name: service.name, item: `${siteOrigin}${canonical}` },
-        ],
-      },
-      ...(service.faqs
-        ? [{
-            '@type': 'FAQPage',
-            mainEntity: service.faqs.map(([name, text]) => ({
-              '@type': 'Question',
-              name,
-              acceptedAnswer: { '@type': 'Answer', text },
-            })),
-          }]
-        : []),
-    ],
-  }
+  const url = `${siteOrigin}${canonical}`
+  const schema = pageGraph(
+    {
+      '@type': 'Service',
+      '@id': `${url}#service`,
+      name: service.name,
+      serviceType: service.name,
+      description: service.metaDescription,
+      url,
+      areaServed: 'Worldwide',
+      provider: byOrganization,
+    },
+    breadcrumbs([['Home', '/'], ['Our Services', '/services/'], [service.name, canonical]]),
+    service.faqs
+      ? {
+          '@type': 'FAQPage',
+          '@id': `${url}#faq`,
+          url,
+          mainEntity: service.faqs.map(([name, text]) => ({
+            '@type': 'Question',
+            name,
+            acceptedAnswer: { '@type': 'Answer', text },
+          })),
+        }
+      : null,
+  )
 
   return (
     <Layout

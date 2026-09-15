@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 const LEAD_SERVICE = process.env.LEAD_SERVICE_URL || 'http://127.0.0.1:8787'
+const BUILD_DATE = process.env.BUILD_DATE || new Date().toISOString().slice(0, 10)
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
@@ -19,5 +20,7 @@ export default defineConfig({
       '/api': { target: LEAD_SERVICE, changeOrigin: true },
     },
   },
+  // The day this build treats as today for scheduled pages (src/data/schedule.js).
+  define: { __BUILD_DATE__: JSON.stringify(BUILD_DATE) },
   build: { outDir: 'dist', emptyOutDir: true },
 })

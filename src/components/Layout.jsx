@@ -5,6 +5,7 @@ import SiteFooter from './SiteFooter.jsx'
 import SitePopups from './SitePopups.jsx'
 import VisualEffects from './VisualEffects.jsx'
 import { siteOrigin } from '../data/site.js'
+import { pageGraph, webPage } from '../data/seo.js'
 import { ssrSeo } from '../routeContext.js'
 
 function upsertMeta(selector, create) {
@@ -40,24 +41,36 @@ export function useSeo({ title, description, canonical, schema }) {
       link.setAttribute('href', `${siteOrigin}${canonical}`)
     }
 
-    document.querySelector('#route-jsonld')?.remove()
+    // The prerendered page already carries this script under the same id, so it
+    // is updated in place. Appending a second copy would hand search engines
+    // two identical blocks, which Search Console reports as duplicate FAQPage.
+    let script = document.getElementById('route-jsonld')
     if (schema) {
-      const script = document.createElement('script')
-      script.id = 'route-jsonld'
-      script.type = 'application/ld+json'
-      script.text = JSON.stringify(schema)
-      document.head.appendChild(script)
-      return () => script.remove()
+      if (!script) {
+        script = document.createElement('script')
+        script.id = 'route-jsonld'
+        script.type = 'application/ld+json'
+        document.head.appendChild(script)
+      }
+      const text = JSON.stringify(schema).replace(/</g, '\\u003c')
+      if (script.textContent !== text) script.textContent = text
+    } else {
+      script?.remove()
     }
-    return undefined
   }, [title, description, canonical, schema])
 }
 
-export default function Layout({ children, className = '', seo }) {
+export default function Layout({ children, className = '', seo = {} }) {
+  // A page without structured data of its own still describes itself as a page
+  // of this site, so every URL carries the business entity.
+  const page = seo.schema !== undefined || !seo.canonical
+    ? seo
+    : { ...seo, schema: pageGraph(webPage({ path: seo.canonical, name: seo.title, description: seo.description })) }
+
   // Server render only: hand the values to the prerenderer, which writes them
   // into the static <head>. In the browser useSeo does the same job via effects.
-  if (typeof window === 'undefined') ssrSeo.current = seo || {}
-  useSeo(seo || {})
+  if (typeof window === 'undefined') ssrSeo.current = page
+  useSeo(page)
   return (
     <>
       <a className="skip-link" href="#main">
