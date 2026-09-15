@@ -90,15 +90,17 @@ function DetailsModal({ service, onClose, onSelect }) {
             </table>
           </div>
         ) : null}
-        <div className="pkg-modal-addons">
-          <span className="pkg-label">Optional add-ons</span>
-          {service.addons.map((addon) => (
-            <span key={addon.l}>
-              {addon.l} — <b>{money(addon.p)}{addon.t === 'monthly' ? '/mo' : ''}</b>
-              {addon.opts ? ' each, by frequency' : ''}
-            </span>
-          ))}
-        </div>
+        {service.addons.length ? (
+          <div className="pkg-modal-addons">
+            <span className="pkg-label">Optional add-ons</span>
+            {service.addons.map((addon) => (
+              <span key={addon.l}>
+                {addon.l} — <b>{money(addon.p)}{addon.t === 'monthly' ? '/mo' : ''}</b>
+                {addon.opts ? ' each, by frequency' : ''}
+              </span>
+            ))}
+          </div>
+        ) : null}
         <div className="pkg-modal-actions">
           {service.tiers.map((tier, index) => (
             <button key={tier.n} type="button" className="kinetic-button group" onClick={() => onSelect(index)}>
@@ -295,8 +297,11 @@ export default function BuildYourPackage() {
               <section className="package-category" key={category.label}>
                 <header>
                   <h2>{category.label}</h2>
-                  <span>{category.ids.length} services</span>
+                  <span>
+                    {category.ids.length} service{category.ids.length === 1 ? '' : 's'}
+                  </span>
                 </header>
+                {category.intro ? <p className="package-category-intro">{category.intro}</p> : null}
                 {category.ids.map((id) => {
                   const service = serviceById[id]
                   if (!service) return null
@@ -346,44 +351,46 @@ export default function BuildYourPackage() {
                             ))}
                           </div>
 
-                          <div className="package-addons">
-                            <span className="pkg-label">Optional add-ons</span>
-                            <div>
-                              {service.addons.map((addon, addonIndex) => {
-                                const selected = entry.addons.includes(addonIndex)
-                                return (
-                                  <div className="package-addon" key={addon.l}>
-                                    <button
-                                      type="button"
-                                      className={selected ? 'is-on' : ''}
-                                      onClick={() => toggleAddon(id, addonIndex)}
-                                      aria-pressed={selected}
-                                    >
-                                      <i aria-hidden="true">✓</i>
-                                      <span>{addon.l}</span>
-                                      <b>
-                                        {money(addonPrice(id, addonIndex))}
-                                        {addon.t === 'monthly' ? '/mo' : ''}
-                                      </b>
-                                    </button>
-                                    {addon.opts ? (
-                                      <select
-                                        value={optionIndex(id, addonIndex)}
-                                        onChange={(event) => setAddonOption(id, addonIndex, Number(event.target.value))}
-                                        aria-label={`${addon.l} frequency`}
+                          {service.addons.length ? (
+                            <div className="package-addons">
+                              <span className="pkg-label">Optional add-ons</span>
+                              <div>
+                                {service.addons.map((addon, addonIndex) => {
+                                  const selected = entry.addons.includes(addonIndex)
+                                  return (
+                                    <div className="package-addon" key={addon.l}>
+                                      <button
+                                        type="button"
+                                        className={selected ? 'is-on' : ''}
+                                        onClick={() => toggleAddon(id, addonIndex)}
+                                        aria-pressed={selected}
                                       >
-                                        {addon.opts.map((option, index) => (
-                                          <option key={option.l} value={index}>
-                                            {option.l} — {option.q} article{option.q > 1 ? 's' : ''} · {money(addon.p * option.q)}/mo
-                                          </option>
-                                        ))}
-                                      </select>
-                                    ) : null}
-                                  </div>
-                                )
-                              })}
+                                        <i aria-hidden="true">✓</i>
+                                        <span>{addon.l}</span>
+                                        <b>
+                                          {money(addonPrice(id, addonIndex))}
+                                          {addon.t === 'monthly' ? '/mo' : ''}
+                                        </b>
+                                      </button>
+                                      {addon.opts ? (
+                                        <select
+                                          value={optionIndex(id, addonIndex)}
+                                          onChange={(event) => setAddonOption(id, addonIndex, Number(event.target.value))}
+                                          aria-label={`${addon.l} frequency`}
+                                        >
+                                          {addon.opts.map((option, index) => (
+                                            <option key={option.l} value={index}>
+                                              {option.l} — {option.q} article{option.q > 1 ? 's' : ''} · {money(addon.p * option.q)}/mo
+                                            </option>
+                                          ))}
+                                        </select>
+                                      ) : null}
+                                    </div>
+                                  )
+                                })}
+                              </div>
                             </div>
-                          </div>
+                          ) : null}
                         </div>
                       ) : null}
                     </article>
