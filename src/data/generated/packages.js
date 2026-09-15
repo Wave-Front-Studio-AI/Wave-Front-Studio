@@ -73,7 +73,7 @@ export const SERVICES = [
   {
     "id": "landing",
     "name": "Landing Pages",
-    "blurb": "Landing pages for campaigns, products, and offers. Grow and Scale include SEO targeting high-intent keywords and phrases, designed to turn search visitors into enquiries.",
+    "blurb": "Grow and Scale include SEO targeting high-intent keywords and phrases. Scale adds custom design and conversion tracking.",
     "billing": "onetime",
     "tiers": [
       {
@@ -92,7 +92,7 @@ export const SERVICES = [
         "n": "Scale",
         "s": LANDING_PAGE_PRICES.Scale,
         "m": 0,
-        "note": "High-intent SEO for conversions"
+        "note": "Custom design, SEO & tracking"
       }
     ],
     "addons": []
@@ -1082,6 +1082,38 @@ export const DETAILS = {
       "1–2 weeks",
       "3–5 weeks",
       "6–8 weeks"
+    ]
+  ],
+  "landing": [
+    [
+      "Landing page build",
+      "✓",
+      "✓",
+      "✓"
+    ],
+    [
+      "High-intent keyword & phrase targeting",
+      "—",
+      "✓",
+      "✓"
+    ],
+    [
+      "SEO content focused on enquiries",
+      "—",
+      "✓",
+      "✓"
+    ],
+    [
+      "Custom page design",
+      "—",
+      "—",
+      "✓"
+    ],
+    [
+      "Conversion tracking",
+      "—",
+      "—",
+      "✓"
     ]
   ],
   "seo": [
