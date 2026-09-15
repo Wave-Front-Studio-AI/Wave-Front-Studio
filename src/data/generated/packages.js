@@ -80,19 +80,19 @@ export const SERVICES = [
         "n": "Launch",
         "s": LANDING_PAGE_PRICES.Launch,
         "m": 0,
-        "note": `Starting at $${LANDING_PAGE_PRICES.Launch}`
+        "note": "Landing page build"
       },
       {
         "n": "Grow",
         "s": LANDING_PAGE_PRICES.Grow,
         "m": 0,
-        "note": "High-intent SEO for conversions"
+        "note": "High-intent SEO + conversion copy"
       },
       {
         "n": "Scale",
         "s": LANDING_PAGE_PRICES.Scale,
         "m": 0,
-        "note": "Custom design, SEO & tracking"
+        "note": "SEO + custom design + conversion tracking"
       }
     ],
     "addons": []
