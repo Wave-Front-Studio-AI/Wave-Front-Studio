@@ -73,7 +73,7 @@ export const SERVICES = [
   {
     "id": "landing",
     "name": "Landing Pages",
-    "blurb": "Grow and Scale include SEO targeting high-intent keywords and phrases. Scale adds custom design and conversion tracking.",
+    "blurb": "Priced per page — choose how many you need. Grow and Scale include SEO targeting high-intent keywords and phrases. Scale adds custom design and conversion tracking.",
     "billing": "onetime",
     "tiers": [
       {

@@ -44,6 +44,22 @@ Answers stay in the browser: allowing a remote model to write free-form replies
 would break the guarantee that every claim comes from published site content and
 would disclose the visitor's conversation to another service.
 
+## Quote PDF downloads
+
+Landing Pages supports 1–999 pages per selected tier. Prices are per page, and page quantities count as one service for bundle discounts. The page, email quote, and PDF all use the shared calculation in `src/packageQuote.js`.
+
+The package builder's **Download PDF** button exports the current quote in the
+visitor's browser. It includes selected tiers and add-ons, one-time and monthly
+prices, bundle discounts, free-month savings, and the estimated first-year total.
+The file uses Wavefront Studio's existing logo, brand colors, and embedded Outfit
+fonts. Long quotes continue onto numbered pages with repeated table headings.
+
+`src/quotePdf.js` loads only when the visitor downloads a quote. The site fetches
+the logo and PDF fonts from its own public assets; no quote data is uploaded.
+The two `outfit-quote-*.ttf` files are static 400/600-weight instances of the
+existing `outfit-latin-variable.woff2`, distributed under `public/fonts/OFL-Outfit.txt`.
+Run `npm run quote:test` to check PDF creation, pagination, and branding retries.
+
 ## Forms
 
 Enquiries are delivered by `src/formSubmission.js` to `VITE_LEAD_ENDPOINT` (or

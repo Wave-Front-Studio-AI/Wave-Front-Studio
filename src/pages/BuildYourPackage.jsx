@@ -3,17 +3,9 @@ import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { CATEGORIES, DETAILS, OFFER, PAIRS, SERVICES } from '../data/generated/packages.js'
 import { contact } from '../data/site.js'
+import { addonQty, calculateQuote, defaultOptionIndex, money, normalizePageCount, tierPrice } from '../packageQuote.js'
 
-const money = (n) => `$${Math.round(n).toLocaleString('en-US')}`
 const serviceById = Object.fromEntries(SERVICES.map((service) => [service.id, service]))
-
-const defaultOptionIndex = (addon) => {
-  if (!addon.opts) return 0
-  const index = addon.opts.findIndex((option) => option.def)
-  return index < 0 ? 0 : index
-}
-
-const addonQty = (addon, optionIndex) => (addon.opts ? addon.opts[optionIndex].q : 1)
 
 function fromLabel(service) {
   const minSetup = Math.min(...service.tiers.map((tier) => tier.s))
@@ -21,12 +13,7 @@ function fromLabel(service) {
   const minMonthly = monthlies.length ? Math.min(...monthlies) : 0
   if (service.billing === 'monthly') return `${money(minMonthly)}/mo`
   if (service.billing === 'hybrid') return `${money(minSetup)} + ${money(minMonthly)}/mo`
-  return money(minSetup)
-}
-
-function tierPrice(tier) {
-  if (tier.s > 0 && tier.m > 0) return `${money(tier.s)} + ${money(tier.m)}/mo`
-  return tier.s > 0 ? money(tier.s) : `${money(tier.m)}/mo`
+  return `${money(minSetup)}${service.id === 'landing' ? ' / page' : ''}`
 }
 
 function DetailsModal({ service, onClose, onSelect }) {
@@ -58,7 +45,7 @@ function DetailsModal({ service, onClose, onSelect }) {
           {service.tiers.map((tier) => (
             <div key={tier.n}>
               <span>{tier.n}</span>
-              <strong>{tierPrice(tier)}</strong>
+              <strong>{tierPrice(tier)}{service.id === 'landing' ? ' / page' : ''}</strong>
             </div>
           ))}
         </div>
@@ -114,10 +101,24 @@ function DetailsModal({ service, onClose, onSelect }) {
 }
 
 export default function BuildYourPackage() {
-  // state[id] = { tier, addons: Set, opts: { [addonIndex]: optionIndex } }
+  // state[id] = { tier, quantity, addons: [], opts: { [addonIndex]: optionIndex } }
   const [state, setState] = useState({})
   const [modal, setModal] = useState(null)
   const [toast, setToast] = useState('')
+  const [pdfStatus, setPdfStatus] = useState('idle')
+
+  async function downloadPdf() {
+    if (!quote.count || pdfStatus === 'loading') return
+    setPdfStatus('loading')
+    try {
+      const { downloadQuotePdf } = await import('../quotePdf.js')
+      await downloadQuotePdf(quote)
+      setPdfStatus('idle')
+      setToast('Your quote PDF is ready')
+    } catch {
+      setPdfStatus('error')
+    }
+  }
 
   useEffect(() => {
     if (!toast) return undefined
@@ -149,6 +150,10 @@ export default function BuildYourPackage() {
     setState((current) => ({ ...current, [id]: { ...(current[id] || { addons: [], opts: {} }), tier } }))
   }
 
+  function setPageCount(value) {
+    setState((current) => ({ ...current, landing: { ...current.landing, quantity: value === '' ? '' : normalizePageCount(value) } }))
+  }
+
   function toggleAddon(id, addonIndex) {
     setState((current) => {
       const entry = current[id] || { tier: 1, addons: [], opts: {} }
@@ -167,45 +172,7 @@ export default function BuildYourPackage() {
     })
   }
 
-  const quote = useMemo(() => {
-    let one = 0
-    let monthly = 0
-    let count = 0
-    const rows = []
-
-    for (const service of SERVICES) {
-      const entry = state[service.id]
-      if (!entry) continue
-      count += 1
-      const tier = service.tiers[entry.tier]
-      one += tier.s
-      monthly += tier.m
-      rows.push({ label: `${service.name} — ${tier.n}`, amount: tierPrice(tier) })
-
-      for (const addonIndex of [...entry.addons].sort((a, b) => a - b)) {
-        const addon = service.addons[addonIndex]
-        const chosen = entry.opts?.[addonIndex] ?? defaultOptionIndex(addon)
-        const price = addon.p * addonQty(addon, chosen)
-        if (addon.t === 'monthly') monthly += price
-        else one += price
-        const label = addon.opts ? `${addon.l} × ${addonQty(addon, chosen)}/mo — ${addon.opts[chosen].l}` : addon.l
-        rows.push({ label, amount: `${money(price)}${addon.t === 'monthly' ? '/mo' : ''}`, sub: true })
-      }
-    }
-
-    let pct = 0
-    for (const tier of OFFER.bundleTiers) {
-      if (count >= tier.min) {
-        pct = tier.pct
-        break
-      }
-    }
-    const bundleAmount = (one * pct) / 100
-    const oneAfter = one - bundleAmount
-    const firstMonthsFree = monthly * OFFER.firstMonthsFree
-
-    return { one, monthly, count, pct, bundleAmount, oneAfter, firstMonthsFree, rows }
-  }, [state])
+  const quote = useMemo(() => calculateQuote(state), [state])
 
   const nextTier = [...OFFER.bundleTiers].sort((a, b) => a.min - b.min).find((tier) => quote.count < tier.min)
   const maxMin = Math.max(...OFFER.bundleTiers.map((tier) => tier.min))
@@ -307,6 +274,7 @@ export default function BuildYourPackage() {
                   if (!service) return null
                   const entry = state[id]
                   const on = Boolean(entry)
+                  const pageCount = normalizePageCount(entry?.quantity ?? 1)
                   return (
                     <article className={`package-card ${on ? 'is-on' : ''}`} key={id}>
                       <div className="package-card-head">
@@ -345,11 +313,27 @@ export default function BuildYourPackage() {
                               >
                                 {index === 1 ? <span className="package-pop">POPULAR</span> : null}
                                 <strong>{tier.n}</strong>
-                                <b>{tierPrice(tier)}</b>
+                                <b>{tierPrice(tier)}{id === 'landing' ? ' / page' : ''}</b>
                                 <small>{tier.note}</small>
                               </button>
                             ))}
                           </div>
+
+                          {id === 'landing' ? (
+                            <div className="package-quantity">
+                              <div>
+                                <label htmlFor="landing-page-count">How many landing pages?</label>
+                                <p id="landing-page-cost">
+                                  {pageCount} page{pageCount === 1 ? '' : 's'} × {money(service.tiers[entry.tier].s)} each = <b>{money(pageCount * service.tiers[entry.tier].s)}</b>
+                                </p>
+                              </div>
+                              <div className="package-quantity-controls">
+                                <button type="button" aria-label="Remove one landing page" disabled={pageCount <= 1} onClick={() => setPageCount(pageCount - 1)}>−</button>
+                                <input id="landing-page-count" type="number" inputMode="numeric" min="1" max="999" step="1" value={entry.quantity ?? 1} aria-describedby="landing-page-cost" onChange={(event) => setPageCount(event.target.value)} onBlur={() => setPageCount(pageCount)} />
+                                <button type="button" aria-label="Add one landing page" disabled={pageCount >= 999} onClick={() => setPageCount(pageCount + 1)}>+</button>
+                              </div>
+                            </div>
+                          ) : null}
 
                           {service.addons.length ? (
                             <div className="package-addons">
@@ -443,7 +427,28 @@ export default function BuildYourPackage() {
               </>
             )}
 
-            <button className="kinetic-button group" type="button" onClick={emailQuote}>
+            <button
+              className="kinetic-button group package-pdf-button"
+              type="button"
+              onClick={downloadPdf}
+              disabled={!quote.count || pdfStatus === 'loading'}
+              aria-busy={pdfStatus === 'loading'}
+              aria-describedby={pdfStatus === 'error' ? 'quote-pdf-error' : undefined}
+            >
+              <span>{pdfStatus === 'loading' ? 'Preparing PDF...' : 'Download PDF'}</span>
+              <span className="button-island">
+                <svg className="size-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M10 3v9m-4-4 4 4 4-4M4 13v4h12v-4" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+            </button>
+            {pdfStatus === 'error' ? (
+              <p className="package-pdf-error" id="quote-pdf-error" role="alert">
+                We couldn’t create your PDF. Please try again.
+              </p>
+            ) : null}
+
+            <button className="kinetic-button light group package-email-button" type="button" onClick={emailQuote}>
               <span>Email me this quote</span>
               <span className="button-island">
                 <ArrowIcon className="size-4" />
