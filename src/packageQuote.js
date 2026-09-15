@@ -22,17 +22,19 @@ export function landingPageBundle(pages) {
 
 export function customLandingQuote(custom = {}) {
   const setup = Number(custom.setup)
-  const perPage = Number(custom.perPage)
+  const perPageEnabled = custom.perPageEnabled === true
+  const perPage = perPageEnabled ? Number(custom.perPage) : 0
   const pages = Number(custom.pages ?? 1)
-  const pagesTbc = custom.pagesTbc === true
+  const pagesTbc = perPageEnabled && custom.pagesTbc === true
+  const name = String(custom.name ?? '').trim().slice(0, 80)
   const details = String(custom.details ?? '').trim().slice(0, 2000)
   const validPrice = (raw, value) => raw != null && String(raw).trim() !== '' && Number.isInteger(value) && value >= 0 && value <= 1000000
   const errors = []
-  if (!validPrice(custom.setup, setup) || !validPrice(custom.perPage, perPage)) errors.push('Enter the map/setup and per-page prices in whole dollars. Use 0 if a charge does not apply.')
-  else if (setup + perPage <= 0) errors.push('Enter a price greater than $0 for the setup or pages.')
-  if (!pagesTbc && (!Number.isInteger(pages) || pages < 1 || pages > 9999)) errors.push('Enter a whole page count from 1 to 9,999.')
+  if (!validPrice(custom.setup, setup) || (perPageEnabled && !validPrice(custom.perPage, perPage))) errors.push('Enter the project price and any per-page price in whole dollars. Use 0 if a charge does not apply.')
+  else if (setup + perPage <= 0) errors.push('Enter a price greater than $0 for the project or pages.')
+  if (perPageEnabled && !pagesTbc && (!Number.isInteger(pages) || pages < 1 || pages > 9999)) errors.push('Enter a whole page count from 1 to 9,999.')
   if (!details) errors.push('Add the project details to include in your quote.')
-  return { setup, perPage, pages, pagesTbc, details, errors }
+  return { setup, perPage, perPageEnabled, pages, pagesTbc, name, details, errors }
 }
 
 // All quote formats share this calculation, including page quantities and savings.
@@ -53,13 +55,13 @@ export function calculateQuote(state) {
       const custom = customLandingQuote(entry.custom)
       errors.push(...custom.errors)
       if (!custom.errors.length) {
-        one += custom.setup + (custom.pagesTbc ? 0 : custom.perPage * custom.pages)
-        rows.push({ label: 'Landing Pages — Custom map/setup', amount: money(custom.setup), description: custom.details })
+        one += custom.setup + (custom.perPageEnabled && !custom.pagesTbc ? custom.perPage * custom.pages : 0)
+        rows.push({ label: `Landing Pages — Custom${custom.name ? `: ${custom.name}` : ' build'}`, amount: money(custom.setup), description: custom.details })
         if (custom.pagesTbc) {
           pendingPageRate = custom.perPage
-          rows.push({ label: 'Installer pages — quantity to be confirmed', amount: `${money(custom.perPage)} per page`, sub: true })
-        } else {
-          rows.push({ label: `${custom.pages} installer page${custom.pages === 1 ? '' : 's'} × ${money(custom.perPage)} per page`, amount: money(custom.perPage * custom.pages), sub: true })
+          rows.push({ label: 'Pages — quantity to be confirmed', amount: `${money(custom.perPage)} per page`, sub: true })
+        } else if (custom.perPageEnabled) {
+          rows.push({ label: `${custom.pages} page${custom.pages === 1 ? '' : 's'} × ${money(custom.perPage)} per page`, amount: money(custom.perPage * custom.pages), sub: true })
         }
       } else {
         rows.push({ label: 'Landing Pages — Custom', amount: 'Details needed' })

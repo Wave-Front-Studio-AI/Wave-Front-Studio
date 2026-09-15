@@ -109,7 +109,7 @@ export const SERVICES = [
         "custom": true,
         "s": 0,
         "m": 0,
-        "note": "Map setup, per-page pricing & project details"
+        "note": "Unique builds with your own scope & pricing"
       }
     ],
     "addons": []
@@ -1171,7 +1171,7 @@ export const DETAILS = {
       "✓",
       "As scoped"
     ],
-    ["Map setup & per-page pricing", "—", "—", "—", "Set in quote"]
+    ["Custom scope & pricing", "—", "—", "—", "Set in quote"]
   ],
   "seo": [
     [

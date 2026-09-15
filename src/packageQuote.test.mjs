@@ -68,7 +68,7 @@ test('email plans add one setup fee and keep recurring charges separate', () => 
   }
 })
 
-const custom = { setup: '750', perPage: '100', pages: '10', details: 'Clickable installer map. Company pages stay on the main website.' }
+const custom = { name: 'Installer directory', setup: '750', perPageEnabled: true, perPage: '100', pages: '10', details: 'Clickable installer map. Company pages stay on the main website.' }
 
 test('custom pages replace standard bundles and keep setup, page charges, and email separate', () => {
   const state = { landing: { ...selected(3, 300), custom }, email: selected(0) }
@@ -79,6 +79,7 @@ test('custom pages replace standard bundles and keep setup, page charges, and em
   assert.equal(quote.monthly, 250)
   assert.equal(quote.count, 2)
   assert.equal(quote.rows[0].amount, '$750')
+  assert.equal(quote.rows[0].label, 'Landing Pages — Custom: Installer directory')
   assert.equal(quote.rows[0].description, custom.details)
   assert.equal(quote.rows[1].amount, '$1,000')
   assert.equal(quote.rows[2].description, '1 email per month + analytics')
@@ -109,4 +110,17 @@ test('invalid custom prices, counts, or missing scope cannot produce an exportab
   assert.equal(customLandingQuote({ ...custom, setup: 0 }).errors.length, 0)
   assert.equal(customLandingQuote({ ...custom, perPage: 0 }).errors.length, 0)
   assert.ok(customLandingQuote().errors.length)
+})
+
+test('a unique build can use a single project price without per-page fields', () => {
+  const build = { name: 'Product launch experience', setup: '2400', details: 'Interactive product demo, custom design, and enquiry form.' }
+  const quote = calculateQuote({ landing: { ...selected(3, 300), custom: build } })
+  assert.equal(quote.one, 2400)
+  assert.equal(quote.rows.length, 1)
+  assert.equal(quote.rows[0].label, 'Landing Pages — Custom: Product launch experience')
+  assert.equal(quote.rows[0].description, build.details)
+  assert.equal(quote.pendingPageRate, undefined)
+  assert.equal(quote.errors, undefined)
+  const switchedOff = calculateQuote({ landing: { ...selected(3), custom: { ...build, perPageEnabled: false, perPage: 999, pages: '', pagesTbc: true } } })
+  assert.deepEqual(switchedOff, quote)
 })

@@ -161,11 +161,11 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
 
   y += 16
   const savings = quote.bundleAmount + quote.firstMonthsFree
-  const pendingNote = pendingPages ? lines(`Plus ${money(quote.pendingPageRateAfter)} per installer page${quote.pct ? ` after the ${quote.pct}% bundle discount` : ''}. Page count and final total to be confirmed.`, WIDTH, 9) : []
+  const pendingNote = pendingPages ? lines(`Plus ${money(quote.pendingPageRateAfter)} per page${quote.pct ? ` after the ${quote.pct}% bundle discount` : ''}. Page count and final total to be confirmed.`, WIDTH, 9) : []
   ensureSpace(148 + (quote.pct > 0 ? 22 : 0) + (quote.monthly > 0 ? 44 : 0) + (savings > 0 ? 22 : 0) + pendingNote.length * 13 + (pendingPages ? 12 : 0))
   text('YOUR INVESTMENT', MARGIN, y + 9, { size: 9, bold: true, color: COLORS.blue })
   y += 29
-  text(pendingPages ? 'Fixed fees subtotal (excludes installer pages)' : 'One-time subtotal', MARGIN, y)
+  text(pendingPages ? 'Fixed fees subtotal (excludes page charges)' : 'One-time subtotal', MARGIN, y)
   text(money(quote.one), RIGHT, y, { bold: true, align: 'right' })
   if (quote.pct > 0) {
     y += 22

@@ -44,7 +44,7 @@ test('one-time-only and monthly-only selections both export', () => {
 test('a full-catalog quote including every add-on continues across pages', () => {
   const state = Object.fromEntries(SERVICES.map((service) => [service.id, {
     tier: service.tiers.length - 1, pages: 300, addons: service.addons.map((_, index) => index), opts: {},
-    custom: { setup: 750, perPage: 100, pages: 300, details: 'Installer map and company pages on the main website.' },
+    custom: { setup: 750, perPageEnabled: true, perPage: 100, pages: 300, details: 'Installer map and company pages on the main website.' },
   }]))
   const doc = createQuotePdf(calculateQuote(state), assets, date)
   assert.ok(doc.getNumberOfPages() > 2)
@@ -68,7 +68,7 @@ test('an empty selection cannot become a quote', () => {
 
 test('custom scope and client names export, with unknown quantities kept open', () => {
   const custom = calculateQuote({
-    landing: { tier: 3, custom: { setup: 750, perPage: 100, pagesTbc: true, details: 'Clickable installer map. Each company has a page on the main website.' } },
+    landing: { tier: 3, custom: { setup: 750, perPageEnabled: true, perPage: 100, pagesTbc: true, details: 'Clickable installer map. Each company has a page on the main website.' } },
     email: { tier: 0, addons: [] },
   })
   const doc = createQuotePdf({ ...custom, clientName: 'Seal n Lock' }, assets, date)
@@ -83,6 +83,11 @@ test('long custom scope paginates without changing quote details', () => {
   assert.ok(doc.getNumberOfPages() >= 4)
   assert.ok(doc.getNumberOfPages() <= 8)
   assert.deepEqual(custom, original)
+})
+
+test('a flat-price custom project with a long name exports on one page', () => {
+  const project = calculateQuote({ landing: { tier: 3, custom: { name: 'Unique product launch and interactive demonstration experience for a new audience', setup: 2400, details: 'Custom design, product demo, and enquiry form.' } } })
+  assert.equal(createQuotePdf({ ...project, clientName: 'Example Client' }, assets, date).getNumberOfPages(), 1)
 })
 
 test('branding failures can be retried and successful assets are cached', async (t) => {

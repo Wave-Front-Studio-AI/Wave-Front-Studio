@@ -188,7 +188,7 @@ export default function BuildYourPackage() {
 
   const quote = useMemo(() => calculateQuote(state), [state])
   const pendingPages = quote.pendingPageRate !== undefined
-  const pendingNote = pendingPages ? `Plus ${money(quote.pendingPageRateAfter)} per installer page${quote.pct ? ` after the ${quote.pct}% bundle discount` : ''}. Page count and final total to be confirmed.` : ''
+  const pendingNote = pendingPages ? `Plus ${money(quote.pendingPageRateAfter)} per page${quote.pct ? ` after the ${quote.pct}% bundle discount` : ''}. Page count and final total to be confirmed.` : ''
 
   const nextTier = [...OFFER.bundleTiers].sort((a, b) => a.min - b.min).find((tier) => quote.count < tier.min)
   const maxMin = Math.max(...OFFER.bundleTiers.map((tier) => tier.min))
@@ -340,15 +340,25 @@ export default function BuildYourPackage() {
                           {id === 'landing' && service.tiers[entry.tier].custom ? (
                             <fieldset className="package-custom">
                               <legend>Custom landing page quote</legend>
-                              <p>Enter your map fee and page pricing. These replace the standard tier and bundle prices.</p>
+                              <p>Set the price and scope for your unique build. Add per-page pricing if your project needs it.</p>
                               <div className="package-custom-prices">
-                                <label htmlFor="custom-map-price">Map / setup price ($)
-                                  <input id="custom-map-price" type="number" min="0" max="1000000" step="1" inputMode="numeric" placeholder="e.g. 750" value={entry.custom?.setup ?? ''} onChange={(event) => setCustomField('setup', event.target.value)} />
+                                <label htmlFor="custom-project-name">Project name (optional)
+                                  <input id="custom-project-name" type="text" maxLength="80" placeholder="e.g. Product launch experience" value={entry.custom?.name ?? ''} onChange={(event) => setCustomField('name', event.target.value)} />
                                 </label>
-                                <label htmlFor="custom-page-price">Price per installer page ($)
+                                <label htmlFor="custom-project-price">One-time project price ($)
+                                  <input id="custom-project-price" type="number" min="0" max="1000000" step="1" inputMode="numeric" placeholder="Enter project price" value={entry.custom?.setup ?? ''} onChange={(event) => setCustomField('setup', event.target.value)} />
+                                </label>
+                              </div>
+                              <label className="package-custom-tbc" htmlFor="custom-per-page-enabled">
+                                <input id="custom-per-page-enabled" type="checkbox" checked={entry.custom?.perPageEnabled === true} onChange={(event) => setCustomField('perPageEnabled', event.target.checked)} />
+                                Add per-page pricing
+                              </label>
+                              {entry.custom?.perPageEnabled ? <>
+                              <div className="package-custom-prices">
+                                <label htmlFor="custom-page-price">Additional price per page ($)
                                   <input id="custom-page-price" type="number" min="0" max="1000000" step="1" inputMode="numeric" placeholder="e.g. 100" value={entry.custom?.perPage ?? ''} onChange={(event) => setCustomField('perPage', event.target.value)} />
                                 </label>
-                                <label htmlFor="custom-page-count">Number of installer pages
+                                <label htmlFor="custom-page-count">Number of pages
                                   <input id="custom-page-count" type="number" min="1" max="9999" step="1" inputMode="numeric" disabled={entry.custom?.pagesTbc === true} value={entry.custom?.pages ?? 1} onChange={(event) => setCustomField('pages', event.target.value)} />
                                 </label>
                               </div>
@@ -356,10 +366,11 @@ export default function BuildYourPackage() {
                                 <input id="custom-pages-tbc" type="checkbox" checked={entry.custom?.pagesTbc === true} onChange={(event) => setCustomField('pagesTbc', event.target.checked)} />
                                 Page count to be confirmed
                               </label>
+                              </> : null}
                               <label htmlFor="custom-project-details">Project details for the quote
-                                <textarea id="custom-project-details" rows="5" maxLength="2000" placeholder="Describe the map, installer pages, and what is included." value={entry.custom?.details ?? ''} onChange={(event) => setCustomField('details', event.target.value)} />
+                                <textarea id="custom-project-details" rows="5" maxLength="2000" placeholder="Describe the features, design, integrations, and deliverables included in this build." value={entry.custom?.details ?? ''} onChange={(event) => setCustomField('details', event.target.value)} />
                               </label>
-                              <p>Use $0 if a charge does not apply. Prices are one-time charges in USD.</p>
+                              <p>Custom pricing replaces standard tier and bundle prices. All charges are one-time, in USD. Use $0 for the project price if you charge only per page.</p>
                             </fieldset>
                           ) : id === 'landing' ? (
                             <div className="package-page-bundle">
