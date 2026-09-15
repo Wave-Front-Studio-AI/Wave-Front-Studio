@@ -7,13 +7,18 @@
 import { clientLogos, contact, customWorkLinks, projects, serviceLinks, testimonials } from './data/site.js'
 import { services } from './data/services.js'
 import { customWorks } from './data/customWorks.js'
-import { locations, locationsHub } from './data/generated/locations.js'
+import { locations as allLocations, locationsHub } from './data/generated/locations.js'
+import { isLive } from './data/schedule.js'
 import { legalPages } from './data/generated/legal.js'
 import { posts } from './data/generated/posts.js'
 import { OFFER, SERVICES as PACKAGE_SERVICES, DETAILS as PACKAGE_DETAILS } from './data/generated/packages.js'
 import { freeSetupFaqs, siteFaqs } from './data/faqs.js'
 import { CHIPS, strings } from './chatLocale.js'
 import { FOREIGN_STOP_WORDS, detectLanguage, translateQuery } from './chatLanguage.js'
+
+// Scheduled location pages sit in the data before their publish date; the
+// assistant only knows the ones that are live in this build.
+const locations = allLocations.filter((location) => isLive(location.slug))
 
 const STOP_WORDS = new Set([
   'a', 'about', 'an', 'and', 'any', 'are', 'as', 'at', 'be', 'been', 'but', 'by', 'can', 'could',
@@ -137,7 +142,7 @@ const companyEntries = [
   {
     id: 'company-locations', title: locationsHub?.title || 'Where we work', url: '/locations/', kind: 'company',
     keywords: ['locations', 'areas', 'where do you work', 'coverage', 'near me', 'local', 'florida', 'city', 'cities', 'remote', 'outside the us'],
-    body: `${locationsHub?.description || ''} Pages are published for ${locations.length} areas: ${locations.map((location) => location.title.replace(/^Web Design & SEO (?:in|for) /, '')).join('; ')}. We are based in Sarasota, Florida and work with clients worldwide - all communication, project management, and delivery happens digitally.`.trim(),
+    body: `${locationsHub?.description || ''} Pages are published for ${locations.length} areas: ${locations.map((location) => location.title.replace(/^Web Design & SEO (?:in|for|on) /, '')).join('; ')}. We are based in Sarasota, Florida and work with clients worldwide - all communication, project management, and delivery happens digitally.`.trim(),
   },
   {
     id: 'company-free-setup', title: 'Free setup this quarter', url: '/free-setup/', kind: 'company',
@@ -294,14 +299,14 @@ const packageEntries = PACKAGE_SERVICES.map((service) => {
 /* ------------------------------------------------------------------ */
 
 const locationEntries = locations.map((location) => {
-  const place = location.title.replace(/^Web Design & SEO (?:in|for) /, '')
+  const place = location.title.replace(/^Web Design & SEO (?:in|for|on) /, '')
   return makeEntry({
     id: `location-${location.slug}`,
     title: location.title,
     url: `/${location.slug}/`,
     kind: 'location',
     // Place names only. Generic words like "area" belong to the locations hub,
-    // not to eighteen individual pages competing for the same question.
+    // not to every individual page competing for the same question.
     keywords: [place, place.split(/,| and /).map((part) => part.trim()).join(' '), 'web design', 'seo'],
     body: `${location.description} ${clip(plainText(location.content), 1400)}`,
     plain: location.description,
@@ -313,7 +318,7 @@ const locationEntries = locations.map((location) => {
 // Nashville" (answer with the page) from "do you cover my area" (answer with
 // the hub), which otherwise look identical to the index.
 const PLACE_TOKENS = new Set(
-  locations.flatMap((location) => tokenize(location.title.replace(/^Web Design & SEO (?:in|for) /, ''))),
+  locations.flatMap((location) => tokenize(location.title.replace(/^Web Design & SEO (?:in|for|on) /, ''))),
 )
 
 const postEntries = posts.map((post) => makeEntry({

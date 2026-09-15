@@ -4,7 +4,8 @@ import { ArrowIcon } from '../components/Icons.jsx'
 import { CtaBand, Counter, Reveal, SectionHeading, SupportCallout, Testimonials } from '../components/shared.jsx'
 import Marquee from '../components/ui/Marquee.jsx'
 import NumberTicker from '../components/ui/NumberTicker.jsx'
-import { clientLogos, offerings, offeringsHeading, projects, siteOrigin } from '../data/site.js'
+import { clientLogos, offerings, offeringsHeading, projects } from '../data/site.js'
+import { byOrganization, homeSeo, pageGraph, webPage } from '../data/seo.js'
 
 const stats = [
   { label: 'Happy Clients', to: 800, suffix: '+' },
@@ -78,33 +79,13 @@ function SkillBar({ label, value, index }) {
 }
 
 export default function Home() {
-  const schema = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Organization',
-        name: 'Wavefront Studio LLC',
-        url: `${siteOrigin}/`,
-        logo: `${siteOrigin}/wave-logo.webp`,
-        telephone: '+1 941-415-2595',
-        email: 'info@wavefrontstudiollc.com',
-        address: { '@type': 'PostalAddress', addressLocality: 'Sarasota', addressRegion: 'FL', postalCode: '34234', addressCountry: 'US' },
-        sameAs: ['https://www.instagram.com/wavefrontstudio'],
-      },
-      { '@type': 'WebSite', name: 'Wavefront Studio', url: `${siteOrigin}/` },
-    ],
-  }
+  // The organization and website nodes come with every page's graph.
+  const schema = pageGraph(webPage({ path: '/', name: homeSeo.title, description: homeSeo.description, about: byOrganization }))
 
   return (
     <Layout
       className="home-page"
-      seo={{
-        title: 'Full-Service Digital Agency | Wavefront Studio LLC',
-        description:
-          'From custom web development and AI-powered chatbots to SEO strategies and stunning UI/UX design – Wavefront Studio is a full-service digital agency that turns bold ideas into high-performing digital products.',
-        canonical: '/',
-        schema,
-      }}
+      seo={{ ...homeSeo, canonical: '/', schema }}
     >
       <section className="hero-section">
         <div className="page-frame hero-grid">

@@ -216,7 +216,7 @@ export default function FreeSetup() {
       seo={{
         title: 'Free Setup This Quarter | Wavefront Studio',
         description:
-          'Free setup on AI Chatbot & Automation, Web Development and Website SEO. Five places per quarter, because setup is the part that takes our team’s time rather than software’s.',
+          'We waive the one-off setup fee on AI chatbots, web development and SEO for five businesses a quarter. Monthly fees still apply, quoted before you commit.',
         canonical: '/free-setup/',
       }}
     >

@@ -6,6 +6,7 @@ import { ServicePlans } from './ServicePage.jsx'
 import { services } from '../data/services.js'
 import { customWorks } from '../data/customWorks.js'
 import { siteOrigin } from '../data/site.js'
+import { breadcrumbs, byOrganization, pageGraph } from '../data/seo.js'
 
 function EntryMotif() {
   return (
@@ -285,25 +286,22 @@ function RelatedWork({ current }) {
 
 export default function CustomWorkPage({ work }) {
   const canonical = `/${work.slug}/`
-  const schema = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'Service',
-        name: work.name,
-        description: work.metaDescription,
-        url: `${siteOrigin}${canonical}`,
-        provider: { '@type': 'Organization', name: 'Wavefront Studio LLC', url: `${siteOrigin}/` },
-      },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Wavefront Studio', item: `${siteOrigin}/` },
-          { '@type': 'ListItem', position: 2, name: work.nav, item: `${siteOrigin}${canonical}` },
-        ],
-      },
-    ],
-  }
+  const url = `${siteOrigin}${canonical}`
+  // Named by what the service is (work.nav), not the page headline, which is a
+  // slogan such as "Let Your Customers See It Before They Buy It".
+  const schema = pageGraph(
+    {
+      '@type': 'Service',
+      '@id': `${url}#service`,
+      name: work.nav,
+      serviceType: work.eyebrow || work.nav,
+      description: work.metaDescription,
+      url,
+      areaServed: 'Worldwide',
+      provider: byOrganization,
+    },
+    breadcrumbs([['Home', '/'], ['Custom Works', '/custom-works/'], [work.nav, canonical]]),
+  )
 
   const entryVisual = (() => {
     if (work.showcase) {

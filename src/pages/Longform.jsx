@@ -1,9 +1,22 @@
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { CtaBand, Reveal, SectionHeading } from '../components/shared.jsx'
+import { PlaceLinks, liveLocations, liveStates, placeName } from './PlacePage.jsx'
 import { posts } from '../data/generated/posts.js'
-import { locations, locationsHub } from '../data/generated/locations.js'
-import { siteOrigin } from '../data/site.js'
+import { locationsHub } from '../data/generated/locations.js'
+import { publishDates } from '../data/schedule.js'
+import {
+  absoluteUrl,
+  blogSeo,
+  breadcrumbs,
+  byOrganization,
+  legalDescriptions,
+  locationsHubTitle,
+  pageGraph,
+  postShareImage,
+  webPage,
+  withBrand,
+} from '../data/seo.js'
 
 const formatDate = (iso) =>
   new Date(`${iso}T00:00:00`).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -19,14 +32,30 @@ function Prose({ html }) {
 /* ------------------------------------------------------------------ */
 
 export function BlogIndex() {
+  const newest = posts.reduce((latest, post) => (post.date > latest ? post.date : latest), '')
+  const schema = pageGraph(
+    {
+      '@type': 'Blog',
+      '@id': `${absoluteUrl('/blog/')}#blog`,
+      url: absoluteUrl('/blog/'),
+      name: 'Wavefront Studio Blog',
+      description: blogSeo.description,
+      publisher: byOrganization,
+      inLanguage: 'en-US',
+      blogPost: posts.map((post) => ({
+        '@type': 'BlogPosting',
+        headline: post.title,
+        url: absoluteUrl(`/${post.slug}/`),
+        datePublished: post.date,
+      })),
+    },
+    breadcrumbs([['Home', '/'], ['Blog', '/blog/']]),
+  )
+
   return (
     <Layout
       className="blog-index"
-      seo={{
-        title: 'Blog | Wavefront Studio LLC',
-        description: 'Practical writing on websites, SEO, marketing and automation for businesses that want the work to pay for itself.',
-        canonical: '/blog/',
-      }}
+      seo={{ ...blogSeo, canonical: '/blog/', schema, modified: newest }}
     >
       <section className="page-hero">
         <div className="page-frame">
@@ -81,20 +110,41 @@ export function BlogIndex() {
 export function BlogPost({ post }) {
   const others = posts.filter((item) => item.slug !== post.slug).slice(0, 3)
   const canonical = `/${post.slug}/`
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    description: post.excerpt,
-    datePublished: post.date,
-    url: `${siteOrigin}${canonical}`,
-    author: { '@type': 'Organization', name: 'Wavefront Studio LLC' },
-    publisher: { '@type': 'Organization', name: 'Wavefront Studio LLC', logo: { '@type': 'ImageObject', url: `${siteOrigin}/wave-logo.webp` } },
-    ...(post.image ? { image: `${siteOrigin}${post.image}` } : {}),
-  }
+  const url = absoluteUrl(canonical)
+  const modified = post.updated || post.date
+  const schema = pageGraph(
+    {
+      '@type': 'BlogPosting',
+      '@id': `${url}#article`,
+      headline: post.title,
+      description: post.excerpt,
+      datePublished: post.date,
+      dateModified: modified,
+      url,
+      mainEntityOfPage: url,
+      author: byOrganization,
+      publisher: byOrganization,
+      isPartOf: { '@id': `${absoluteUrl('/blog/')}#blog` },
+      inLanguage: 'en-US',
+      ...(post.image ? { image: absoluteUrl(post.image) } : {}),
+    },
+    breadcrumbs([['Home', '/'], ['Blog', '/blog/'], [post.title, canonical]]),
+  )
 
   return (
-    <Layout className="blog-post" seo={{ title: `${post.title} | Wavefront Studio`, description: post.excerpt, canonical, schema }}>
+    <Layout
+      className="blog-post"
+      seo={{
+        title: withBrand(post.title),
+        description: post.excerpt,
+        canonical,
+        schema,
+        ogType: 'article',
+        published: post.date,
+        modified,
+        image: postShareImage(post),
+      }}
+    >
       <section className="article-hero">
         <div className="page-frame">
           <a className="text-link back-link" href="/blog/">
@@ -154,14 +204,41 @@ export function BlogPost({ post }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Locations                                                           */
+/* Locations hub                                                       */
 /* ------------------------------------------------------------------ */
 
 export function LocationsPage() {
+  // National city guides are the scheduled location pages; the local and
+  // remote-metro pages are already described in the hub copy above them.
+  const remoteCities = liveLocations.filter((item) => item.slug in publishDates)
+  const guides = [
+    ...liveStates.map((item) => ({ slug: item.slug, name: item.state })),
+    ...remoteCities.map((item) => ({ slug: item.slug, name: placeName(item.title) })),
+  ]
+  const schema = pageGraph(
+    webPage({
+      type: 'CollectionPage',
+      path: '/locations/',
+      name: locationsHub.title,
+      description: locationsHub.description,
+      mainEntity: {
+        '@type': 'ItemList',
+        numberOfItems: liveLocations.length + liveStates.length,
+        itemListElement: [...liveLocations, ...liveStates].map((item, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: item.title,
+          url: absoluteUrl(`/${item.slug}/`),
+        })),
+      },
+    }),
+    breadcrumbs([['Home', '/'], ['Where We Work', '/locations/']]),
+  )
+
   return (
     <Layout
       className="locations-page"
-      seo={{ title: `${locationsHub.title} | Wavefront Studio`, description: locationsHub.description, canonical: '/locations/' }}
+      seo={{ title: locationsHubTitle, description: locationsHub.description, canonical: '/locations/', schema }}
     >
       <section className="page-hero">
         <div className="page-frame">
@@ -176,64 +253,16 @@ export function LocationsPage() {
         </div>
       </section>
 
+      <PlaceLinks
+        eyebrow="Further afield"
+        title="State and city guides."
+        copy="Places we serve remotely from Sarasota. Each guide starts from that market’s own census numbers and what they mean for a small business website."
+        items={guides}
+      />
+
       <CtaBand
         title="Not sure how you rank in your city right now?"
         copy="We will audit your site for free and tell you what is actually holding it back — including if the answer is that you do not need a rebuild."
-        label="Get a free audit"
-      />
-    </Layout>
-  )
-}
-
-export function LocationPage({ location }) {
-  const canonical = `/${location.slug}/`
-  const others = locations.filter((item) => item.slug !== location.slug)
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: location.title,
-    description: location.description,
-    url: `${siteOrigin}${canonical}`,
-    isPartOf: { '@type': 'WebSite', name: 'Wavefront Studio', url: `${siteOrigin}/` },
-  }
-
-  return (
-    <Layout
-      className="location-page"
-      seo={{ title: `${location.title} | Wavefront Studio`, description: location.description, canonical, schema }}
-    >
-      <section className="page-hero">
-        <div className="page-frame">
-          <a className="text-link back-link" href="/locations/">
-            <span aria-hidden="true">←</span> Where we work
-          </a>
-          <h1>{location.title}</h1>
-        </div>
-      </section>
-
-      <section className="chapter">
-        <div className="page-frame">
-          <Prose html={location.content} />
-        </div>
-      </section>
-
-      <section className="chapter related-chapter">
-        <div className="page-frame">
-          <SectionHeading eyebrow="Other markets" title="Everywhere else we work." />
-          <div className="related-links">
-            {others.map((item) => (
-              <a key={item.slug} href={`/${item.slug}/`}>
-                {item.title.replace(/^Web Design (?:&|and) SEO (?:for|in) /, '')}
-                <ArrowIcon />
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <CtaBand
-        title="Tell us what you are trying to do."
-        copy="We will tell you honestly whether we are the right fit — and what we would fix first."
         label="Get a free audit"
       />
     </Layout>
@@ -248,7 +277,11 @@ export function LegalPage({ page }) {
   return (
     <Layout
       className="legal-page"
-      seo={{ title: `${page.title} | Wavefront Studio LLC`, description: page.description, canonical: `/${page.slug}/` }}
+      seo={{
+        title: `${page.title} | Wavefront Studio LLC`,
+        description: legalDescriptions[page.slug] || page.description,
+        canonical: `/${page.slug}/`,
+      }}
     >
       <section className="page-hero is-tight">
         <div className="page-frame">

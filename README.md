@@ -21,7 +21,7 @@ npm run check      # eslint
 | `src/data/site.js` | Nav, footer, contact details, testimonials, projects, and service cards. |
 | `src/data/services.js` | The eight **Our Services** pages. |
 | `src/data/customWorks.js` | The three **Custom Works** pages. |
-| `src/data/generated/` | Content pulled from the live site: 18 location pages, 4 legal pages, 9 blog posts, and the Build Your Package pricing data. |
+| `src/data/generated/` | Content pulled from the live site: 23 location pages, 4 legal pages, 9 blog posts, and the Build Your Package pricing data. |
 | `src/data/faqs.js` | The published Q&A pairs, shared by `/faqs/`, `/free-setup/`, and the assistant. |
 | `src/pages/` | One component per page type. |
 | `src/components/` | Nav, footer, layout, the site assistant, and the shared section primitives. |
@@ -33,7 +33,7 @@ npm run check      # eslint
 
 A floating assistant (`src/components/ChatAgent.jsx`) answers questions from an
 index built out of `src/data/` — services, custom works, plans, the Build Your
-Package prices, the FAQs, the 18 area pages, the blog, and the policies. It
+Package prices, the FAQs, the 23 area pages, the blog, and the policies. It
 cannot state anything the site does not publish. The index is a lazy chunk, so a
 visitor only downloads it when they open the panel, and the widget renders in the
 browser only, keeping it out of the prerendered HTML.

@@ -12,7 +12,7 @@ export default function PlatformPage() {
       seo={{
         title: 'The Wavefront Studio Platform | Wavefront Studio LLC',
         description:
-          'Wavefront Studio is the software platform we build and operate for our clients: lead capture, customer pipelines, scheduling, messaging, social publishing and reporting in one place.',
+          'The software platform we build and run for clients: lead capture, customer pipelines, scheduling, messaging, social publishing and reporting in one place.',
         canonical: '/platform/',
       }}
     >

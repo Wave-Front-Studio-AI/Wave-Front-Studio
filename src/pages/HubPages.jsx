@@ -4,6 +4,7 @@ import { CtaBand, Reveal } from '../components/shared.jsx'
 import { customWorks } from '../data/customWorks.js'
 import { services } from '../data/services.js'
 import { siteOrigin } from '../data/site.js'
+import { breadcrumbs, pageGraph, webPage } from '../data/seo.js'
 
 const customWorkImages = {
   'ai-chatbot': {
@@ -49,34 +50,25 @@ function HubCard({ item, index, kind }) {
 }
 
 function HubPage({ canonical, eyebrow, title, intro, items, kind, seoTitle, seoDescription, cta }) {
-  const schema = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'CollectionPage',
-        name: title,
-        description: seoDescription,
-        url: `${siteOrigin}${canonical}`,
-        mainEntity: {
-          '@type': 'ItemList',
-          numberOfItems: items.length,
-          itemListElement: items.map((item, index) => ({
-            '@type': 'ListItem',
-            position: index + 1,
-            name: item.nav || item.name,
-            url: `${siteOrigin}/${item.slug}/`,
-          })),
-        },
+  const schema = pageGraph(
+    webPage({
+      type: 'CollectionPage',
+      path: canonical,
+      name: title,
+      description: seoDescription,
+      mainEntity: {
+        '@type': 'ItemList',
+        numberOfItems: items.length,
+        itemListElement: items.map((item, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: item.nav || item.name,
+          url: `${siteOrigin}/${item.slug}/`,
+        })),
       },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteOrigin}/` },
-          { '@type': 'ListItem', position: 2, name: eyebrow, item: `${siteOrigin}${canonical}` },
-        ],
-      },
-    ],
-  }
+    }),
+    breadcrumbs([['Home', '/'], [eyebrow, canonical]]),
+  )
 
   return (
     <Layout
