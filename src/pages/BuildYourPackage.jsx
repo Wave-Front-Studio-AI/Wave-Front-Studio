@@ -239,8 +239,6 @@ export default function BuildYourPackage() {
     window.location.href = `mailto:${OFFER.contactEmail}?subject=${encodeURIComponent('My Wavefront Package Quote')}&body=${encodeURIComponent(body)}`
   }
 
-  const firstYear = quote.oneAfter + quote.monthly * 12 - quote.firstMonthsFree
-
   return (
     <Layout
       className="package-page"
@@ -538,10 +536,7 @@ export default function BuildYourPackage() {
                       <small>/mo</small>
                     </b>
                   </div>
-                  {pendingPages ? <p className="package-firstyear">{pendingNote}</p> : null}
-                  {quote.monthly > 0 && !pendingPages ? (
-                    <p className="package-firstyear">Est. first-year total: {money(firstYear)} (incl. first month free)</p>
-                  ) : null}
+                  {pendingPages ? <p className="package-pending-note">{pendingNote}</p> : null}
                 </div>}
               </>
             )}

@@ -54,7 +54,7 @@ Email Marketing is a separate service with a $500 one-time setup fee for either 
 
 The package builder's **Download PDF** button exports the current quote in the
 visitor's browser. It includes selected tiers and add-ons, one-time and monthly
-prices, bundle discounts, free-month savings, and the estimated first-year total.
+prices, bundle discounts, and free-month savings.
 The file uses Wavefront Studio's existing logo, brand colors, and embedded Outfit
 fonts. Long quotes continue onto numbered pages with repeated table headings.
 

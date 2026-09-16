@@ -162,7 +162,7 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
   y += 16
   const savings = quote.bundleAmount + quote.firstMonthsFree
   const pendingNote = pendingPages ? lines(`Plus ${money(quote.pendingPageRateAfter)} per page${quote.pct ? ` after the ${quote.pct}% bundle discount` : ''}. Page count and final total to be confirmed.`, WIDTH, 9) : []
-  ensureSpace(148 + (quote.pct > 0 ? 22 : 0) + (quote.monthly > 0 ? 44 : 0) + (savings > 0 ? 22 : 0) + pendingNote.length * 13 + (pendingPages ? 12 : 0))
+  ensureSpace(148 + (quote.monthly > 0 && quote.firstMonthsFree > 0 ? 22 : 0) + (quote.pct > 0 ? 22 : 0) + (savings > 0 ? 22 : 0) + pendingNote.length * 13 + (pendingPages ? 12 : 0))
   text('YOUR INVESTMENT', MARGIN, y + 9, { size: 9, bold: true, color: COLORS.blue })
   y += 29
   text(pendingPages ? 'Fixed fees subtotal (excludes page charges)' : 'One-time subtotal', MARGIN, y)
@@ -190,17 +190,10 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
     text(pendingNote, MARGIN, y, { size: 9, color: COLORS.muted, lineHeightFactor: 13 / 9 })
     y += pendingNote.length * 13 + 12
   }
-  if (quote.monthly > 0) {
-    if (quote.firstMonthsFree > 0) {
-      text('Free-month savings', MARGIN, y)
-      text(money(quote.firstMonthsFree), RIGHT, y, { bold: true, align: 'right' })
-      y += 22
-    }
-    if (!pendingPages) {
-      text('Estimated first-year total (after savings)', MARGIN, y)
-      text(money(quote.oneAfter + quote.monthly * 12 - quote.firstMonthsFree), RIGHT, y, { bold: true, align: 'right' })
-      y += 22
-    }
+  if (quote.monthly > 0 && quote.firstMonthsFree > 0) {
+    text('Free-month savings', MARGIN, y)
+    text(money(quote.firstMonthsFree), RIGHT, y, { bold: true, align: 'right' })
+    y += 22
   }
   if (savings > 0) {
     text(pendingPages ? 'Savings on fixed fees and first month' : 'Total savings', MARGIN, y, { bold: true })
