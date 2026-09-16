@@ -66,19 +66,21 @@ export function calculateQuote(state) {
       if (service.id === 'landing' && tier.custom) {
         const custom = customLandingQuote(entry.custom)
         errors.push(...custom.errors)
-        if (!custom.errors.length) {
-          one += custom.setup + (custom.perPageEnabled && !custom.pagesTbc ? custom.perPage * custom.pages : 0)
-          monthly += custom.monthly
-          const amount = custom.monthly > 0 ? tierPrice({ s: custom.setup, m: custom.monthly }) : money(custom.setup)
-          rows.push({ label: `Landing Pages — Custom${custom.name ? `: ${custom.name}` : ' build'}`, amount, description: [custom.details, note].filter(Boolean).join('\n\n') })
-          if (custom.pagesTbc) {
-            pendingPageRate = custom.perPage
-            rows.push({ label: 'Pages — quantity to be confirmed', amount: `${money(custom.perPage)} per page`, sub: true })
-          } else if (custom.perPageEnabled) {
-            rows.push({ label: `${custom.pages} page${custom.pages === 1 ? '' : 's'} × ${money(custom.perPage)} per page`, amount: money(custom.perPage * custom.pages), sub: true })
-          }
-        } else {
-          rows.push({ label: 'Landing Pages — Custom', amount: 'Details needed' })
+        // Totals update while typing; blank or invalid numbers count as $0 until fixed, and errors still block export.
+        const safe = (value) => (Number.isFinite(value) && value >= 0 ? value : 0)
+        const setup = safe(custom.setup)
+        const perPage = safe(custom.perPage)
+        const pages = safe(custom.pages)
+        const customMonthly = safe(custom.monthly)
+        one += setup + (custom.perPageEnabled && !custom.pagesTbc ? perPage * pages : 0)
+        monthly += customMonthly
+        const amount = customMonthly > 0 ? tierPrice({ s: setup, m: customMonthly }) : money(setup)
+        rows.push({ label: `Landing Pages — Custom${custom.name ? `: ${custom.name}` : ' build'}`, amount, description: [custom.details, note].filter(Boolean).join('\n\n') })
+        if (custom.pagesTbc) {
+          pendingPageRate = perPage
+          rows.push({ label: 'Pages — quantity to be confirmed', amount: `${money(perPage)} per page`, sub: true })
+        } else if (custom.perPageEnabled) {
+          rows.push({ label: `${pages} page${pages === 1 ? '' : 's'} × ${money(perPage)} per page`, amount: money(perPage * pages), sub: true })
         }
         continue
       }

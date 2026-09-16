@@ -264,7 +264,7 @@ export default function BuildYourPackage() {
         <div className="package-mini">
           <div className="page-frame">
             <span>
-              {quote.errors?.length ? 'Complete custom details' : <>{pendingPages ? 'Fixed fees' : 'One-time'} <b>{money(quote.oneAfter)}</b>{pendingPages ? ' + pages' : ''}</>}
+              {pendingPages ? 'Fixed fees' : 'One-time'} <b>{money(quote.oneAfter)}</b>{pendingPages ? ' + pages' : ''}
             </span>
             <span>
               Monthly <b>{money(quote.monthly)}</b>
@@ -514,7 +514,8 @@ export default function BuildYourPackage() {
                     </div>
                   ))}
                 </div>
-                {quote.errors?.length ? <div className="package-pdf-error" id="custom-quote-errors" aria-live="polite">{quote.errors.map((error) => <p key={error}>{error}</p>)}</div> : <div className="package-totals">
+                {quote.errors?.length ? <div className="package-pdf-error" id="custom-quote-errors" aria-live="polite">{quote.errors.map((error) => <p key={error}>{error}</p>)}</div> : null}
+                <div className="package-totals">
                   <div>
                     <span>{pendingPages ? 'Fixed fees subtotal' : 'One-time subtotal'}</span>
                     <b>{money(quote.one)}</b>
@@ -537,7 +538,7 @@ export default function BuildYourPackage() {
                     </b>
                   </div>
                   {pendingPages ? <p className="package-pending-note">{pendingNote}</p> : null}
-                </div>}
+                </div>
               </>
             )}
 

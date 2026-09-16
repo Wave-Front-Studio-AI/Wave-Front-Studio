@@ -105,8 +105,11 @@ test('invalid custom prices, counts, or missing scope cannot produce an exportab
   for (const fields of [{ setup: '' }, { setup: ' ' }, { setup: null }, { perPage: '-1' }, { setup: 'Infinity' }, { setup: 1000001 }, { perPage: '1.5' }, { setup: 0, perPage: 0 }, { pages: '' }, { pages: 0 }, { pages: 1.5 }, { pages: 10000 }, { details: ' ' }]) {
     const quote = calculateQuote({ landing: { ...selected(3), custom: { ...custom, ...fields } } })
     assert.ok(quote.errors?.length, JSON.stringify(fields))
-    assert.equal(quote.rows[0].amount, 'Details needed')
   }
+  const partial = calculateQuote({ landing: { ...selected(3), custom: { ...custom, details: '' } } })
+  assert.ok(partial.errors?.length)
+  assert.equal(partial.one, 1750)
+  assert.equal(partial.rows[1].amount, '$1,000')
   assert.equal(customLandingQuote({ ...custom, setup: 0 }).errors.length, 0)
   assert.equal(customLandingQuote({ ...custom, perPage: 0 }).errors.length, 0)
   assert.ok(customLandingQuote().errors.length)
