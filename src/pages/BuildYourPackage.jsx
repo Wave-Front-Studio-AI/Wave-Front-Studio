@@ -3,7 +3,7 @@ import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { CATEGORIES, DETAILS, LANDING_PAGE_BUNDLES, OFFER, PAIRS, SERVICES } from '../data/generated/packages.js'
 import { contact } from '../data/site.js'
-import { addonQty, calculateQuote, defaultOptionIndex, landingPageBundle, money, tierPrice } from '../packageQuote.js'
+import { addonQty, calculateQuote, defaultOptionIndex, landingPageBundle, money, selectedTiers, tierPrice } from '../packageQuote.js'
 
 const serviceById = Object.fromEntries(SERVICES.map((service) => [service.id, service]))
 
@@ -100,7 +100,7 @@ function DetailsModal({ service, onClose, onSelect }) {
         <div className="pkg-modal-actions">
           {service.tiers.map((tier, index) => (
             <button key={tier.n} type="button" className="kinetic-button group" onClick={() => onSelect(index)}>
-              <span>Select {tier.n}</span>
+              <span>Add {tier.n}</span>
             </button>
           ))}
         </div>
@@ -110,19 +110,21 @@ function DetailsModal({ service, onClose, onSelect }) {
 }
 
 export default function BuildYourPackage() {
-  // state[id] = { tier, pages, addons: [], opts: { [addonIndex]: optionIndex } }
+  // state[id] = { tiers: [], pagesByTier: { [tierIndex]: pages }, notes: { [tierIndex]: text },
+  //   addons: [], addonNotes: { [addonIndex]: text }, opts: { [addonIndex]: optionIndex } }
   const [state, setState] = useState({})
   const [modal, setModal] = useState(null)
   const [toast, setToast] = useState('')
   const [pdfStatus, setPdfStatus] = useState('idle')
   const [clientName, setClientName] = useState('')
+  const [quoteNotes, setQuoteNotes] = useState('')
 
   async function downloadPdf() {
     if (!quote.count || quote.errors?.length || pdfStatus === 'loading') return
     setPdfStatus('loading')
     try {
       const { downloadQuotePdf } = await import('../quotePdf.js')
-      await downloadQuotePdf({ ...quote, clientName: clientName.trim() })
+      await downloadQuotePdf({ ...quote, clientName: clientName.trim(), notes: quoteNotes.trim() })
       setPdfStatus('idle')
       setToast('Your quote PDF is ready')
     } catch {
@@ -151,17 +153,32 @@ export default function BuildYourPackage() {
     setState((current) => {
       const next = { ...current }
       if (next[id]) delete next[id]
-      else next[id] = { tier: 1, addons: [], opts: {} }
+      else next[id] = { tiers: [1], addons: [], opts: {} }
       return next
     })
   }
 
-  function pickTier(id, tier) {
-    setState((current) => ({ ...current, [id]: { ...(current[id] || { addons: [], opts: {} }), tier } }))
+  // Adds the tier, or removes it when already selected. A service always keeps at least one tier.
+  function toggleTier(id, tier, { keep = false } = {}) {
+    const entry = state[id]
+    const tiers = entry ? selectedTiers(serviceById[id], entry) : []
+    if (tiers.includes(tier) && !keep && tiers.length === 1) {
+      setToast('Keep at least one tier, or untick the service')
+      return
+    }
+    const nextTiers = tiers.includes(tier) ? (keep ? tiers : tiers.filter((value) => value !== tier)) : [...tiers, tier].sort((a, b) => a - b)
+    setState((current) => ({ ...current, [id]: { ...(current[id] || { addons: [], opts: {} }), tiers: nextTiers } }))
   }
 
-  function setPageBundle(value) {
-    setState((current) => ({ ...current, landing: { ...current.landing, pages: landingPageBundle(value).pages } }))
+  function setEntryMap(id, field, key, value) {
+    setState((current) => {
+      const entry = current[id] || { tiers: [1], addons: [], opts: {} }
+      return { ...current, [id]: { ...entry, [field]: { ...entry[field], [key]: value } } }
+    })
+  }
+
+  function setPageBundle(tier, value) {
+    setEntryMap('landing', 'pagesByTier', tier, landingPageBundle(value).pages)
   }
 
   function setCustomField(field, value) {
@@ -170,7 +187,7 @@ export default function BuildYourPackage() {
 
   function toggleAddon(id, addonIndex) {
     setState((current) => {
-      const entry = current[id] || { tier: 1, addons: [], opts: {} }
+      const entry = current[id] || { tiers: [1], addons: [], opts: {} }
       const addons = entry.addons.includes(addonIndex)
         ? entry.addons.filter((value) => value !== addonIndex)
         : [...entry.addons, addonIndex]
@@ -180,7 +197,7 @@ export default function BuildYourPackage() {
 
   function setAddonOption(id, addonIndex, value) {
     setState((current) => {
-      const entry = current[id] || { tier: 1, addons: [], opts: {} }
+      const entry = current[id] || { tiers: [1], addons: [], opts: {} }
       const addons = entry.addons.includes(addonIndex) ? entry.addons : [...entry.addons, addonIndex]
       return { ...current, [id]: { ...entry, addons, opts: { ...entry.opts, [addonIndex]: value } } }
     })
@@ -217,6 +234,7 @@ export default function BuildYourPackage() {
     body += `\nMonthly: ${money(quote.monthly)}/mo`
     if (pendingNote) body += `\n${pendingNote}`
     if (quote.firstMonthsFree > 0) body += `\nLimited-time: first month free (${money(quote.firstMonthsFree)} saved)`
+    if (quoteNotes.trim()) body += `\n\nNotes:\n${quoteNotes.trim()}`
     body += '\n\nPlease hold this price for me. My details:\nName:\nPhone:\nWebsite:'
     window.location.href = `mailto:${OFFER.contactEmail}?subject=${encodeURIComponent('My Wavefront Package Quote')}&body=${encodeURIComponent(body)}`
   }
@@ -292,10 +310,11 @@ export default function BuildYourPackage() {
                   if (!service) return null
                   const entry = state[id]
                   const on = Boolean(entry)
-                  const pageBundle = id === 'landing' ? landingPageBundle(entry?.pages) : null
+                  const tiers = on ? selectedTiers(service, entry) : []
+                  const customSelected = tiers.some((index) => service.tiers[index].custom)
                   return (
                     <article className={`package-card ${on ? 'is-on' : ''}`} key={id}>
-                      <div className="package-card-head">
+                      {/* The whole row toggles the service; the checkbox button stays the keyboard control. */}                      <div className="package-card-head" onClick={(event) => !event.target.closest('button') && toggleService(id)}>
                         <button className="package-check" type="button" onClick={() => toggleService(id)} aria-pressed={on}>
                           <span aria-hidden="true">✓</span>
                           <span className="sr-only">{on ? `Remove ${service.name}` : `Add ${service.name}`}</span>
@@ -320,14 +339,15 @@ export default function BuildYourPackage() {
 
                       {on ? (
                         <div className="package-card-body">
+                          {service.tiers.length > 1 ? <p className="package-tier-hint">Pick one or more tiers — each one is added to your quote.</p> : null}
                           <div className="package-tiers" style={{ '--tier-count': service.tiers.length }}>
                             {service.tiers.map((tier, index) => (
                               <button
                                 key={tier.n}
                                 type="button"
-                                className={entry.tier === index ? 'is-selected' : ''}
-                                onClick={() => pickTier(id, index)}
-                                aria-pressed={entry.tier === index}
+                                className={tiers.includes(index) ? 'is-selected' : ''}
+                                onClick={() => toggleTier(id, index)}
+                                aria-pressed={tiers.includes(index)}
                               >
                                 {index === 1 ? <span className="package-pop">POPULAR</span> : null}
                                 <strong>{tier.n}</strong>
@@ -337,7 +357,7 @@ export default function BuildYourPackage() {
                             ))}
                           </div>
 
-                          {id === 'landing' && service.tiers[entry.tier].custom ? (
+                          {id === 'landing' && customSelected ? (
                             <fieldset className="package-custom">
                               <legend>Custom landing page quote</legend>
                               <p>Set the price and scope for your unique build. Add per-page pricing if your project needs it.</p>
@@ -347,6 +367,9 @@ export default function BuildYourPackage() {
                                 </label>
                                 <label htmlFor="custom-project-price">One-time project price ($)
                                   <input id="custom-project-price" type="number" min="0" max="1000000" step="1" inputMode="numeric" placeholder="Enter project price" value={entry.custom?.setup ?? ''} onChange={(event) => setCustomField('setup', event.target.value)} />
+                                </label>
+                                <label htmlFor="custom-monthly-price">Monthly price ($/mo, optional)
+                                  <input id="custom-monthly-price" type="number" min="0" max="1000000" step="1" inputMode="numeric" placeholder="e.g. 99" value={entry.custom?.monthly ?? ''} onChange={(event) => setCustomField('monthly', event.target.value)} />
                                 </label>
                               </div>
                               <label className="package-custom-tbc" htmlFor="custom-per-page-enabled">
@@ -370,28 +393,48 @@ export default function BuildYourPackage() {
                               <label htmlFor="custom-project-details">Project details for the quote
                                 <textarea id="custom-project-details" rows="5" maxLength="2000" placeholder="Describe the features, design, integrations, and deliverables included in this build." value={entry.custom?.details ?? ''} onChange={(event) => setCustomField('details', event.target.value)} />
                               </label>
-                              <p>Custom pricing replaces standard tier and bundle prices. All charges are one-time, in USD. Use $0 for the project price if you charge only per page.</p>
+                              <p>Custom pricing is quoted on its own line, separate from any Launch, Grow, or Scale tiers. All prices in USD. Leave the monthly price blank if there is no ongoing charge, and use $0 for the project price if you charge only per page or monthly.</p>
                             </fieldset>
-                          ) : id === 'landing' ? (
-                            <div className="package-page-bundle">
-                              <div>
-                                <label htmlFor="landing-page-bundle">How many landing pages?</label>
-                                <p id="landing-bundle-help">One page is included. Bundle costs are added to your Launch, Grow, or Scale price.</p>
-                              </div>
-                              <select id="landing-page-bundle" value={pageBundle.pages} aria-describedby="landing-bundle-help landing-page-cost" onChange={(event) => setPageBundle(event.target.value)}>
-                                {LANDING_PAGE_BUNDLES.map((bundle) => (
-                                  <option key={bundle.pages} value={bundle.pages}>
-                                    {bundle.pages === 1 ? '1 page — included' : `${bundle.pages} pages total — +${money(bundle.price)}`}
-                                  </option>
-                                ))}
-                              </select>
-                              <p id="landing-page-cost" className="package-bundle-total" aria-live="polite">
-                                {service.tiers[entry.tier].n} {money(service.tiers[entry.tier].s)}
-                                {pageBundle.price > 0 ? ` + ${pageBundle.pages}-page bundle ${money(pageBundle.price)}` : ' · 1 page'}
-                                {' = '}<b>{money(service.tiers[entry.tier].s + pageBundle.price)}</b>
-                              </p>
-                            </div>
                           ) : null}
+
+                          {id === 'landing' ? tiers.filter((index) => !service.tiers[index].custom).map((index) => {
+                            const tier = service.tiers[index]
+                            const pageBundle = landingPageBundle(entry.pagesByTier?.[index] ?? entry.pages)
+                            return (
+                              <div className="package-page-bundle" key={tier.n}>
+                                <div>
+                                  <label htmlFor={`landing-page-bundle-${index}`}>How many {tier.n} landing pages?</label>
+                                  <p id={`landing-bundle-help-${index}`}>One page is included. Bundle costs are added to the {tier.n} price.</p>
+                                </div>
+                                <select id={`landing-page-bundle-${index}`} value={pageBundle.pages} aria-describedby={`landing-bundle-help-${index} landing-page-cost-${index}`} onChange={(event) => setPageBundle(index, event.target.value)}>
+                                  {LANDING_PAGE_BUNDLES.map((bundle) => (
+                                    <option key={bundle.pages} value={bundle.pages}>
+                                      {bundle.pages === 1 ? '1 page — included' : `${bundle.pages} pages total — +${money(bundle.price)}`}
+                                    </option>
+                                  ))}
+                                </select>
+                                <p id={`landing-page-cost-${index}`} className="package-bundle-total" aria-live="polite">
+                                  {tier.n} {money(tier.s)}
+                                  {pageBundle.price > 0 ? ` + ${pageBundle.pages}-page bundle ${money(pageBundle.price)}` : ' · 1 page'}
+                                  {' = '}<b>{money(tier.s + pageBundle.price)}</b>
+                                </p>
+                              </div>
+                            )
+                          }) : null}
+
+                          <div className="package-notes">
+                            <span className="pkg-label">Notes shown on the quote (optional)</span>
+                            {tiers.map((index) => {
+                              const tier = service.tiers[index]
+                              const fieldId = `note-${id}-${index}`
+                              return (
+                                <label htmlFor={fieldId} key={tier.n}>
+                                  {tiers.length > 1 || service.tiers.length > 1 ? `${tier.n}${tier.custom ? ' — extra notes' : ''}` : service.name}
+                                  <textarea id={fieldId} rows="2" maxLength="1000" placeholder="Explain what's included, timing, or anything the client should know." value={entry.notes?.[index] ?? ''} onChange={(event) => setEntryMap(id, 'notes', index, event.target.value)} />
+                                </label>
+                              )
+                            })}
+                          </div>
 
                           {service.addons.length ? (
                             <div className="package-addons">
@@ -427,6 +470,17 @@ export default function BuildYourPackage() {
                                           ))}
                                         </select>
                                       ) : null}
+                                      {selected ? (
+                                        <textarea
+                                          className="package-addon-note"
+                                          rows="2"
+                                          maxLength="1000"
+                                          placeholder="Note for this add-on (optional)"
+                                          aria-label={`${addon.l} note`}
+                                          value={entry.addonNotes?.[addonIndex] ?? ''}
+                                          onChange={(event) => setEntryMap(id, 'addonNotes', addonIndex, event.target.value)}
+                                        />
+                                      ) : null}
                                     </div>
                                   )
                                 })}
@@ -446,6 +500,9 @@ export default function BuildYourPackage() {
             <h2>Your Quote</h2>
             <label className="package-client" htmlFor="quote-client">Prepared for <span>(optional)</span>
               <input id="quote-client" type="text" maxLength="100" placeholder="Client or company name" value={clientName} onChange={(event) => setClientName(event.target.value)} />
+            </label>
+            <label className="package-client" htmlFor="quote-notes">Quote notes <span>(optional, shown on the PDF)</span>
+              <textarea id="quote-notes" rows="3" maxLength="4000" placeholder="Timeline, payment terms, next steps, or anything else to explain." value={quoteNotes} onChange={(event) => setQuoteNotes(event.target.value)} />
             </label>
             {quote.count === 0 ? (
               <p className="package-empty">No services selected yet. Pick some on the left.</p>
@@ -587,7 +644,8 @@ export default function BuildYourPackage() {
           service={modal}
           onClose={() => setModal(null)}
           onSelect={(tier) => {
-            pickTier(modal.id, tier)
+            if (!state[modal.id]) setState((current) => ({ ...current, [modal.id]: { tiers: [tier], addons: [], opts: {} } }))
+            else toggleTier(modal.id, tier, { keep: true })
             setToast(`${modal.name} — ${modal.tiers[tier].n} selected`)
             setModal(null)
           }}

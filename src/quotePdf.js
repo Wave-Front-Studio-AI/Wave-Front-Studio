@@ -140,17 +140,17 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
     text(amount, RIGHT - 12, y + 21, { size: 10.5, bold: true, align: 'right', lineHeightFactor: 14 / 10.5 })
     y += height
     if (row.description) {
-      const scope = lines(row.description, WIDTH - 24, 9)
+      const scope = lines(row.description, WIDTH - 12 - indent, 9)
       let offset = 0
       while (offset < scope.length) {
         if (ensureSpace(30)) {
           tableHeader()
-          text('Project details, continued', MARGIN + 12, y + 16, { size: 9, bold: true, color: COLORS.muted })
+          text('Details, continued', MARGIN + 12, y + 16, { size: 9, bold: true, color: COLORS.muted })
           y += 28
         }
         const capacity = Math.max(1, Math.floor((BOTTOM - y - 12) / 13))
         const chunk = scope.slice(offset, offset + capacity)
-        text(chunk, MARGIN + 12, y + 13, { size: 9, color: COLORS.muted, lineHeightFactor: 13 / 9 })
+        text(chunk, MARGIN + indent, y + 13, { size: 9, color: COLORS.muted, lineHeightFactor: 13 / 9 })
         y += chunk.length * 13 + 8
         offset += chunk.length
       }
@@ -206,6 +206,28 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
     text(pendingPages ? 'Savings on fixed fees and first month' : 'Total savings', MARGIN, y, { bold: true })
     text(money(savings), RIGHT, y, { bold: true, color: COLORS.blue, align: 'right' })
     y += 12
+  }
+
+  const quoteNotes = String(quote.notes ?? '').trim().slice(0, 4000)
+  if (quoteNotes) {
+    const noteLines = lines(quoteNotes, WIDTH, 10)
+    y += 14
+    ensureSpace(Math.min(noteLines.length, 4) * 14 + 40)
+    text('NOTES', MARGIN, y + 9, { size: 9, bold: true, color: COLORS.blue })
+    y += 29
+    let offset = 0
+    while (offset < noteLines.length) {
+      if (ensureSpace(24)) {
+        text('NOTES, CONTINUED', MARGIN, y + 9, { size: 9, bold: true, color: COLORS.blue })
+        y += 29
+      }
+      const capacity = Math.max(1, Math.floor((BOTTOM - y) / 14))
+      const chunk = noteLines.slice(offset, offset + capacity)
+      text(chunk, MARGIN, y, { size: 10, lineHeightFactor: 1.4 })
+      y += chunk.length * 14
+      offset += chunk.length
+    }
+    y += 6
   }
 
   const notes = lines('Final scope and pricing are confirmed before work begins. One-time work is typically billed 50% to start and 50% on delivery. Monthly services have a recommended three-month minimum. Ad spend is separate.', WIDTH, 9)

@@ -104,3 +104,9 @@ test('branding failures can be retried and successful assets are cached', async 
   assert.equal(await loadQuoteBrandAssets(), loaded)
   assert.equal(fetch.mock.callCount(), 6)
 })
+
+test('quote notes and line notes export, including long notes across pages', () => {
+  const noted = calculateQuote({ landing: { tiers: [0, 1], notes: { 0: 'Launch explained', 1: 'Grow explained' }, addons: [], opts: {} } })
+  assert.equal(createQuotePdf({ ...noted, notes: 'Timeline: four weeks.' }, assets, date).getNumberOfPages(), 1)
+  assert.ok(createQuotePdf({ ...noted, notes: 'A long note line\n'.repeat(120) }, assets, date).getNumberOfPages() >= 3)
+})
