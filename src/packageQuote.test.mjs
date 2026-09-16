@@ -4,47 +4,48 @@ import { calculateQuote, customLandingQuote, landingPageBundle, money } from './
 
 const selected = (tier = 1, pages = 1) => ({ tier, pages, addons: [], opts: {} })
 
-test('every page bundle adds its price once to every tier and remains one service', () => {
+test('every page count multiplies the tier price and remains one service', () => {
   for (const [tier, base] of [[0, 100], [1, 500], [2, 1500]]) {
-    for (const [pages, price] of [[1, 0], [10, 250], [25, 500], [75, 1000], [125, 1500], [300, 3000]]) {
+    for (const pages of [1, 10, 25, 75, 125, 300]) {
+      const price = base * pages
       const quote = calculateQuote({ landing: selected(tier, pages) })
-      assert.equal(quote.one, base + price)
-      assert.equal(quote.oneAfter, base + price)
+      assert.equal(quote.one, price)
+      assert.equal(quote.oneAfter, price)
       assert.equal(quote.count, 1)
       assert.equal(quote.pct, 0)
       assert.equal(quote.monthly, 0)
       assert.ok(quote.rows[0].label.endsWith(`${pages} page${pages === 1 ? '' : 's'}`))
-      assert.equal(quote.rows[0].amount, `$${(base + price).toLocaleString('en-US')}`)
+      assert.equal(quote.rows[0].amount, `$${price.toLocaleString('en-US')}`)
     }
   }
 })
 
-test('mixed quotes discount the base and page bundle together', () => {
+test('mixed quotes discount the per-page landing price', () => {
   const state = { landing: selected(1, 25), tradeshow: selected(1) }
   const original = structuredClone(state)
   const quote = calculateQuote(state)
-  assert.equal(quote.one, 5500)
+  assert.equal(quote.one, 17000)
   assert.equal(quote.monthly, 199)
   assert.equal(quote.count, 2)
   assert.equal(quote.pct, 5)
-  assert.equal(quote.bundleAmount, 275)
-  assert.equal(quote.oneAfter, 5225)
+  assert.equal(quote.bundleAmount, 850)
+  assert.equal(quote.oneAfter, 16150)
   assert.equal(quote.firstMonthsFree, 199)
   assert.deepEqual(state, original)
 })
 
 test('missing or unsupported choices use the included single page', () => {
   for (const pages of ['', undefined, NaN, Infinity, -5, 0, 3, 25.5, 999]) {
-    assert.deepEqual(landingPageBundle(pages), { pages: 1, price: 0 })
+    assert.deepEqual(landingPageBundle(pages), { pages: 1 })
   }
-  assert.deepEqual(landingPageBundle('25'), { pages: 25, price: 500 })
+  assert.deepEqual(landingPageBundle('25'), { pages: 25 })
   assert.equal(calculateQuote({ landing: { tier: 1, addons: [], opts: {} } }).one, 500)
 })
 
 test('recurring add-ons remain independent of landing page bundles', () => {
   const quote = calculateQuote({ landing: selected(0, 10), web: { ...selected(0), addons: [0, 3] } })
-  assert.equal(quote.one, 2300)
-  assert.equal(quote.oneAfter, 2185)
+  assert.equal(quote.one, 2950)
+  assert.equal(quote.oneAfter, 2802.5)
   assert.equal(quote.monthly, 99)
   assert.equal(quote.rows.filter((row) => row.sub).length, 2)
   assert.deepEqual(calculateQuote({}), { one: 0, monthly: 0, count: 0, pct: 0, bundleAmount: 0, oneAfter: 0, firstMonthsFree: 0, rows: [] })
@@ -61,9 +62,9 @@ test('email plans add one setup fee and keep recurring charges separate', () => 
     assert.equal(email.rows[0].amount, `$500 + $${price}/mo`)
     const combined = calculateQuote({ landing: selected(1, 25), email: selected(tier) })
     assert.equal(combined.count, 2)
-    assert.equal(combined.one, 1500)
-    assert.equal(combined.bundleAmount, 75)
-    assert.equal(combined.oneAfter, 1425)
+    assert.equal(combined.one, 13000)
+    assert.equal(combined.bundleAmount, 650)
+    assert.equal(combined.oneAfter, 12350)
     assert.equal(combined.monthly, price)
   }
 })
@@ -137,16 +138,17 @@ test('several tiers of one service quote separately, count as one service, and c
   assert.equal(landing[1].label, 'Landing Pages — Scale · 10 pages')
   assert.equal(landing[1].description, 'Main campaign')
   assert.equal(quote.rows.find((row) => row.sub).description, 'Hosting note')
-  assert.equal(calculateQuote({ landing: { tiers: [0, 2], pagesByTier: { 2: 10 }, addons: [], opts: {} } }).one, 100 + 1500 + 250)
+  assert.equal(calculateQuote({ landing: { tiers: [0, 2], pagesByTier: { 2: 10 }, addons: [], opts: {} } }).one, 100 + 1500 * 10)
 })
 
-test('custom landing pages can include a monthly charge alongside standard tiers', () => {
+test('custom landing pages replace standard tiers and can include a monthly charge', () => {
   const quote = calculateQuote({ landing: { tiers: [1, 3], addons: [], opts: {}, notes: { 3: 'Care plan explained' }, custom: { setup: '2000', monthly: '99', details: 'Custom build.' } } })
-  assert.equal(quote.one, 500 + 2000)
+  assert.equal(quote.one, 2000)
+  assert.equal(quote.rows.length, 1)
   assert.equal(quote.monthly, 99)
   assert.equal(quote.firstMonthsFree, 99)
-  assert.equal(quote.rows[1].amount, '$2,000 + $99/mo')
-  assert.equal(quote.rows[1].description, 'Custom build.\n\nCare plan explained')
+  assert.equal(quote.rows[0].amount, '$2,000 + $99/mo')
+  assert.equal(quote.rows[0].description, 'Custom build.\n\nCare plan explained')
   assert.equal(calculateQuote({ landing: { tier: 3, custom: { setup: 0, monthly: 150, details: 'Monthly only.' } } }).rows[0].amount, '$150/mo')
   for (const monthly of ['-1', '1.5', 'abc']) assert.ok(customLandingQuote({ setup: 100, monthly, details: 'x' }).errors.length)
 })

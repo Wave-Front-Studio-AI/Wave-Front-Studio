@@ -1,14 +1,14 @@
 // Generated from the Build Your Package configurator on wavefrontstudiollc.com.
 const LANDING_PAGE_PRICES = { Launch: 100, Grow: 500, Scale: 1500 }
 
-// Each bundle sets the total page count; its cost is added to the chosen tier.
+// Each option sets the total page count; the chosen tier's price is charged per page.
 export const LANDING_PAGE_BUNDLES = [
-  { pages: 1, price: 0 },
-  { pages: 10, price: 250 },
-  { pages: 25, price: 500 },
-  { pages: 75, price: 1000 },
-  { pages: 125, price: 1500 },
-  { pages: 300, price: 3000 },
+  { pages: 1 },
+  { pages: 10 },
+  { pages: 25 },
+  { pages: 75 },
+  { pages: 125 },
+  { pages: 300 },
 ]
 
 export const OFFER = {
@@ -83,7 +83,7 @@ export const SERVICES = [
   {
     "id": "landing",
     "name": "Landing Pages",
-    "blurb": "Choose a tier and page bundle, or enter your own scope and pricing with Custom. Grow and Scale include high-intent SEO. Scale adds custom design and conversion tracking.",
+    "blurb": "Choose a tier and number of pages, or enter your own scope and pricing with Custom. Grow and Scale include high-intent SEO. Scale adds custom design and conversion tracking.",
     "billing": "onetime",
     "tiers": [
       {

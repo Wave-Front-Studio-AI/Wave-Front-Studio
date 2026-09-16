@@ -23,10 +23,16 @@ export function landingPageBundle(pages) {
 export const cleanNote = (value) => String(value ?? '').trim().slice(0, 1000)
 
 // Services accept one or more tiers; older single-tier selections still work.
+// A custom tier replaces every other tier of its service.
 export function selectedTiers(service, entry = {}) {
   const raw = Array.isArray(entry.tiers) ? entry.tiers : [entry.tier ?? 1]
-  return [...new Set(raw.map(Number))].filter((index) => Number.isInteger(index) && service.tiers[index]).sort((a, b) => a - b)
+  const tiers = [...new Set(raw.map(Number))].filter((index) => Number.isInteger(index) && service.tiers[index]).sort((a, b) => a - b)
+  const custom = tiers.find((index) => service.tiers[index].custom)
+  return custom === undefined ? tiers : [custom]
 }
+
+// Landing page tiers are priced per page: tier price × total pages.
+export const landingPagesPrice = (tier, pages) => tier.s * landingPageBundle(pages).pages
 
 export function customLandingQuote(custom = {}) {
   const setup = Number(custom.setup)
@@ -85,7 +91,7 @@ export function calculateQuote(state) {
         continue
       }
       const bundle = service.id === 'landing' ? landingPageBundle(entry.pagesByTier?.[tierIndex] ?? entry.pages) : null
-      const total = { s: tier.s + (bundle?.price ?? 0), m: tier.m }
+      const total = { s: bundle ? landingPagesPrice(tier, bundle.pages) : tier.s, m: tier.m }
       one += total.s
       monthly += total.m
       const pageLabel = bundle ? ` · ${bundle.pages} page${bundle.pages === 1 ? '' : 's'}` : ''

@@ -285,7 +285,7 @@ const packageEntries = PACKAGE_SERVICES.map((service) => {
   const addons = (service.addons ?? []).map((addon) => `${addon.l} $${addon.p.toLocaleString('en-US')} ${addon.t === 'monthly' ? 'per month' : 'one-time'}`).join('; ')
   const delivery = (PACKAGE_DETAILS[service.id] ?? []).find((row) => /delivery|timeline/i.test(row[0]))
   const pageBundles = service.id === 'landing'
-    ? ` Launch, Grow, and Scale include one page in the base price. Page bundles apply to those three tiers and are added once to that base price: ${LANDING_PAGE_BUNDLES.filter((bundle) => bundle.price > 0).map((bundle) => `${bundle.pages} pages total +$${bundle.price.toLocaleString('en-US')}`).join('; ')}. Grow with 25 pages is $1,000 before bundle discounts. Custom supports unique builds with an entered project price and scope. Per-page pricing is optional and adds to the project price when enabled; standard tier and bundle prices do not apply.`
+    ? ` Launch, Grow, and Scale are priced per page: the tier price times the number of pages. Page counts offered: ${LANDING_PAGE_BUNDLES.map((bundle) => bundle.pages).join(', ')}. For example, Launch with 10 pages is $1,000 and Grow with 10 pages is $5,000, before bundle discounts. Custom supports unique builds with an entered project price and scope, and replaces the Launch, Grow, and Scale tiers. Per-page pricing is optional and adds to the project price when enabled.`
     : ''
   return makeEntry({
     id: `package-${service.id}`,

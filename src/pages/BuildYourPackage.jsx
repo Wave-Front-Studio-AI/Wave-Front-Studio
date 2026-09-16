@@ -3,7 +3,7 @@ import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { CATEGORIES, DETAILS, LANDING_PAGE_BUNDLES, OFFER, PAIRS, SERVICES } from '../data/generated/packages.js'
 import { contact } from '../data/site.js'
-import { addonQty, calculateQuote, defaultOptionIndex, landingPageBundle, money, selectedTiers, tierPrice } from '../packageQuote.js'
+import { addonQty, calculateQuote, defaultOptionIndex, landingPageBundle, landingPagesPrice, money, selectedTiers, tierPrice } from '../packageQuote.js'
 
 const serviceById = Object.fromEntries(SERVICES.map((service) => [service.id, service]))
 
@@ -79,10 +79,10 @@ function DetailsModal({ service, onClose, onSelect }) {
         ) : null}
         {service.id === 'landing' ? (
           <div className="pkg-modal-addons">
-            <span className="pkg-label">Page bundles for Launch, Grow &amp; Scale</span>
-            <p>Added to your tier price. Each bundle is the total number of pages.</p>
-            {LANDING_PAGE_BUNDLES.filter((bundle) => bundle.price > 0).map((bundle) => (
-              <span key={bundle.pages}>{bundle.pages} pages — <b>+{money(bundle.price)}</b></span>
+            <span className="pkg-label">Page counts for Launch, Grow &amp; Scale</span>
+            <p>Each tier is priced per page: the tier price × the number of pages.</p>
+            {LANDING_PAGE_BUNDLES.filter((bundle) => bundle.pages > 1).map((bundle) => (
+              <span key={bundle.pages}>{bundle.pages} pages — <b>tier price × {bundle.pages}</b></span>
             ))}
           </div>
         ) : null}
@@ -166,7 +166,11 @@ export default function BuildYourPackage() {
       setToast('Keep at least one tier, or untick the service')
       return
     }
-    const nextTiers = tiers.includes(tier) ? (keep ? tiers : tiers.filter((value) => value !== tier)) : [...tiers, tier].sort((a, b) => a - b)
+    // Custom replaces the standard tiers, and picking a standard tier replaces Custom.
+    const isCustom = (index) => serviceById[id].tiers[index].custom === true
+    const nextTiers = tiers.includes(tier)
+      ? (keep ? tiers : tiers.filter((value) => value !== tier))
+      : isCustom(tier) ? [tier] : [...tiers.filter((value) => !isCustom(value)), tier].sort((a, b) => a - b)
     setState((current) => ({ ...current, [id]: { ...(current[id] || { addons: [], opts: {} }), tiers: nextTiers } }))
   }
 
@@ -391,7 +395,7 @@ export default function BuildYourPackage() {
                               <label htmlFor="custom-project-details">Project details for the quote
                                 <textarea id="custom-project-details" rows="5" maxLength="2000" placeholder="Describe the features, design, integrations, and deliverables included in this build." value={entry.custom?.details ?? ''} onChange={(event) => setCustomField('details', event.target.value)} />
                               </label>
-                              <p>Custom pricing is quoted on its own line, separate from any Launch, Grow, or Scale tiers. All prices in USD. Leave the monthly price blank if there is no ongoing charge, and use $0 for the project price if you charge only per page or monthly.</p>
+                              <p>Custom pricing replaces the Launch, Grow, and Scale tiers. All prices in USD. Leave the monthly price blank if there is no ongoing charge, and use $0 for the project price if you charge only per page or monthly.</p>
                             </fieldset>
                           ) : null}
 
@@ -402,19 +406,18 @@ export default function BuildYourPackage() {
                               <div className="package-page-bundle" key={tier.n}>
                                 <div>
                                   <label htmlFor={`landing-page-bundle-${index}`}>How many {tier.n} landing pages?</label>
-                                  <p id={`landing-bundle-help-${index}`}>One page is included. Bundle costs are added to the {tier.n} price.</p>
+                                  <p id={`landing-bundle-help-${index}`}>Priced per page at the {tier.n} rate of {money(tier.s)}.</p>
                                 </div>
                                 <select id={`landing-page-bundle-${index}`} value={pageBundle.pages} aria-describedby={`landing-bundle-help-${index} landing-page-cost-${index}`} onChange={(event) => setPageBundle(index, event.target.value)}>
                                   {LANDING_PAGE_BUNDLES.map((bundle) => (
                                     <option key={bundle.pages} value={bundle.pages}>
-                                      {bundle.pages === 1 ? '1 page — included' : `${bundle.pages} pages total — +${money(bundle.price)}`}
+                                      {`${bundle.pages} page${bundle.pages === 1 ? '' : 's'} — ${money(landingPagesPrice(tier, bundle.pages))}`}
                                     </option>
                                   ))}
                                 </select>
                                 <p id={`landing-page-cost-${index}`} className="package-bundle-total" aria-live="polite">
-                                  {tier.n} {money(tier.s)}
-                                  {pageBundle.price > 0 ? ` + ${pageBundle.pages}-page bundle ${money(pageBundle.price)}` : ' · 1 page'}
-                                  {' = '}<b>{money(tier.s + pageBundle.price)}</b>
+                                  {tier.n} {money(tier.s)} × {pageBundle.pages} page{pageBundle.pages === 1 ? '' : 's'}
+                                  {' = '}<b>{money(landingPagesPrice(tier, pageBundle.pages))}</b>
                                 </p>
                               </div>
                             )
