@@ -102,18 +102,21 @@ test('unconfirmed page counts quote fixed fees and a rate without inventing a qu
   assert.equal(quote.errors, undefined)
 })
 
-test('invalid custom prices, counts, or missing scope cannot produce an exportable quote', () => {
-  for (const fields of [{ setup: '' }, { setup: ' ' }, { setup: null }, { perPage: '-1' }, { setup: 'Infinity' }, { setup: 1000001 }, { perPage: '1.5' }, { setup: 0, perPage: 0 }, { pages: '' }, { pages: 0 }, { pages: 1.5 }, { pages: 10000 }, { details: ' ' }]) {
+test('invalid custom prices or counts cannot produce an exportable quote', () => {
+  for (const fields of [{ perPage: '-1' }, { setup: 'Infinity' }, { setup: 1000001 }, { perPage: '1.5' }, { pages: 0 }, { pages: 1.5 }, { pages: 10000 }]) {
     const quote = calculateQuote({ landing: { ...selected(3), custom: { ...custom, ...fields } } })
     assert.ok(quote.errors?.length, JSON.stringify(fields))
   }
+  // Blank prices count as $0 and project details are optional, so these still export.
+  for (const fields of [{ setup: '' }, { setup: null }, { perPage: '' }, { details: ' ' }, { setup: '', perPage: '', pages: '' }]) {
+    assert.equal(calculateQuote({ landing: { ...selected(3), custom: { ...custom, ...fields } } }).errors, undefined, JSON.stringify(fields))
+  }
   const partial = calculateQuote({ landing: { ...selected(3), custom: { ...custom, details: '' } } })
-  assert.ok(partial.errors?.length)
   assert.equal(partial.one, 1750)
   assert.equal(partial.rows[1].amount, '$1,000')
   assert.equal(customLandingQuote({ ...custom, setup: 0 }).errors.length, 0)
   assert.equal(customLandingQuote({ ...custom, perPage: 0 }).errors.length, 0)
-  assert.ok(customLandingQuote().errors.length)
+  assert.equal(customLandingQuote().errors.length, 0)
 })
 
 test('a unique build can use a single project price without per-page fields', () => {

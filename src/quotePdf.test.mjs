@@ -73,7 +73,7 @@ test('custom scope and client names export, with unknown quantities kept open', 
   })
   const doc = createQuotePdf({ ...custom, clientName: 'Seal n Lock' }, assets, date)
   assert.ok(doc.getNumberOfPages() <= 2)
-  assert.throws(() => createQuotePdf(calculateQuote({ landing: { tier: 3 } }), assets, date), /Complete the custom quote/)
+  assert.ok(createQuotePdf(calculateQuote({ landing: { tier: 3 } }), assets, date).getNumberOfPages() >= 1)
 })
 
 test('long custom scope paginates without changing quote details', () => {

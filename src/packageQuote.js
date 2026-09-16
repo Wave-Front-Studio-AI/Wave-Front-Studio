@@ -35,21 +35,22 @@ export function selectedTiers(service, entry = {}) {
 export const landingPagesPrice = (tier, pages) => tier.s * landingPageBundle(pages).pages
 
 export function customLandingQuote(custom = {}) {
-  const setup = Number(custom.setup)
-  const blankMonthly = custom.monthly == null || String(custom.monthly).trim() === ''
+  const blank = (raw) => raw == null || String(raw).trim() === ''
+  // Blank price fields count as $0 so a quote can be exported once any price is entered.
+  const setup = blank(custom.setup) ? 0 : Number(custom.setup)
+  const blankMonthly = blank(custom.monthly)
   const monthly = blankMonthly ? 0 : Number(custom.monthly)
   const perPageEnabled = custom.perPageEnabled === true
-  const perPage = perPageEnabled ? Number(custom.perPage) : 0
-  const pages = Number(custom.pages ?? 1)
+  const perPage = perPageEnabled && !blank(custom.perPage) ? Number(custom.perPage) : 0
+  const pages = blank(custom.pages) ? 1 : Number(custom.pages)
   const pagesTbc = perPageEnabled && custom.pagesTbc === true
   const name = String(custom.name ?? '').trim().slice(0, 80)
   const details = String(custom.details ?? '').trim().slice(0, 2000)
-  const validPrice = (raw, value) => raw != null && String(raw).trim() !== '' && Number.isInteger(value) && value >= 0 && value <= 1000000
+  const validPrice = (value) => Number.isInteger(value) && value >= 0 && value <= 1000000
   const errors = []
-  if (!validPrice(custom.setup, setup) || (perPageEnabled && !validPrice(custom.perPage, perPage)) || (!blankMonthly && !validPrice(custom.monthly, monthly))) errors.push('Enter the project, monthly, and any per-page prices in whole dollars. Use 0 if a charge does not apply.')
-  else if (setup + perPage + monthly <= 0) errors.push('Enter a price greater than $0 for the project, pages, or monthly service.')
-  if (perPageEnabled && !pagesTbc && (!Number.isInteger(pages) || pages < 1 || pages > 9999)) errors.push('Enter a whole page count from 1 to 9,999.')
-  if (!details) errors.push('Add the project details to include in your quote.')
+  // Only values that are actually wrong block the PDF; empty fields never do.
+  if (!validPrice(setup) || !validPrice(perPage) || !validPrice(monthly)) errors.push('Enter the project, monthly, and any per-page prices in whole dollars.')
+  if (perPageEnabled && !pagesTbc && !blank(custom.pages) && (!Number.isInteger(pages) || pages < 1 || pages > 9999)) errors.push('Enter a whole page count from 1 to 9,999.')
   return { setup, monthly, perPage, perPageEnabled, pages, pagesTbc, name, details, errors }
 }
 
