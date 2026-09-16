@@ -9,7 +9,7 @@ const serviceSlugs = [
 ]
 const customWorkSlugs = ['ai-chatbot', 'live-visualizer', 'custom-calculators']
 const locationSlugs = [
-  'web-design-phoenix-az', 'web-design-jacksonville-fl', 'web-design-denver-co',
+  'web-design-phoenix-az', 'web-design-jacksonville-fl', 'web-design-ponte-vedra-fl', 'web-design-denver-co',
   'web-design-las-vegas-nv', 'web-design-charlotte-nc', 'web-design-sarasota-fl',
   'web-design-lakewood-ranch-fl', 'web-design-bradenton-fl', 'web-design-venice-fl',
   'web-design-north-port-fl', 'web-design-palmetto-fl', 'web-design-osprey-nokomis-fl',

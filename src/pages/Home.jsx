@@ -91,11 +91,11 @@ export default function Home() {
         <div className="page-frame hero-grid">
           <div className="hero-copy">
             <span className="eyebrow">Welcome to Wavefront studio</span>
-            <h1>Where Innovation Meets Digital Excellence</h1>
+            <h1>Web Design, SEO &amp; AI for Sarasota Businesses</h1>
             <p>
-              From custom web development and AI-powered chatbots to SEO strategies and stunning UI/UX design – Wavefront Studio is a
-              full-service digital agency that turns bold ideas into high-performing digital products. Let’s build something
-              extraordinary together.
+              Wavefront Studio is a Sarasota, Florida digital agency. We build fast websites, local SEO, AI chatbots and custom quote
+              tools for businesses across Sarasota, Manatee and Tampa Bay — and remotely for clients anywhere — so your site brings in
+              real enquiries, not just compliments.
             </p>
             <div className="hero-actions">
               <a className="kinetic-button group" href="/contact/">

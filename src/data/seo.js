@@ -147,9 +147,9 @@ export const LOCAL_PLACES = new Set([
 ])
 
 export const homeSeo = {
-  title: 'Full-Service Digital Agency in Sarasota, FL | Wavefront Studio',
+  title: 'Web Design & SEO Agency in Sarasota, FL | Wavefront Studio',
   description:
-    'Sarasota digital agency building websites, SEO, AI chatbots and custom quote tools for businesses that want their site to bring in work. Free audit available.',
+    'Sarasota web design and SEO agency building fast websites, local SEO, AI chatbots and quote tools that bring in work. Get a free website audit today.',
 }
 
 export const blogSeo = {

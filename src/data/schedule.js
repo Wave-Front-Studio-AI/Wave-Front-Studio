@@ -10,6 +10,11 @@
 
 export const ROLLOUT_START = '2026-09-28'
 
+// Paused 2026-09-16: hold the national pages until the Tampa Bay pages rank,
+// so a batch of remote-city pages does not read as doorway pages. While true,
+// no slug in ROLLOUT goes live, whatever its date. Set to false to resume.
+export const ROLLOUT_PAUSED = true
+
 export const ROLLOUT = [
   'web-design-florida',
   'web-design-miami-fl',
@@ -54,4 +59,4 @@ function addWeekdays(iso, count) {
 
 export const publishDates = Object.fromEntries(ROLLOUT.map((slug, index) => [slug, addWeekdays(ROLLOUT_START, index)]))
 
-export const isLive = (slug) => !(slug in publishDates) || publishDates[slug] <= BUILD_DATE
+export const isLive = (slug) => !(slug in publishDates) || (!ROLLOUT_PAUSED && publishDates[slug] <= BUILD_DATE)

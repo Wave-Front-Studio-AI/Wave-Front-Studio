@@ -71,9 +71,21 @@ Re-check these before updating a figure, and add the new source here when you do
 - Vern and Sandy Buchanan Sarasota County Library: $13.5 million project at Town Center Green, first county library on the island, construction expected to begin in 2027 — <https://www.mysuncoast.com/2026/09/14/longboat-key-project-will-be-first-county-library-island/>
 - Voters approved a $30 million loan in March 2025 for a wastewater pipeline replacement under Sarasota Bay, after the 50-year-old pipe ruptured in 2020 and leaked an estimated 11 million gallons — <https://www.yourobserver.com/news/2026/jan/07/top-stories-to-watch-longboat/>
 
+## /web-design-ponte-vedra-fl/
+
+Added 2026-09-16. A remote page: Wavefront has no office in St. Johns County.
+
+- Ponte Vedra CCD, St. Johns County: population 33,550; 14,079 households; median age 47.6; median household income $127,415; per capita income $88,044; 4.8% below poverty; median home value $770,700; 71.2% bachelor’s degree or higher (ACS 2024 5-year) — <http://censusreporter.org/profiles/06000US1210992795-ponte-vedra-ccd-st-johns-county-fl/>
+- Ponte Vedra Beach is unincorporated, in St. Johns County; primary ZIP 32082, secondary ZIP 32081 designated June 2006 for the area south and southwest; Mineral City (titanium, zircon, rutile found 1914); National Lead Company bought the mining operation 1921, began resort development 1929 and renamed it Ponte Vedra after Pontevedra, Spain; San Pablo Island; 18 miles southeast of downtown Jacksonville, 26 miles north of St. Augustine; TPC Sawgrass home of THE PLAYERS since 1982; PGA TOUR headquarters — <https://en.wikipedia.org/wiki/Ponte_Vedra_Beach,_Florida>
+- Ponte Vedra (32081) includes parts of Palm Valley, much of Nocatee and Ponte Vedra High School; historically no distinction from Ponte Vedra Beach — <https://en.wikipedia.org/wiki/Ponte_Vedra,_Florida>
+- PGA TOUR Global Home: 187,000 square feet, bringing together staff from 17 separate locations in the area, opening February 2021 — <https://news.wjct.org/first-coast/2021-01-28/new-pga-tour-headquarters-in-ponte-vedra-beach-will-open-soon-highlighting-local-art>
+- 2026 PLAYERS Championship: roughly $150 million economic impact for Northeast Florida, about $40 million direct, over 200,000 unique visitors (St. Johns County Chamber of Commerce); $8–9 million a year to charity — <https://www.wokv.com/news/local/players-championship-tees-off-with-150-million-economic-surge-expected-northeast-florida/G5DA7GN7A5GFBNSB33LYKE5PD4/>
+- St. Johns County School District No. 1 in Florida for 2025-26, grade A, 910 of 1,200 points, reclaiming the title from Nassau County — <https://sjcitizen.com/state-champs-st-johns-county-regain-crown-as-floridas-top-district/>
+
 # State and city guides
 
-Twenty guides released one per weekday from src/data/schedule.js. Census figures on every page
+Twenty guides released one per weekday from src/data/schedule.js. The rollout was paused on
+2026-09-16 (ROLLOUT_PAUSED in schedule.js), so the dates below do not go live until it resumes. Census figures on every page
 (population, median age, household income, broadband, no internet, smartphone-only households,
 Spanish at home, self-employment) come from the American Community Survey 2024 one-year
 estimates via Census Reporter (https://censusreporter.org), pulled and checked in one batch.
