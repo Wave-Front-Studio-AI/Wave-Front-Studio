@@ -3,7 +3,7 @@ import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { CATEGORIES, DETAILS, LANDING_PAGE_BUNDLES, OFFER, PAIRS, SERVICES } from '../data/generated/packages.js'
 import { contact } from '../data/site.js'
-import { addonQty, calculateQuote, defaultOptionIndex, landingPageBundle, landingPagesPrice, money, selectedTiers, tierPrice } from '../packageQuote.js'
+import { addonQty, calculateQuote, creditAmount, defaultOptionIndex, landingPageBundle, landingPagesPrice, money, selectedTiers, tierPrice } from '../packageQuote.js'
 
 const serviceById = Object.fromEntries(SERVICES.map((service) => [service.id, service]))
 
@@ -185,6 +185,10 @@ export default function BuildYourPackage() {
     setEntryMap('landing', 'pagesByTier', tier, landingPageBundle(value).pages)
   }
 
+  function setCreditField(field, value) {
+    setState((current) => ({ ...current, credit: { ...current.credit, [field]: value } }))
+  }
+
   function setCustomField(field, value) {
     setState((current) => ({ ...current, landing: { ...current.landing, custom: { ...current.landing.custom, [field]: value } } }))
   }
@@ -235,6 +239,7 @@ export default function BuildYourPackage() {
       quote.oneAfter,
     )}`
     if (quote.pct > 0) body += ` (after ${quote.pct}% bundle discount, saving ${money(quote.bundleAmount)})`
+    if (quote.credit > 0) body += `\nCredit applied${quote.creditLabel ? ` — ${quote.creditLabel}` : ''}: -${money(quote.credit)}`
     body += `\nMonthly: ${money(quote.monthly)}/mo`
     if (pendingNote) body += `\n${pendingNote}`
     if (quote.firstMonthsFree > 0) body += `\nLimited-time: first month free (${money(quote.firstMonthsFree)} saved)`
@@ -505,6 +510,14 @@ export default function BuildYourPackage() {
             <label className="package-client" htmlFor="quote-notes">Quote notes <span>(optional, shown on the PDF)</span>
               <textarea id="quote-notes" rows="3" maxLength="4000" placeholder="Timeline, payment terms, next steps, or anything else to explain." value={quoteNotes} onChange={(event) => setQuoteNotes(event.target.value)} />
             </label>
+            <label className="package-client" htmlFor="quote-credit">Credit ($) <span>(optional, comes off the one-time total)</span>
+              <input id="quote-credit" type="number" min="0" max="1000000" step="1" inputMode="numeric" placeholder="e.g. 500 already paid" value={state.credit?.amount ?? ''} onChange={(event) => setCreditField('amount', event.target.value)} />
+            </label>
+            {creditAmount(state.credit) > 0 ? (
+              <label className="package-client" htmlFor="quote-credit-label">What the credit is for <span>(optional)</span>
+                <input id="quote-credit-label" type="text" maxLength="80" placeholder="e.g. Phase 1 deposit" value={state.credit?.label ?? ''} onChange={(event) => setCreditField('label', event.target.value)} />
+              </label>
+            ) : null}
             {quote.count === 0 ? (
               <p className="package-empty">No services selected yet. Pick some on the left.</p>
             ) : (
@@ -527,6 +540,12 @@ export default function BuildYourPackage() {
                     <div className="is-discount">
                       <span>Bundle discount ({quote.pct}%)</span>
                       <b>-{money(quote.bundleAmount)}</b>
+                    </div>
+                  ) : null}
+                  {quote.credit > 0 ? (
+                    <div className="is-discount">
+                      <span>{quote.creditLabel ? `Credit — ${quote.creditLabel}` : 'Credit applied'}</span>
+                      <b>-{money(quote.credit)}</b>
                     </div>
                   ) : null}
                   <div className="is-total">

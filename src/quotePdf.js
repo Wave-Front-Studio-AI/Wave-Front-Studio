@@ -162,7 +162,7 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
   y += 16
   const savings = quote.bundleAmount + quote.firstMonthsFree
   const pendingNote = pendingPages ? lines(`Plus ${money(quote.pendingPageRateAfter)} per page${quote.pct ? ` after the ${quote.pct}% bundle discount` : ''}. Page count and final total to be confirmed.`, WIDTH, 9) : []
-  ensureSpace(148 + (quote.monthly > 0 && quote.firstMonthsFree > 0 ? 22 : 0) + (quote.pct > 0 ? 22 : 0) + (savings > 0 ? 22 : 0) + pendingNote.length * 13 + (pendingPages ? 12 : 0))
+  ensureSpace(148 + (quote.monthly > 0 && quote.firstMonthsFree > 0 ? 22 : 0) + (quote.pct > 0 ? 22 : 0) + (quote.credit > 0 ? 22 : 0) + (savings > 0 ? 22 : 0) + pendingNote.length * 13 + (pendingPages ? 12 : 0))
   text('YOUR INVESTMENT', MARGIN, y + 9, { size: 9, bold: true, color: COLORS.blue })
   y += 29
   text(pendingPages ? 'Fixed fees subtotal (excludes page charges)' : 'One-time subtotal', MARGIN, y)
@@ -171,6 +171,11 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
     y += 22
     text(`Bundle discount (${quote.pct}%)`, MARGIN, y)
     text(`-${money(quote.bundleAmount)}`, RIGHT, y, { bold: true, color: COLORS.blue, align: 'right' })
+  }
+  if (quote.credit > 0) {
+    y += 22
+    text(quote.creditLabel ? `Credit - ${quote.creditLabel}` : 'Credit applied', MARGIN, y)
+    text(`-${money(quote.credit)}`, RIGHT, y, { bold: true, color: COLORS.blue, align: 'right' })
   }
   y += 17
   doc.setFillColor(COLORS.ink)

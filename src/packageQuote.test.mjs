@@ -48,7 +48,7 @@ test('recurring add-ons remain independent of landing page bundles', () => {
   assert.equal(quote.oneAfter, 2802.5)
   assert.equal(quote.monthly, 99)
   assert.equal(quote.rows.filter((row) => row.sub).length, 2)
-  assert.deepEqual(calculateQuote({}), { one: 0, monthly: 0, count: 0, pct: 0, bundleAmount: 0, oneAfter: 0, firstMonthsFree: 0, rows: [] })
+  assert.deepEqual(calculateQuote({}), { one: 0, monthly: 0, count: 0, pct: 0, bundleAmount: 0, credit: 0, creditLabel: '', oneAfter: 0, firstMonthsFree: 0, rows: [] })
 })
 
 test('email plans add one setup fee and keep recurring charges separate', () => {
@@ -154,4 +154,25 @@ test('custom landing pages replace standard tiers and can include a monthly char
   assert.equal(quote.rows[0].description, 'Custom build.\n\nCare plan explained')
   assert.equal(calculateQuote({ landing: { tier: 3, custom: { setup: 0, monthly: 150, details: 'Monthly only.' } } }).rows[0].amount, '$150/mo')
   for (const monthly of ['-1', '1.5', 'abc']) assert.ok(customLandingQuote({ setup: 100, monthly, details: 'x' }).errors.length)
+})
+
+test('a credit comes off the discounted one-time total and never goes below zero', () => {
+  const base = { landing: selected(1, 10), email: selected(0) }
+  const plain = calculateQuote(base)
+  assert.equal(plain.oneAfter, 5225)
+  assert.equal(plain.credit, 0)
+  const credited = calculateQuote({ ...base, credit: { amount: '1000', label: 'Phase 1 deposit' } })
+  assert.equal(credited.one, plain.one)
+  assert.equal(credited.bundleAmount, plain.bundleAmount)
+  assert.equal(credited.credit, 1000)
+  assert.equal(credited.creditLabel, 'Phase 1 deposit')
+  assert.equal(credited.oneAfter, 4225)
+  assert.equal(credited.monthly, plain.monthly)
+  // A credit larger than the total zeroes it out rather than going negative.
+  const over = calculateQuote({ ...base, credit: { amount: 99999 } })
+  assert.equal(over.credit, 5225)
+  assert.equal(over.oneAfter, 0)
+  for (const amount of ['', ' ', null, '-50', '1.5', 'abc', 0]) {
+    assert.equal(calculateQuote({ ...base, credit: { amount } }).oneAfter, 5225, String(amount))
+  }
 })

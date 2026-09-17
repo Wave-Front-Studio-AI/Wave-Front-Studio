@@ -54,6 +54,12 @@ export function customLandingQuote(custom = {}) {
   return { setup, monthly, perPage, perPageEnabled, pages, pagesTbc, name, details, errors }
 }
 
+// Credits are whole dollars; anything else counts as no credit.
+export function creditAmount(credit) {
+  const amount = Number(credit?.amount)
+  return Number.isInteger(amount) && amount > 0 ? Math.min(amount, 1000000) : 0
+}
+
 // All quote formats share this calculation, including page quantities and savings.
 export function calculateQuote(state) {
   let one = 0
@@ -114,5 +120,9 @@ export function calculateQuote(state) {
 
   const pct = OFFER.bundleTiers.find((tier) => count >= tier.min)?.pct ?? 0
   const bundleAmount = (one * pct) / 100
-  return { one, monthly, count, pct, bundleAmount, oneAfter: one - bundleAmount, firstMonthsFree: monthly * OFFER.firstMonthsFree, rows, ...(pendingPageRate !== undefined ? { pendingPageRate, pendingPageRateAfter: pendingPageRate * (1 - pct / 100) } : {}), ...(errors.length ? { errors } : {}) }
+  // A credit — a deposit or earlier phase already paid — comes off the discounted one-time total.
+  const discounted = one - bundleAmount
+  const credit = Math.min(creditAmount(state.credit), discounted)
+  const creditLabel = String(state.credit?.label ?? '').trim().slice(0, 80)
+  return { one, monthly, count, pct, bundleAmount, credit, creditLabel, oneAfter: discounted - credit, firstMonthsFree: monthly * OFFER.firstMonthsFree, rows, ...(pendingPageRate !== undefined ? { pendingPageRate, pendingPageRateAfter: pendingPageRate * (1 - pct / 100) } : {}), ...(errors.length ? { errors } : {}) }
 }
