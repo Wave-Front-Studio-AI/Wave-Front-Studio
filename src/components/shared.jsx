@@ -301,6 +301,9 @@ export function EnquiryForm({
   source = 'website',
   compact = false,
   websiteField = false,
+  // Drops the two optional boxes (company, message) where every extra field
+  // costs sign-ups, such as the page the ads point to.
+  essentialOnly = false,
   submitLabel = 'Submit',
 }) {
   const [status, setStatus] = useState('')
@@ -372,12 +375,14 @@ export function EnquiryForm({
         <span>Name</span>
         <input required name="name" type="text" autoComplete="name" placeholder="Your name" />
       </label>
-      <label>
-        <span>
-          Company <small>optional</small>
-        </span>
-        <input name="company" type="text" autoComplete="organization" placeholder="Your company" />
-      </label>
+      {essentialOnly ? null : (
+        <label>
+          <span>
+            Company <small>optional</small>
+          </span>
+          <input name="company" type="text" autoComplete="organization" placeholder="Your company" />
+        </label>
+      )}
       <label>
         <span>Phone</span>
         <input
@@ -413,12 +418,14 @@ export function EnquiryForm({
       {/* The page already knows what the enquiry is about, so the subject rides
           along hidden rather than being one more box to fill in. */}
       <input name="subject" type="hidden" defaultValue={subjectDefault || 'Website enquiry'} />
-      <label className="enquiry-wide">
-        <span>
-          Message <small>optional</small>
-        </span>
-        <textarea name="message" rows="3" placeholder="What are you trying to get done?" />
-      </label>
+      {essentialOnly ? null : (
+        <label className="enquiry-wide">
+          <span>
+            Message <small>optional</small>
+          </span>
+          <textarea name="message" rows="3" placeholder="What are you trying to get done?" />
+        </label>
+      )}
       <button className="kinetic-button group enquiry-wide" type="submit" disabled={phase === 'sending'}>
         <span>{phase === 'sending' ? 'Sending…' : submitLabel}</span>
         <span className="button-island">

@@ -337,10 +337,17 @@ export const services = [
       poster: '/videos/free-audit-poster.webp',
     },
     primaryCta: { label: 'Get my free audit', href: '#service-form' },
+    // The Meta ads send people here. Meta's report for 12–17 Sept showed the
+    // ads performing normally but 1 lead from 61 visits, so this page leads
+    // with the form: headline, form, then the video, which only loads when
+    // someone presses play.
+    landing: true,
+    landingNote: 'Free, with no obligation to hire us.',
     form: {
       heading: 'Request your free website audit.',
       copy: 'Share your website address and we’ll review the issues most likely to be costing you visibility and enquiries.',
       websiteField: true,
+      essentialOnly: true,
       submitLabel: 'Get my free audit',
     },
     approach: {
