@@ -178,8 +178,10 @@ export const projects = [
     home: 'Technical fixes, keyword research, on-page work and content structure that took ResinRock onto the first page of Google for its main industry searches.',
     portfolio: 'Technical fixes, keyword research, on-page changes and a restructure of the content. ResinRock went from low visibility to the first page of Google for competitive industry searches.',
     href: 'https://resinrock.com/pages/resin-bound',
-    image: '/images/work/resinrock-seo-page.webp',
-    alt: 'The ResinRock resin bound page: a driveway photo under the headline and keyword-led copy below',
+    // A search results page (Brave Search, September 2026) with resinrock.com
+    // on page one. Swap for a Google results screenshot when one is taken.
+    image: '/images/work/resinrock-search-results.webp',
+    alt: 'Search results for resin bound products, with resinrock.com listed on the first page between Amazon and AeroMarine',
   },
 ]
 

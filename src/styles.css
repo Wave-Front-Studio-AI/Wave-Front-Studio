@@ -1061,7 +1061,10 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
 .footer-social a:hover { color: var(--ink); background: var(--cyan); border-color: var(--cyan); }
 
 .footer-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; }
-.footer-links > div { display: grid; align-content: start; gap: 11px; }
+.footer-links > div { display: grid; min-width: 0; align-content: start; gap: 11px; }
+/* The studio email is one long word; let it break rather than push the page
+   sideways at tablet widths. */
+.footer-address a { overflow-wrap: anywhere; }
 .footer-links strong { margin-bottom: 4px; color: var(--white); font-size: 0.975rem; font-weight: 600; }
 .footer-links a, .footer-address span { color: rgba(255, 255, 255, 0.74); font-size: 0.95rem; line-height: 1.5; transition: color 160ms ease; }
 .footer-links a:hover { color: var(--cyan); }
@@ -1109,6 +1112,7 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
   .stat-row.is-quad { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hub-row.has-media > a { grid-template-columns: minmax(0, 1fr) minmax(180px, 240px); }
   .cta-band-actions { grid-column: auto; grid-row: auto; }
+  .footer-directory { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 720px) {
