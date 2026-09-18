@@ -124,7 +124,7 @@ export default function Navigation() {
         </nav>
 
         <a className="nav-cta group" href="/contact/">
-          <span>Get Started</span>
+          <span>Get started</span>
           <span className="button-island">
             <ArrowIcon className="size-4" />
           </span>

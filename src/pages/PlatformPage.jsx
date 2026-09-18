@@ -18,7 +18,6 @@ export default function PlatformPage() {
     >
       <section className="page-hero is-tight">
         <div className="page-frame">
-          <span className="eyebrow">Platform</span>
           <h1>The Wavefront Studio Platform</h1>
         </div>
       </section>
@@ -48,7 +47,7 @@ export default function PlatformPage() {
             <h3>Capture and route leads</h3>
             <p>
               Enquiries from every website a client operates arrive in one pipeline rather than scattered across inboxes.
-              Each one is assigned automatically — by territory, availability or workload — so it reaches the right person
+              Each one is assigned automatically, by territory, availability or workload, so it reaches the right person
               without a manager triaging it. For clients running multi-site operations, this is the difference between a
               same-hour response and a next-day one.
             </p>
@@ -83,11 +82,11 @@ export default function PlatformPage() {
 
             <ul>
               <li>
-                <strong>Wavefront Studio</strong> — the platform our agency team uses to manage client work: pipelines,
+                <strong>Wavefront Studio</strong> is the platform our agency team uses to manage client work: pipelines,
                 campaigns, publishing and reporting across every account we run.
               </li>
               <li>
-                <strong>Resin Rock Pro</strong> — built for ResinRock Industries. It captures enquiries across their
+                <strong>Resin Rock Pro</strong> is built for ResinRock Industries. It captures enquiries across their
                 network of websites and assigns each one to the nearest available installer, with quoting and job tracking
                 built in.
               </li>
@@ -97,7 +96,7 @@ export default function PlatformPage() {
 
             <p>
               The platform works with tools you already use. Connecting an account is always your choice, always
-              reversible, and always authorised on that provider’s own consent screen — we never see or store your
+              reversible, and always authorised on that provider’s own consent screen. We never see or store your
               password for a connected service.
             </p>
 
@@ -148,7 +147,7 @@ export default function PlatformPage() {
 
             <p>
               Connections are encrypted in transit. Access tokens for connected services are encrypted at rest and are
-              never exposed to your browser. You can delete your data at any time — by disconnecting a single service, by
+              never exposed to your browser. You can delete your data at any time: by disconnecting a single service, by
               deleting your account, or by emailing us and we will action it within 30 days.
             </p>
 

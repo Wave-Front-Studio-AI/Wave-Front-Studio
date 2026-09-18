@@ -1,58 +1,16 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { ArrowIcon, ChevronIcon } from './Icons.jsx'
-import { contact, testimonials, testimonialsHeading } from '../data/site.js'
+import { contact, googleListingUrl, offeringGroups, testimonials, testimonialsHeading } from '../data/site.js'
 import { deliverLead } from '../formSubmission.js'
-
-/* ------------------------------------------------------------------ */
-/* Motion                                                              */
-/* ------------------------------------------------------------------ */
-
-// One shared observer-driven reveal instead of a motion library, so the whole
-// site animates in consistently and costs nothing on first paint.
-export function Reveal({ as: Tag = 'div', className = '', delay = 0, children, ...rest }) {
-  const ref = useRef(null)
-  const [shown, setShown] = useState(false)
-
-  useEffect(() => {
-    const node = ref.current
-    if (!node) return undefined
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setShown(true)
-      return undefined
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setShown(true)
-            observer.disconnect()
-          }
-        })
-      },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
-    )
-    observer.observe(node)
-    return () => observer.disconnect()
-  }, [])
-
-  return (
-    <Tag ref={ref} className={`reveal ${shown ? 'is-in' : ''} ${className}`} style={{ '--reveal-delay': `${delay}ms` }} {...rest}>
-      {children}
-    </Tag>
-  )
-}
 
 /* ------------------------------------------------------------------ */
 /* Headings                                                            */
 /* ------------------------------------------------------------------ */
 
-export function SectionHeading({ eyebrow, title, copy, as: Heading = 'h2', dark = false, align = 'split', children }) {
+export function SectionHeading({ title, copy, as: Heading = 'h2', dark = false, align = 'split', children }) {
   return (
     <div className={`section-head ${dark ? 'is-dark' : ''} is-${align}`}>
-      <div>
-        {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
-        <Heading>{title}</Heading>
-      </div>
+      <Heading>{title}</Heading>
       {copy || children ? (
         <div className="section-head-aside">
           {copy ? <p>{copy}</p> : null}
@@ -64,50 +22,53 @@ export function SectionHeading({ eyebrow, title, copy, as: Heading = 'h2', dark 
 }
 
 /* ------------------------------------------------------------------ */
-/* Counters                                                            */
+/* Services index                                                      */
 /* ------------------------------------------------------------------ */
 
-export function Counter({ to, suffix = '', prefix = '', decimals = 0 }) {
-  const ref = useRef(null)
-  const [value, setValue] = useState(0)
-
-  useEffect(() => {
-    const node = ref.current
-    if (!node) return undefined
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setValue(to)
-      return undefined
-    }
-    let frame
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries.some((entry) => entry.isIntersecting)) return
-        observer.disconnect()
-        const start = performance.now()
-        const duration = 2000
-        const step = (now) => {
-          const progress = Math.min(1, (now - start) / duration)
-          const eased = 1 - (1 - progress) ** 3
-          setValue(to * eased)
-          if (progress < 1) frame = requestAnimationFrame(step)
-        }
-        frame = requestAnimationFrame(step)
-      },
-      { threshold: 0.4 },
-    )
-    observer.observe(node)
-    return () => {
-      observer.disconnect()
-      cancelAnimationFrame(frame)
-    }
-  }, [to])
-
+// Services grouped by the job they do for the customer, with the free audit
+// set apart as the starting point. Each service row is a whole-row link.
+export function OfferingList({ items }) {
+  const start = items.find((item) => item.group === 'start')
   return (
-    <span ref={ref} className="counter">
-      {prefix}
-      {value.toFixed(decimals)}
-      {suffix}
-    </span>
+    <div className="offering-groups">
+      {offeringGroups.map((group) => {
+        const members = items.filter((item) => item.group === group.id)
+        if (!members.length) return null
+        return (
+          <section className="offering-group" key={group.id} aria-labelledby={`offering-${group.id}`}>
+            <header>
+              <h3 id={`offering-${group.id}`}>{group.title}</h3>
+              <p>{group.copy}</p>
+            </header>
+            <ul>
+              {members.map((item) => (
+                <li key={item.href}>
+                  <a href={item.href}>
+                    <strong>{item.name}</strong>
+                    <span>{item.copy}</span>
+                    <ArrowIcon />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      })}
+      {start ? (
+        <aside className="offering-start">
+          <div>
+            <h3>Not sure where to start?</h3>
+            <p>{start.copy}</p>
+          </div>
+          <a className="kinetic-button light group" href={start.href}>
+            <span>Get a free site audit</span>
+            <span className="button-island">
+              <ArrowIcon className="size-4" />
+            </span>
+          </a>
+        </aside>
+      ) : null}
+    </div>
   )
 }
 
@@ -115,11 +76,15 @@ export function Counter({ to, suffix = '', prefix = '', decimals = 0 }) {
 /* Testimonials                                                        */
 /* ------------------------------------------------------------------ */
 
-function Stars() {
+const initials = (name) => name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase()
+
+// Stars only ever show a rating Google reports, never a made-up one.
+function Stars({ rating }) {
+  const lit = Math.round(rating || 0)
   return (
-    <span className="stars" aria-label="5 out of 5">
-      {[0, 1, 2, 3, 4].map((index) => (
-        <svg key={index} viewBox="0 0 20 20" aria-hidden="true">
+    <span className="stars" role="img" aria-label={`${rating} out of 5 stars`}>
+      {[1, 2, 3, 4, 5].map((star) => (
+        <svg key={star} viewBox="0 0 20 20" aria-hidden="true" className={star <= lit ? 'is-lit' : ''}>
           <path d="m10 1.6 2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8Z" fill="currentColor" />
         </svg>
       ))}
@@ -127,35 +92,128 @@ function Stars() {
   )
 }
 
+// The live Google rating and reviews from /api/reviews/. Fetched in the
+// browser only; until it answers, or if it cannot, the section still links to
+// the Google listing.
+function useGoogleReviews() {
+  const [data, setData] = useState(null)
+  useEffect(() => {
+    let cancelled = false
+    fetch('/api/reviews/', { headers: { accept: 'application/json' } })
+      .then((response) => ((response.headers.get('content-type') || '').includes('json') ? response.json() : null))
+      .then((json) => {
+        if (!cancelled && json?.ok) setData(json)
+      })
+      .catch(() => {})
+    return () => {
+      cancelled = true
+    }
+  }, [])
+  return data
+}
+
+// Google reviews are the section. The prerendered page carries the three
+// client quotes, which stay only until the live reviews arrive (or for good,
+// if Google cannot be reached), so the section is never empty.
 export function Testimonials() {
-  const [active, setActive] = useState(0)
+  const google = useGoogleReviews()
+  const reviews = google?.reviews || []
+  const listing = google?.mapsUrl || googleListingUrl
+  const onGoogle = reviews.length > 0
 
   return (
     <section className="testimonials chapter" id="testimonials">
       <div className="page-frame">
-        <SectionHeading eyebrow={testimonialsHeading.eyebrow} title={testimonialsHeading.title} copy={testimonialsHeading.copy} />
-        <div className="testimonial-grid">
-          {testimonials.map((item, index) => (
-            <Reveal
-              as="article"
-              key={item.name}
-              delay={index * 90}
-              className={`testimonial-card ${active === index ? 'is-active' : ''}`}
-              onMouseEnter={() => setActive(index)}
-              onFocusCapture={() => setActive(index)}
-            >
-              <Stars />
-              <blockquote>{item.quote}</blockquote>
-              <footer>
-                <img src={item.image} alt="" width="96" height="96" loading="lazy" />
-                <div>
-                  <strong>{item.name}</strong>
-                  <span>{item.role}</span>
-                </div>
-              </footer>
-            </Reveal>
-          ))}
-        </div>
+        <SectionHeading title={onGoogle ? 'What clients say on Google' : testimonialsHeading.title}>
+          {google?.rating ? (
+            <p className="google-rating">
+              <strong>{google.rating.toFixed(1)}</strong>
+              <span>
+                <Stars rating={google.rating} />
+                <span>
+                  on Google{google.count ? `, from ${google.count} review${google.count === 1 ? '' : 's'}` : ''}
+                </span>
+              </span>
+            </p>
+          ) : (
+            <p>{testimonialsHeading.copy}</p>
+          )}
+          <span className="google-links">
+            <a className="text-link" href={listing} target="_blank" rel="noreferrer noopener">
+              Read all our Google reviews <ArrowIcon />
+            </a>
+            {google?.writeReviewUrl ? (
+              <a className="text-link" href={google.writeReviewUrl} target="_blank" rel="noreferrer noopener">
+                Leave a review <ArrowIcon />
+              </a>
+            ) : null}
+          </span>
+        </SectionHeading>
+
+        {onGoogle ? (
+          <div className="google-reviews">
+            <div className="google-review-grid">
+              {reviews.map((review) => (
+                <figure className="google-review" key={`${review.author}-${review.when}`}>
+                  <figcaption>
+                    {review.photo ? (
+                      <img src={review.photo} alt="" width="40" height="40" loading="lazy" referrerPolicy="no-referrer" />
+                    ) : (
+                      <span className="testimonial-initials" aria-hidden="true">
+                        {initials(review.author)}
+                      </span>
+                    )}
+                    <span>
+                      {review.authorUrl ? (
+                        <a href={review.authorUrl} target="_blank" rel="noreferrer noopener">
+                          {review.author}
+                        </a>
+                      ) : (
+                        <strong>{review.author}</strong>
+                      )}
+                      <span>{review.when}</span>
+                    </span>
+                  </figcaption>
+                  {review.rating ? <Stars rating={review.rating} /> : null}
+                  <blockquote>{review.text}</blockquote>
+                  {review.url ? (
+                    <a className="google-review-link" href={review.url} target="_blank" rel="noreferrer noopener">
+                      Read on Google
+                    </a>
+                  ) : null}
+                </figure>
+              ))}
+            </div>
+            <p className="google-attribution">
+              Reviews from{' '}
+              <a href={listing} target="_blank" rel="noreferrer noopener">
+                Google Maps
+              </a>
+              , shown as Google provides them.
+            </p>
+          </div>
+        ) : (
+          <div className="testimonial-grid">
+            {testimonials.map((item) => (
+              <figure className="testimonial-card" key={item.name}>
+                <blockquote>{item.quote}</blockquote>
+                <figcaption>
+                  {item.image ? (
+                    <img src={item.image} alt="" width="96" height="96" loading="lazy" />
+                  ) : (
+                    <span className="testimonial-initials" aria-hidden="true">
+                      {initials(item.name)}
+                    </span>
+                  )}
+                  <span>
+                    <strong>{item.name}</strong>
+                    <span>{item.role}</span>
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )
@@ -165,12 +223,10 @@ export function Testimonials() {
 /* CTA band                                                            */
 /* ------------------------------------------------------------------ */
 
-export function CtaBand({ eyebrow, title, copy, label = 'Get a Free Consultation', href = '/contact/', secondary }) {
+export function CtaBand({ title, copy, label = 'Get a free consultation', href = '/contact/', secondary }) {
   return (
     <section className="cta-band">
       <div className="page-frame">
-        <img className="cta-mark" src="/wave-logo-white.webp" alt="" width="1591" height="498" loading="lazy" />
-        {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
         <h2>{title}</h2>
         {copy ? <p>{copy}</p> : null}
         <div className="cta-band-actions">
@@ -195,7 +251,7 @@ export function CtaBand({ eyebrow, title, copy, label = 'Get a Free Consultation
 /* FAQ accordion                                                       */
 /* ------------------------------------------------------------------ */
 
-export function FaqAccordion({ items, heading, deskLabel = 'Wavefront Studio', deskSub = 'Answers from the team' }) {
+export function FaqAccordion({ items, heading }) {
   const [open, setOpen] = useState(0)
   const baseId = useId()
 
@@ -203,45 +259,29 @@ export function FaqAccordion({ items, heading, deskLabel = 'Wavefront Studio', d
     <section className="faq-chapter chapter" id="faqs">
       <div className="page-frame faq-grid">
         <div className="faq-heading">
-          <span className="eyebrow">{heading?.eyebrow || 'Common questions'}</span>
-          <h2>{heading?.title || 'Got Questions? We’ve Got Answers.'}</h2>
+          <h2>{heading?.title || 'Common questions'}</h2>
           {heading?.copy ? <p>{heading.copy}</p> : null}
         </div>
-        <div className="faq-chat-shell">
-          <div className="faq-chat-header">
-            <span className="faq-status-dot" aria-hidden="true" />
-            <div>
-              <strong>{deskLabel}</strong>
-              <span>{deskSub}</span>
-            </div>
-          </div>
-          <div className="faq-list">
-            {items.map(([question, answer], index) => {
-              const panelId = `${baseId}-faq-${index}`
-              const isOpen = open === index
-              return (
-                <article className={`faq-item ${isOpen ? 'is-open' : ''}`} key={question}>
-                  <h3>
-                    <button type="button" onClick={() => setOpen(isOpen ? -1 : index)} aria-expanded={isOpen} aria-controls={panelId}>
-                      <span>{question}</span>
-                      <ChevronIcon open={isOpen} className="size-5" />
-                    </button>
-                  </h3>
-                  <div className="faq-answer" id={panelId} aria-hidden={!isOpen}>
-                    <div className="faq-answer-inner">
-                      <span className="faq-agent-mark">
-                        <img src="/wave-logo.webp" alt="" loading="lazy" />
-                      </span>
-                      <div className="faq-answer-bubble">
-                        <span>Wavefront</span>
-                        <p>{answer}</p>
-                      </div>
-                    </div>
+        <div className="faq-list">
+          {items.map(([question, answer], index) => {
+            const panelId = `${baseId}-faq-${index}`
+            const isOpen = open === index
+            return (
+              <div className={`faq-item ${isOpen ? 'is-open' : ''}`} key={question}>
+                <h3>
+                  <button type="button" onClick={() => setOpen(isOpen ? -1 : index)} aria-expanded={isOpen} aria-controls={panelId}>
+                    <span>{question}</span>
+                    <ChevronIcon open={isOpen} className="size-5" />
+                  </button>
+                </h3>
+                <div className="faq-answer" id={panelId} aria-hidden={!isOpen}>
+                  <div className="faq-answer-inner">
+                    <p>{answer}</p>
                   </div>
-                </article>
-              )
-            })}
-          </div>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>
@@ -304,9 +344,8 @@ export function EnquiryForm({
             <path d="m6.5 12.5 3.4 3.4 7.6-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>
-        <span className="eyebrow">Message received</span>
         <h3>Thank you{confirmationName ? `, ${confirmationName}` : ''}.</h3>
-        <p>Your message has been sent successfully. The Wavefront Studio team will review it and follow up using the contact details you provided.</p>
+        <p>Your message reached the studio. We will reply using the details you gave us, usually within one to two working days.</p>
         <button
           className="text-link confirmation-reset"
           type="button"
@@ -334,8 +373,10 @@ export function EnquiryForm({
         <input required name="name" type="text" autoComplete="name" placeholder="Your name" />
       </label>
       <label>
-        <span>Company</span>
-        <input required name="company" type="text" autoComplete="organization" placeholder="Your company" />
+        <span>
+          Company <small>optional</small>
+        </span>
+        <input name="company" type="text" autoComplete="organization" placeholder="Your company" />
       </label>
       <label>
         <span>Phone</span>
@@ -369,13 +410,14 @@ export function EnquiryForm({
           />
         </label>
       ) : null}
-      <label>
-        <span>Subject</span>
-        <input name="subject" type="text" defaultValue={subjectDefault} placeholder="What is this about?" />
-      </label>
+      {/* The page already knows what the enquiry is about, so the subject rides
+          along hidden rather than being one more box to fill in. */}
+      <input name="subject" type="hidden" defaultValue={subjectDefault || 'Website enquiry'} />
       <label className="enquiry-wide">
-        <span>Message</span>
-        <textarea required name="message" rows="4" placeholder="Tell us what you are trying to achieve." />
+        <span>
+          Message <small>optional</small>
+        </span>
+        <textarea name="message" rows="3" placeholder="What are you trying to get done?" />
       </label>
       <button className="kinetic-button group enquiry-wide" type="submit" disabled={phase === 'sending'}>
         <span>{phase === 'sending' ? 'Sending…' : submitLabel}</span>
@@ -408,7 +450,7 @@ export function SupportCallout() {
         </svg>
       </span>
       <span className="support-text">
-        <small>Customer Support</small>
+        <small>Call the studio</small>
         <strong>{contact.supportPhone}</strong>
       </span>
     </a>

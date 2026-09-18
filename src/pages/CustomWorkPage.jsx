@@ -1,43 +1,25 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { CtaBand, EnquiryForm, Reveal, SectionHeading } from '../components/shared.jsx'
+import { CtaBand, EnquiryForm, SectionHeading } from '../components/shared.jsx'
 import { ServicePlans } from './ServicePage.jsx'
 import { services } from '../data/services.js'
 import { customWorks } from '../data/customWorks.js'
 import { siteOrigin } from '../data/site.js'
 import { breadcrumbs, byOrganization, pageGraph } from '../data/seo.js'
 
-function EntryMotif() {
-  return (
-    <div className="entry-motif" aria-hidden="true">
-      <svg viewBox="0 0 1600 240" preserveAspectRatio="none">
-        <path className="entry-motif-track" pathLength="1" d="M0 120 C 240 220 420 20 640 120 S 1020 230 1230 110 S 1460 30 1600 150" />
-        <path className="entry-motif-signal" pathLength="1" d="M0 120 C 240 220 420 20 640 120 S 1020 230 1230 110 S 1460 30 1600 150" />
-      </svg>
-    </div>
-  )
-}
-
-// The AI chatbot page ships no photography, so its entry visual cycles the
-// platform's own capability list instead of showing a stock image.
-function LiveSystemPanel({ items }) {
+// The AI chatbot page ships no photography, so its entry visual lets a visitor
+// step through the assistant's own capability list instead of a stock image.
+// It changes only when clicked: nothing here is actually running.
+function CapabilityPanel({ items }) {
   const [active, setActive] = useState(0)
   const steps = items.slice(0, 4)
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
-    const timer = window.setInterval(() => setActive((value) => (value + 1) % steps.length), 2800)
-    return () => window.clearInterval(timer)
-  }, [steps.length])
 
   return (
     <div className="live-panel">
       <div className="live-panel-bar">
         <img src="/wave-logo.webp" alt="Wavefront Studio" />
-        <span>
-          <i aria-hidden="true" /> Live system
-        </span>
+        <span>What the assistant handles</span>
       </div>
       <div className="live-panel-body">
         {steps.map((step, index) => (
@@ -48,13 +30,11 @@ function LiveSystemPanel({ items }) {
             onClick={() => setActive(index)}
             aria-pressed={index === active}
           >
-            <span aria-hidden="true">{step.icon}</span>
             <strong>{step.title}</strong>
           </button>
         ))}
       </div>
       <div className="live-panel-result" aria-live="polite">
-        <span>Now running</span>
         <p>{steps[active].copy}</p>
       </div>
     </div>
@@ -65,30 +45,25 @@ function ProcessTimeline({ items }) {
   return (
     <ol className="process-timeline">
       {items.map((step, index) => (
-        <Reveal as="li" key={step.title} delay={index * 90}>
-          <span className="process-number">{String(index + 1).padStart(2, '0')}</span>
-          <div>
-            <span className="process-icon" aria-hidden="true">
-              {step.icon}
-            </span>
-            <h3>{step.title}</h3>
-            <p>{step.copy}</p>
-          </div>
-        </Reveal>
+        <li key={step.title}>
+          <span className="process-number">{index + 1}</span>
+          <h3>{step.title}</h3>
+          <p>{step.copy}</p>
+        </li>
       ))}
     </ol>
   )
 }
 
-function IconGrid({ items, columns = 3 }) {
+// Titled points separated by rules, not boxed cards with an icon tile each.
+function PointList({ items, columns = 3 }) {
   return (
-    <div className={`icon-grid cols-${columns}`}>
-      {items.map((item, index) => (
-        <Reveal as="article" key={item.title} delay={index * 55} className="icon-card">
-          <span aria-hidden="true">{item.icon}</span>
+    <div className={`point-list cols-${columns}`}>
+      {items.map((item) => (
+        <div key={item.title}>
           <h3>{item.title}</h3>
           <p>{item.copy}</p>
-        </Reveal>
+        </div>
       ))}
     </div>
   )
@@ -98,7 +73,7 @@ function ComparisonTable({ comparison }) {
   return (
     <section className="comparison-chapter chapter">
       <div className="page-frame">
-        <SectionHeading eyebrow={comparison.eyebrow} title={comparison.title} copy={comparison.copy} />
+        <SectionHeading title={comparison.title} copy={comparison.copy} />
         <p className="comparison-hint">{comparison.swipeHint}</p>
         <div className="comparison-scroll">
           <table className="comparison-table">
@@ -138,13 +113,13 @@ function ComparisonTable({ comparison }) {
   )
 }
 
-function VisualizerShowcase({ showcase, stats }) {
+function VisualizerShowcase({ showcase }) {
   const [revealed, setRevealed] = useState(60)
 
   return (
     <section className="showcase-chapter chapter">
       <div className="page-frame">
-        <SectionHeading eyebrow={showcase.eyebrow} title={showcase.title} copy={showcase.copy} dark />
+        <SectionHeading title={showcase.title} copy={showcase.copy} dark />
         <div className="compare-stage">
           <figure>
             <img className="compare-base" src={showcase.before.image} alt={showcase.before.caption} loading="lazy" />
@@ -177,14 +152,6 @@ function VisualizerShowcase({ showcase, stats }) {
             </span>
           </div>
         </div>
-        <div className="stat-row">
-          {stats.map((stat, index) => (
-            <Reveal key={stat.label} delay={index * 90}>
-              <strong>{stat.value}</strong>
-              <span>{stat.label}</span>
-            </Reveal>
-          ))}
-        </div>
       </div>
     </section>
   )
@@ -194,7 +161,7 @@ function CalculatorDemo({ demo }) {
   return (
     <section className="showcase-chapter chapter">
       <div className="page-frame">
-        <SectionHeading eyebrow={demo.eyebrow} title={demo.title} copy={demo.copy} dark />
+        <SectionHeading title={demo.title} copy={demo.copy} dark />
         <div className="calc-demo">
           <div className="calc-demo-panel">
             <header>
@@ -210,7 +177,7 @@ function CalculatorDemo({ demo }) {
               ))}
             </div>
             <div className="calc-chips">
-              <span className="calc-chips-label">Select Depth</span>
+              <span className="calc-chips-label">Depth</span>
               <div>
                 {demo.depths.map((depth) => (
                   <span key={depth} className={depth === demo.depthSelected ? 'is-on' : ''}>
@@ -266,11 +233,7 @@ function RelatedWork({ current }) {
   return (
     <section className="related-chapter chapter">
       <div className="page-frame">
-        <SectionHeading
-          eyebrow="More from Wavefront"
-          title="Everything else we build."
-          copy="One team, one roof — pick the next piece when your business is ready for it."
-        />
+        <SectionHeading title="Other things we build" />
         <div className="related-links">
           {siblings.map((item) => (
             <a href={`/${item.slug}/`} key={item.slug}>
@@ -294,7 +257,7 @@ export default function CustomWorkPage({ work }) {
       '@type': 'Service',
       '@id': `${url}#service`,
       name: work.nav,
-      serviceType: work.eyebrow || work.nav,
+      serviceType: work.nav,
       description: work.metaDescription,
       url,
       areaServed: 'Worldwide',
@@ -320,18 +283,16 @@ export default function CustomWorkPage({ work }) {
         </div>
       )
     }
-    return <LiveSystemPanel items={work.features.items} />
+    return <CapabilityPanel items={work.features.items} />
   })()
 
   return (
     <Layout className="service-page custom-work-page" seo={{ title: work.metaTitle, description: work.metaDescription, canonical, schema }}>
       <section className="service-entry chapter">
-        <EntryMotif />
         <div className="page-frame service-entry-grid">
           <div className="service-entry-intro">
-            <Reveal>{entryVisual}</Reveal>
-            <Reveal delay={80}>
-              <span className="eyebrow">{work.eyebrow}</span>
+            {entryVisual}
+            <div>
               <h1>{work.name}</h1>
               <p className="service-subhead">{work.intro}</p>
               <div className="hero-actions">
@@ -342,38 +303,38 @@ export default function CustomWorkPage({ work }) {
                   </span>
                 </a>
                 <a className="text-link" href="/portfolio/">
-                  See Our Work <ArrowIcon />
+                  See our work <ArrowIcon />
                 </a>
               </div>
-            </Reveal>
+            </div>
           </div>
-          <Reveal delay={140}>
+          <div>
             <EnquiryForm
-              heading="Tell us what you need."
-              copy="Drop us a message and let’s discuss how we can help your business grow online."
+              heading="Tell us what you need"
+              copy="A few lines about the business and the problem is enough. We reply within one to two working days."
               subjectDefault={work.nav}
               source={work.slug}
             />
-          </Reveal>
+          </div>
         </div>
       </section>
 
       {work.steps ? (
         <section className="process-chapter chapter">
           <div className="page-frame">
-            <SectionHeading eyebrow={work.steps.eyebrow} title={work.steps.title} copy={work.steps.copy} />
+            <SectionHeading title={work.steps.title} copy={work.steps.copy} />
             <ProcessTimeline items={work.steps.items} />
           </div>
         </section>
       ) : null}
 
-      {work.showcase ? <VisualizerShowcase showcase={work.showcase} stats={work.stats} /> : null}
+      {work.showcase ? <VisualizerShowcase showcase={work.showcase} /> : null}
       {work.demo ? <CalculatorDemo demo={work.demo} /> : null}
 
       <section className="service-capabilities chapter">
         <div className="page-frame">
-          <SectionHeading eyebrow={work.features.eyebrow} title={work.features.title} copy={work.features.copy} />
-          <IconGrid items={work.features.items} columns={3} />
+          <SectionHeading title={work.features.title} copy={work.features.copy} />
+          <PointList items={work.features.items} columns={3} />
         </div>
       </section>
 
@@ -383,14 +344,13 @@ export default function CustomWorkPage({ work }) {
       {work.integrations ? (
         <section className="integrations-chapter chapter">
           <div className="page-frame">
-            <SectionHeading eyebrow={work.integrations.eyebrow} title={work.integrations.title} copy={work.integrations.copy} dark />
+            <SectionHeading title={work.integrations.title} copy={work.integrations.copy} dark />
             <div className="integration-row">
-              {work.integrations.items.map((item, index) => (
-                <Reveal as="article" key={item.title} delay={index * 70}>
-                  <span aria-hidden="true">{item.icon}</span>
+              {work.integrations.items.map((item) => (
+                <div key={item.title}>
                   <h3>{item.title}</h3>
                   <p>{item.copy}</p>
-                </Reveal>
+                </div>
               ))}
             </div>
           </div>
@@ -400,8 +360,8 @@ export default function CustomWorkPage({ work }) {
       {work.audience ? (
         <section className="audience-chapter chapter">
           <div className="page-frame">
-            <SectionHeading eyebrow={work.audience.eyebrow} title={work.audience.title} copy={work.audience.copy} />
-            <IconGrid items={work.audience.items} columns={4} />
+            <SectionHeading title={work.audience.title} copy={work.audience.copy} />
+            <PointList items={work.audience.items} columns={4} />
           </div>
         </section>
       ) : null}
@@ -409,11 +369,10 @@ export default function CustomWorkPage({ work }) {
       <RelatedWork current={work.slug} />
 
       <CtaBand
-        eyebrow={work.cta.eyebrow}
         title={work.cta.title}
         copy={work.cta.copy}
-        label="Contact Us"
-        secondary={['See Our Work', '/portfolio/']}
+        label="Contact us"
+        secondary={['See our work', '/portfolio/']}
       />
     </Layout>
   )

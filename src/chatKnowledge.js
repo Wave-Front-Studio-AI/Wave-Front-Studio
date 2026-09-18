@@ -30,6 +30,9 @@ const STOP_WORDS = new Set([
   'com', 'www', 'http', 'https',
 ])
 
+// Words that only say "do you do something", not what the something is.
+const OFFER_WORDS = new Set(['offer', 'provide', 'sell', 'resell', 'service', 'offering', 'option'])
+
 export function tokenize(value) {
   return String(value ?? '')
     .toLowerCase()
@@ -96,28 +99,28 @@ const companyEntries = [
   {
     id: 'company-overview', title: 'What Wavefront Studio does', url: '/', kind: 'company',
     keywords: ['wavefront', 'agency', 'overview', 'what do you do', 'what do you build', 'company', 'services', 'digital agency', 'full service'],
-    body: 'From custom web development and AI-powered chatbots to SEO strategies and stunning UI/UX design – Wavefront Studio is a full-service digital agency that turns bold ideas into high-performing digital products. The published services are ' + serviceNames + '. The custom works are ' + customWorkNames + '.',
-    plain: 'Wavefront Studio is a full-service digital agency in Sarasota, Florida. We build websites, mobile apps and custom web tools, run SEO, digital marketing and social media, design brands, and build AI chatbots, live visualizers and custom calculators.',
+    body: 'Wavefront Studio is a four-person web, SEO and AI studio in Sarasota, Florida. We build websites, local SEO, AI chatbots and quote calculators for businesses that need their site to bring in enquiries. The published services are ' + serviceNames + '. The custom works are ' + customWorkNames + '.',
+    plain: 'Wavefront Studio is a four-person studio in Sarasota, Florida. We build websites, mobile apps and custom web tools, run SEO, digital marketing and social media, design brands, and build AI chatbots, live visualizers and custom calculators.',
   },
   {
     id: 'company-about', title: 'About Wavefront Studio', url: '/about/', kind: 'company',
     keywords: ['about', 'who are you', 'story', 'team', 'experience', 'years', 'sarasota', 'resinrock', 'agency'],
-    body: 'Wavefront Studio is a full-service digital agency built for businesses that want more than just a website – they want results. We combine creative design, smart development, and data-driven strategy to help brands launch, grow, and dominate their market online. From building 12+ interconnected websites for ResinRock Industries to developing automated lead distribution systems and ranking clients on Google’s first page – our work speaks for itself.',
+    body: 'Wavefront Studio is four people working from 4363 Independence Ct in Sarasota, Florida. For ResinRock, a resin-bound surfacing company, we built more than 12 connected websites, the material calculators on them, and the system that sends each enquiry to the nearest available installer. We also took their main site onto the first page of Google for its core industry searches. The person you talk to is one of the people doing the work, and we look after sites once they are live.',
   },
   {
     id: 'company-why', title: 'Why businesses choose Wavefront', url: '/', kind: 'company',
     keywords: ['why you', 'why choose', 'trust', 'different', 'better', 'support', 'expertise'],
-    body: 'Professional team: skilled developers, designers, SEO experts, and AI specialists - all under one roof working together on your project. Expertise in digital innovation: we use cutting-edge tools like AI chatbots, live visualizers, and automated systems that most agencies haven’t adopted yet. Exceptional support: we don’t disappear after launch. Our team stays with you for ongoing support, updates, and optimization - one call away.',
+    body: 'Design, development, SEO and AI tools come from the same four people, so nothing gets lost between agencies. We build the tools that turn visits into enquiries, like AI chatbots, live visualisers, quote calculators and lead routing. After launch we stay on for updates, fixes and SEO, and you can call the studio directly.',
   },
   {
     id: 'company-process', title: 'How working with us works', url: '/', kind: 'company',
     keywords: ['process', 'how it works', 'steps', 'what happens', 'get started', 'onboarding', 'stages'],
-    body: 'Three steps. Share your vision: tell us about your business and what you want to achieve, and we map out a strategy that fits your goals. We design and develop: our designers, developers, and strategists bring your vision to life, with regular updates and previews at every stage. Launch and grow: we launch your project, then provide ongoing support, optimization, and strategy so your business keeps growing after launch.',
+    body: 'Three steps. First we talk about the business: what you sell, who buys it and what the site has to do, and we plan around that. Then we design and build it, and you see previews while it comes together so you can change direction before anything goes live. Nothing launches until you sign it off, and after launch we handle updates, fixes and SEO.',
   },
   {
     id: 'company-portfolio', title: 'Our work and portfolio', url: '/portfolio/', kind: 'company',
     keywords: ['portfolio', 'work', 'examples', 'case study', 'case studies', 'projects', 'proof', 'results', 'clients', 'resinrock'],
-    body: `Every project we deliver is built to perform – not just to impress. Published projects: ${projects.map((project) => `${project.title} (${project.client})`).join('; ')}. Client logos shown on the site: ${clientLogos.map((logo) => logo.alt.replace(/ company logo$/, '')).join(', ')}.`,
+    body: `Every published project is live at its own address. Published projects: ${projects.map((project) => `${project.title} (${project.client})`).join('; ')}. Client logos shown on the site: ${clientLogos.map((logo) => logo.alt.replace(/ company logo$/, '')).join(', ')}.`,
   },
   {
     id: 'company-testimonials', title: 'What clients say', url: '/', kind: 'company',
@@ -132,7 +135,7 @@ const companyEntries = [
   {
     id: 'company-faqs', title: 'Frequently asked questions', url: '/faqs/', kind: 'company',
     keywords: ['faq', 'faqs', 'questions', 'common questions', 'before getting started'],
-    body: `Everything You Need to Know Before Getting Started. Published questions: ${siteFaqs.map(([question]) => question).join(' ')}`,
+    body: `The questions clients usually ask before a project starts. Published questions: ${siteFaqs.map(([question]) => question).join(' ')}`,
   },
   {
     id: 'company-blog', title: 'The Wavefront blog', url: '/blog/', kind: 'company',
@@ -142,7 +145,7 @@ const companyEntries = [
   {
     id: 'company-locations', title: locationsHub?.title || 'Where we work', url: '/locations/', kind: 'company',
     keywords: ['locations', 'areas', 'where do you work', 'coverage', 'near me', 'local', 'florida', 'city', 'cities', 'remote', 'outside the us'],
-    body: `${locationsHub?.description || ''} Pages are published for ${locations.length} areas: ${locations.map((location) => location.title.replace(/^Web Design & SEO (?:in|for|on) /, '')).join('; ')}. We are based in Sarasota, Florida and work with clients worldwide - all communication, project management, and delivery happens digitally.`.trim(),
+    body: `${locationsHub?.description || ''} Pages are published for ${locations.length} areas: ${locations.map((location) => location.title.replace(/^Web Design & SEO (?:in|for|on) /, '')).join('; ')}. We are based in Sarasota, Florida. We work in person across Sarasota, Manatee and Tampa Bay, and remotely with clients anywhere else.`.trim(),
   },
   {
     id: 'company-free-setup', title: 'Free setup this quarter', url: '/free-setup/', kind: 'company',
@@ -159,7 +162,7 @@ const companyEntries = [
   {
     id: 'company-build-your-package', title: 'Build Your Package', url: '/package-builder/', kind: 'company',
     keywords: ['build your package', 'package', 'bundle', 'configurator', 'quote', 'estimate', 'pricing', 'price', 'cost', 'how much', 'budget', 'tiers'],
-    body: `Tick the services you want and pick a tier — your total updates instantly. Tap the info icon on any service to see exactly what each tier includes. The more you bundle, the more you save: ${OFFER.bundleTiers.map((tier) => `${tier.min}+ services saves ${tier.pct}%`).join(', ')}. Monthly services include the first month free. ${PACKAGE_SERVICES.length} services are priced on the page across websites and development, marketing and growth, AI and automation, branding and design, print and collateral, and video and podcast.`,
+    body: `Tick the services you want and pick a tier. Your total updates as you go. Tap the info icon on any service to see exactly what each tier includes. The more you bundle, the more you save: ${OFFER.bundleTiers.map((tier) => `${tier.min}+ services saves ${tier.pct}%`).join(', ')}. Monthly services include the first month free. ${PACKAGE_SERVICES.length} services are priced on the page across websites and development, marketing and growth, AI and automation, branding and design, print and collateral, and video and podcast.`,
     linkLabel: 'Build your package and see the price',
   },
 ].map(makeEntry)
@@ -230,7 +233,6 @@ function customWorkBody(work) {
     (work.steps?.items ?? work.steps ?? []).map((item) => (typeof item === 'string' ? item : `${item.title ?? ''} ${item.copy ?? ''}`)).join(' '),
     (work.audience?.items ?? []).map((item) => (typeof item === 'string' ? item : `${item.title ?? ''} ${item.copy ?? ''}`)).join(' '),
     (work.integrations?.items ?? []).map((item) => `${item.title}: ${item.copy}`).join(' '),
-    (work.stats ?? []).map((stat) => `${stat.value} ${stat.label}`).join('. '),
   ]
   return parts.filter(Boolean).join(' ')
 }
@@ -240,7 +242,7 @@ const customWorkEntries = customWorks.map((work) => makeEntry({
   title: work.nav,
   url: `/${work.slug}/`,
   kind: 'custom',
-  keywords: [work.nav, work.name, work.eyebrow, CUSTOM_WORK_ALIASES[work.slug] ?? ''],
+  keywords: [work.nav, work.name, CUSTOM_WORK_ALIASES[work.slug] ?? ''],
   body: `${work.name}. ${customWorkBody(work)}`,
   plain: `${work.name} ${work.intro}`,
   linkLabel: `See the ${work.nav}`,
@@ -642,7 +644,7 @@ const INTENTS = [
     id: 'thanks',
     test: (text) => /^(thanks|thank you|ta|cheers|perfect|great|awesome|nice)\b/i.test(text.trim()),
     reply: () => ({
-      text: 'Glad that helped. If you want a real answer on your own project, a free consultation is the usual next step — or open the request form and I will pass your details on.',
+      text: 'Glad that helped. If you want a real answer on your own project, a free consultation is the usual next step. You can also open the request form and I will pass your details on.',
       chips: ['Request help', 'How much does it cost?'],
     }),
   },
@@ -691,7 +693,7 @@ const INTENTS = [
       || /\b(about (you|yourselves|wavefront)|tell me about (you|wavefront))\b/i.test(text)
       || /^(who are you|about)\??$/i.test(text.trim()),
     reply: () => ({
-      text: 'Wavefront Studio LLC is a full-service digital agency in Sarasota, Florida, built for businesses that want more than just a website – they want results. We combine creative design, smart development, and data-driven strategy to help brands launch, grow, and dominate their market online — from 12+ interconnected websites for ResinRock Industries to automated lead distribution systems and first-page Google rankings.',
+      text: 'Wavefront Studio LLC is a four-person web, SEO and AI studio in Sarasota, Florida. Our work includes more than 12 connected websites for ResinRock, the system that routes their enquiries to the nearest installer, and getting their main site onto the first page of Google.',
       links: [
         { label: 'About Wavefront Studio', href: '/about/' },
         { label: 'Our work and portfolio', href: '/portfolio/' },
@@ -719,7 +721,7 @@ const INTENTS = [
       || /\b(do|will) you (work|serve|cover|operate)\b/i.test(text)
       || /\bwhere are you (based|located)\b/i.test(text),
     reply: () => ({
-      text: `We are based in Sarasota, Florida and work with clients worldwide — all communication, project management, and delivery happens digitally, so your location is never a barrier. There are also ${locations.length} area pages covering the markets we know best. Tell me your city and I will find the page if there is one.`,
+      text: `We are based in Sarasota, Florida. We work in person across Sarasota, Manatee and Tampa Bay, and remotely with clients anywhere else. There are also ${locations.length} area pages covering the markets we know best. Tell me your city and I will find the page if there is one.`,
       links: [{ label: 'Where we work', href: '/locations/' }],
       chips: ['Sarasota', 'Tampa', 'Talk to a person'],
     }),
@@ -826,9 +828,14 @@ export function answerQuestion(query, previousLanguage = 'en') {
   const intent = INTENTS.find((candidate) => candidate.test(englishText))
 
   // The general services FAQ is useful for “what do you offer?”, but it must
-  // not turn an unsupported named service into a confident yes.
-  if (results[0]?.id === 'faq-0' && results[0].score < 18 && /\b(offer|provide|sell|resell)\b/i.test(englishText)) {
-    return localize(FALLBACK, language)
+  // not turn an unsupported named service into a confident yes. A weak match
+  // falls back, and so does a question naming something the FAQ never mentions
+  // (“payroll”), however well its other words score. Checking the words keeps
+  // this from flipping whenever unrelated copy shifts the score.
+  if (results[0]?.id === 'faq-0' && /\b(offer|provide|sell|resell)\b/i.test(englishText)) {
+    const named = tokenize(englishText).filter((token) => !OFFER_WORDS.has(token))
+    const namesSomethingElse = named.length > 0 && !named.some((token) => results[0].weights.has(token))
+    if (results[0].score < 18 || namesSomethingElse) return localize(FALLBACK, language)
   }
 
   // "Do you cover Nashville?" is one rare word carried by common ones, so the

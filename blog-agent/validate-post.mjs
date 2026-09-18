@@ -178,6 +178,15 @@ export async function validate(post, { existingSlugs, routePaths, source, alread
   for (const m of plain.matchAll(/\b(guarantee[ds]?|guaranteed results|#1|number one|the best in|always works|never fails|risk-free)\b/gi)) warn(`promise-shaped wording: "${m[0]}" — the site does not make guarantees`)
   if (count(content, /class="lf-callout"/g) === 0) warn('no lf-callout; every published post has one')
 
+  // --- AI-writing tells (DESIGN.md, "Copy"). Em dashes are an error because no
+  // published post uses them; the rest are prompts to rewrite the sentence.
+  const dashes = count(`${title} ${excerpt} ${plain}`, /—/g)
+  if (dashes) err(`${dashes} em dash${dashes === 1 ? '' : 'es'}: rewrite each as a full stop, comma, colon or parentheses`)
+  for (const m of plain.matchAll(/\S\s[–-]\s(?!Wavefront Studio)\S/g)) warn(`dash used as punctuation: "${m[0]}"`)
+  for (const m of plain.matchAll(/\b(delve|tapestry|testament to|seamless(?:ly)?|cutting-edge|game-changer|unlock|elevate|supercharge|leverage|in today's|not just|whether you're|world-class|next-level)\b/gi)) {
+    warn(`AI-writing tell: "${m[0]}" — say the specific thing instead`)
+  }
+
   return { errors, warnings, stats: { words, h2, excerpt: excerpt.length, source } }
 }
 

@@ -7,7 +7,6 @@ export default function NotFound() {
     <Layout className="notfound-page" seo={{ title: 'Page not found | Wavefront Studio', description: 'That page could not be found.' }}>
       <section className="page-hero">
         <div className="page-frame">
-          <span className="eyebrow">404</span>
           <h1>That page has moved on.</h1>
           <p>The link is broken or the page no longer exists. Here is everywhere else you can go.</p>
         </div>

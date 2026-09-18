@@ -117,7 +117,7 @@ export const SERVICES = [
   {
     "id": "seo",
     "name": "Website SEO",
-    "blurb": "Rank higher on Google — technical, content & local SEO.",
+    "blurb": "Rank higher on Google: technical, content & local SEO.",
     "billing": "monthly",
     "tiers": [
       {
@@ -652,7 +652,7 @@ export const SERVICES = [
   {
     "id": "logoanim",
     "name": "3D & Animated Logos",
-    "blurb": "Motion logo reveals and 3D animated stingers for intros, outros and social — bring your brand to life.",
+    "blurb": "Motion logo reveals and 3D animated stingers for intros, outros and social, to bring your brand to life.",
     "billing": "onetime",
     "tiers": [
       {
@@ -700,7 +700,7 @@ export const SERVICES = [
   {
     "id": "logo",
     "name": "Logo & Favicon Design",
-    "blurb": "A focused logo + favicon package to launch or refresh your mark — clean, versatile and ready for web and print.",
+    "blurb": "A focused logo + favicon package to launch or refresh your mark: clean, versatile and ready for web and print.",
     "billing": "onetime",
     "tiers": [
       {
@@ -748,7 +748,7 @@ export const SERVICES = [
   {
     "id": "video",
     "name": "On-Site Videography",
-    "blurb": "Professional filming at your location — product, promo, event or brand footage, shot and delivered ready to edit.",
+    "blurb": "Professional filming at your location: product, promo, event or brand footage, shot and delivered ready to edit.",
     "billing": "onetime",
     "tiers": [
       {
@@ -796,7 +796,7 @@ export const SERVICES = [
   {
     "id": "videoedit",
     "name": "Promo Video Editing",
-    "blurb": "Turn raw footage into scroll-stopping promotional videos — cuts, motion graphics, music and social cutdowns.",
+    "blurb": "Turn raw footage into scroll-stopping promotional videos: cuts, motion graphics, music and social cutdowns.",
     "billing": "onetime",
     "tiers": [
       {
@@ -844,7 +844,7 @@ export const SERVICES = [
   {
     "id": "podcast",
     "name": "Podcast Editing",
-    "blurb": "Full podcast post-production — audio cleanup, video edits, show notes and audiograms so you just hit record.",
+    "blurb": "Full podcast post-production: audio cleanup, video edits, show notes and audiograms so you just hit record.",
     "billing": "monthly",
     "tiers": [
       {
@@ -940,7 +940,7 @@ export const SERVICES = [
   {
     "id": "cards",
     "name": "Business Card Design",
-    "blurb": "Memorable business cards — clean, double-sided or premium with special finishes and QR codes. Print coordination available.",
+    "blurb": "Memorable business cards: clean, double-sided or premium with special finishes and QR codes. Print coordination available.",
     "billing": "onetime",
     "tiers": [
       {

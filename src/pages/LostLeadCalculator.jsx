@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import Layout from '../components/Layout.jsx'
-import { CtaBand, Reveal, SectionHeading } from '../components/shared.jsx'
+import { CtaBand, SectionHeading } from '../components/shared.jsx'
 import { contact } from '../data/site.js'
 
 const money = (value) => `$${Math.round(value).toLocaleString('en-US')}`
@@ -92,7 +92,6 @@ export default function LostLeadCalculator() {
     >
       <section className="page-hero">
         <div className="page-frame">
-          <span className="eyebrow">Free Tool · 60 Seconds</span>
           <h1>How much revenue is your business leaking every year?</h1>
           <p>
             Missed calls. Slow replies. Enquiries nobody followed up. Put your own numbers in and see what it adds up to over twelve
@@ -146,8 +145,8 @@ export default function LostLeadCalculator() {
             <label className="calc-field">
               <span className="calc-field-label">Do you follow up more than twice on a quiet lead?</span>
               <select value={noFollowUp ? '1' : '0'} onChange={(event) => setNoFollowUp(event.target.value === '1')}>
-                <option value="0">Yes — systematically, every lead</option>
-                <option value="1">No — once or twice, then it drops</option>
+                <option value="0">Yes, systematically, every lead</option>
+                <option value="1">No, once or twice, then it drops</option>
               </select>
             </label>
 
@@ -194,17 +193,16 @@ export default function LostLeadCalculator() {
       <section className="chapter research-chapter">
         <div className="page-frame">
           <SectionHeading
-            eyebrow="The evidence"
             title="Why the number is usually this big"
-            copy="Most owners assume lost jobs are lost on price. The research says otherwise — they are mostly lost to time. Somebody else answered first, and the customer stopped looking."
+            copy="Most owners assume lost jobs are lost on price. The research says otherwise: they are mostly lost to time. Somebody else answered first, and the customer stopped looking."
             dark
           />
           <div className="stat-row is-quad">
-            {RESEARCH.map(([figure, label], index) => (
-              <Reveal key={figure} delay={index * 80}>
+            {RESEARCH.map(([figure, label]) => (
+              <div key={figure}>
                 <strong>{figure}</strong>
                 <span>{label}</span>
-              </Reveal>
+              </div>
             ))}
           </div>
           <div className="research-notes">
@@ -226,17 +224,17 @@ export default function LostLeadCalculator() {
 
       <section className="chapter">
         <div className="page-frame">
-          <SectionHeading eyebrow="The fix" title="What actually closes the gap" />
+          <SectionHeading title="What actually closes the gap" />
           <div className="fix-table">
             <div className="fix-head">
               <span>The leak</span>
               <span>What fixes it</span>
             </div>
-            {FIXES.map(([leak, fix], index) => (
-              <Reveal key={leak} delay={index * 60} className="fix-row">
+            {FIXES.map(([leak, fix]) => (
+              <div key={leak} className="fix-row">
                 <span>{leak}</span>
                 <span>{fix}</span>
-              </Reveal>
+              </div>
             ))}
           </div>
         </div>
@@ -244,7 +242,7 @@ export default function LostLeadCalculator() {
 
       <CtaBand
         title="Ready to plug the leak?"
-        copy="We will set up the answering, follow-up and review systems for you — free to get started."
+        copy="We will set up the answering, follow-up and review systems for you, free to get started."
         label="See the free setup offer"
         href="/free-setup/"
         secondary={[`Prefer to talk it through? Call ${contact.phone}`, contact.phoneHref]}

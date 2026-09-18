@@ -1,7 +1,7 @@
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { CtaBand, EnquiryForm, FaqAccordion, Reveal, SectionHeading, Testimonials } from '../components/shared.jsx'
-import { EntryMotif, ServiceHeroMedia } from './ServicePage.jsx'
+import { CtaBand, EnquiryForm, FaqAccordion, OfferingList, SectionHeading, Testimonials } from '../components/shared.jsx'
+import { ServiceHeroMedia } from './ServicePage.jsx'
 import { locations } from '../data/generated/locations.js'
 import { services } from '../data/services.js'
 import { statePages } from '../data/states.js'
@@ -65,12 +65,12 @@ function Prose({ html }) {
 
 // A titled row of links to other place pages. Renders nothing when empty, so a
 // section never appears before there is something to put in it.
-export function PlaceLinks({ eyebrow, title, copy, items }) {
+export function PlaceLinks({ title, copy, items }) {
   if (!items.length) return null
   return (
     <section className="chapter related-chapter">
       <div className="page-frame">
-        <SectionHeading eyebrow={eyebrow} title={title} copy={copy} />
+        <SectionHeading title={title} copy={copy} />
         <div className="related-links">
           {items.map((item) => (
             <a key={item.slug} href={`/${item.slug}/`}>
@@ -91,22 +91,10 @@ function OfferingGrid({ place }) {
     <section className="offerings-chapter chapter" id="what-we-build">
       <div className="page-frame">
         <SectionHeading
-          eyebrow="What we build"
-          title={`Everything we build for ${place} businesses.`}
+          title={`What we build for ${place} businesses`}
           copy="A website is one piece of it. Pick what your business needs now and add the rest when you are ready."
         />
-        <div className="offering-grid">
-          {offerings.map((item, index) => (
-            <Reveal as="article" key={item.href} delay={index * 55} className="offering-card">
-              <b>{String(index + 1).padStart(2, '0')}</b>
-              <h3>{item.name}</h3>
-              <p>{item.copy}</p>
-              <a href={item.href} aria-label={`Learn more about ${item.name}`}>
-                Learn More <ArrowIcon />
-              </a>
-            </Reveal>
-          ))}
-        </div>
+        <OfferingList items={offerings} />
       </div>
     </section>
   )
@@ -122,7 +110,7 @@ const offerCatalog = {
 }
 
 // The service-page layout, filled from a place guide.
-function PlaceLayout({ slug, title, heading, eyebrow, mediaTag, place, description, content, areaServed, children }) {
+function PlaceLayout({ slug, title, heading, mediaTag, place, description, content, areaServed, children }) {
   const canonical = `/${slug}/`
   const url = absoluteUrl(canonical)
   const { body, faqs } = splitGuide(content, place)
@@ -156,20 +144,18 @@ function PlaceLayout({ slug, title, heading, eyebrow, mediaTag, place, descripti
       seo={{ title: locationSeoTitle(title), description, canonical, schema, modified: publishDates[slug] }}
     >
       <section className="service-entry chapter">
-        <EntryMotif />
         <div className="page-frame service-entry-grid">
           <div className="service-entry-intro">
-            <Reveal className="service-media">
+            <div className="service-media">
               <ServiceHeroMedia hero={placeHero} />
               <span className="service-media-tag">{mediaTag}</span>
-            </Reveal>
-            <Reveal delay={80}>
-              <span className="eyebrow">{eyebrow}</span>
+            </div>
+            <div>
               <h1>{heading}</h1>
               <p className="service-subhead">{description}</p>
               <div className="hero-actions">
                 <a className="kinetic-button group" href="#service-form">
-                  <span>Get a Free Consultation</span>
+                  <span>Get a free consultation</span>
                   <span className="button-island">
                     <ArrowIcon className="size-4" />
                   </span>
@@ -178,16 +164,16 @@ function PlaceLayout({ slug, title, heading, eyebrow, mediaTag, place, descripti
                   See what we build <ArrowIcon />
                 </a>
               </div>
-            </Reveal>
+            </div>
           </div>
-          <Reveal delay={140} id="service-form">
+          <div id="service-form">
             <EnquiryForm
-              heading={`Tell us about your ${place} business.`}
+              heading={`Tell us about your ${place} business`}
               copy="Tell us what you're trying to do and we'll tell you honestly what we'd fix first."
               subjectDefault={`${place} project`}
               source={slug}
             />
-          </Reveal>
+          </div>
         </div>
       </section>
 
@@ -203,11 +189,9 @@ function PlaceLayout({ slug, title, heading, eyebrow, mediaTag, place, descripti
         <FaqAccordion
           items={faqs}
           heading={{
-            eyebrow: 'Common questions',
-            title: `Straight answers for ${place} businesses.`,
+            title: `Questions from ${place} businesses`,
             copy: 'The things worth settling before you get in touch.',
           }}
-          deskSub="Answers from the team"
         />
       ) : null}
 
@@ -243,7 +227,6 @@ export function LocationPage({ location }) {
       slug={location.slug}
       title={location.title}
       heading={placeHeadline(location.title)}
-      eyebrow={local ? 'Near our Sarasota studio' : 'Working remotely from Sarasota'}
       mediaTag={local ? 'Within our driving range' : `Serving ${place} remotely`}
       place={place}
       description={locationDescriptions[location.slug] || location.description}
@@ -256,7 +239,6 @@ export function LocationPage({ location }) {
       }))}
     >
       <PlaceLinks
-        eyebrow="Other markets"
         title="Everywhere else we work."
         items={[...others, { slug: 'locations', name: 'See every location' }]}
       />
@@ -274,7 +256,6 @@ export function StatePage({ page }) {
       slug={page.slug}
       title={page.title}
       heading={placeHeadline(page.title)}
-      eyebrow={home ? 'Based in Sarasota, Florida' : 'Working remotely from Sarasota'}
       mediaTag={home ? 'Florida is home' : `Serving ${page.state} remotely`}
       place={page.state}
       description={page.description}
@@ -282,12 +263,10 @@ export function StatePage({ page }) {
       areaServed={{ '@type': 'State', name: page.state }}
     >
       <PlaceLinks
-        eyebrow={`Around ${page.state}`}
         title="City guides in this state."
         items={cities.map((item) => ({ slug: item.slug, name: placeName(item.title) }))}
       />
       <PlaceLinks
-        eyebrow="Other states"
         title="More state guides."
         items={otherStates.map((item) => ({ slug: item.slug, name: item.state }))}
       />

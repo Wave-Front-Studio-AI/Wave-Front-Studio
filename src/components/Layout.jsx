@@ -3,7 +3,6 @@ import ChatAgent from './ChatAgent.jsx'
 import Navigation from './Navigation.jsx'
 import SiteFooter from './SiteFooter.jsx'
 import SitePopups from './SitePopups.jsx'
-import VisualEffects from './VisualEffects.jsx'
 import { siteOrigin } from '../data/site.js'
 import { pageGraph, webPage } from '../data/seo.js'
 import { ssrSeo } from '../routeContext.js'
@@ -60,6 +59,49 @@ export function useSeo({ title, description, canonical, schema }) {
   }, [title, description, canonical, schema])
 }
 
+// Whole sections rise in once as they reach the viewport. Only blocks that
+// start below the fold are hidden, so nothing on the first screen flashes in,
+// and nothing is hidden at all without JavaScript or with reduced motion.
+const REVEAL_SELECTOR = [
+  '.section-head',
+  '.work-grid',
+  '.offering-groups',
+  '.process-timeline',
+  '.studio-grid',
+  '.testimonial-grid',
+  '.google-review-grid',
+  '.hub-list',
+  '.point-list',
+  '.tick-list.is-columns',
+  '.plan-grid',
+  '.project-row',
+  '.service-approach-media',
+  '.service-deliver-media',
+  '.faq-list',
+].join(',')
+
+function useSectionReveal() {
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return undefined
+    const pending = [...document.querySelectorAll(REVEAL_SELECTOR)].filter((node) => node.getBoundingClientRect().top > window.innerHeight)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue
+          entry.target.classList.add('is-revealed')
+          observer.unobserve(entry.target)
+        }
+      },
+      { rootMargin: '0px 0px -10% 0px' },
+    )
+    for (const node of pending) {
+      node.classList.add('will-reveal')
+      observer.observe(node)
+    }
+    return () => observer.disconnect()
+  }, [])
+}
+
 export default function Layout({ children, className = '', seo = {} }) {
   // A page without structured data of its own still describes itself as a page
   // of this site, so every URL carries the business entity.
@@ -71,6 +113,7 @@ export default function Layout({ children, className = '', seo = {} }) {
   // into the static <head>. In the browser useSeo does the same job via effects.
   if (typeof window === 'undefined') ssrSeo.current = page
   useSeo(page)
+  useSectionReveal()
   return (
     <>
       <a className="skip-link" href="#main">
@@ -80,7 +123,6 @@ export default function Layout({ children, className = '', seo = {} }) {
       <main className={`site-main ${className}`} id="main">
         {children}
       </main>
-      <VisualEffects />
       <SiteFooter />
       <SitePopups />
       <ChatAgent />

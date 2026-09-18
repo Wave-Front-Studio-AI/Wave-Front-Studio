@@ -44,6 +44,11 @@ for (const route of routes) {
   if (plainText(body).length < 300) failures.push(`${route.path}: body is only ${plainText(body).length} characters`)
   if (/class="[^"]*chat-agent/.test(html)) failures.push(`${route.path}: chat markup was prerendered`)
 
+  // An AI-writing tell (DESIGN.md, "Copy"). Advice rather than a failure: a few
+  // price separators and the Google data disclosure keep theirs on purpose.
+  const dashCount = (body.match(/—|&mdash;|&#8212;/g) ?? []).length
+  if (dashCount) warnings.push(`${route.path}: ${dashCount} em dash${dashCount === 1 ? '' : 'es'} in visible copy`)
+
   if (title.length > 70) warnings.push(`${route.path}: title is ${title.length} characters`)
   if (description.length > 160) warnings.push(`${route.path}: description is ${description.length} characters`)
 

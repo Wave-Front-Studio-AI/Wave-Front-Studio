@@ -1,55 +1,51 @@
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { CtaBand, Reveal } from '../components/shared.jsx'
+import { CtaBand } from '../components/shared.jsx'
 import { customWorks } from '../data/customWorks.js'
 import { services } from '../data/services.js'
 import { siteOrigin } from '../data/site.js'
 import { breadcrumbs, pageGraph, webPage } from '../data/seo.js'
 
+// Only real media: a frame from the studio's own video, or a screenshot of a
+// tool it built. Anything without one is listed as text.
 const customWorkImages = {
-  'ai-chatbot': {
-    src: '/images/ai-development.webp',
-    alt: 'Wavefront Studio AI development and automation service',
-  },
   'live-visualizer': {
     src: '/images/After-Visuilize.webp',
-    alt: 'Live product visualizer showing a finished product preview',
+    alt: 'A live visualiser preview showing a resin-bound path laid through a garden',
   },
   'custom-calculators': {
     src: '/images/calc.webp',
-    alt: 'Custom online calculator interface built by Wavefront Studio',
+    alt: 'The ResinRock material calculator, showing a price breakdown for a patio project',
   },
 }
 
-function HubCard({ item, index, kind }) {
-  const image = kind === 'service'
-    ? { src: item.hero.hubImage || item.hero.image, alt: item.hero.hubAlt || item.hero.alt }
-    : customWorkImages[item.slug] || {
-        src: '/wave-logo.webp',
-        alt: `${item.nav || item.name} by Wavefront Studio`,
-      }
+function hubImage(item, kind) {
+  if (kind === 'custom') return customWorkImages[item.slug] || null
+  return item.hero.poster ? { src: item.hero.poster, alt: '' } : null
+}
 
+function HubRow({ item, kind }) {
+  const image = hubImage(item, kind)
   return (
-    <Reveal as="article" className="hub-card" delay={(index % 3) * 80}>
-      <a className="hub-card-link" href={`/${item.slug}/`} aria-label={`Explore ${item.nav || item.name}`}>
-        <span className="hub-card-media">
-          <img src={image.src} alt={image.alt} loading="lazy" />
-          <span className="hub-card-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-        </span>
-        <span className="hub-card-copy">
-          <span className="eyebrow">{kind === 'service' ? 'Service' : 'Custom solution'}</span>
-          <h3>{item.nav || item.name}</h3>
+    <li className={`hub-row ${image ? 'has-media' : ''}`}>
+      <a href={`/${item.slug}/`}>
+        <span className="hub-row-copy">
+          <h2>
+            {item.nav || item.name} <ArrowIcon />
+          </h2>
           <p>{item.metaDescription}</p>
-          <span className="hub-card-action">
-            Explore {item.nav || item.name} <ArrowIcon />
-          </span>
         </span>
+        {image ? (
+          <span className="hub-row-media">
+            <img src={image.src} alt={image.alt} loading="lazy" />
+          </span>
+        ) : null}
       </a>
-    </Reveal>
+    </li>
   )
 }
 
-function HubPage({ canonical, eyebrow, title, intro, items, kind, seoTitle, seoDescription, cta }) {
+function HubPage({ canonical, crumb, title, intro, items, kind, seoTitle, seoDescription, cta }) {
   const schema = pageGraph(
     webPage({
       type: 'CollectionPage',
@@ -67,56 +63,29 @@ function HubPage({ canonical, eyebrow, title, intro, items, kind, seoTitle, seoD
         })),
       },
     }),
-    breadcrumbs([['Home', '/'], [eyebrow, canonical]]),
+    breadcrumbs([['Home', '/'], [crumb, canonical]]),
   )
 
   return (
-    <Layout
-      className="hub-page"
-      seo={{ title: seoTitle, description: seoDescription, canonical, schema }}
-    >
+    <Layout className="hub-page" seo={{ title: seoTitle, description: seoDescription, canonical, schema }}>
       <section className="hub-hero">
-        <div className="hub-orbit hub-orbit-one" aria-hidden="true" />
-        <div className="hub-orbit hub-orbit-two" aria-hidden="true" />
-        <div className="page-frame hub-hero-inner">
-          <Reveal className="hub-hero-copy">
-            <span className="eyebrow">{eyebrow}</span>
-            <h1>{title}</h1>
-            <p>{intro}</p>
-          </Reveal>
-          <Reveal className="hub-hero-aside" delay={120}>
-            <span>{String(items.length).padStart(2, '0')}</span>
-            <p>{kind === 'service' ? 'ways to move your business forward' : 'purpose-built tools for more capable customer journeys'}</p>
-            <a className="text-link on-dark" href="#hub-directory">
-              Explore the collection <ArrowIcon />
-            </a>
-          </Reveal>
+        <div className="page-frame hub-hero-copy">
+          <h1>{title}</h1>
+          <p>{intro}</p>
         </div>
       </section>
 
-      <section className="hub-directory chapter" id="hub-directory" tabIndex="-1">
+      <section className="hub-directory chapter">
         <div className="page-frame">
-          <Reveal className="hub-directory-head">
-            <span className="eyebrow">Explore the collection</span>
-            <h2>Choose where you want to grow next.</h2>
-            <p>Every engagement is shaped around your goals, customers, and existing technology—not a one-size-fits-all package.</p>
-          </Reveal>
-          <div className={`hub-grid hub-grid-${kind}`}>
-            {items.map((item, index) => (
-              <HubCard item={item} index={index} kind={kind} key={item.slug} />
+          <ul className="hub-list">
+            {items.map((item) => (
+              <HubRow item={item} kind={kind} key={item.slug} />
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      <CtaBand
-        eyebrow={cta.eyebrow}
-        title={cta.title}
-        copy={cta.copy}
-        label={cta.label}
-        href="/contact/"
-        secondary={['See our work', '/portfolio/']}
-      />
+      <CtaBand title={cta.title} copy={cta.copy} label={cta.label} href="/contact/" secondary={['See our work', '/portfolio/']} />
     </Layout>
   )
 }
@@ -125,18 +94,17 @@ export function ServicesHubPage() {
   return (
     <HubPage
       canonical="/services/"
-      eyebrow="Our Services"
-      title="Digital Services Built Around Your Business"
-      intro="Explore Wavefront Studio’s complete range of web, search, design, marketing, audit, and lead-capture services—connected by one strategy and built to create measurable progress."
+      crumb="Our Services"
+      title="Web, search, design and marketing services"
+      intro="Everything the studio offers, from websites and SEO to design, marketing, audits and lead capture. Start with one and add the others when you need them."
       items={services}
       kind="service"
       seoTitle="Digital Agency Services | Wavefront Studio"
       seoDescription="Explore Wavefront Studio services for web development, SEO, apps, social media, graphic design, digital marketing, website audits, and lead capture."
       cta={{
-        eyebrow: 'Let’s find the right fit',
-        title: 'Not Sure Which Service You Need?',
-        copy: 'Tell us what you want to improve. We’ll help you identify the clearest next step and the right mix of services for your goals.',
-        label: 'Talk to Our Team',
+        title: 'Not sure which service you need?',
+        copy: 'Tell us what you want to improve and we will suggest where to start.',
+        label: 'Talk to the studio',
       }}
     />
   )
@@ -146,18 +114,17 @@ export function CustomWorksHubPage() {
   return (
     <HubPage
       canonical="/custom-works/"
-      eyebrow="Custom Works"
-      title="Custom Digital Tools Built for the Way You Sell"
-      intro="Explore AI chatbots, live product visualizers, and smart web calculators built around real customer questions, sales workflows, and business logic."
+      crumb="Custom Works"
+      title="Custom tools for the way you sell"
+      intro="AI chatbots, live product visualisers and quote calculators, each built around your own products, prices and customer questions."
       items={customWorks}
       kind="custom"
       seoTitle="Custom Digital Tools & AI Solutions | Wavefront Studio"
       seoDescription="Explore Wavefront Studio’s custom AI chatbot systems, live product visualizers, and online calculators built around your customer journey and sales process."
       cta={{
-        eyebrow: 'Built around your idea',
-        title: 'Need a Tool That Does Not Exist Yet?',
-        copy: 'Show us the workflow, bottleneck, or customer experience you want to improve. We’ll help shape it into a practical custom solution.',
-        label: 'Start a Custom Project',
+        title: 'Need a tool that does not exist yet?',
+        copy: 'Show us the part of your sales process that eats the most time and we will tell you how we would build a tool for it.',
+        label: 'Start a custom project',
       }}
     />
   )

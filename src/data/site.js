@@ -1,5 +1,6 @@
-// Every string in this file is taken from wavefrontstudiollc.com. Nothing here is
-// invented: if the live site does not say it, it is not here.
+// Nothing in this file is invented. Every claim is one the studio can back up:
+// the three client quotes are word for word, and project copy describes only
+// work that is live at the linked address.
 
 // www is what actually serves: the apex 308-redirects here. Every absolute URL
 // the site declares about itself — canonical, og:url, JSON-LD, sitemap, robots —
@@ -81,7 +82,7 @@ export const footerNav = {
     ['Where We Work', '/locations/'],
   ],
   legal: [
-    ['Terms Of Use', '/terms-of-use/'],
+    ['Terms of Use', '/terms-of-use/'],
     ['Privacy Policy', '/privacy-policy/'],
     ['Cookie Policy', '/cookie-policy/'],
     ['SMS Policy', '/sms-policy/'],
@@ -96,11 +97,8 @@ export const footerNav = {
 }
 
 export const footerCopy = {
-  tagline: 'Your growth, our mission. We build websites, AI tools, and digital strategies that actually deliver results.',
-  readyHeading: 'Ready to Start?',
-  readySub: "Have an idea or a challenge? We'd love to hear about it.",
-  readyBody: "Reach out today and let's turn your vision into a powerful digital reality",
-  copyright: 'Copyright © Wavefront Studio LLC. All Rights Reserved.',
+  tagline: 'A four-person web, SEO and AI studio in Sarasota, Florida, building sites and tools that bring in enquiries.',
+  copyright: 'Copyright © Wavefront Studio LLC. All rights reserved.',
 }
 
 export const testimonials = [
@@ -118,7 +116,10 @@ export const testimonials = [
     role: 'CEO',
     company: 'CEO',
     href: null,
-    image: '/images/Team-1-1.webp',
+    // No photo on file. The previous image was a stock portrait, which put a
+    // stranger's face on a real client's words; initials stand in until Sharon
+    // supplies her own.
+    image: null,
   },
   {
     quote: 'They built us an automated lead system that captures enquiries from multiple websites and assigns them to the nearest available installer instantly. It saves us hours every single day and our response time has never been faster.',
@@ -131,68 +132,80 @@ export const testimonials = [
 ]
 
 export const testimonialsHeading = {
-  eyebrow: 'Testimonials',
-  title: 'Member Feedback & Reviews',
-  copy: 'Don’t just take our word for it – hear from the businesses we’ve helped grow, launch, and scale with our digital solutions.',
+  title: 'What clients say',
+  copy: 'Three clients, in their own words.',
 }
 
+// The Google Business Profile (its permanent Maps link). The live rating and
+// reviews come from /api/reviews/; this link works even when that is down.
+export const googleListingUrl = 'https://www.google.com/maps?cid=13638168247481718251'
+
+// Each logo links to that client's live site (checked 2026-09-18).
 export const clientLogos = [
-  { src: '/images/clients/resin-rock.webp', alt: 'ResinRock company logo', className: 'is-light-wordmark' },
-  { src: '/images/clients/glow-surfaces.webp', alt: 'Glow Surfaces company logo', className: 'is-light-wordmark' },
-  { src: '/images/clients/rr-leads.webp', alt: 'RR Leads company logo', className: 'is-light-wordmark' },
-  { src: '/images/clients/titan-surfacing.webp', alt: 'Titan Surfacing company logo' },
-  { src: '/images/F.webp', alt: 'Resin Rubber company logo', className: 'is-monochrome' },
+  { src: '/images/clients/resin-rock.webp', alt: 'ResinRock company logo', href: 'https://resinrock.com/', className: 'is-light-wordmark' },
+  { src: '/images/clients/glow-surfaces.webp', alt: 'Glow Surfaces company logo', href: 'https://glowsurfaces.com/', className: 'is-light-wordmark' },
+  { src: '/images/clients/rr-leads.webp', alt: 'RR Leads company logo', href: 'https://resinrockleads.com/', className: 'is-light-wordmark' },
+  { src: '/images/clients/titan-surfacing.webp', alt: 'Titan Surfacing company logo', href: 'https://titansurfacing.com/' },
+  { src: '/images/clients/resin-rubber.webp', alt: 'Resin Rubber company logo', href: 'https://resin-rubber.com/', className: 'is-monochrome' },
 ]
 
+// Images are screenshots of the live sites, not stock photography.
 export const projects = [
   {
-    title: 'Complete Website Ecosystem for ResinRock Industries',
+    title: 'Twelve connected websites for ResinRock',
     client: 'Tony Dyke',
-    date: '02 September 2025',
-    home: 'Designed and developed 12+ interconnected websites for ResinRock – including product pages, custom calculators, a rubber division site, and landing pages – all built for performance, SEO, and seamless user experience.',
-    portfolio: 'A full-scale digital ecosystem of 12+ websites – from product showcases and custom calculators to a dedicated rubber division site and high-converting landing pages – all built to work together seamlessly.',
+    date: '2 September 2025',
+    home: 'More than 12 sites for ResinRock, including product pages, material calculators, a site for the rubber division and campaign landing pages. Each one is built to load fast and rank.',
+    portfolio: 'More than 12 websites that work together: product pages, material calculators, a separate site for the rubber division and landing pages for campaigns. Each one is built to load fast and to be found on Google.',
     href: 'http://resinrock.com',
-    image: '/images/digital-3d-creator-improving-industrial-prototype-component.webp',
-    alt: '3D creator improving an industrial prototype component using digital design tools',
+    image: '/images/work/resinrock-site.webp',
+    alt: 'The ResinRock homepage, with its product menu and a video of a warehouse team loading marble chips',
   },
   {
-    title: 'Automated Lead Distribution System for ResinRock',
+    title: 'Lead routing for the ResinRock installer network',
     client: 'Resin Leads',
     date: '22 January 2026',
-    home: 'Built a fully automated lead management system that captures enquiries from multiple websites and instantly assigns them to the nearest available installer – eliminating manual follow-ups and speeding up response times.',
-    portfolio: 'A custom-built automation system that collects incoming enquiries across multiple websites and intelligently routes them to the nearest available installer in real time – zero manual work, faster response, more conversions.',
+    home: 'Enquiries from several websites land in one system, which sends each one to the nearest available installer straight away, so nobody sorts leads by hand.',
+    portfolio: 'Enquiries arrive from several websites. The system checks where each customer is and passes the lead to the nearest available installer within moments, so no one has to sort and forward them by hand.',
     href: 'http://resinrockleads.com',
-    image: '/images/architect-holding-digital-tablet-with-building-model.webp',
-    alt: 'Architect holding a digital tablet displaying a building model',
+    image: '/images/work/resinrockleads-site.webp',
+    alt: 'The Resin Rock Leads homepage, offering verified leads to professional installers',
   },
   {
-    title: 'SEO & First-Page Google Ranking for ResinRock',
+    title: 'Getting ResinRock onto the first page of Google',
     client: 'Resin Rock',
     date: '11 October 2025',
-    home: 'Executed a comprehensive SEO strategy including technical optimization, keyword targeting, and content structuring – successfully ranking ResinRock on the first page of Google for key industry search terms.',
-    portfolio: 'A complete SEO overhaul covering technical fixes, keyword research, on-page optimization, and content strategy – taking ResinRock from low visibility to Google’s first page for competitive industry keywords.',
-    href: 'http://resinrock.com',
-    image: '/images/professional-woman-photo-retoucher-working-with-digital-assets.webp',
-    alt: 'Professional photo retoucher working with digital assets on a multi-monitor setup',
+    home: 'Technical fixes, keyword research, on-page work and content structure that took ResinRock onto the first page of Google for its main industry searches.',
+    portfolio: 'Technical fixes, keyword research, on-page changes and a restructure of the content. ResinRock went from low visibility to the first page of Google for competitive industry searches.',
+    href: 'https://resinrock.com/pages/resin-bound',
+    // A search results page (Brave Search, September 2026) with resinrock.com
+    // on page one. Swap for a Google results screenshot when one is taken.
+    image: '/images/work/resinrock-search-results.webp',
+    alt: 'Search results for resin bound products, with resinrock.com listed on the first page between Amazon and AeroMarine',
   },
 ]
 
-// The service cards used on the home page and the About page.
-export const offerings = [
-  { name: 'Website Development', href: '/web-development/', copy: 'We build fast, responsive, and SEO-optimized websites using Shopify, WordPress, custom code, and modern frameworks. Whether it’s a landing page, e-commerce store, or a multi-site ecosystem – your website will be built to convert visitors into customers.' },
-  { name: 'AI Chatbot Integration', href: '/ai-chatbot/', copy: 'We build and integrate smart AI-powered chatbots that handle customer inquiries 24/7, qualify leads, and book appointments automatically. Save time, reduce costs, and never miss a potential customer – even outside business hours.' },
-  { name: 'Live Visualizer', href: '/live-visualizer/', copy: 'We build custom live visualizer tools that let your customers upload their own photos – like homes or spaces – and preview your products, materials, and colors on them in real time. Perfect for boosting buyer confidence and reducing returns.' },
-  { name: 'Custom Calculators', href: '/custom-calculators/', copy: 'We design and develop fully custom web calculators with built-in ordering systems – perfect for businesses that need instant quoting, material estimation, pricing tools, or any calculation-driven workflow on their website.' },
-  { name: 'Digital Marketing', href: '/digital-marketing/', copy: 'From paid ads and email campaigns to content marketing and funnel optimization – we create data-driven marketing strategies that increase your reach, generate qualified leads, and maximize your return on every dollar spent.' },
-  { name: 'Graphics Design', href: '/graphic-design/', copy: 'Our designers craft bold logos, brand identities, social media graphics, and print-ready materials that make your brand instantly recognizable. Great design isn’t decoration – it’s your first impression, and we make it count.' },
-  { name: 'Social Media Strategy', href: '/social-media-strategy/', copy: 'We build and manage result-oriented social media campaigns across Instagram, Facebook, LinkedIn, TikTok, and more. From content calendars and engagement strategies to paid promotions – we grow your audience and turn followers into loyal customers.' },
-  { name: 'Mobile App Development', href: '/mobile-app-development/', copy: 'We design and develop custom iOS and Android applications that are fast, intuitive, and scalable. Whether you need a customer-facing app, an internal business tool, or an MVP for your startup – we bring your app idea to life.' },
-  { name: 'SEO Service', href: '/seo-service/', copy: 'We help your business rank higher on Google with proven SEO strategies – including technical audits, keyword research, on-page optimization, link building, and local SEO. More visibility means more traffic, more leads, and more revenue.' },
-  { name: 'Free Website Audit', href: '/free-audit/', copy: 'We review your website’s mobile usability, performance, technical SEO, search visibility, and enquiry path, then prioritize the fixes worth doing first. The initial audit is free, practical, and yours to use whether or not you hire us.' },
-  { name: 'Lead Capture Systems', href: '/lead-capture/', copy: 'We build connected lead capture systems that collect enquiries, ask the right qualifying questions, create structured CRM records, and route each opportunity to the right person while customer interest is still high.' },
+// The services index used on the home, About and place pages. Services are
+// grouped by what they do for the customer, so a visitor can find the part of
+// their problem first and the service second. The audit stands apart as the
+// starting point for anyone who is not sure yet.
+export const offeringGroups = [
+  { id: 'found', title: 'Get found', copy: 'So the right people find you on Google and social.' },
+  { id: 'enquiries', title: 'Turn visits into enquiries', copy: 'So the people who land on your site get in touch.' },
+  { id: 'decide', title: 'Help customers decide', copy: 'Tools that answer “what will it look like?” and “what will it cost?”' },
+  { id: 'brand', title: 'Brand and apps', copy: 'How you look everywhere, and software your customers or team use.' },
 ]
 
-export const offeringsHeading = {
-  eyebrow: 'What We Offer',
-  title: 'Full-Service Digital Solutions Tailored to Your Business Goals',
-}
+export const offerings = [
+  { name: 'Website development', group: 'enquiries', href: '/web-development/', copy: 'Business sites, online shops and multi-site setups on WordPress, Shopify or custom code, built to load fast and turn visits into enquiries.' },
+  { name: 'SEO', group: 'found', href: '/seo-service/', copy: 'Technical audits, keyword research, on-page fixes, link building and local SEO for Google Search and Maps.' },
+  { name: 'AI chatbots', group: 'enquiries', href: '/ai-chatbot/', copy: 'A chat assistant on your site that answers customer questions at any hour, qualifies the lead and books the appointment.' },
+  { name: 'Lead capture systems', group: 'enquiries', href: '/lead-capture/', copy: 'Forms and chat that collect the enquiry, ask the qualifying questions, create the CRM record and pass it to the right person while the customer is still keen.' },
+  { name: 'Custom calculators', group: 'decide', href: '/custom-calculators/', copy: 'Quote and material calculators with ordering built in, for businesses that price by size, quantity or specification.' },
+  { name: 'Live visualiser', group: 'decide', href: '/live-visualizer/', copy: 'Customers upload a photo of their driveway, wall or room and see your products on it before they order.' },
+  { name: 'Digital marketing', group: 'found', href: '/digital-marketing/', copy: 'Paid ads, email campaigns, content and the landing pages they point to.' },
+  { name: 'Social media', group: 'found', href: '/social-media-strategy/', copy: 'Content calendars and managed accounts on Instagram, Facebook, LinkedIn and TikTok, with paid promotion where it earns its keep.' },
+  { name: 'Graphic design', group: 'brand', href: '/graphic-design/', copy: 'Logos, brand identities, social graphics and print-ready files.' },
+  { name: 'Mobile apps', group: 'brand', href: '/mobile-app-development/', copy: 'iOS and Android apps, from a first version for a startup to internal tools for your own team.' },
+  { name: 'Free website audit', group: 'start', href: '/free-audit/', copy: 'We check mobile usability, speed, technical SEO, search visibility and the enquiry path, then list the fixes worth doing first. The audit is yours to keep whether or not you hire us.' },
+]

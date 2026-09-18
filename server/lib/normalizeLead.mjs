@@ -34,7 +34,8 @@ export function normalizeLead(body = {}) {
 
   return {
     name: pick('name', 'full_name'),
-    email: pick('email', 'work_email') || (contactIsEmail ? contact : ''),
+    // Lower-cased so the same person is the same lead however they typed it.
+    email: (pick('email', 'work_email') || (contactIsEmail ? contact : '')).toLowerCase(),
     phone: pick('phone', 'mobile', 'telephone') || (contactIsEmail ? '' : contact),
     company: pick('company', 'business', 'business_name'),
     industry: pick('industry', 'trade', 'sector'),
