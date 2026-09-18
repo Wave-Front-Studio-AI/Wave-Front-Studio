@@ -444,6 +444,19 @@ p { margin: 0; text-wrap: pretty; }
 .service-media.is-frame img { border-radius: var(--r-sm); aspect-ratio: 16 / 10; object-fit: cover; }
 .service-media-tag { position: absolute; bottom: 16px; left: 16px; padding: 7px 13px; border-radius: 999px; background: var(--ink); color: var(--white); font-size: 0.8125rem; font-weight: 500; }
 .service-subhead { max-width: 50ch; margin-top: 18px; color: var(--text); font-size: clamp(1.05rem, 1.3vw, 1.15rem); line-height: 1.65; }
+/* Ad landing layout (the free audit page). Wide screens: headline and video on
+   the left, form on the right from the first pixel. Phones: headline, form,
+   then video, so the first box is on screen without scrolling. No entrance
+   animation here: the headline is the page's largest paint. */
+.service-entry-grid.is-landing {
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 0.9fr);
+  grid-template-areas: "intro form" "media form";
+  row-gap: 28px;
+}
+.service-landing-intro { grid-area: intro; }
+.service-landing-form { grid-area: form; }
+.service-landing-media { grid-area: media; }
+.service-landing-note { margin-top: 12px; color: var(--muted); font-size: 0.95rem; }
 /* Place headlines name a service range and a city, so they run longer than a
    service name. A smaller size keeps them to three lines beside the form. */
 .place-page .service-entry h1 { max-width: 20ch; font-size: clamp(2.2rem, 3.6vw, 3.3rem); line-height: 1.08; }
@@ -1106,6 +1119,10 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
      demo follows. Ad visitors should not have to scroll past media to learn
      what the page offers. */
   .service-entry-intro > :first-child:not(:only-child) { order: 2; }
+  .service-entry-grid.is-landing { grid-template-columns: 1fr; grid-template-areas: "intro" "form" "media"; row-gap: 22px; }
+  /* The headline right above already says what the form is for; dropping the
+     form's own heading puts the submit button on the first screen. */
+  .service-entry-grid.is-landing .enquiry-heading { display: none; }
   .faq-heading, .calc-results { position: static; }
   .hero-work { max-width: 640px; }
   .work-grid { grid-template-columns: 1fr 1fr; }
@@ -1120,6 +1137,11 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
 }
 
 @media (max-width: 720px) {
+  /* On the ad landing page the form is the one thing to do: a little less
+     space above the headline puts the submit button on the first screen, and
+     the chat bubble, which would sit on top of that button, stays off. */
+  .is-landing-page .service-entry { padding-top: 24px; }
+  .site-main.is-landing-page ~ .chat-agent { display: none; }
   .page-frame { width: calc(100% - 32px); }
   .chapter { padding-block: 56px; }
   .nav-utility .page-frame { justify-content: center; }

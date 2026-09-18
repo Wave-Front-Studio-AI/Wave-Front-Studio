@@ -8,14 +8,15 @@ import { siteOrigin } from '../data/site.js'
 import { breadcrumbs, byOrganization, pageGraph } from '../data/seo.js'
 
 // The studio's own promo videos. Pages without one show no hero media at all
-// rather than a stock photo.
-export function ServiceHeroMedia({ hero }) {
+// rather than a stock photo. With autoPlay off, only the poster loads until
+// someone presses play, which keeps an ad landing page light on a phone.
+export function ServiceHeroMedia({ hero, autoPlay = true }) {
   const videoRef = useRef(null)
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (!autoPlay || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     videoRef.current?.play().catch(() => {})
-  }, [hero.video])
+  }, [hero.video, autoPlay])
 
   return (
     <video
@@ -25,7 +26,7 @@ export function ServiceHeroMedia({ hero }) {
       loop
       muted
       playsInline
-      preload="metadata"
+      preload={autoPlay ? 'metadata' : 'none'}
       poster={hero.poster}
       aria-label={hero.alt}
     >
@@ -139,46 +140,69 @@ export default function ServicePage({ service }) {
       : null,
   )
 
+  const serviceForm = (
+    <EnquiryForm
+      heading={service.form?.heading || 'Tell us what you need'}
+      copy={service.form?.copy || 'A few lines about the business and the problem is enough. We reply within one to two working days.'}
+      subjectDefault={service.name}
+      source={service.slug}
+      websiteField={service.form?.websiteField}
+      essentialOnly={service.form?.essentialOnly}
+      submitLabel={service.form?.submitLabel}
+    />
+  )
+
   return (
     <Layout
-      className="service-page"
+      className={service.landing ? 'service-page is-landing-page' : 'service-page'}
       seo={{ title: service.metaTitle, description: service.metaDescription, canonical, schema }}
     >
       <section className="service-entry chapter">
-        <div className="page-frame service-entry-grid">
-          <div className="service-entry-intro">
-            {service.hero.video ? (
-              <div className="service-media">
-                <ServiceHeroMedia hero={service.hero} />
-              </div>
-            ) : null}
-            <div>
+        {service.landing ? (
+          // Ad landing layout: the form sits right under the headline (beside
+          // it on a wide screen), and the video waits below until played.
+          <div className="page-frame service-entry-grid is-landing">
+            <div className="service-landing-intro">
               <h1>{service.name}</h1>
               <p className="service-subhead">{service.subhead}</p>
-              <div className="hero-actions">
-                <a className="kinetic-button group" href={service.primaryCta?.href || '/contact/'}>
-                  <span>{service.primaryCta?.label || 'Get a free consultation'}</span>
-                  <span className="button-island">
-                    <ArrowIcon className="size-4" />
-                  </span>
-                </a>
-                <a className="text-link" href="#approach">
-                  See how we work <ArrowIcon />
-                </a>
+              {service.landingNote ? <p className="service-landing-note">{service.landingNote}</p> : null}
+            </div>
+            <div id="service-form" className="service-landing-form">
+              {serviceForm}
+            </div>
+            {service.hero.video ? (
+              <div className="service-media service-landing-media">
+                <ServiceHeroMedia hero={service.hero} autoPlay={false} />
+              </div>
+            ) : null}
+          </div>
+        ) : (
+          <div className="page-frame service-entry-grid">
+            <div className="service-entry-intro">
+              {service.hero.video ? (
+                <div className="service-media">
+                  <ServiceHeroMedia hero={service.hero} />
+                </div>
+              ) : null}
+              <div>
+                <h1>{service.name}</h1>
+                <p className="service-subhead">{service.subhead}</p>
+                <div className="hero-actions">
+                  <a className="kinetic-button group" href={service.primaryCta?.href || '/contact/'}>
+                    <span>{service.primaryCta?.label || 'Get a free consultation'}</span>
+                    <span className="button-island">
+                      <ArrowIcon className="size-4" />
+                    </span>
+                  </a>
+                  <a className="text-link" href="#approach">
+                    See how we work <ArrowIcon />
+                  </a>
+                </div>
               </div>
             </div>
+            <div id="service-form">{serviceForm}</div>
           </div>
-          <div id="service-form">
-            <EnquiryForm
-              heading={service.form?.heading || 'Tell us what you need'}
-              copy={service.form?.copy || 'A few lines about the business and the problem is enough. We reply within one to two working days.'}
-              subjectDefault={service.name}
-              source={service.slug}
-              websiteField={service.form?.websiteField}
-              submitLabel={service.form?.submitLabel}
-            />
-          </div>
-        </div>
+        )}
       </section>
 
       {/* Images are optional: a section only gets one when there is a real
