@@ -254,16 +254,15 @@ export default function BuildYourPackage() {
       seo={{
         title: 'Build Your Package | Wavefront Studio',
         description:
-          'Tick the services you want and pick a tier — your total updates instantly. The more you bundle, the more you save.',
+          'Tick the services you want and pick a tier, and your total updates instantly. The more you bundle, the more you save.',
         canonical: '/package-builder/',
       }}
     >
       <section className="page-hero">
         <div className="page-frame">
-          <span className="eyebrow">Build Your Package</span>
-          <h1>Build Your Wavefront Package</h1>
+          <h1>Build your Wavefront package</h1>
           <p>
-            Tick the services you want and pick a tier — your total updates instantly. Tap the ⓘ icon on any service to see exactly what
+            Tick the services you want and pick a tier, and your total updates instantly. Tap the ⓘ icon on any service to see exactly what
             each tier includes. The more you bundle, the more you save.
           </p>
         </div>
@@ -291,10 +290,10 @@ export default function BuildYourPackage() {
               <div className="bundle-meter-head">
                 <span>
                   {quote.count === 0
-                    ? 'Select 2+ services to unlock automatic bundle savings.'
+                    ? 'Select 2+ services to get automatic bundle savings.'
                     : nextTier
-                      ? `Add ${nextTier.min - quote.count} more service${nextTier.min - quote.count > 1 ? 's' : ''} to unlock ${nextTier.pct}% off your setup.`
-                      : `🎉 Max bundle discount unlocked — ${quote.pct}% off all setup fees!`}
+                      ? `Add ${nextTier.min - quote.count} more service${nextTier.min - quote.count > 1 ? 's' : ''} to get ${nextTier.pct}% off your setup.`
+                      : `Max bundle discount reached: ${quote.pct}% off all setup fees!`}
                 </span>
                 <b>{quote.pct}% off</b>
               </div>
@@ -346,7 +345,7 @@ export default function BuildYourPackage() {
 
                       {on ? (
                         <div className="package-card-body">
-                          {service.tiers.length > 1 ? <p className="package-tier-hint">Pick one or more tiers — each one is added to your quote.</p> : null}
+                          {service.tiers.length > 1 ? <p className="package-tier-hint">Pick one or more tiers. Each one is added to your quote.</p> : null}
                           <div className="package-tiers" style={{ '--tier-count': service.tiers.length }}>
                             {service.tiers.map((tier, index) => (
                               <button
@@ -356,7 +355,7 @@ export default function BuildYourPackage() {
                                 onClick={() => toggleTier(id, index)}
                                 aria-pressed={tiers.includes(index)}
                               >
-                                {index === 1 ? <span className="package-pop">POPULAR</span> : null}
+                                {index === 1 ? <span className="package-pop">Popular</span> : null}
                                 <strong>{tier.n}</strong>
                                 <b>{tierPrice(tier)}{id === 'landing' && !tier.custom ? ' base' : ''}</b>
                                 <small>{tier.note}</small>
@@ -435,7 +434,7 @@ export default function BuildYourPackage() {
                               const fieldId = `note-${id}-${index}`
                               return (
                                 <label htmlFor={fieldId} key={tier.n}>
-                                  {tiers.length > 1 || service.tiers.length > 1 ? `${tier.n}${tier.custom ? ' — extra notes' : ''}` : service.name}
+                                  {tiers.length > 1 || service.tiers.length > 1 ? `${tier.n}${tier.custom ? ' (extra notes)' : ''}` : service.name}
                                   <textarea id={fieldId} rows="2" maxLength="1000" placeholder="Explain what's included, timing, or anything the client should know." value={entry.notes?.[index] ?? ''} onChange={(event) => setEntryMap(id, 'notes', index, event.target.value)} />
                                 </label>
                               )
@@ -503,7 +502,7 @@ export default function BuildYourPackage() {
           </div>
 
           <aside className="package-quote" id="quote">
-            <h2>Your Quote</h2>
+            <h2>Your quote</h2>
             <label className="package-client" htmlFor="quote-client">Prepared for <span>(optional)</span>
               <input id="quote-client" type="text" maxLength="100" placeholder="Client or company name" value={clientName} onChange={(event) => setClientName(event.target.value)} />
             </label>
@@ -597,7 +596,7 @@ export default function BuildYourPackage() {
             </p>
 
             <div className="package-savings">
-              <span className="eyebrow">Your savings if you start now</span>
+              <h3 className="package-panel-title">Your savings if you start now</h3>
               <div>
                 <span>Bundle discount</span>
                 <b>{money(quote.bundleAmount)}</b>
@@ -615,18 +614,18 @@ export default function BuildYourPackage() {
             </div>
 
             <div className="package-always">
-              <span className="eyebrow">Always-on offers</span>
-              <span>2 services — 5% off setup</span>
-              <span>3–4 services — 10% off setup</span>
-              <span>5+ services — 15% off setup</span>
-              <span>Price-lock guarantee — Life of contract</span>
+              <h3 className="package-panel-title">Always-on offers</h3>
+              <span>2 services: 5% off setup</span>
+              <span>3–4 services: 10% off setup</span>
+              <span>5+ services: 15% off setup</span>
+              <span>Price-lock guarantee: life of contract</span>
             </div>
 
             {suggestion ? (
               <div className="package-upsell">
                 <p>
-                  💡 Pair it with <b>{suggestion.name}</b> to{' '}
-                  {nextTier ? `unlock ${nextTier.pct}% off your whole setup` : `keep your ${quote.pct}% bundle discount`} — plus your
+                  Pair it with <b>{suggestion.name}</b> to{' '}
+                  {nextTier ? `get ${nextTier.pct}% off your whole setup` : `keep your ${quote.pct}% bundle discount`}, plus your
                   first month free.
                 </p>
                 <button
@@ -664,7 +663,7 @@ export default function BuildYourPackage() {
           onSelect={(tier) => {
             if (!state[modal.id]) setState((current) => ({ ...current, [modal.id]: { tiers: [tier], addons: [], opts: {} } }))
             else toggleTier(modal.id, tier, { keep: true })
-            setToast(`${modal.name} — ${modal.tiers[tier].n} selected`)
+            setToast(`${modal.name}: ${modal.tiers[tier].n} selected`)
             setModal(null)
           }}
         />

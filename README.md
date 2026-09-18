@@ -17,6 +17,7 @@ npm run check      # eslint
 
 | Path | What it holds |
 | --- | --- |
+| `DESIGN.md` | The design and copy rules: type, colour, imagery, motion, and what not to add. Read it before changing how anything looks or reads. |
 | `src/routes.js` | Every URL the site answers on. The router and the prerenderer both read it. |
 | `src/data/site.js` | Nav, footer, contact details, testimonials, projects, and service cards. |
 | `src/data/services.js` | The eight **Our Services** pages. |

@@ -1,6 +1,6 @@
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { CtaBand, Reveal, SectionHeading } from '../components/shared.jsx'
+import { CtaBand, SectionHeading } from '../components/shared.jsx'
 import { PlaceLinks, liveLocations, liveStates, placeName } from './PlacePage.jsx'
 import { posts } from '../data/generated/posts.js'
 import { locationsHub } from '../data/generated/locations.js'
@@ -59,7 +59,6 @@ export function BlogIndex() {
     >
       <section className="page-hero">
         <div className="page-frame">
-          <span className="eyebrow">Our Blogs</span>
           <h1>Blog</h1>
         </div>
       </section>
@@ -68,7 +67,7 @@ export function BlogIndex() {
         <div className="page-frame">
           <div className="post-list">
             {posts.map((post, index) => (
-              <Reveal as="article" key={post.slug} delay={index * 60} className="post-row">
+              <article key={post.slug} className="post-row">
                 <a href={`/${post.slug}/`}>
                   {post.image ? (
                     // Decorative: the title sits beside it, so an alt text here
@@ -92,7 +91,7 @@ export function BlogIndex() {
                     </span>
                   </div>
                 </a>
-              </Reveal>
+              </article>
             ))}
           </div>
         </div>
@@ -178,7 +177,7 @@ export function BlogPost({ post }) {
       {others.length ? (
         <section className="chapter related-chapter">
           <div className="page-frame">
-            <SectionHeading eyebrow="Keep reading" title="More from the blog." />
+            <SectionHeading title="More from the blog." />
             <div className="post-cards">
               {others.map((item) => (
                 <a key={item.slug} href={`/${item.slug}/`}>
@@ -196,7 +195,7 @@ export function BlogPost({ post }) {
 
       <CtaBand
         title="Want this done for your business?"
-        copy="Tell us your goals – we’ll handle the rest."
+        copy="Tell us your goals, and we’ll handle the rest."
         label="Start Your Project"
       />
     </Layout>
@@ -242,7 +241,6 @@ export function LocationsPage() {
     >
       <section className="page-hero">
         <div className="page-frame">
-          <span className="eyebrow">Where We Work</span>
           <h1>{locationsHub.title}</h1>
         </div>
       </section>
@@ -254,7 +252,6 @@ export function LocationsPage() {
       </section>
 
       <PlaceLinks
-        eyebrow="Further afield"
         title="State and city guides."
         copy="Places we serve remotely from Sarasota. Each guide starts from that market’s own census numbers and what they mean for a small business website."
         items={guides}
@@ -262,7 +259,7 @@ export function LocationsPage() {
 
       <CtaBand
         title="Not sure how you rank in your city right now?"
-        copy="We will audit your site for free and tell you what is actually holding it back — including if the answer is that you do not need a rebuild."
+        copy="We will audit your site for free and tell you what is actually holding it back, including if the answer is that you do not need a rebuild."
         label="Get a free audit"
       />
     </Layout>
@@ -285,7 +282,6 @@ export function LegalPage({ page }) {
     >
       <section className="page-hero is-tight">
         <div className="page-frame">
-          <span className="eyebrow">Legal</span>
           <h1>{page.title}</h1>
         </div>
       </section>

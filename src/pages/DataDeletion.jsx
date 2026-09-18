@@ -21,8 +21,7 @@ export default function DataDeletion() {
     >
       <section className="page-hero is-tight">
         <div className="page-frame">
-          <span className="eyebrow">Your data</span>
-          <h1>Delete Your Data</h1>
+          <h1>Delete your data</h1>
         </div>
       </section>
 
@@ -30,8 +29,8 @@ export default function DataDeletion() {
         <div className="page-frame">
           <div className="longform">
             <p className="lf-standfirst">
-              This page explains how to delete data held by the software applications Wavefront Studio LLC operates —{' '}
-              <strong>Wavefront Studio</strong> (wavefrontstudiostaff.com) and <strong>Resin Rock Pro</strong> — including
+              This page explains how to delete data held by the software applications Wavefront Studio LLC operates:{' '}
+              <strong>Wavefront Studio</strong> (wavefrontstudiostaff.com) and <strong>Resin Rock Pro</strong>, including
               anything obtained from a Facebook, Instagram, Meta Ads or other account you connected to them. You do not
               need an account with us, and we do not ask you to verify your identity, to make the request.
             </p>
@@ -70,9 +69,9 @@ export default function DataDeletion() {
 
             <h2>If you connected a Facebook or Instagram account</h2>
             <p>
-              Removing our application in your Meta settings — <strong>Settings &amp; privacy → Settings → Apps and
+              Removing our application in your Meta settings (<strong>Settings &amp; privacy → Settings → Apps and
               websites</strong> on Facebook, or <strong>Settings → Website permissions → Apps and websites</strong> on
-              Instagram — revokes our access immediately. From that moment we cannot read anything further from your
+              Instagram) revokes our access immediately. From that moment we cannot read anything further from your
               account.
             </p>
             <p>
@@ -96,7 +95,7 @@ export default function DataDeletion() {
                     <td>Immediately on disconnect, account deletion, or revocation in your Meta settings</td>
                   </tr>
                   <tr>
-                    <td>Data cached from that service — profile, posts, media, metrics, records</td>
+                    <td>Data cached from that service: profile, posts, media, metrics, records</td>
                     <td>Immediately on disconnect or account deletion; within 30 days if you email us</td>
                   </tr>
                   <tr>
@@ -111,7 +110,7 @@ export default function DataDeletion() {
               </table>
             </div>
             <p>
-              Where the law requires us to keep a particular record for longer — a tax or billing record, for example — we
+              Where the law requires us to keep a particular record for longer (a tax or billing record, for example), we
               keep only that record, for only the period required, and delete the rest. We will tell you if that applies
               to your request.
             </p>

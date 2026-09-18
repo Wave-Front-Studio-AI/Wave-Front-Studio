@@ -1,4 +1,3 @@
-import { ArrowIcon } from './Icons.jsx'
 import { contact, footerCopy, footerNav } from '../data/site.js'
 
 function PhoneIcon() {
@@ -45,20 +44,6 @@ function PinIcon() {
 export default function SiteFooter() {
   return (
     <footer className="site-footer">
-      <div className="page-frame footer-ready">
-        <div>
-          <span className="eyebrow">{footerCopy.readyHeading}</span>
-          <h2>{footerCopy.readySub}</h2>
-          <p>{footerCopy.readyBody}</p>
-        </div>
-        <a className="kinetic-button light group" href="/contact/">
-          <span>Contact Us</span>
-          <span className="button-island">
-            <ArrowIcon className="size-4" />
-          </span>
-        </a>
-      </div>
-
       <div className="page-frame footer-directory">
         <div className="footer-intro">
           <a className="footer-brand" href="/" aria-label="Wavefront Studio home">
@@ -83,7 +68,7 @@ export default function SiteFooter() {
 
         <nav className="footer-links" aria-label="Footer navigation">
           <div>
-            <strong>Popular Services</strong>
+            <strong>Services</strong>
             {footerNav.popularServices.map(([label, href]) => (
               <a key={href} href={href}>
                 {label}
@@ -91,7 +76,7 @@ export default function SiteFooter() {
             ))}
           </div>
           <div>
-            <strong>Quick Links</strong>
+            <strong>More</strong>
             {footerNav.quickLinks.map(([label, href]) => (
               <a key={href} href={href}>
                 {label}
@@ -99,7 +84,7 @@ export default function SiteFooter() {
             ))}
           </div>
           <div className="footer-address">
-            <strong>Address</strong>
+            <strong>Studio</strong>
             <span>{contact.address}</span>
             <a href={contact.emailHref}>{contact.email}</a>
             <a href={contact.phoneHref}>{contact.phone}</a>

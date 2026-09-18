@@ -102,6 +102,10 @@ Read three published posts before writing. The register is consistent:
   throughout, including the service page titled "Search Engine Optimisation".
 - **No hype and no guarantees.** No "revolutionary", no "#1", no promised
   results. The validator warns on promise-shaped wording.
+- **No em dashes.** Use a full stop, comma, colon or parentheses instead. The
+  validator fails a post that has one, and warns on "not just", "whether
+  you're", "seamless", "unlock" and similar tells. `DESIGN.md` at the repo root
+  has the full list, and it applies to every page on the site.
 
 Close on a specific first action the reader can take alone, without buying
 anything — the private-window search, the phone speed test. The offer comes

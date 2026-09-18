@@ -47,7 +47,6 @@ export default function DoNotSell() {
     >
       <section className="page-hero is-tight">
         <div className="page-frame">
-          <span className="eyebrow">Your privacy choices</span>
           <h1>Do Not Sell or Share My Personal Information</h1>
         </div>
       </section>
@@ -66,7 +65,7 @@ export default function DoNotSell() {
               <p>{statusDetail(choice)}</p>
               {storageBlocked ? (
                 <p>
-                  Your browser refused to save the choice — this usually means storage is blocked or you are in private
+                  Your browser refused to save the choice. This usually means storage is blocked or you are in private
                   browsing. Blocking cookies for this site has the same effect, or email us and we will confirm in
                   writing.
                 </p>
@@ -120,7 +119,7 @@ export default function DoNotSell() {
             </p>
             <p>
               This page controls advertising and analytics tracking. It does not delete information you have already sent
-              us through a contact form or by text message — for that, see section 7 of our{' '}
+              us through a contact form or by text message. For that, see section 7 of our{' '}
               <a href="/privacy-policy/">Privacy Policy</a>, or email us and we will action it within 30 days.
             </p>
 

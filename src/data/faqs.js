@@ -13,42 +13,42 @@ export const siteFaqs = [
   ],
   [
     'Do you work with businesses outside the US?',
-    'Yes. While we’re based in Sarasota, Florida - we work with clients worldwide. All our communication, project management, and delivery happens digitally, so your location is never a barrier to getting started with us.',
+    'Yes. While we’re based in Sarasota, Florida, we work with clients worldwide. All our communication, project management, and delivery happens digitally, so your location is never a barrier to getting started with us.',
   ],
   [
     'Will my website be mobile-friendly?',
-    'Absolutely. Every website we build is fully responsive and tested across all devices - desktop, tablet, and mobile. We also optimize for speed and performance so your site loads fast no matter how your visitors access it.',
+    'Absolutely. Every website we build is fully responsive and tested across all devices: desktop, tablet, and mobile. We also optimize for speed and performance so your site loads fast no matter how your visitors access it.',
   ],
   [
     'Do you provide support after project delivery?',
-    'Yes. We don’t disappear after launch. We offer ongoing maintenance, updates, security monitoring, and technical support for every project we deliver. Whether you need a quick content update or a new feature added six months later - we’re one call away.',
+    'Yes. We don’t disappear after launch. We offer ongoing maintenance, updates, security monitoring, and technical support for every project we deliver. Whether you need a quick content update or a new feature added six months later, we’re one call away.',
   ],
   [
     'What platforms do you build websites on?',
-    'We work with WordPress, Shopify, WooCommerce, custom HTML/CSS, and modern JavaScript frameworks. We recommend the best platform based on your business needs, budget, and long-term goals. Whether you need a simple business site or a complex multi-site ecosystem - we choose the technology that delivers the best performance and results for your project.',
+    'We work with WordPress, Shopify, WooCommerce, custom HTML/CSS, and modern JavaScript frameworks. We recommend the best platform based on your business needs, budget, and long-term goals. Whether you need a simple business site or a complex multi-site ecosystem, we choose the technology that delivers the best performance and results for your project.',
   ],
   [
     'How does your AI chatbot integration work?',
-    'We build and integrate intelligent AI-powered chatbots directly into your website. These chatbots can handle customer enquiries 24/7, qualify leads, book appointments, and provide instant answers - all without any human intervention. Each chatbot is custom-trained for your specific business.',
+    'We build and integrate intelligent AI-powered chatbots directly into your website. These chatbots can handle customer enquiries 24/7, qualify leads, book appointments, and provide instant answers, all without any human intervention. Each chatbot is custom-trained for your specific business.',
   ],
   [
     'What is the live visualizer tool?',
-    'Our live visualizer lets your customers upload photos of their own homes or spaces and preview your products - like flooring, paint, countertops, or building materials - on their actual environment in real time. It boosts buyer confidence and significantly increases online enquiries.',
+    'Our live visualizer lets your customers upload photos of their own homes or spaces and preview your products, like flooring, paint, countertops, or building materials, on their actual environment in real time. Buyers can see the result before they order, which makes the decision easier.',
   ],
   [
     'Can you build custom calculators for businesses?',
-    'Yes. We build fully custom web calculators with real-time calculations, itemized breakdowns, PDF export, and built-in ordering systems. Whether you need a material estimator, a pricing tool, or a quoting calculator - we design it from scratch to match your exact products and business logic.',
+    'Yes. We build fully custom web calculators with real-time calculations, itemized breakdowns, PDF export, and built-in ordering systems. Whether you need a material estimator, a pricing tool, or a quoting calculator, we design it from scratch to match your exact products and business logic.',
   ],
   [
     'How do I get started?',
-    'Simply reach out to us through our contact page, give us a call at +1 (941) 415-0273, or email us at info@wavefrontstudiollc.com. We’ll schedule a free consultation to discuss your project, understand your goals, and recommend the best solution for your business - no commitment required.',
+    'Simply reach out to us through our contact page, give us a call at +1 (941) 415-0273, or email us at info@wavefrontstudiollc.com. We’ll schedule a free consultation to discuss your project, understand your goals, and recommend the best solution for your business, no commitment required.',
   ],
 ]
 
 export const freeSetupFaqs = [
   [
     'What exactly is free?',
-    'The setup and onboarding fee — the one-off cost of building and configuring the thing. Ongoing monthly subscription or project fees still apply, and we will quote those clearly before you commit to anything. There is no catch buried in the small print.',
+    'The setup and onboarding fee: the one-off cost of building and configuring the thing. Ongoing monthly subscription or project fees still apply, and we will quote those clearly before you commit to anything. There is no catch buried in the small print.',
   ],
   [
     'Why only five?',
@@ -56,11 +56,11 @@ export const freeSetupFaqs = [
   ],
   [
     'What happens when the five are gone?',
-    'The offer closes until the next quarter. You are welcome to join the waiting list and we will contact you first when places reopen — before it goes out to anyone else.',
+    'The offer closes until the next quarter. You are welcome to join the waiting list and we will contact you first when places reopen, before it goes out to anyone else.',
   ],
   [
     'Am I committing to anything by enquiring?',
-    'No. Enquiring starts a fifteen-minute conversation about whether this is a fit. If it isn’t, we will say so — we would rather turn down a place than fill it badly.',
+    'No. Enquiring starts a fifteen-minute conversation about whether this is a fit. If it isn’t, we will say so. We would rather turn down a place than fill it badly.',
   ],
   [
     'Do you work with businesses outside your area?',

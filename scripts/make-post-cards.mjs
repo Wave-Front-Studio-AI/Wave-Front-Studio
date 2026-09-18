@@ -9,8 +9,8 @@
 // woff2, which the SVG rasteriser cannot load. The title sits in HTML next to
 // the image anyway, so a card carrying words would only repeat it.
 //
-// Every card shares a background, a cyan glow and the rotated square that sweeps
-// across .kinetic-button, so the row on /blog/ reads as one family. What changes
+// Every card shares a flat background and the rotated square that sweeps across
+// .kinetic-button, so the row on /blog/ reads as one family. What changes
 // is the motif: a plain geometric figure standing for the subject. Adding a post
 // means adding one entry to MOTIFS below.
 
@@ -160,23 +160,12 @@ const MOTIFS = {
   ],
 }
 
-// Shared scaffolding: gradient, glow, and the off-canvas rotated square.
+// Shared scaffolding: a flat ink ground and the off-canvas rotated square. No
+// gradient and no glow, per DESIGN.md.
 const card = (motif) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH * RENDER_SCALE}" height="${HEIGHT * RENDER_SCALE}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="${ink}"/>
-      <stop offset="1" stop-color="${ink2}"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="${cyan}" stop-opacity="0.30"/>
-      <stop offset="1" stop-color="${cyan}" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-
-  <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#bg)"/>
-  <circle cx="${WIDTH - 90}" cy="10" r="440" fill="url(#glow)"/>
+  <rect width="${WIDTH}" height="${HEIGHT}" fill="${ink}"/>
   <rect x="-300" y="${HEIGHT - 80}" width="520" height="520" rx="30"
-        transform="rotate(-40 -40 ${HEIGHT + 120})" fill="${cyan}" fill-opacity="0.11"/>
+        transform="rotate(-40 -40 ${HEIGHT + 120})" fill="${ink2}"/>
 
   <!-- Motifs are authored in a 400x400 box, then scaled up: at the 300px card
        width used on /blog/ the unscaled figure reads as too small to identify. -->

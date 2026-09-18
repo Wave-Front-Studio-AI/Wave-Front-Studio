@@ -3,7 +3,6 @@ import ChatAgent from './ChatAgent.jsx'
 import Navigation from './Navigation.jsx'
 import SiteFooter from './SiteFooter.jsx'
 import SitePopups from './SitePopups.jsx'
-import VisualEffects from './VisualEffects.jsx'
 import { siteOrigin } from '../data/site.js'
 import { pageGraph, webPage } from '../data/seo.js'
 import { ssrSeo } from '../routeContext.js'
@@ -80,7 +79,6 @@ export default function Layout({ children, className = '', seo = {} }) {
       <main className={`site-main ${className}`} id="main">
         {children}
       </main>
-      <VisualEffects />
       <SiteFooter />
       <SitePopups />
       <ChatAgent />

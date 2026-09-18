@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { CtaBand, FaqAccordion, Reveal, SectionHeading } from '../components/shared.jsx'
+import { CtaBand, FaqAccordion, SectionHeading } from '../components/shared.jsx'
 import { contact, testimonials } from '../data/site.js'
 import { freeSetupFaqs as FAQ } from '../data/faqs.js'
 import { deliverLead } from '../formSubmission.js'
@@ -19,7 +19,7 @@ const COVERED = [
   },
   {
     title: 'Web Development',
-    copy: 'Custom-built, fully responsive, SEO-structured websites — including e-commerce, multi-site ecosystems and CMS integration.',
+    copy: 'Custom-built, fully responsive, SEO-structured websites, including e-commerce, multi-site ecosystems and CMS integration.',
     setup: 'Discovery, architecture, design system setup and staging environment.',
     href: '/web-development/',
   },
@@ -43,7 +43,7 @@ const OTHER_SERVICES = [
 const TERMS = [
   'Free setup applies to AI Chatbot & Business Automation, Web Development and Website SEO only.',
   'The waived amount is the one-off setup/onboarding fee. Monthly subscription and project fees still apply and are quoted separately in writing.',
-  '5 places per calendar quarter in total, across all three services combined — not 5 per service.',
+  '5 places per calendar quarter in total, across all three services combined, not 5 per service.',
   'A place is allocated when an agreement is signed, not when an enquiry is received.',
   'We may decline an enquiry where we do not believe we are the right fit. We will tell you why.',
   'The offer closes when the quarter’s places are taken or the quarter ends, whichever comes first.',
@@ -128,7 +128,7 @@ function ClaimForm() {
       })
       setStatus(
         result === 'submitted'
-          ? 'Thanks — we read every enquiry ourselves and will come back within one business day.'
+          ? 'Thanks. We read every enquiry ourselves and will come back within one business day.'
           : 'Your email app is ready with the request. Review it, then send.',
       )
     } catch {
@@ -141,7 +141,7 @@ function ClaimForm() {
       <div className="claim-heading">
         <h3>Claim one of the five places</h3>
         <p>
-          Send us a line telling us which service you want and what you’re trying to fix. We read every enquiry ourselves — there is no
+          Send us a line telling us which service you want and what you’re trying to fix. We read every enquiry ourselves. There is no
           queue and no sales team in between.
         </p>
         <p className="claim-hint">A few details are all we need. Tick whichever of the three you want the setup fee waived on.</p>
@@ -160,7 +160,7 @@ function ClaimForm() {
         <input required name="email" type="email" autoComplete="email" />
       </label>
       <label>
-        <span>Phone (required — quickest way for us to reach you)</span>
+        <span>Phone (required, quickest way for us to reach you)</span>
         <input
           required
           name="phone"
@@ -199,8 +199,8 @@ function ClaimForm() {
       </p>
       <p className="claim-note">
         Or call <a href={contact.phoneHref}>{contact.phone}</a> or email <a href={contact.emailHref}>{contact.email}</a>. A place is
-        allocated when an agreement is signed, not when an enquiry is received — so an early conversation is worth more than an early
-        email. One business day. No spam, no list-selling — we hate it too.
+        allocated when an agreement is signed, not when an enquiry is received, so an early conversation is worth more than an early
+        email. One business day. No spam, no list-selling. We hate it too.
       </p>
     </form>
   )
@@ -223,7 +223,6 @@ export default function FreeSetup() {
       <section className="offer-hero">
         <div className="page-frame offer-hero-grid">
           <div>
-            <span className="eyebrow">Limited quarterly offer</span>
             <h1>We’re waiving setup fees for 5 businesses this quarter. Not six.</h1>
             <p>
               Free setup on AI Chatbot &amp; Automation, Web Development and Website SEO. Five places per quarter, because setup is the
@@ -231,7 +230,7 @@ export default function FreeSetup() {
             </p>
             <div className="hero-actions">
               <a className="kinetic-button group" href="#claim">
-                <span>Claim a place — tell us what you need</span>
+                <span>Claim a place: tell us what you need</span>
                 <span className="button-island">
                   <ArrowIcon className="size-4" />
                 </span>
@@ -260,13 +259,12 @@ export default function FreeSetup() {
       <section className="chapter" id="covered">
         <div className="page-frame">
           <SectionHeading
-            eyebrow="Setup fee waived"
             title="What the free setup covers"
-            copy="Three services, and we have been deliberate about which. These are the ones where the one-off setup fee is the thing that stops businesses starting — not the monthly cost."
+            copy="Three services, and we have been deliberate about which. These are the ones where the one-off setup fee is the thing that stops businesses starting, not the monthly cost."
           />
           <div className="offer-grid">
-            {COVERED.map((item, index) => (
-              <Reveal as="article" key={item.title} delay={index * 90} className="offer-card">
+            {COVERED.map((item) => (
+              <article key={item.title} className="offer-card">
                 <span className="offer-flag">Setup fee waived</span>
                 <h3>{item.title}</h3>
                 <p>{item.copy}</p>
@@ -276,7 +274,7 @@ export default function FreeSetup() {
                 <a className="text-link" href={item.href}>
                   Service details <ArrowIcon />
                 </a>
-              </Reveal>
+              </article>
             ))}
           </div>
 
@@ -289,7 +287,7 @@ export default function FreeSetup() {
           </div>
 
           <div className="offer-others">
-            <h3>Our other services — available, but not part of this offer</h3>
+            <h3>Our other services: available, but not part of this offer</h3>
             <p>You can still tell us you’re interested in these when you get in touch, and we’ll quote them normally.</p>
             <div className="related-links">
               {OTHER_SERVICES.map(([label, href]) => (
@@ -305,15 +303,15 @@ export default function FreeSetup() {
 
       <section className="chapter offer-proof">
         <div className="page-frame">
-          <SectionHeading eyebrow="Proof" title="Why us specifically" dark />
+          <SectionHeading title="Why us specifically" dark />
           <div className="offer-quotes">
-            {testimonials.map((item, index) => (
-              <Reveal as="blockquote" key={item.name} delay={index * 90}>
+            {testimonials.map((item) => (
+              <blockquote key={item.name}>
                 <p>{item.quote}</p>
                 <footer>
                   {item.name}, {item.role}
                 </footer>
-              </Reveal>
+              </blockquote>
             ))}
           </div>
         </div>
@@ -322,7 +320,7 @@ export default function FreeSetup() {
       <section className="chapter">
         <div className="page-frame claim-layout">
           <div>
-            <SectionHeading eyebrow="Get in touch" title="Tell us what you’re interested in" align="stack" />
+            <SectionHeading title="Tell us what you’re interested in" align="stack" />
             <p className="prose">
               Get in touch and tell us which of the three you want. We’ll come back within one business day with whether a place is still
               open and what it would involve. No obligation, and we’ll tell you honestly if we’re not a fit.
@@ -331,7 +329,7 @@ export default function FreeSetup() {
               <div className="offer-closed">
                 <h3>This quarter’s places are gone.</h3>
                 <p>
-                  You can still get in touch — we’ll put you at the front of the queue for next quarter and contact you before the offer
+                  You can still get in touch. We’ll put you at the front of the queue for next quarter and contact you before the offer
                   goes out to anyone else.
                 </p>
               </div>
@@ -353,11 +351,11 @@ export default function FreeSetup() {
         </div>
       </section>
 
-      <FaqAccordion items={FAQ} heading={{ eyebrow: 'Straight answers', title: 'Straight answers' }} deskSub="About the free setup offer" />
+      <FaqAccordion items={FAQ} heading={{ title: 'Straight answers', copy: 'About the free setup offer' }} />
 
       <section className="chapter">
         <div className="page-frame">
-          <SectionHeading eyebrow="Small print" title="Offer terms" align="stack" />
+          <SectionHeading title="Offer terms" align="stack" />
           <ul className="terms-list">
             {TERMS.map((term) => (
               <li key={term}>{term}</li>
