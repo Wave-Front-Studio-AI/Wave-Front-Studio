@@ -1,6 +1,6 @@
-import { useId, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { ArrowIcon, ChevronIcon } from './Icons.jsx'
-import { contact, offeringGroups, testimonials, testimonialsHeading } from '../data/site.js'
+import { contact, googleListingUrl, offeringGroups, testimonials, testimonialsHeading } from '../data/site.js'
 import { deliverLead } from '../formSubmission.js'
 
 /* ------------------------------------------------------------------ */
@@ -76,14 +76,72 @@ export function OfferingList({ items }) {
 /* Testimonials                                                        */
 /* ------------------------------------------------------------------ */
 
-const initials = (name) => name.split(' ').map((part) => part[0]).join('')
+const initials = (name) => name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase()
 
-// The first quote carries the most detail, so it gets the most room.
+// Stars only ever show a rating Google reports, never a made-up one.
+function Stars({ rating }) {
+  const lit = Math.round(rating || 0)
+  return (
+    <span className="stars" role="img" aria-label={`${rating} out of 5 stars`}>
+      {[1, 2, 3, 4, 5].map((star) => (
+        <svg key={star} viewBox="0 0 20 20" aria-hidden="true" className={star <= lit ? 'is-lit' : ''}>
+          <path d="m10 1.6 2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8Z" fill="currentColor" />
+        </svg>
+      ))}
+    </span>
+  )
+}
+
+// The live Google rating and reviews from /api/reviews/. Fetched in the
+// browser only; until it answers, or if it cannot, the section still links to
+// the Google listing.
+function useGoogleReviews() {
+  const [data, setData] = useState(null)
+  useEffect(() => {
+    let cancelled = false
+    fetch('/api/reviews/', { headers: { accept: 'application/json' } })
+      .then((response) => ((response.headers.get('content-type') || '').includes('json') ? response.json() : null))
+      .then((json) => {
+        if (!cancelled && json?.ok) setData(json)
+      })
+      .catch(() => {})
+    return () => {
+      cancelled = true
+    }
+  }, [])
+  return data
+}
+
+// The first quote carries the most detail, so it gets the most room. Google
+// reviews follow; anyone already quoted above is left out so nobody appears
+// twice.
 export function Testimonials() {
+  const google = useGoogleReviews()
+  const quoted = new Set(testimonials.map((item) => item.name.toLowerCase()))
+  const googleReviews = (google?.reviews || []).filter((review) => !quoted.has(review.author.toLowerCase())).slice(0, 3)
+  const listing = google?.mapsUrl || googleListingUrl
+
   return (
     <section className="testimonials chapter" id="testimonials">
       <div className="page-frame">
-        <SectionHeading title={testimonialsHeading.title} copy={testimonialsHeading.copy} />
+        <SectionHeading title={testimonialsHeading.title}>
+          {google?.rating ? (
+            <p className="google-rating">
+              <strong>{google.rating.toFixed(1)}</strong>
+              <span>
+                <Stars rating={google.rating} />
+                <span>
+                  on Google{google.count ? `, from ${google.count} review${google.count === 1 ? '' : 's'}` : ''}
+                </span>
+              </span>
+            </p>
+          ) : (
+            <p>{testimonialsHeading.copy}</p>
+          )}
+          <a className="text-link" href={listing} target="_blank" rel="noreferrer noopener">
+            Read our Google reviews <ArrowIcon />
+          </a>
+        </SectionHeading>
         <div className="testimonial-grid">
           {testimonials.map((item) => (
             <figure className="testimonial-card" key={item.name}>
@@ -104,6 +162,56 @@ export function Testimonials() {
             </figure>
           ))}
         </div>
+
+        {googleReviews.length ? (
+          <div className="google-reviews">
+            <div className="google-reviews-head">
+              <h3>Recent reviews on Google</h3>
+              <a className="text-link" href={google.writeReviewUrl} target="_blank" rel="noreferrer noopener">
+                Leave a review <ArrowIcon />
+              </a>
+            </div>
+            <div className="google-review-grid">
+              {googleReviews.map((review) => (
+                <figure className="google-review" key={`${review.author}-${review.when}`}>
+                  <figcaption>
+                    {review.photo ? (
+                      <img src={review.photo} alt="" width="40" height="40" loading="lazy" referrerPolicy="no-referrer" />
+                    ) : (
+                      <span className="testimonial-initials" aria-hidden="true">
+                        {initials(review.author)}
+                      </span>
+                    )}
+                    <span>
+                      {review.authorUrl ? (
+                        <a href={review.authorUrl} target="_blank" rel="noreferrer noopener">
+                          {review.author}
+                        </a>
+                      ) : (
+                        <strong>{review.author}</strong>
+                      )}
+                      <span>{review.when}</span>
+                    </span>
+                  </figcaption>
+                  {review.rating ? <Stars rating={review.rating} /> : null}
+                  <blockquote>{review.text}</blockquote>
+                  {review.url ? (
+                    <a className="google-review-link" href={review.url} target="_blank" rel="noreferrer noopener">
+                      Read on Google
+                    </a>
+                  ) : null}
+                </figure>
+              ))}
+            </div>
+            <p className="google-attribution">
+              Reviews from{' '}
+              <a href={listing} target="_blank" rel="noreferrer noopener">
+                Google Maps
+              </a>
+              , shown as Google provides them.
+            </p>
+          </div>
+        ) : null}
       </div>
     </section>
   )

@@ -3,8 +3,10 @@ import http from 'node:http'
 import { loadConfig } from './lib/config.mjs'
 import { processLead } from './lib/processLead.mjs'
 import { normalizeLead } from './lib/normalizeLead.mjs'
+import { GOOGLE_LISTING_URL, fetchReviews, loadReviewsConfig } from './lib/googleReviews.mjs'
 
 const config = loadConfig()
+const reviewsConfig = loadReviewsConfig()
 const maxBody = 32 * 1024
 const recent = new Map()
 
@@ -77,6 +79,15 @@ const server = http.createServer(async (request, response) => {
   if (request.method === 'OPTIONS') return respond(response, 204, {}, headers)
   if (request.method === 'GET' && url.pathname === '/api/lead/health') {
     return respond(response, 200, { ok: Boolean(config.base44AppId && config.base44Key), entity: config.base44Entity }, headers)
+  }
+  // Local stand-in for api/reviews.js, so the dev server shows real reviews
+  // when GOOGLE_PLACES_API_KEY is in .env.
+  if (request.method === 'GET' && ['/api/reviews', '/api/reviews/'].includes(url.pathname)) {
+    try {
+      return respond(response, 200, await fetchReviews(reviewsConfig), headers)
+    } catch (error) {
+      return respond(response, error.status === 503 ? 503 : 502, { ok: false, mapsUrl: GOOGLE_LISTING_URL }, headers)
+    }
   }
   if (request.method !== 'POST' || !['/api/lead', '/api/lead/'].includes(url.pathname)) return respond(response, 404, { ok: false, error: 'Not found.' }, headers)
 

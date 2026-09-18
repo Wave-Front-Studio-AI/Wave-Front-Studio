@@ -136,6 +136,10 @@ export const testimonialsHeading = {
   copy: 'Three clients, in their own words.',
 }
 
+// The Google Business Profile (its permanent Maps link). The live rating and
+// reviews come from /api/reviews/; this link works even when that is down.
+export const googleListingUrl = 'https://www.google.com/maps?cid=13638168247481718251'
+
 // Each logo links to that client's live site (checked 2026-09-18).
 export const clientLogos = [
   { src: '/images/clients/resin-rock.webp', alt: 'ResinRock company logo', href: 'https://resinrock.com/', className: 'is-light-wordmark' },

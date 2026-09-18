@@ -609,6 +609,34 @@ input[type='range']::-moz-range-thumb { width: 22px; height: 22px; border: 3px s
 .testimonial-card figcaption strong { font-size: 0.975rem; }
 .testimonial-card figcaption span span { color: var(--muted); font-size: 0.875rem; }
 
+/* Google rating and reviews (live from /api/reviews/) ---------------------- */
+
+.stars { display: inline-flex; gap: 2px; }
+.stars svg { width: 16px; height: 16px; color: #d7dde3; }
+.stars svg.is-lit { color: #e8a200; }
+
+.google-rating { display: flex; align-items: center; gap: 14px; }
+.google-rating > strong { font-family: var(--display); font-size: 2.6rem; font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: var(--ink); }
+.google-rating > span { display: grid; gap: 4px; color: var(--muted); font-size: 0.925rem; }
+
+.google-reviews { margin-top: clamp(40px, 5vw, 64px); }
+.google-reviews-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 24px; margin-bottom: 18px; padding-top: 20px; border-top: 1px solid var(--line); }
+.google-reviews-head h3 { font-size: clamp(1.2rem, 1.7vw, 1.4rem); }
+.google-review-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.google-review { display: grid; gap: 12px; align-content: start; margin: 0; padding: 20px 22px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--white); }
+.google-review figcaption { display: flex; align-items: center; gap: 11px; }
+.google-review figcaption img, .google-review .testimonial-initials { width: 40px; height: 40px; flex: 0 0 auto; border-radius: 50%; object-fit: cover; font-size: 0.875rem; }
+.google-review figcaption > span { display: grid; gap: 1px; }
+.google-review figcaption a, .google-review figcaption strong { color: var(--ink); font-size: 0.95rem; font-weight: 600; }
+.google-review figcaption a:hover { color: var(--brand-deep); }
+.google-review figcaption span span { color: var(--muted); font-size: 0.8125rem; }
+/* Long reviews are cut at seven lines; the full text is one click away. */
+.google-review blockquote { display: -webkit-box; margin: 0; overflow: hidden; color: var(--text); font-size: 0.95rem; line-height: 1.6; -webkit-box-orient: vertical; -webkit-line-clamp: 7; line-clamp: 7; }
+.google-review-link { justify-self: start; color: var(--brand-deep); font-size: 0.875rem; font-weight: 600; }
+.google-review-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.google-attribution { margin-top: 14px; color: var(--muted); font-size: 0.8125rem; }
+.google-attribution a { text-decoration: underline; text-underline-offset: 2px; }
+
 /* FAQ --------------------------------------------------------------------- */
 
 .faq-chapter { background: var(--white); border-top: 1px solid var(--line); }
@@ -1075,7 +1103,7 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
   .hero-work { max-width: 640px; }
   .work-grid { grid-template-columns: 1fr 1fr; }
   .work-card.is-featured { grid-column: 1 / -1; grid-row: auto; }
-  .testimonial-grid { grid-template-columns: 1fr; }
+  .testimonial-grid, .google-review-grid { grid-template-columns: 1fr; }
   .point-list.cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .plan-grid.count-3, .offer-grid, .offer-quotes, .post-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stat-row.is-quad { grid-template-columns: repeat(2, minmax(0, 1fr)); }
