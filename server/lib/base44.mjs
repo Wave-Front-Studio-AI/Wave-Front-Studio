@@ -38,6 +38,44 @@ export class Base44Error extends Error {
   }
 }
 
+const entityUrl = (config) => `${config.base44ApiUrl}/apps/${config.base44AppId}/entities/${config.base44Entity}`
+
+// One request to the Base44 entities API, with the timeout and error handling
+// every call here shares.
+async function base44Request(url, { method = 'GET', body } = {}, config, fetchImpl) {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), config.base44TimeoutMs)
+  let response
+  try {
+    response = await fetchImpl(url, {
+      method,
+      headers: { api_key: config.base44Key, 'content-type': 'application/json', accept: 'application/json' },
+      ...(body ? { body: JSON.stringify(body) } : {}),
+      signal: controller.signal,
+    })
+  } catch (error) {
+    throw new Base44Error(error.name === 'AbortError' ? 'Base44 timed out.' : `Base44 request failed: ${error.message}`, 502)
+  } finally {
+    clearTimeout(timer)
+  }
+
+  if (!response.ok) {
+    const text = await response.text()
+    let detail = ''
+    try {
+      const parsed = JSON.parse(text)
+      detail = parsed.message || parsed.error || parsed.detail || ''
+    } catch {
+      detail = text
+    }
+    const safeDetail = String(detail).replace(/[\r\n]+/g, ' ').slice(0, 240)
+    throw new Base44Error(`Base44 rejected the lead (${response.status})${safeDetail ? `: ${safeDetail}` : '.'}`, response.status)
+  }
+  const contentType = response.headers.get('content-type') || ''
+  if (!contentType.includes('json')) throw new Base44Error('Base44 returned a non-JSON response. Check BASE44_API_URL.', 502)
+  return response.json()
+}
+
 export async function createLead(lead, config, fetchImpl = fetch) {
   if (!config.base44AppId || !config.base44Key) throw new Base44Error('Base44 is not configured.', 503)
 
@@ -48,35 +86,76 @@ export async function createLead(lead, config, fetchImpl = fetch) {
   if (config.base44Owner) record.assigned_to = config.base44Owner
   if (config.base44OwnerEmail) record.assigned_to_email = config.base44OwnerEmail
 
-  const controller = new AbortController()
-  const timer = setTimeout(() => controller.abort(), config.base44TimeoutMs)
-  let response
-  try {
-    response = await fetchImpl(`${config.base44ApiUrl}/apps/${config.base44AppId}/entities/${config.base44Entity}`, {
-      method: 'POST',
-      headers: { api_key: config.base44Key, 'content-type': 'application/json', accept: 'application/json' },
-      body: JSON.stringify(record),
-      signal: controller.signal,
-    })
-  } catch (error) {
-    throw new Base44Error(error.name === 'AbortError' ? 'Base44 timed out.' : `Base44 request failed: ${error.message}`, 502)
-  } finally {
-    clearTimeout(timer)
-  }
+  return base44Request(entityUrl(config), { method: 'POST', body: record }, config, fetchImpl)
+}
 
-  if (!response.ok) {
-    const body = await response.text()
-    let detail = ''
-    try {
-      const parsed = JSON.parse(body)
-      detail = parsed.message || parsed.error || parsed.detail || ''
-    } catch {
-      detail = body
-    }
-    const safeDetail = String(detail).replace(/[\r\n]+/g, ' ').slice(0, 240)
-    throw new Base44Error(`Base44 rejected the lead (${response.status})${safeDetail ? `: ${safeDetail}` : '.'}`, response.status)
+/* ------------------------------------------------------------------ */
+/* Duplicate protection                                                */
+/* ------------------------------------------------------------------ */
+
+// Someone who sends the contact form, then the audit popup, then the chat
+// form in the same month is one lead, not three. Within this window a repeat
+// enquiry is added to the existing record; after it, a returning customer is
+// a new opportunity and gets a new record.
+export const DUPLICATE_WINDOW_DAYS = 30
+
+// The most recent lead with the same email, or failing that the same phone
+// number, created inside the duplicate window. Base44's filter is an exact
+// match, so emails are checked both as typed and lower-cased (new leads are
+// stored lower-cased).
+export async function findRecentLead(lead, config, fetchImpl = fetch, now = Date.now()) {
+  const map = config.base44FieldMap || LEAD_FIELD_MAP
+  const probes = []
+  if (lead.email) {
+    for (const email of new Set([lead.email.toLowerCase(), lead.email])) probes.push({ [map.email]: email })
   }
-  const contentType = response.headers.get('content-type') || ''
-  if (!contentType.includes('json')) throw new Base44Error('Base44 returned a non-JSON response. Check BASE44_API_URL.', 502)
-  return response.json()
+  if (lead.phone) probes.push({ [map.phone]: lead.phone })
+
+  const cutoff = now - DUPLICATE_WINDOW_DAYS * 24 * 60 * 60 * 1000
+  const same = (a, b) => String(a ?? '').trim().toLowerCase() === String(b ?? '').trim().toLowerCase()
+  for (const query of probes) {
+    const url = `${entityUrl(config)}?${new URLSearchParams({ q: JSON.stringify(query), sort: '-created_date', limit: '1' })}`
+    const rows = await base44Request(url, {}, config, fetchImpl)
+    const match = Array.isArray(rows) ? rows[0] : null
+    // Re-check the field ourselves: if the filter were ever ignored, the newest
+    // lead of someone else must not have this enquiry merged into it.
+    const [[field, value]] = Object.entries(query)
+    if (match && same(match[field], value) && Date.parse(match.created_date) >= cutoff) return match
+  }
+  return null
+}
+
+// Adds the new enquiry to an existing lead: blank fields are filled in, nothing
+// already on the record is overwritten, and the new message is appended to the
+// notes so whoever is working the lead sees it.
+export async function mergeIntoLead(existing, lead, config, fetchImpl = fetch) {
+  const map = config.base44FieldMap || LEAD_FIELD_MAP
+  const incoming = toBase44Record({ ...lead, company: lead.company || existing[map.company] || resolveBusinessName(lead) }, map)
+  const update = {}
+  for (const [field, value] of Object.entries(incoming)) {
+    if (field === map.notes) continue
+    if (existing[field] === undefined || existing[field] === null || existing[field] === '') update[field] = value
+  }
+  if (lead.notes) {
+    const stamp = new Date().toISOString().slice(0, 10)
+    update[map.notes] = [existing[map.notes], `Repeat enquiry (${stamp}):\n${lead.notes}`].filter(Boolean).join('\n\n')
+  }
+  return base44Request(`${entityUrl(config)}/${existing.id}`, { method: 'PUT', body: update }, config, fetchImpl)
+}
+
+// Creates the lead, or merges it into a recent duplicate. A failed duplicate
+// lookup never costs a lead: it falls through to creating a new record.
+export async function saveLead(lead, config, fetchImpl = fetch) {
+  if (!config.base44AppId || !config.base44Key) throw new Base44Error('Base44 is not configured.', 503)
+
+  let existing = null
+  try {
+    existing = await findRecentLead(lead, config, fetchImpl)
+  } catch (error) {
+    console.error(JSON.stringify({ at: new Date().toISOString(), event: 'base44_duplicate_check_failed', message: error.message }))
+  }
+  if (!existing) return { ...(await createLead(lead, config, fetchImpl)), merged: false }
+
+  const updated = await mergeIntoLead(existing, lead, config, fetchImpl)
+  return { ...updated, id: updated?.id || existing.id, merged: true }
 }

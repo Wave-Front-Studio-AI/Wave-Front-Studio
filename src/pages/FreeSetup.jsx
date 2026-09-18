@@ -107,14 +107,18 @@ function Countdown() {
 
 function ClaimForm() {
   const [status, setStatus] = useState('')
+  const [sending, setSending] = useState(false)
 
   async function submit(event) {
     event.preventDefault()
+    // A second click while the first is in flight would store the lead twice.
+    if (sending) return
+    setSending(true)
     setStatus('Sending…')
     const form = event.currentTarget
     const wanted = [...form.querySelectorAll('input[name="interest"]:checked')].map((input) => input.value).join(', ')
     try {
-      const result = await deliverLead(form, {
+      await deliverLead(form, {
         subject: 'Free setup place request',
         source: 'free-setup',
         fields: [
@@ -126,13 +130,11 @@ function ClaimForm() {
           ['Company website', 'website'],
         ],
       })
-      setStatus(
-        result === 'submitted'
-          ? 'Thanks. We read every enquiry ourselves and will come back within one business day.'
-          : 'Your email app is ready with the request. Review it, then send.',
-      )
+      setStatus('Thanks. We read every enquiry ourselves and will come back within one business day.')
     } catch {
       setStatus(`We could not send the form. Please email ${contact.email} or call ${contact.phone}.`)
+    } finally {
+      setSending(false)
     }
   }
 
@@ -184,11 +186,12 @@ function ClaimForm() {
 
       <label>
         <span>Company website</span>
-        <input name="website" type="url" placeholder="https://" />
+        {/* Plain text: type="url" would refuse "mysite.com" and block the form. */}
+        <input name="website" type="text" inputMode="url" autoComplete="url" autoCapitalize="none" spellCheck="false" placeholder="yourwebsite.com" />
       </label>
 
-      <button className="kinetic-button group" type="submit">
-        <span>Claim a place</span>
+      <button className="kinetic-button group" type="submit" disabled={sending}>
+        <span>{sending ? 'Sending…' : 'Claim a place'}</span>
         <span className="button-island">
           <ArrowIcon className="size-4" />
         </span>

@@ -83,6 +83,34 @@ p { margin: 0; text-wrap: pretty; }
   html { scroll-behavior: auto; }
 }
 
+/* Motion ------------------------------------------------------------------ */
+
+/* One entrance per page load: the first screen settles in, once, in order.
+   Short distance and quick, so it reads as the page arriving, not a show. */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.hero-copy > *, .page-hero .page-frame > *, .hub-hero-copy > *, .service-entry-intro > * {
+  animation: rise-in 560ms var(--ease-out) both;
+}
+.hero-copy > :nth-child(2), .page-hero .page-frame > :nth-child(2), .hub-hero-copy > :nth-child(2), .service-entry-intro > :nth-child(2) { animation-delay: 70ms; }
+.hero-copy > :nth-child(3) { animation-delay: 140ms; }
+.hero-work { animation: rise-in 700ms var(--ease-out) 120ms both; }
+
+/* Sections below the fold rise in as they arrive (see useSectionReveal in
+   Layout.jsx). Whole sections only: never card by card. */
+.will-reveal { opacity: 0; transform: translateY(14px); transition: opacity 520ms var(--ease-out), transform 620ms var(--ease-out); }
+.will-reveal.is-revealed { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy > *, .page-hero .page-frame > *, .hub-hero-copy > *, .service-entry-intro > *, .hero-work { animation: none; }
+  .will-reveal { opacity: 1; transform: none; transition: none; }
+}
+@media print {
+  .will-reveal { opacity: 1; transform: none; }
+}
+
 /* Buttons ----------------------------------------------------------------- */
 
 .nav-cta, .kinetic-button {
@@ -259,9 +287,23 @@ p { margin: 0; text-wrap: pretty; }
 .clients-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 40px; }
 .clients-strip h2 { margin: 0; color: var(--muted); font-family: inherit; font-size: 0.95rem; font-weight: 600; letter-spacing: 0; }
 .client-logos { display: flex; flex: 1; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 18px clamp(24px, 4vw, 56px); margin: 0; padding: 0; list-style: none; }
-.client-logo img { display: block; width: auto; max-width: 150px; height: 40px; object-fit: contain; }
+.client-logo a { display: block; padding: 6px; border-radius: var(--r-sm); }
+/* Same height for every logo; the width cap is wide enough that a long,
+   short wordmark (Resin Rubber) is not shrunk below the others. */
+.client-logo img { display: block; width: auto; max-width: 190px; height: 40px; object-fit: contain; }
 .client-logo.is-light-wordmark img { filter: drop-shadow(0 1px 1px rgba(13, 27, 42, 0.72)); }
 .client-logo.is-monochrome img { filter: brightness(0) saturate(100%) invert(14%) sepia(18%) saturate(1660%) hue-rotate(167deg) brightness(90%) contrast(96%); }
+/* Logos sit quietly in grey and come up in their own colours when pointed at. */
+@media (hover: hover) and (pointer: fine) {
+  .client-logo img { transition: filter 260ms ease, opacity 260ms ease; }
+  .client-logo:not(.is-monochrome) img { filter: grayscale(1); opacity: 0.7; }
+  .client-logo.is-light-wordmark img { filter: grayscale(1) drop-shadow(0 1px 1px rgba(13, 27, 42, 0.72)); }
+  .client-logo:not(.is-monochrome):hover img { filter: none; opacity: 1; }
+  /* The one-colour wordmark gets the same quiet grey, then its navy on hover. */
+  .client-logo.is-monochrome img { filter: brightness(0) invert(55%); }
+  .client-logo.is-monochrome:hover img { filter: brightness(0) saturate(100%) invert(14%) sepia(18%) saturate(1660%) hue-rotate(167deg) brightness(90%) contrast(96%); }
+  .client-logo.is-light-wordmark:hover img { filter: drop-shadow(0 1px 1px rgba(13, 27, 42, 0.72)); }
+}
 
 /* Recent work ------------------------------------------------------------- */
 
@@ -281,28 +323,54 @@ p { margin: 0; text-wrap: pretty; }
 .work-card.is-featured .work-body h3 { font-size: clamp(1.35rem, 2vw, 1.7rem); }
 .work-body p { color: var(--text); font-size: 0.975rem; line-height: 1.6; }
 .work-meta { color: var(--muted); font-size: 0.875rem; }
+/* The cards are links to live sites, so they answer the pointer: a small lift,
+   and the screenshot eases forward a touch inside its frame. */
+.work-card > a { transition: border-color 200ms ease, transform 240ms var(--ease-out), box-shadow 240ms var(--ease-out); }
+.work-media { overflow: hidden; }
+.work-media img { transition: transform 700ms var(--ease-out); }
 @media (hover: hover) and (pointer: fine) {
-  .work-card > a:hover { border-color: var(--brand); }
+  .work-card > a:hover { border-color: var(--brand); transform: translateY(-3px); box-shadow: 0 12px 28px rgba(13, 27, 42, 0.08); }
   .work-card > a:hover h3 { color: var(--brand-deep); }
+  .work-card > a:hover .work-media img { transform: scale(1.02); }
 }
+.work-card > a:active { transform: translateY(-1px) scale(0.995); }
 
 /* Services index ---------------------------------------------------------- */
 
-.offering-list { margin: 0; padding: 0; list-style: none; border-bottom: 1px solid var(--line); }
-.offering-list li { border-top: 1px solid var(--line); }
-.offering-list a { display: grid; grid-template-columns: minmax(180px, 0.3fr) minmax(0, 1fr) 24px; gap: clamp(16px, 3vw, 40px); align-items: baseline; padding: 22px 0; }
-.offering-list h3 { transition: color 180ms ease; }
-.offering-list p { max-width: 70ch; color: var(--text); font-size: 1rem; line-height: 1.6; }
-.offering-list svg { width: 18px; height: 18px; color: var(--brand-deep); transition: transform 200ms var(--ease-out); }
+/* Four groups in a 2x2 grid, each headed by the job it does, then the audit
+   as a dark band across the bottom for anyone who does not know yet. */
+.offering-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(36px, 4vw, 56px) clamp(32px, 5vw, 80px); }
+.offering-group { padding-top: 20px; border-top: 2px solid var(--ink); }
+.offering-group header { display: grid; gap: 6px; margin-bottom: 10px; }
+.offering-group header h3 { font-size: clamp(1.3rem, 1.9vw, 1.6rem); }
+.offering-group header p { color: var(--muted); font-size: 0.975rem; line-height: 1.55; }
+.offering-group ul { margin: 0; padding: 0; list-style: none; }
+.offering-group li + li { border-top: 1px solid var(--line); }
+.offering-group a { display: grid; grid-template-columns: minmax(0, 1fr) 20px; gap: 4px 16px; align-items: start; padding: 16px 0; }
+.offering-group a strong { font-family: var(--display); font-size: 1.1rem; font-weight: 600; letter-spacing: -0.01em; transition: color 180ms ease, transform 240ms var(--ease-out); }
+.offering-group a span { grid-column: 1; color: var(--text); font-size: 0.975rem; line-height: 1.55; }
+.offering-group a svg { grid-column: 2; grid-row: 1; width: 18px; height: 18px; margin-top: 4px; color: var(--brand-deep); transition: transform 200ms var(--ease-out); }
 @media (hover: hover) and (pointer: fine) {
-  .offering-list a:hover h3 { color: var(--brand-deep); }
-  .offering-list a:hover svg { transform: translate(3px, -3px); }
+  .offering-group a:hover strong { color: var(--brand-deep); transform: translateX(4px); }
+  .offering-group a:hover svg { transform: translate(3px, -3px); }
 }
+
+.offering-start { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px clamp(24px, 5vw, 72px); align-items: center; padding: clamp(24px, 3.4vw, 40px); border-radius: var(--r-lg); color: var(--white); background: var(--ink); }
+.offering-start h3 { font-size: clamp(1.35rem, 2vw, 1.75rem); }
+.offering-start p { max-width: 62ch; margin-top: 10px; color: rgba(255, 255, 255, 0.8); font-size: 1rem; line-height: 1.6; }
 
 /* Numbered sequences ------------------------------------------------------ */
 
 .process-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px clamp(24px, 3vw, 40px); margin: 0; padding: 0; list-style: none; }
-.process-timeline > li { display: grid; gap: 10px; align-content: start; padding-top: 18px; border-top: 2px solid var(--ink); }
+.process-timeline > li { position: relative; display: grid; gap: 10px; align-content: start; padding-top: 18px; }
+/* Each step's rule draws across in turn as the sequence arrives, which is the
+   one place motion says something: this happens, then this. */
+.process-timeline > li::before { position: absolute; top: 0; right: 0; left: 0; height: 2px; background: var(--ink); content: ''; transform-origin: left; transition: transform 700ms var(--ease-in-out); }
+.process-timeline > li:nth-child(2)::before { transition-delay: 160ms; }
+.process-timeline > li:nth-child(3)::before { transition-delay: 320ms; }
+.process-timeline > li:nth-child(4)::before { transition-delay: 480ms; }
+.process-timeline > li:nth-child(n + 5)::before { transition-delay: 640ms; }
+.process-timeline.will-reveal:not(.is-revealed) > li::before { transform: scaleX(0); }
 .process-number { color: var(--brand-deep); font-family: var(--display); font-size: 1rem; font-weight: 600; }
 .process-timeline p { color: var(--text); font-size: 1rem; line-height: 1.6; }
 
@@ -575,6 +643,7 @@ input[type='range']::-moz-range-thumb { width: 22px; height: 22px; border: 3px s
 .enquiry-form label > span, .claim-form label > span, .audit-popup-form label > span, .calc-field-label {
   color: var(--ink); font-size: 0.875rem; font-weight: 600;
 }
+.enquiry-form label > span small { margin-left: 4px; color: var(--muted); font-size: 0.8125rem; font-weight: 400; }
 .calc-field-label { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .calc-field-label b { color: var(--brand-deep); font-variant-numeric: tabular-nums; }
 
@@ -621,9 +690,12 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
 .hub-row h2 svg { width: 20px; height: 20px; color: var(--brand-deep); transition: transform 200ms var(--ease-out); }
 .hub-row p { color: var(--text); font-size: 1rem; line-height: 1.65; }
 .hub-row-media img { display: block; width: 100%; aspect-ratio: 16 / 10; border: 1px solid var(--line-strong); border-radius: var(--r-md); object-fit: cover; object-position: top; background: var(--ink); }
+.hub-row-media { display: block; overflow: hidden; border-radius: var(--r-md); }
+.hub-row-media img { transition: transform 700ms var(--ease-out); }
 @media (hover: hover) and (pointer: fine) {
   .hub-row > a:hover h2 { color: var(--brand-deep); }
   .hub-row > a:hover h2 svg { transform: translate(3px, -3px); }
+  .hub-row > a:hover .hub-row-media img { transform: scale(1.02); }
 }
 
 /* CTA band ---------------------------------------------------------------- */
@@ -995,6 +1067,10 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
   .hero-grid, .service-split, .service-entry-grid, .service-deliver-grid, .contact-grid, .calc-layout, .studio-grid,
   .claim-layout, .offer-hero-grid, .faq-grid, .project-row, .calc-demo, .cta-band .page-frame { grid-template-columns: 1fr; }
   .service-split.is-reverse, .project-row:nth-child(even) { direction: ltr; }
+  /* On a phone the headline and the call to action come first; the video or
+     demo follows. Ad visitors should not have to scroll past media to learn
+     what the page offers. */
+  .service-entry-intro > :first-child:not(:only-child) { order: 2; }
   .faq-heading, .calc-results { position: static; }
   .hero-work { max-width: 640px; }
   .work-grid { grid-template-columns: 1fr 1fr; }
@@ -1016,8 +1092,8 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
   .compare-captions, .package-tiers, .pkg-modal-prices { grid-template-columns: 1fr; }
   .enquiry-form { grid-template-columns: 1fr; }
   .section-head { grid-template-columns: 1fr; align-items: start; }
-  .offering-list a { grid-template-columns: minmax(0, 1fr) 20px; gap: 8px 16px; }
-  .offering-list p { grid-column: 1 / -1; grid-row: 2; }
+  .offering-groups { grid-template-columns: 1fr; }
+  .offering-start { grid-template-columns: 1fr; justify-items: start; }
   .hub-row.has-media > a { grid-template-columns: 1fr; }
   .hub-row-media { order: -1; }
   .work-card.is-featured > a { grid-template-columns: 1fr; }

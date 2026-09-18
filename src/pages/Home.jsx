@@ -77,7 +77,9 @@ export default function Home() {
           <ul className="client-logos">
             {clientLogos.map((logo) => (
               <li className={`client-logo ${logo.className || ''}`} key={logo.src}>
-                <img src={logo.src} alt={logo.alt} loading="lazy" />
+                <a href={logo.href} target="_blank" rel="noreferrer noopener">
+                  <img src={logo.src} alt={`${logo.alt.replace(/ company logo$/, '')} website`} loading="lazy" />
+                </a>
               </li>
             ))}
           </ul>

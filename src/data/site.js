@@ -136,12 +136,13 @@ export const testimonialsHeading = {
   copy: 'Three clients, in their own words.',
 }
 
+// Each logo links to that client's live site (checked 2026-09-18).
 export const clientLogos = [
-  { src: '/images/clients/resin-rock.webp', alt: 'ResinRock company logo', className: 'is-light-wordmark' },
-  { src: '/images/clients/glow-surfaces.webp', alt: 'Glow Surfaces company logo', className: 'is-light-wordmark' },
-  { src: '/images/clients/rr-leads.webp', alt: 'RR Leads company logo', className: 'is-light-wordmark' },
-  { src: '/images/clients/titan-surfacing.webp', alt: 'Titan Surfacing company logo' },
-  { src: '/images/F.webp', alt: 'Resin Rubber company logo', className: 'is-monochrome' },
+  { src: '/images/clients/resin-rock.webp', alt: 'ResinRock company logo', href: 'https://resinrock.com/', className: 'is-light-wordmark' },
+  { src: '/images/clients/glow-surfaces.webp', alt: 'Glow Surfaces company logo', href: 'https://glowsurfaces.com/', className: 'is-light-wordmark' },
+  { src: '/images/clients/rr-leads.webp', alt: 'RR Leads company logo', href: 'https://resinrockleads.com/', className: 'is-light-wordmark' },
+  { src: '/images/clients/titan-surfacing.webp', alt: 'Titan Surfacing company logo', href: 'https://titansurfacing.com/' },
+  { src: '/images/clients/resin-rubber.webp', alt: 'Resin Rubber company logo', href: 'https://resin-rubber.com/', className: 'is-monochrome' },
 ]
 
 // Images are screenshots of the live sites, not stock photography.
@@ -172,25 +173,33 @@ export const projects = [
     date: '11 October 2025',
     home: 'Technical fixes, keyword research, on-page work and content structure that took ResinRock onto the first page of Google for its main industry searches.',
     portfolio: 'Technical fixes, keyword research, on-page changes and a restructure of the content. ResinRock went from low visibility to the first page of Google for competitive industry searches.',
-    href: 'http://resinrock.com',
-    image: '/images/work/resinrock-site-mobile.webp',
-    // A tall phone screenshot: crop to the headline rather than the top bars.
-    focus: 'center 42%',
-    alt: 'The ResinRock homepage on a phone',
+    href: 'https://resinrock.com/pages/resin-bound',
+    image: '/images/work/resinrock-seo-page.webp',
+    alt: 'The ResinRock resin bound page: a driveway photo under the headline and keyword-led copy below',
   },
 ]
 
-// The services index used on the home, About and place pages.
+// The services index used on the home, About and place pages. Services are
+// grouped by what they do for the customer, so a visitor can find the part of
+// their problem first and the service second. The audit stands apart as the
+// starting point for anyone who is not sure yet.
+export const offeringGroups = [
+  { id: 'found', title: 'Get found', copy: 'So the right people find you on Google and social.' },
+  { id: 'enquiries', title: 'Turn visits into enquiries', copy: 'So the people who land on your site get in touch.' },
+  { id: 'decide', title: 'Help customers decide', copy: 'Tools that answer “what will it look like?” and “what will it cost?”' },
+  { id: 'brand', title: 'Brand and apps', copy: 'How you look everywhere, and software your customers or team use.' },
+]
+
 export const offerings = [
-  { name: 'Website development', href: '/web-development/', copy: 'Business sites, online shops and multi-site setups on WordPress, Shopify or custom code, built to load fast and turn visits into enquiries.' },
-  { name: 'SEO', href: '/seo-service/', copy: 'Technical audits, keyword research, on-page fixes, link building and local SEO for Google Search and Maps.' },
-  { name: 'AI chatbots', href: '/ai-chatbot/', copy: 'A chat assistant on your site that answers customer questions at any hour, qualifies the lead and books the appointment.' },
-  { name: 'Lead capture systems', href: '/lead-capture/', copy: 'Forms and chat that collect the enquiry, ask the qualifying questions, create the CRM record and pass it to the right person while the customer is still keen.' },
-  { name: 'Custom calculators', href: '/custom-calculators/', copy: 'Quote and material calculators with ordering built in, for businesses that price by size, quantity or specification.' },
-  { name: 'Live visualiser', href: '/live-visualizer/', copy: 'Customers upload a photo of their driveway, wall or room and see your products on it before they order.' },
-  { name: 'Digital marketing', href: '/digital-marketing/', copy: 'Paid ads, email campaigns, content and the landing pages they point to.' },
-  { name: 'Social media', href: '/social-media-strategy/', copy: 'Content calendars and managed accounts on Instagram, Facebook, LinkedIn and TikTok, with paid promotion where it earns its keep.' },
-  { name: 'Graphic design', href: '/graphic-design/', copy: 'Logos, brand identities, social graphics and print-ready files.' },
-  { name: 'Mobile apps', href: '/mobile-app-development/', copy: 'iOS and Android apps, from a first version for a startup to internal tools for your own team.' },
-  { name: 'Free website audit', href: '/free-audit/', copy: 'We check mobile usability, speed, technical SEO, search visibility and the enquiry path, then list the fixes worth doing first. The audit is yours to keep whether or not you hire us.' },
+  { name: 'Website development', group: 'enquiries', href: '/web-development/', copy: 'Business sites, online shops and multi-site setups on WordPress, Shopify or custom code, built to load fast and turn visits into enquiries.' },
+  { name: 'SEO', group: 'found', href: '/seo-service/', copy: 'Technical audits, keyword research, on-page fixes, link building and local SEO for Google Search and Maps.' },
+  { name: 'AI chatbots', group: 'enquiries', href: '/ai-chatbot/', copy: 'A chat assistant on your site that answers customer questions at any hour, qualifies the lead and books the appointment.' },
+  { name: 'Lead capture systems', group: 'enquiries', href: '/lead-capture/', copy: 'Forms and chat that collect the enquiry, ask the qualifying questions, create the CRM record and pass it to the right person while the customer is still keen.' },
+  { name: 'Custom calculators', group: 'decide', href: '/custom-calculators/', copy: 'Quote and material calculators with ordering built in, for businesses that price by size, quantity or specification.' },
+  { name: 'Live visualiser', group: 'decide', href: '/live-visualizer/', copy: 'Customers upload a photo of their driveway, wall or room and see your products on it before they order.' },
+  { name: 'Digital marketing', group: 'found', href: '/digital-marketing/', copy: 'Paid ads, email campaigns, content and the landing pages they point to.' },
+  { name: 'Social media', group: 'found', href: '/social-media-strategy/', copy: 'Content calendars and managed accounts on Instagram, Facebook, LinkedIn and TikTok, with paid promotion where it earns its keep.' },
+  { name: 'Graphic design', group: 'brand', href: '/graphic-design/', copy: 'Logos, brand identities, social graphics and print-ready files.' },
+  { name: 'Mobile apps', group: 'brand', href: '/mobile-app-development/', copy: 'iOS and Android apps, from a first version for a startup to internal tools for your own team.' },
+  { name: 'Free website audit', group: 'start', href: '/free-audit/', copy: 'We check mobile usability, speed, technical SEO, search visibility and the enquiry path, then list the fixes worth doing first. The audit is yours to keep whether or not you hire us.' },
 ]

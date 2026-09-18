@@ -1,6 +1,6 @@
 import { useId, useState } from 'react'
 import { ArrowIcon, ChevronIcon } from './Icons.jsx'
-import { contact, testimonials, testimonialsHeading } from '../data/site.js'
+import { contact, offeringGroups, testimonials, testimonialsHeading } from '../data/site.js'
 import { deliverLead } from '../formSubmission.js'
 
 /* ------------------------------------------------------------------ */
@@ -25,21 +25,50 @@ export function SectionHeading({ title, copy, as: Heading = 'h2', dark = false, 
 /* Services index                                                      */
 /* ------------------------------------------------------------------ */
 
-// One row per service rather than a grid of identical cards: it reads as an
-// index, and the whole row is the link.
+// Services grouped by the job they do for the customer, with the free audit
+// set apart as the starting point. Each service row is a whole-row link.
 export function OfferingList({ items }) {
+  const start = items.find((item) => item.group === 'start')
   return (
-    <ul className="offering-list">
-      {items.map((item) => (
-        <li key={item.href}>
-          <a href={item.href}>
-            <h3>{item.name}</h3>
-            <p>{item.copy}</p>
-            <ArrowIcon />
+    <div className="offering-groups">
+      {offeringGroups.map((group) => {
+        const members = items.filter((item) => item.group === group.id)
+        if (!members.length) return null
+        return (
+          <section className="offering-group" key={group.id} aria-labelledby={`offering-${group.id}`}>
+            <header>
+              <h3 id={`offering-${group.id}`}>{group.title}</h3>
+              <p>{group.copy}</p>
+            </header>
+            <ul>
+              {members.map((item) => (
+                <li key={item.href}>
+                  <a href={item.href}>
+                    <strong>{item.name}</strong>
+                    <span>{item.copy}</span>
+                    <ArrowIcon />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      })}
+      {start ? (
+        <aside className="offering-start">
+          <div>
+            <h3>Not sure where to start?</h3>
+            <p>{start.copy}</p>
+          </div>
+          <a className="kinetic-button light group" href={start.href}>
+            <span>Get a free site audit</span>
+            <span className="button-island">
+              <ArrowIcon className="size-4" />
+            </span>
           </a>
-        </li>
-      ))}
-    </ul>
+        </aside>
+      ) : null}
+    </div>
   )
 }
 
@@ -234,8 +263,10 @@ export function EnquiryForm({
         <input required name="name" type="text" autoComplete="name" placeholder="Your name" />
       </label>
       <label>
-        <span>Company</span>
-        <input required name="company" type="text" autoComplete="organization" placeholder="Your company" />
+        <span>
+          Company <small>optional</small>
+        </span>
+        <input name="company" type="text" autoComplete="organization" placeholder="Your company" />
       </label>
       <label>
         <span>Phone</span>
@@ -269,13 +300,14 @@ export function EnquiryForm({
           />
         </label>
       ) : null}
-      <label>
-        <span>Subject</span>
-        <input name="subject" type="text" defaultValue={subjectDefault} placeholder="What is this about?" />
-      </label>
+      {/* The page already knows what the enquiry is about, so the subject rides
+          along hidden rather than being one more box to fill in. */}
+      <input name="subject" type="hidden" defaultValue={subjectDefault || 'Website enquiry'} />
       <label className="enquiry-wide">
-        <span>Message</span>
-        <textarea required name="message" rows="4" placeholder="Tell us what you are trying to achieve." />
+        <span>
+          Message <small>optional</small>
+        </span>
+        <textarea name="message" rows="3" placeholder="What are you trying to get done?" />
       </label>
       <button className="kinetic-button group enquiry-wide" type="submit" disabled={phase === 'sending'}>
         <span>{phase === 'sending' ? 'Sending…' : submitLabel}</span>

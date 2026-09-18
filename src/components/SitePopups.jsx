@@ -73,12 +73,16 @@ function Modal({ open, onClose, labelledBy, className = '', children }) {
 
 function AuditPopup({ open, onClose }) {
   const [status, setStatus] = useState('')
+  const [sending, setSending] = useState(false)
 
   async function submit(event) {
     event.preventDefault()
+    // A second click while the first is in flight would store the lead twice.
+    if (sending) return
+    setSending(true)
     setStatus('Sending…')
     try {
-      const result = await deliverLead(event.currentTarget, {
+      await deliverLead(event.currentTarget, {
         subject: 'Free website performance audit request',
         source: 'audit-popup',
         fields: [
@@ -90,9 +94,11 @@ function AuditPopup({ open, onClose }) {
           ['Newsletter', 'newsletter'],
         ],
       })
-      setStatus(result === 'submitted' ? 'Thanks, your audit request is in.' : 'Your email app is ready. Review it, then send.')
+      setStatus('Thanks, your audit request is in.')
     } catch {
       setStatus(`We could not send that. Please email ${contact.email}.`)
+    } finally {
+      setSending(false)
     }
   }
 
@@ -111,8 +117,8 @@ function AuditPopup({ open, onClose }) {
           <input required name="name" type="text" autoComplete="name" />
         </label>
         <label>
-          <span>Company</span>
-          <input required name="company" type="text" autoComplete="organization" />
+          <span>Company (optional)</span>
+          <input name="company" type="text" autoComplete="organization" />
         </label>
         <label>
           <span>Email</span>
@@ -132,14 +138,26 @@ function AuditPopup({ open, onClose }) {
         </label>
         <label>
           <span>Website URL</span>
-          <input required name="website" type="url" placeholder="https://" />
+          {/* Plain text, not type="url": the browser would reject "mysite.com"
+              without https:// and the visitor could not send the form.
+              deliverLead adds the scheme. */}
+          <input
+            required
+            name="website"
+            type="text"
+            inputMode="url"
+            autoComplete="url"
+            autoCapitalize="none"
+            spellCheck="false"
+            placeholder="yourwebsite.com"
+          />
         </label>
         <label className="audit-check">
           <input type="checkbox" name="newsletter" value="Yes" />
           <span>Yes, subscribe me to the Wavefront Studio newsletter for tips, updates, and offers.</span>
         </label>
-        <button className="kinetic-button group" type="submit">
-          <span>Get my free audit</span>
+        <button className="kinetic-button group" type="submit" disabled={sending}>
+          <span>{sending ? 'Sending…' : 'Get my free audit'}</span>
           <span className="button-island">
             <ArrowIcon className="size-4" />
           </span>

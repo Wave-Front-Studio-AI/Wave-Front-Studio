@@ -77,10 +77,16 @@ heading, and copy full of dashes and "not just X, it's Y".
 
 ## Motion
 
-- Motion answers an action: button press (`scale(0.97)`), hover colour, the
-  button's diagonal sweep, dropdowns, the FAQ opening, the mobile menu.
-- No scroll-reveal fade-ups, no auto-rotating panels, no marquees, no number
-  tickers, no images zooming on hover, no cards lifting on hover.
+- Motion answers an action or marks an arrival: button press
+  (`scale(0.97)`), the button's diagonal sweep, dropdowns, the FAQ opening,
+  the mobile menu, hover states on things that are links.
+- Allowed, and already built: one short entrance for the first screen on page
+  load; whole sections rising in once as they scroll into view
+  (`useSectionReveal` in `Layout.jsx`, never card by card); the process steps'
+  rules drawing across in order; linked cards lifting 3px with the screenshot
+  easing forward 2%; client logos going from grey to colour on hover.
+- Not allowed: per-card staggered fade-ups, auto-rotating panels, marquees,
+  number tickers, cursor spotlights, anything that loops forever.
 - Custom easing from `:root` (`--ease-out`, `--ease-drawer`). Keep UI
   transitions under 300ms. Respect `prefers-reduced-motion`.
 
