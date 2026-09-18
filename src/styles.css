@@ -619,11 +619,13 @@ input[type='range']::-moz-range-thumb { width: 22px; height: 22px; border: 3px s
 .google-rating > strong { font-family: var(--display); font-size: 2.6rem; font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: var(--ink); }
 .google-rating > span { display: grid; gap: 4px; color: var(--muted); font-size: 0.925rem; }
 
-.google-reviews { margin-top: clamp(40px, 5vw, 64px); }
-.google-reviews-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 24px; margin-bottom: 18px; padding-top: 20px; border-top: 1px solid var(--line); }
-.google-reviews-head h3 { font-size: clamp(1.2rem, 1.7vw, 1.4rem); }
-.google-review-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.google-review { display: grid; gap: 12px; align-content: start; margin: 0; padding: 20px 22px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--white); }
+.google-links { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+/* Google's most relevant review leads at full width, like a pull quote; the
+   rest sit two to a row. */
+.google-review-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.google-review { display: grid; gap: 12px; align-content: start; margin: 0; padding: clamp(20px, 2.4vw, 28px); border: 1px solid var(--line); border-radius: var(--r-md); background: var(--paper); }
+.google-review:first-child { grid-column: 1 / -1; padding: clamp(26px, 3.6vw, 44px); }
+.google-review:first-child blockquote { max-width: 46ch; color: var(--ink); font-family: var(--display); font-size: clamp(1.2rem, 1.9vw, 1.55rem); font-weight: 500; letter-spacing: -0.01em; line-height: 1.4; -webkit-line-clamp: 8; line-clamp: 8; }
 .google-review figcaption { display: flex; align-items: center; gap: 11px; }
 .google-review figcaption img, .google-review .testimonial-initials { width: 40px; height: 40px; flex: 0 0 auto; border-radius: 50%; object-fit: cover; font-size: 0.875rem; }
 .google-review figcaption > span { display: grid; gap: 1px; }
@@ -633,6 +635,8 @@ input[type='range']::-moz-range-thumb { width: 22px; height: 22px; border: 3px s
 /* Long reviews are cut at seven lines; the full text is one click away. */
 .google-review blockquote { display: -webkit-box; margin: 0; overflow: hidden; color: var(--text); font-size: 0.95rem; line-height: 1.6; -webkit-box-orient: vertical; -webkit-line-clamp: 7; line-clamp: 7; }
 .google-review-link { justify-self: start; color: var(--brand-deep); font-size: 0.875rem; font-weight: 600; }
+.google-review:first-child figcaption { order: 3; }
+.google-review:first-child .google-review-link { order: 4; }
 .google-review-link:hover { text-decoration: underline; text-underline-offset: 3px; }
 .google-attribution { margin-top: 14px; color: var(--muted); font-size: 0.8125rem; }
 .google-attribution a { text-decoration: underline; text-underline-offset: 2px; }

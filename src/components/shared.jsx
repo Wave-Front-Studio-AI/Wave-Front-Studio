@@ -112,19 +112,19 @@ function useGoogleReviews() {
   return data
 }
 
-// The first quote carries the most detail, so it gets the most room. Google
-// reviews follow; anyone already quoted above is left out so nobody appears
-// twice.
+// Google reviews are the section. The prerendered page carries the three
+// client quotes, which stay only until the live reviews arrive (or for good,
+// if Google cannot be reached), so the section is never empty.
 export function Testimonials() {
   const google = useGoogleReviews()
-  const quoted = new Set(testimonials.map((item) => item.name.toLowerCase()))
-  const googleReviews = (google?.reviews || []).filter((review) => !quoted.has(review.author.toLowerCase())).slice(0, 3)
+  const reviews = google?.reviews || []
   const listing = google?.mapsUrl || googleListingUrl
+  const onGoogle = reviews.length > 0
 
   return (
     <section className="testimonials chapter" id="testimonials">
       <div className="page-frame">
-        <SectionHeading title={testimonialsHeading.title}>
+        <SectionHeading title={onGoogle ? 'What clients say on Google' : testimonialsHeading.title}>
           {google?.rating ? (
             <p className="google-rating">
               <strong>{google.rating.toFixed(1)}</strong>
@@ -138,41 +138,22 @@ export function Testimonials() {
           ) : (
             <p>{testimonialsHeading.copy}</p>
           )}
-          <a className="text-link" href={listing} target="_blank" rel="noreferrer noopener">
-            Read our Google reviews <ArrowIcon />
-          </a>
-        </SectionHeading>
-        <div className="testimonial-grid">
-          {testimonials.map((item) => (
-            <figure className="testimonial-card" key={item.name}>
-              <blockquote>{item.quote}</blockquote>
-              <figcaption>
-                {item.image ? (
-                  <img src={item.image} alt="" width="96" height="96" loading="lazy" />
-                ) : (
-                  <span className="testimonial-initials" aria-hidden="true">
-                    {initials(item.name)}
-                  </span>
-                )}
-                <span>
-                  <strong>{item.name}</strong>
-                  <span>{item.role}</span>
-                </span>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-
-        {googleReviews.length ? (
-          <div className="google-reviews">
-            <div className="google-reviews-head">
-              <h3>Recent reviews on Google</h3>
+          <span className="google-links">
+            <a className="text-link" href={listing} target="_blank" rel="noreferrer noopener">
+              Read all our Google reviews <ArrowIcon />
+            </a>
+            {google?.writeReviewUrl ? (
               <a className="text-link" href={google.writeReviewUrl} target="_blank" rel="noreferrer noopener">
                 Leave a review <ArrowIcon />
               </a>
-            </div>
+            ) : null}
+          </span>
+        </SectionHeading>
+
+        {onGoogle ? (
+          <div className="google-reviews">
             <div className="google-review-grid">
-              {googleReviews.map((review) => (
+              {reviews.map((review) => (
                 <figure className="google-review" key={`${review.author}-${review.when}`}>
                   <figcaption>
                     {review.photo ? (
@@ -211,7 +192,28 @@ export function Testimonials() {
               , shown as Google provides them.
             </p>
           </div>
-        ) : null}
+        ) : (
+          <div className="testimonial-grid">
+            {testimonials.map((item) => (
+              <figure className="testimonial-card" key={item.name}>
+                <blockquote>{item.quote}</blockquote>
+                <figcaption>
+                  {item.image ? (
+                    <img src={item.image} alt="" width="96" height="96" loading="lazy" />
+                  ) : (
+                    <span className="testimonial-initials" aria-hidden="true">
+                      {initials(item.name)}
+                    </span>
+                  )}
+                  <span>
+                    <strong>{item.name}</strong>
+                    <span>{item.role}</span>
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

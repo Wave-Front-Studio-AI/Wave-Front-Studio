@@ -69,6 +69,7 @@ const REVEAL_SELECTOR = [
   '.process-timeline',
   '.studio-grid',
   '.testimonial-grid',
+  '.google-review-grid',
   '.hub-list',
   '.point-list',
   '.tick-list.is-columns',
