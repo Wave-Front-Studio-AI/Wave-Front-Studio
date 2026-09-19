@@ -680,8 +680,8 @@ document.getElementById('h-page').value     = location.href;
     var month=customers*num(val);
     mo.textContent=usd(month);
     yr.textContent=usd(month*12);
-    var c = customers<1 ? 'Less than 1 customer' : (customers<10 ? 'Roughly '+(Math.round(customers*10)/10) : 'Roughly '+Math.round(customers));
-    cust.textContent = customers<1 ? 'Less than one customer a month - but it adds up over a year.' : c+' customers a month who went to someone else instead.';
+    var n = Math.round(customers);
+    cust.textContent = customers<1 ? 'Less than one customer a month - but it adds up over a year.' : 'Roughly '+n.toLocaleString('en-US')+(n===1?' customer':' customers')+' a month who went to someone else instead.';
   }
   [vis,val,rate,lost].forEach(function(el){ el.addEventListener('input',calc); el.addEventListener('change',calc); });
   calc();
