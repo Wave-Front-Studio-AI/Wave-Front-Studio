@@ -149,6 +149,125 @@ h2.sec{font-size:clamp(26px,4.4vw,46px);line-height:1.02;letter-spacing:-.03em;t
 .fixrow b{display:block;font-size:11.5px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:#B86F0C;margin-bottom:5px}
 .fixrow p{margin:0;font-size:14.3px;color:var(--ink)}
 
+
+/* ---------- cost calculator ---------- */
+.cost{position:relative;overflow:hidden;background:#0B1F24;color:#A8C7CD}
+.cost:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 90% at 85% 10%,rgba(80,175,197,.20),transparent 65%)}
+.cost .wrap{position:relative}
+.cost .kick2{color:var(--teal-2)}
+.cost h2.sec{color:#fff;max-width:26ch}
+.cost .sec-sub{color:#A8C7CD}
+.calc{display:grid;gap:18px;margin-top:6px}
+@media(min-width:900px){.calc{grid-template-columns:1.1fr .9fr;gap:22px}}
+.calc-in{background:#fff;border-radius:var(--r);padding:22px;color:var(--body)}
+@media(min-width:900px){.calc-in{padding:28px}}
+.calc-in .field{margin-bottom:16px}
+.calc-in label{margin-bottom:7px}
+.calc-in select{width:100%;font:inherit;font-size:16px;color:var(--ink);padding:13px 14px;border:1.5px solid #CBDDE0;border-radius:10px;background:#fff}
+.money{position:relative}
+.money span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-weight:700}
+.money input{padding-left:28px}
+.range-row{display:flex;align-items:center;gap:14px}
+.range-row input[type=range]{flex:1;accent-color:#1F8199;padding:0;border:0;height:28px}
+.range-row output{min-width:52px;text-align:right;font-weight:900;color:var(--ink);font-size:17px}
+.calc-note{font-size:12.5px;color:var(--muted);margin:6px 0 0;line-height:1.45}
+.calc-out{background:linear-gradient(160deg,#16383D,#123037);border:1px solid rgba(127,206,222,.22);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;justify-content:center}
+@media(min-width:900px){.calc-out{padding:32px}}
+.calc-out .lbl{font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#7FCEDE}
+.calc-out .big{font-size:clamp(44px,8vw,68px);font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1;margin:10px 0 6px;font-variant-numeric:tabular-nums}
+.calc-out .yr{font-size:17px;color:#fff;margin:0 0 4px}
+.calc-out .yr b{color:#50AFC5}
+.calc-out .cust{font-size:14.5px;color:#A8C7CD;margin:0 0 22px}
+.calc-out .cta-btn{text-align:center;justify-content:center;padding:18px 20px;font-size:15px;letter-spacing:.04em}
+.src{font-size:12px;color:#7FA1A8;margin:16px 0 0}
+
+/* ---------- why first ---------- */
+.wide-h h2.sec{max-width:24ch}
+.why{display:grid;gap:16px;margin-top:30px}
+@media(min-width:900px){.why{grid-template-columns:repeat(3,1fr);gap:18px}}
+.why .card2{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px 24px;position:relative}
+.why .num{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:#FDECE8;color:#C8412C;font-weight:900;font-size:15px;margin-bottom:16px}
+.why h3{font-size:17px;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:9px;line-height:1.2}
+.why p{margin:0;font-size:14.8px}
+.why-close{margin:26px 0 0;font-size:16.5px;color:var(--ink);font-weight:600;max-width:62ch}
+
+
+/* ================= polish pass ================= */
+h2.sec em{font-style:normal;color:var(--teal-dk);background:linear-gradient(transparent 80%,rgba(80,175,197,.30) 80%,rgba(80,175,197,.30) 94%,transparent 94%);-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.cost h2.sec em{color:#50AFC5;background:linear-gradient(transparent 80%,rgba(80,175,197,.28) 80%,rgba(80,175,197,.28) 94%,transparent 94%)}
+
+/* staggered card entrance */
+.stagger{opacity:1!important;transform:none!important}
+.stagger>*{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.2,.7,.3,1),transform .6s cubic-bezier(.2,.7,.3,1),box-shadow .2s,border-color .2s}
+.stagger.in>*{opacity:1;transform:none}
+.stagger.in>*:nth-child(2){transition-delay:.09s,.09s,0s,0s}
+.stagger.in>*:nth-child(3){transition-delay:.18s,.18s,0s,0s}
+.stagger.in>*:nth-child(4){transition-delay:.27s,.27s,0s,0s}
+.stagger.in>*:nth-child(5){transition-delay:.36s,.36s,0s,0s}
+.stagger.in>*:nth-child(6){transition-delay:.45s,.45s,0s,0s}
+
+/* ---------- why fix first ---------- */
+.sec-why{position:relative;overflow:hidden;background:linear-gradient(180deg,#EAF6F9 0%,#FFFFFF 55%,#F3F9FA 100%)}
+.sec-why:before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(31,129,153,.13) 1px,transparent 1.3px);background-size:22px 22px;-webkit-mask-image:linear-gradient(180deg,#000 0%,transparent 70%);mask-image:linear-gradient(180deg,#000 0%,transparent 70%)}
+.sec-why .wrap{position:relative}
+.why .card2{position:relative;overflow:hidden;background:#fff;border:1px solid #D6E8EC;border-radius:20px;padding:30px 26px 28px;box-shadow:0 1px 2px rgba(11,31,36,.04),0 14px 34px rgba(11,31,36,.07)}
+.why .card2:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#0B1F24,#50AFC5)}
+.why .card2 .bgnum{position:absolute;right:24px;top:22px;font-size:64px;font-weight:900;line-height:1;letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1.6px rgba(31,129,153,.34);pointer-events:none;transition:-webkit-text-stroke-color .25s,color .25s}
+.why .card2:hover .bgnum{-webkit-text-stroke-color:rgba(31,129,153,.7);color:rgba(80,175,197,.08)}
+@supports not (-webkit-text-stroke:1px black){.why .card2 .bgnum{color:rgba(31,129,153,.14)}}
+.why .card2:hover{transform:translateY(-6px);box-shadow:0 22px 48px rgba(31,129,153,.16);border-color:#A9D5DF}
+.why .wico{display:flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:15px;background:linear-gradient(135deg,#0B1F24,#1B5966);box-shadow:0 8px 20px rgba(11,31,36,.28);margin-bottom:18px}
+.why .num{display:none}
+.why h3{font-size:17.5px;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:10px;line-height:1.2;position:relative}
+.why p{margin:0;font-size:15px;position:relative}
+.why-close{display:flex;gap:16px;align-items:center;margin:28px 0 0;padding:20px 24px;border-radius:16px;background:#0B1F24;color:#fff;font-size:16.5px;font-weight:600;line-height:1.45;box-shadow:0 16px 40px rgba(11,31,36,.18);border-left:5px solid var(--teal)}
+.why-close svg{flex:0 0 auto}
+@media(max-width:600px){.why .card2{padding:26px 22px 24px}.why .card2 .bgnum{font-size:52px;top:22px;right:20px}.why-close{font-size:15.5px;padding:18px 18px;align-items:flex-start}}
+
+/* ---------- what we check ---------- */
+.sec-check{position:relative;overflow:hidden;background:#F2F9FA}
+.sec-check:before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(31,129,153,.13) 1px,transparent 1.3px);background-size:24px 24px}
+.sec-check:after{content:"";position:absolute;width:560px;height:560px;right:-220px;top:-220px;border-radius:50%;background:radial-gradient(circle,rgba(80,175,197,.22),transparent 65%)}
+.sec-check .wrap{position:relative;z-index:1}
+.sec-check .g4{gap:18px}
+@media(min-width:680px) and (max-width:999px){.sec-check .g4{grid-template-columns:1fr 1fr}}
+.sec-check .tile{border-radius:20px;padding:28px 24px 24px;border:1px solid #D6E8EC;box-shadow:0 1px 2px rgba(11,31,36,.04),0 14px 32px rgba(11,31,36,.06);display:flex;flex-direction:column}
+.sec-check .tile:before{height:4px;background:linear-gradient(90deg,#50AFC5,#1F8199)}
+.sec-check .tile:hover{transform:translateY(-6px);box-shadow:0 22px 48px rgba(31,129,153,.18);border-color:#A9D5DF}
+.sec-check .tno{position:absolute;right:20px;top:22px;font-size:13px;font-weight:900;letter-spacing:.12em;color:#A9C7CD}
+.sec-check .ico{width:54px;height:54px;border-radius:15px;background:linear-gradient(135deg,#50AFC5,#1F8199);box-shadow:0 8px 20px rgba(31,129,153,.3);margin-bottom:18px}
+.sec-check .ico svg [stroke]{stroke:#fff}
+.sec-check .ico svg [fill]:not([fill="none"]){fill:#fff}
+.sec-check .tile h3{font-size:16px;margin-bottom:9px}
+.sec-check .tile p{font-size:14.8px;flex:1}
+.find{margin-top:18px;padding:11px 13px;border-radius:11px;background:#FDF0EC;border:1px solid #F4D6CE;font-size:13.3px;color:#6B2A1D;line-height:1.4}
+.find b{display:block;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:#C8412C;margin-bottom:3px}
+
+/* ---------- steps ---------- */
+.sec-steps .steps{position:relative}
+@media(min-width:1000px){
+  .sec-steps .steps:before{content:"";position:absolute;left:20px;right:calc((100% - 72px)/3 - 20px);top:19px;height:2px;background:repeating-linear-gradient(90deg,#9FD2DE 0 8px,transparent 8px 16px)}
+}
+.sec-steps .step{border-top:0;padding-top:0;position:relative}
+.sec-steps .step:before{content:"0" counter(s);counter-increment:s;display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#50AFC5,#1F8199);color:#fff;font-size:14px;letter-spacing:.02em;margin-bottom:18px;box-shadow:0 0 0 7px #fff,0 8px 18px rgba(31,129,153,.3);position:relative}
+.sec-steps .step .sbox{background:#F5FAFB;border:1px solid var(--line);border-radius:16px;padding:20px 20px 22px}
+
+/* ---------- rules as a promise panel ---------- */
+.sec-rules{background:#F2F9FA}
+.promise{position:relative;overflow:hidden;margin-top:30px;border-radius:24px;padding:26px;background:linear-gradient(140deg,#0B1F24 0%,#123037 55%,#16434B 100%);box-shadow:0 26px 60px rgba(11,31,36,.25)}
+@media(min-width:900px){.promise{padding:40px}}
+@media(max-width:600px){.promise{padding:18px;border-radius:20px}.sec-rules .rule{padding:16px}.seal{margin-bottom:16px}}
+.promise:before{content:"";position:absolute;width:520px;height:520px;right:-180px;top:-240px;border-radius:50%;background:radial-gradient(circle,rgba(80,175,197,.32),transparent 66%)}
+.promise:after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(127,206,222,.10) 1px,transparent 1.3px);background-size:22px 22px}
+.promise>*{position:relative;z-index:1}
+.seal{display:inline-flex;align-items:center;gap:10px;background:rgba(80,175,197,.14);border:1px solid rgba(127,206,222,.35);color:#BFE7F0;font-size:12px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;padding:9px 15px;border-radius:999px;margin-bottom:22px}
+.sec-rules .rules{gap:14px}
+.sec-rules .rule{background:rgba(255,255,255,.055);border:1px solid rgba(127,206,222,.2);border-radius:16px;padding:20px 20px;backdrop-filter:blur(2px)}
+.sec-rules .rule:hover{border-color:rgba(127,206,222,.5);background:rgba(255,255,255,.08)}
+.sec-rules .rule .k{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#50AFC5,#1F8199);color:#fff;box-shadow:0 6px 16px rgba(31,129,153,.4)}
+.sec-rules .rule b{color:#fff}
+.sec-rules .rule p{color:#A8C7CD}
+
 /* ---------- rules ---------- */
 .rules{display:grid;gap:12px}
 @media(min-width:760px){.rules{grid-template-columns:1fr 1fr}}
@@ -194,7 +313,7 @@ details p{margin:0;padding:0 20px 20px;font-size:14.8px}
 
 .foot{padding:30px 0 38px;font-size:12.5px;color:var(--muted);text-align:center}
 .foot a{color:var(--muted)}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}.rv{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}.rv,.stagger>*{opacity:1;transform:none}}
 </style>
 </head>
 <body>
@@ -308,16 +427,74 @@ details p{margin:0;padding:0 20px 20px;font-size:14.8px}
   </div>
 </section>
 
-<section class="alt">
+<section class="cost" id="cost">
+  <div class="wrap">
+    <div class="rv"><span class="kick2">What it's costing you</span>
+    <h2 class="sec">A slow, confusing website doesn't look broken. It just quietly <em>costs you customers.</em></h2>
+    <p class="sec-sub">Put in your own numbers. This is a rough estimate, not a promise - but most owners have never done this maths, and the answer is usually bigger than they expect.</p></div>
+
+    <div class="calc rv">
+      <div class="calc-in">
+        <div class="field">
+          <label for="c-vis">Visitors to your website per month</label>
+          <input id="c-vis" type="number" inputmode="numeric" min="0" step="50" value="500">
+        </div>
+        <div class="field">
+          <label for="c-val">What one new customer is worth to you</label>
+          <div class="money"><span>$</span><input id="c-val" type="number" inputmode="numeric" min="0" step="50" value="1000"></div>
+        </div>
+        <div class="field">
+          <label for="c-rate">How many visitors would normally become a customer?</label>
+          <select id="c-rate">
+            <option value="0.01">1 in 100</option>
+            <option value="0.02" selected>1 in 50</option>
+            <option value="0.04">1 in 25</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label for="c-lost">Visitors you lose to slow loading and confusion</label>
+          <div class="range-row"><input id="c-lost" type="range" min="10" max="80" step="5" value="50"><output id="c-lost-out">50%</output></div>
+          <p class="calc-note">Google found that 53% of mobile visitors leave a page that takes longer than 3 seconds to load.</p>
+        </div>
+      </div>
+
+      <div class="calc-out" aria-live="polite">
+        <span class="lbl">Walking away every month</span>
+        <div class="big" id="c-month">$5,000</div>
+        <p class="yr">That is about <b id="c-year">$60,000</b> a year.</p>
+        <p class="cust" id="c-cust">Roughly 5 customers a month who went to someone else instead.</p>
+        <a class="cta-btn" href="#form">Find out where you're losing it
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+    <p class="src">Source: Google, "The Need for Mobile Speed" (2016). The estimate above uses only the numbers you enter.</p>
+  </div>
+</section>
+
+<section class="sec-why">
+  <div class="wrap">
+    <div class="rv wide-h"><span class="kick2">Why fix this first</span>
+    <h2 class="sec">Fix the website <em>before</em> you spend another dollar on marketing</h2></div>
+    <div class="why rv stagger">
+      <div class="card2"><span class="bgnum">01</span><span class="wico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5z" stroke="#7FCEDE" stroke-width="2" stroke-linejoin="round"/></svg></span><span class="num">1</span><h3>Every customer passes through it</h3><p>Google, Facebook, referrals, the sign on your van. They all end up on your website. If it leaks, every one of them leaks with it.</p></div>
+      <div class="card2"><span class="bgnum">02</span><span class="wico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2v20M17 6.5c-.8-1.4-2.6-2.3-5-2.3-3 0-4.8 1.5-4.8 3.6 0 5 9.8 2.6 9.8 7.9 0 2.2-2 3.8-5 3.8-2.6 0-4.4-1-5.3-2.6" stroke="#7FCEDE" stroke-width="2" stroke-linecap="round"/></svg></span><span class="num">2</span><h3>You already paid for that visitor</h3><p>Ads, SEO and word of mouth cost you every month. Fixing what happens after the click costs once, and keeps paying you back.</p></div>
+      <div class="card2"><span class="bgnum">03</span><span class="wico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#7FCEDE" stroke-width="2"/><path d="M12 7v5l3.5 2.5" stroke="#7FCEDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="num">3</span><h3>Every week you wait, they call someone else</h3><p>The person who gave up on your site still needed the job done. They just found a competitor whose website made it easy.</p></div>
+    </div>
+    <p class="why-close rv"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#50AFC5"/><path d="M7.5 12.3l3 2.9L16.8 9" stroke="#0B1F24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>That is why the audit ranks every fix by how much it is costing you - so you fix the expensive problem first, not the one that looks worst.</span></p>
+  </div>
+</section>
+
+<section class="sec-check">
   <div class="wrap">
     <div class="rv"><span class="kick2">What we check</span>
-    <h2 class="sec">Four things decide whether a visitor calls</h2>
+    <h2 class="sec">Four things decide whether a visitor <em>calls</em></h2>
     <p class="sec-sub">Someone opens your site on a phone and on a laptop, the way your customers do, and writes down what goes wrong.</p></div>
-    <div class="grid g4 rv">
-      <div class="tile"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12L13 2z" fill="#1F8199"/></svg></div><h3>Speed</h3><p>How long someone waits before anything appears - and exactly what is making them wait.</p></div>
-      <div class="tile"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="6" y="2" width="12" height="20" rx="2.5" stroke="#1F8199" stroke-width="2"/><circle cx="12" cy="18" r="1" fill="#1F8199"/></svg></div><h3>Mobile</h3><p>What your page really looks like on a phone, where most of your visitors actually are.</p></div>
-      <div class="tile"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#1F8199" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="#1F8199" stroke-width="2" stroke-linecap="round"/></svg></div><h3>Google</h3><p>Whether you show up for what people near you are searching for right now.</p></div>
-      <div class="tile"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 18V9M10 18V4M16 18v-6M22 18H2" stroke="#1F8199" stroke-width="2" stroke-linecap="round"/></svg></div><h3>Enquiries</h3><p>The exact points where a visitor decides not to call, and what to change first.</p></div>
+    <div class="grid g4 rv stagger">
+      <div class="tile"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12L13 2z" fill="#1F8199"/></svg></div><span class="tno">01</span><h3>Speed</h3><p>How long someone waits before anything appears - and exactly what is making them wait.</p><div class="find"><b>What we often find</b>Pages taking 5 seconds or more to show anything on a phone.</div></div>
+      <div class="tile"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="6" y="2" width="12" height="20" rx="2.5" stroke="#1F8199" stroke-width="2"/><circle cx="12" cy="18" r="1" fill="#1F8199"/></svg></div><span class="tno">02</span><h3>Mobile</h3><p>What your page really looks like on a phone, where most of your visitors actually are.</p><div class="find"><b>What we often find</b>Buttons too small to tap, and text you have to pinch to read.</div></div>
+      <div class="tile"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#1F8199" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="#1F8199" stroke-width="2" stroke-linecap="round"/></svg></div><span class="tno">03</span><h3>Google</h3><p>Whether you show up for what people near you are searching for right now.</p><div class="find"><b>What we often find</b>No city or service named on the page, so Google cannot tell where you work.</div></div>
+      <div class="tile"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 18V9M10 18V4M16 18v-6M22 18H2" stroke="#1F8199" stroke-width="2" stroke-linecap="round"/></svg></div><span class="tno">04</span><h3>Enquiries</h3><p>The exact points where a visitor decides not to call, and what to change first.</p><div class="find"><b>What we often find</b>A phone number buried at the bottom and a contact form nobody answers.</div></div>
     </div>
   </div>
 </section>
@@ -347,30 +524,31 @@ details p{margin:0;padding:0 20px 20px;font-size:14.8px}
   </div>
 </div>
 
-<section>
+<section class="sec-steps">
   <div class="wrap">
     <div class="rv"><span class="kick2">Three steps</span>
     <h2 class="sec">From this page to your report</h2></div>
-    <div class="steps rv" style="margin-top:36px">
-      <div class="step"><h3>You send the address</h3><p>Name, email, phone and your website. That is everything we need to start.</p></div>
-      <div class="step"><h3>We go through the site</h3><p>On a phone and on a laptop - speed, layout, search, and where enquiries get lost.</p></div>
-      <div class="step"><h3>The report arrives</h3><p>Within 48 hours on business days, by email. Yours to keep and act on however you like.</p></div>
+    <div class="steps rv stagger" style="margin-top:36px">
+      <div class="step"><div class="sbox"><h3>You send the address</h3><p>Name, email, phone and your website. That is everything we need to start.</p></div></div>
+      <div class="step"><div class="sbox"><h3>We go through the site</h3><p>On a phone and on a laptop - speed, layout, search, and where enquiries get lost.</p></div></div>
+      <div class="step"><div class="sbox"><h3>The report arrives</h3><p>Within 48 hours on business days, by email. Yours to keep and act on however you like.</p></div></div>
     </div>
   </div>
 </section>
 
-<section class="alt">
+<section class="sec-rules">
   <div class="wrap">
     <div class="rv"><span class="kick2">The rules, plainly</span>
-    <h2 class="sec">No catch. Here is exactly how it works.</h2></div>
-    <div class="rules rv" style="margin-top:30px">
+    <h2 class="sec">No catch. Here is exactly <em>how it works.</em></h2></div>
+    <div class="promise rv"><span class="seal"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.5l7.5 3v6c0 4.6-3.2 8.4-7.5 10-4.3-1.6-7.5-5.4-7.5-10v-6l7.5-3z" stroke="#7FCEDE" stroke-width="2" stroke-linejoin="round"/><path d="M8.5 12.2l2.5 2.4 4.6-4.8" stroke="#7FCEDE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Our promise to you</span>
+    <div class="rules stagger">
       <div class="rule"><span class="k">1</span><div><b>It really is free</b><p>No card, no trial, no invoice at the end. The first 100 businesses get it at no cost.</p></div></div>
       <div class="rule"><span class="k">2</span><div><b>One audit per business</b><p>So the 100 spots go to 100 different owners.</p></div></div>
       <div class="rule"><span class="k">3</span><div><b>You need a live website</b><p>Any platform - WordPress, Shopify, Wix, Squarespace, custom. It just has to be online.</p></div></div>
       <div class="rule"><span class="k">4</span><div><b>48 hours, business days</b><p>If we are running behind we tell you, instead of leaving you waiting.</p></div></div>
       <div class="rule"><span class="k">5</span><div><b>Email first, one follow-up</b><p>The report by email, then one check that it was useful - by email or a quick call. Ask us to stop and we stop.</p></div></div>
       <div class="rule"><span class="k">6</span><div><b>No obligation to hire us</b><p>Take the report and fix it yourself, or hand it to your own developer. Genuinely fine either way.</p></div></div>
-    </div>
+    </div></div>
   </div>
 </section>
 
@@ -436,9 +614,9 @@ if('IntersectionObserver' in window){
   var ro=new IntersectionObserver(function(en){
     en.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target); } });
   },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
-  document.querySelectorAll('.rv').forEach(function(el){ ro.observe(el); });
+  document.querySelectorAll('.rv, .stagger').forEach(function(el){ ro.observe(el); });
 }else{
-  document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+  document.querySelectorAll('.rv, .stagger').forEach(function(el){ el.classList.add('in'); });
 }
 
 /* ---- keep the ad attribution ---- */
@@ -483,6 +661,30 @@ document.getElementById('h-page').value     = location.href;
       }
     },{threshold:.4}).observe(ba);
   }
+})();
+
+
+/* ---- cost calculator ---- */
+(function(){
+  var vis=document.getElementById('c-vis'), val=document.getElementById('c-val'),
+      rate=document.getElementById('c-rate'), lost=document.getElementById('c-lost'),
+      lostOut=document.getElementById('c-lost-out'), mo=document.getElementById('c-month'),
+      yr=document.getElementById('c-year'), cust=document.getElementById('c-cust');
+  if(!vis) return;
+  function usd(n){ return '$'+Math.round(n).toLocaleString('en-US'); }
+  function num(el){ var n=parseFloat(el.value); return isFinite(n)&&n>0?n:0; }
+  function calc(){
+    var l=parseInt(lost.value,10)/100;
+    lostOut.textContent=Math.round(l*100)+'%';
+    var customers=num(vis)*l*parseFloat(rate.value);
+    var month=customers*num(val);
+    mo.textContent=usd(month);
+    yr.textContent=usd(month*12);
+    var c = customers<1 ? 'Less than 1 customer' : (customers<10 ? 'Roughly '+(Math.round(customers*10)/10) : 'Roughly '+Math.round(customers));
+    cust.textContent = customers<1 ? 'Less than one customer a month - but it adds up over a year.' : c+' customers a month who went to someone else instead.';
+  }
+  [vis,val,rate,lost].forEach(function(el){ el.addEventListener('input',calc); el.addEventListener('change',calc); });
+  calc();
 })();
 
 /* ---- submit ---- */
