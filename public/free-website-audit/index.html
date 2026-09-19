@@ -407,10 +407,14 @@ details p{margin:0;padding:0 20px 20px;font-size:14.8px}
 (function(){
 "use strict";
 
-/* Same endpoint and payload shape the site's own forms use
-   (src/formSubmission.js -> api/lead.js -> Base44 ProspectLead).
-   Anything that runs off a new ProspectLead runs for this page too. */
+/* Every lead goes to two places at once:
+   1. /api/lead/ - same endpoint and payload as the site's own forms -> Base44 ProspectLead
+   2. SHEET_ENDPOINT - adds the sheet row and sends the customer + admin emails
+   The visitor sees success if EITHER one confirms, so a lead is never lost
+   because one side is down. */
 var LEAD_ENDPOINT = "/api/lead/";
+/* Google Sheet + customer confirmation + admin notification (Apps Script on the leads sheet). */
+var SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbz0eq3J-pQlg9lSTQrw-sIKVWxEtfpdoDGy0V7Wd0qW0YFnyZgGNz0JfJ-e9ewjlpzi/exec";
 var FB_PIXEL_ID   = "1993858451301943";
 /* ============================= */
 
@@ -536,24 +540,44 @@ form.addEventListener('submit', function(ev){
   function fail(t){ btn.disabled=false; btn.innerHTML=BTN_HTML; msg.textContent=t; msg.classList.add('on'); }
   var FAIL_TEXT='That did not go through - your request has not reached us. Please try again, or email info@wavefrontstudiollc.com and we will pick it up from there.';
 
-  fetch(LEAD_ENDPOINT,{
+  function readJson(r){
+    var type=r.headers.get('content-type')||'';
+    if(type.indexOf('json')===-1) throw new Error('not json');
+    return r.json().then(function(j){ return {ok:r.ok, body:j}; });
+  }
+  function confirmed(res){ return !!(res && res.ok && res.body && res.body.ok===true && res.body.stored===true); }
+
+  var toBase44=fetch(LEAD_ENDPOINT,{
     method:'POST',
     headers:{'content-type':'application/json', accept:'application/json'},
     body:JSON.stringify(payload)
-  }).then(function(r){
-    var type=r.headers.get('content-type')||'';
-    if(type.indexOf('application/json')===-1) throw new Error('not json');
-    return r.json().then(function(j){ return {ok:r.ok, body:j}; });
-  }).then(function(res){
-    if(!res.ok || !res.body || res.body.ok!==true || res.body.stored!==true){
-      if(res.body && res.body.error && /Too many/i.test(res.body.error)) return fail('We have already received a few requests from this connection. Please wait a few minutes and try again.');
+  }).then(readJson).catch(function(){ return null; });
+
+  var sheetPayload={
+    name:name, email:email, phone:phone, website:siteUrl, message:msgText,
+    subject:'Free Website Performance Audit', source:'free-audit',
+    pageUrl:location.origin+location.pathname,
+    utm_source:labelled.utm_source||'', utm_medium:labelled.utm_medium||'',
+    utm_campaign:labelled.utm_campaign||'', utm_content:labelled.utm_content||'',
+    website_url:payload.website_url
+  };
+  var toSheet=fetch(SHEET_ENDPOINT,{
+    method:'POST',
+    headers:{'content-type':'text/plain;charset=utf-8'},
+    body:JSON.stringify(sheetPayload)
+  }).then(readJson).catch(function(){ return null; });
+
+  Promise.all([toBase44,toSheet]).then(function(results){
+    var a=results[0], b=results[1];
+    if(!confirmed(a) && !confirmed(b)){
+      if(a && a.body && a.body.error && /Too many/i.test(a.body.error)) return fail('We have already received a few requests from this connection. Please wait a few minutes and try again.');
       return fail(FAIL_TEXT);
     }
     track('Lead',{content_name:location.pathname});
     document.getElementById('formPane').style.display='none';
     var d=document.getElementById('donePane'); d.classList.add('on');
     d.scrollIntoView({block:'center',behavior:'smooth'});
-  }).catch(function(){ fail(FAIL_TEXT); });
+  });
 });
 
 document.querySelectorAll('a[href="#form"]').forEach(function(a){
