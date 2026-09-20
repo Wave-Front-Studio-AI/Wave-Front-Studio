@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowIcon } from './Icons.jsx'
+import { SmsConsentField } from './shared.jsx'
 import { contact } from '../data/site.js'
 import { deliverLead } from '../formSubmission.js'
 import { useCurrentPath } from '../routeContext.js'
@@ -156,6 +157,7 @@ function AuditPopup({ open, onClose }) {
           <input type="checkbox" name="newsletter" value="Yes" />
           <span>Yes, subscribe me to the Wavefront Studio newsletter for tips, updates, and offers.</span>
         </label>
+        <SmsConsentField />
         <button className="kinetic-button group" type="submit" disabled={sending}>
           <span>{sending ? 'Sending…' : 'Get my free audit'}</span>
           <span className="button-island">

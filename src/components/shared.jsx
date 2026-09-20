@@ -292,6 +292,30 @@ export function FaqAccordion({ items, heading }) {
 /* Enquiry form                                                        */
 /* ------------------------------------------------------------------ */
 
+// Permission to text. Carriers need the person to tick this themselves, and
+// they check the wording against what the SMS Policy page promises, so every
+// form on the site shows exactly these words. The hidden field sends them with
+// the enquiry, so the record holds what the person actually agreed to.
+export const SMS_CONSENT_TEXT =
+  'Text me too. I agree to receive texts from Wavefront Studio LLC at this number, including automated ones. Not a condition of buying anything. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our SMS Policy (/sms-policy/) and Privacy Policy (/privacy-policy/).'
+
+export function SmsConsentField({ className = '' }) {
+  return (
+    <div className={`sms-consent ${className}`.trim()}>
+      <label className="sms-consent-label">
+        <input type="checkbox" name="sms_consent" value="yes" />
+        <span>
+          <b>Text me too.</b> I agree to receive texts from Wavefront Studio LLC at this number, including automated
+          ones. Not a condition of buying anything. Message frequency varies. Message and data rates may apply. Reply
+          STOP to opt out, HELP for help. See our <a href="/sms-policy/">SMS Policy</a> and{' '}
+          <a href="/privacy-policy/">Privacy Policy</a>.
+        </span>
+      </label>
+      <input type="hidden" name="sms_consent_text" value={SMS_CONSENT_TEXT} />
+    </div>
+  )
+}
+
 // Same five fields the live contact form collects. `subject` is prefilled from
 // the page so an enquiry arrives already labelled with what it is about.
 export function EnquiryForm({
@@ -426,6 +450,7 @@ export function EnquiryForm({
           <textarea name="message" rows="3" placeholder="What are you trying to get done?" />
         </label>
       )}
+      <SmsConsentField className="enquiry-wide" />
       <button className="kinetic-button group enquiry-wide" type="submit" disabled={phase === 'sending'}>
         <span>{phase === 'sending' ? 'Sending…' : submitLabel}</span>
         <span className="button-island">
