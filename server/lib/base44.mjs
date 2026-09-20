@@ -10,6 +10,7 @@ export const LEAD_FIELD_MAP = {
   smsConsent: 'sms_consent',
   smsConsentAt: 'sms_consent_at',
   smsConsentUrl: 'sms_consent_url',
+  smsConsentText: 'sms_consent_text',
   consentUrl: 'consent_url',
   consentCapturedAt: 'consent_captured_at',
 }
@@ -135,6 +136,16 @@ export async function mergeIntoLead(existing, lead, config, fetchImpl = fetch) {
   for (const [field, value] of Object.entries(incoming)) {
     if (field === map.notes) continue
     if (existing[field] === undefined || existing[field] === null || existing[field] === '') update[field] = value
+  }
+  // Ticking the text box is new permission, so it lands even on a record that
+  // already says no. Leaving it unticked never takes away permission given
+  // earlier: only replying STOP does that.
+  if (lead.smsConsent === true) {
+    for (const key of ['smsConsent', 'smsConsentAt', 'smsConsentUrl', 'smsConsentText']) {
+      const field = map[key]
+      const value = lead[key]
+      if (field && value !== undefined && value !== null && value !== '') update[field] = value
+    }
   }
   if (lead.notes) {
     const stamp = new Date().toISOString().slice(0, 10)

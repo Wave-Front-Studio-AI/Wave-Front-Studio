@@ -189,3 +189,41 @@ test('rejects contactless submissions and quietly accepts honeypots', async () =
   assert.equal(contactless.status, 400)
   assert.deepEqual(honeypot, { status: 202, payload: { ok: true, stored: false } })
 })
+
+test('ticking the text box records the permission and the exact wording shown', () => {
+  const wording = 'Text me too. I agree to receive texts from Wavefront Studio LLC at this number.'
+  const lead = normalizeLead({
+    name: 'Ada', phone: '941 555 0123', sms_consent: 'yes', sms_consent_text: wording, page: '/contact/',
+  })
+  assert.equal(lead.smsConsent, true)
+  assert.equal(lead.smsConsentText, wording)
+  assert.equal(lead.smsConsentUrl, 'https://wavefrontstudiollc.com/contact/')
+  assert.match(lead.smsConsentAt, /^\d{4}-\d{2}-\d{2}T/)
+  assert.equal(toBase44Record(lead).sms_consent_text, wording)
+})
+
+test('leaving the text box unticked stores no permission and no wording', () => {
+  const lead = normalizeLead({ name: 'Ada', phone: '941 555 0123', sms_consent_text: 'Text me too.' })
+  assert.equal(lead.smsConsent, undefined)
+  assert.equal(lead.smsConsentText, undefined)
+  assert.equal('sms_consent_text' in toBase44Record(lead), false)
+})
+
+test('a repeat enquiry can add permission to text, and never takes it away', async () => {
+  const rows = [{ id: 'lead-1', email: 'ada@example.com', sms_consent: false, created_date: daysAgo(2) }]
+  const withConsent = fakeBase44(rows)
+  await saveLead(
+    normalizeLead({ email: 'ada@example.com', sms_consent: 'yes', sms_consent_text: 'Text me too.', page: '/contact/' }),
+    dupeConfig,
+    withConsent.fetchImpl,
+  )
+  const put = withConsent.calls.find((call) => call.method === 'PUT')
+  assert.equal(put.body.sms_consent, true)
+  assert.equal(put.body.sms_consent_text, 'Text me too.')
+
+  const rowsGranted = [{ id: 'lead-1', email: 'ada@example.com', sms_consent: true, created_date: daysAgo(2) }]
+  const without = fakeBase44(rowsGranted)
+  await saveLead(normalizeLead({ email: 'ada@example.com', message: 'One more thing' }), dupeConfig, without.fetchImpl)
+  const second = without.calls.find((call) => call.method === 'PUT')
+  assert.equal('sms_consent' in second.body, false, 'not ticking again leaves the earlier permission alone')
+})

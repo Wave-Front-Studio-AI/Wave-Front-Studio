@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { CtaBand, FaqAccordion, SectionHeading } from '../components/shared.jsx'
+import { CtaBand, FaqAccordion, SectionHeading, SmsConsentField } from '../components/shared.jsx'
 import { contact, testimonials } from '../data/site.js'
 import { freeSetupFaqs as FAQ } from '../data/faqs.js'
 import { deliverLead } from '../formSubmission.js'
@@ -189,6 +189,8 @@ function ClaimForm() {
         {/* Plain text: type="url" would refuse "mysite.com" and block the form. */}
         <input name="website" type="text" inputMode="url" autoComplete="url" autoCapitalize="none" spellCheck="false" placeholder="yourwebsite.com" />
       </label>
+
+      <SmsConsentField />
 
       <button className="kinetic-button group" type="submit" disabled={sending}>
         <span>{sending ? 'Sending…' : 'Claim a place'}</span>

@@ -46,6 +46,9 @@ export function normalizeLead(body = {}) {
     smsConsent,
     smsConsentAt: smsConsent ? submittedAt : undefined,
     smsConsentUrl: smsConsent ? pageUrl : undefined,
+    // The exact wording the person ticked, kept as the proof of what they
+    // agreed to. Only stored when they did agree.
+    smsConsentText: smsConsent ? pick('sms_consent_text', 'smsConsentText') : undefined,
     consentUrl: pageUrl,
     consentCapturedAt: submittedAt,
   }

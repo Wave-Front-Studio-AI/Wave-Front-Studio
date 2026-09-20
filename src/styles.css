@@ -703,6 +703,16 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
 
 .form-status { min-height: 1.3em; margin: 0; color: var(--brand-deep); font-size: 0.875rem; line-height: 1.5; }
 .form-note { color: var(--muted); font-size: 0.8125rem; line-height: 1.55; }
+
+/* Permission to text. Small print, but the box has to be easy to hit and the
+   words have to stay readable: carriers check them against the SMS Policy. */
+.sms-consent-label { display: flex !important; align-items: flex-start; gap: 11px; cursor: pointer; }
+.sms-consent-label input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--brand-deep); flex: 0 0 auto; }
+.sms-consent .sms-consent-label > span {
+  color: var(--muted); font-size: 0.8125rem; font-weight: 400; line-height: 1.55;
+}
+.sms-consent-label b { color: var(--ink); font-weight: 600; }
+.sms-consent-label a { color: var(--brand-deep); text-decoration: underline; text-underline-offset: 2px; }
 .form-confirmation { min-height: 460px; grid-template-columns: 1fr; place-items: center; align-content: center; gap: 14px; text-align: center; }
 .confirmation-mark { display: grid; width: 60px; height: 60px; place-items: center; border-radius: 50%; background: var(--mist); color: var(--brand-deep); }
 .confirmation-mark svg { width: 30px; height: 30px; }
@@ -1141,6 +1151,9 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
      space above the headline puts the submit button on the first screen, and
      the chat bubble, which would sit on top of that button, stays off. */
   .is-landing-page .service-entry { padding-top: 24px; }
+  /* Permission to text is required wording and cannot be trimmed much, so the
+     landing form itself gives back the room instead. */
+  .is-landing-page .enquiry-form { gap: 12px; padding: 20px; }
   .site-main.is-landing-page ~ .chat-agent { display: none; }
   .page-frame { width: calc(100% - 32px); }
   .chapter { padding-block: 56px; }
