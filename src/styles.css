@@ -284,25 +284,28 @@ p { margin: 0; text-wrap: pretty; }
 /* Clients ----------------------------------------------------------------- */
 
 .clients-strip { padding-block: 28px; border-block: 1px solid var(--line); background: var(--white); }
-.clients-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 40px; }
-.clients-strip h2 { margin: 0; color: var(--muted); font-family: inherit; font-size: 0.95rem; font-weight: 600; letter-spacing: 0; }
-.client-logos { display: flex; flex: 1; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 18px clamp(20px, 2.4vw, 36px); margin: 0; padding: 0; list-style: none; }
+.clients-inner { display: grid; justify-items: center; gap: 18px; }
+.clients-strip h2 { margin: 0; color: var(--muted); font-family: inherit; font-size: 0.95rem; font-weight: 600; letter-spacing: 0; text-align: center; }
+/* One continuous row that fades out at both edges. */
+.logo-marquee { width: 100%; overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent); }
+.logo-marquee .client-logos { display: flex; width: max-content; align-items: center; gap: 0; margin: 0; padding: 0; list-style: none; animation: logo-marquee 60s linear infinite; }
+.client-logo { padding-inline: clamp(22px, 3vw, 40px); }
+@keyframes logo-marquee { to { transform: translateX(-50%); } }
 .client-logo a { display: block; padding: 6px; border-radius: var(--r-sm); }
 /* Same height for every logo; the width cap is wide enough that a long,
    short wordmark (Resin Rubber) is not shrunk below the others. */
-.client-logo img { display: block; width: auto; max-width: 170px; height: 34px; object-fit: contain; }
+.client-logo img { display: block; width: auto; max-width: 190px; height: 38px; object-fit: contain; }
 .client-logo.is-light-wordmark img { filter: drop-shadow(0 1px 1px rgba(13, 27, 42, 0.72)); }
 .client-logo.is-monochrome img { filter: brightness(0) saturate(100%) invert(14%) sepia(18%) saturate(1660%) hue-rotate(167deg) brightness(90%) contrast(96%); }
-/* Logos sit quietly in grey and come up in their own colours when pointed at. */
-@media (hover: hover) and (pointer: fine) {
-  .client-logo img { transition: filter 260ms ease, opacity 260ms ease; }
-  .client-logo:not(.is-monochrome) img { filter: grayscale(1); opacity: 0.7; }
-  .client-logo.is-light-wordmark img { filter: grayscale(1) drop-shadow(0 1px 1px rgba(13, 27, 42, 0.72)); }
-  .client-logo:not(.is-monochrome):hover img { filter: none; opacity: 1; }
-  /* The one-colour wordmark gets the same quiet grey, then its navy on hover. */
-  .client-logo.is-monochrome img { filter: brightness(0) invert(55%); }
-  .client-logo.is-monochrome:hover img { filter: brightness(0) saturate(100%) invert(14%) sepia(18%) saturate(1660%) hue-rotate(167deg) brightness(90%) contrast(96%); }
-  .client-logo.is-light-wordmark:hover img { filter: drop-shadow(0 1px 1px rgba(13, 27, 42, 0.72)); }
+.client-logo a { transition: transform 200ms ease; }
+.client-logo a:hover { transform: scale(1.06); }
+/* Without motion the logos simply wrap, centred. */
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee { -webkit-mask-image: none; mask-image: none; }
+  .logo-marquee .client-logos { width: auto; flex-wrap: wrap; justify-content: center; gap: 12px 0; animation: none; }
+  .logo-marquee .client-logo[aria-hidden] { display: none; }
+  .client-logo a { transition: none; }
+  .client-logo a:hover { transform: none; }
 }
 
 /* Recent work ------------------------------------------------------------- */
@@ -1170,9 +1173,7 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
   .work-card.is-featured > a { grid-template-columns: 1fr; }
   .work-card.is-featured .work-media { border-right: 0; border-bottom: 1px solid var(--line); }
   .work-card.is-featured .work-body { padding: 20px; }
-  .clients-inner { flex-direction: column; align-items: flex-start; }
-  .client-logos { justify-content: flex-start; gap: 16px 28px; }
-  .client-logo img { height: 30px; max-width: 120px; }
+  .client-logo img { height: 30px; max-width: 130px; }
   .studio-facts > div { grid-template-columns: 1fr; gap: 2px; }
   .hero-work { padding-left: 0; }
   .hero-work-phone { display: none; }

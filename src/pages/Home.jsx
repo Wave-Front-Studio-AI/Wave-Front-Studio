@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { CtaBand, OfferingList, SectionHeading, SupportCallout, Testimonials } from '../components/shared.jsx'
@@ -20,6 +21,33 @@ const howWeWork = [
     copy: 'Nothing goes live until you sign it off. After launch we handle updates, fixes and SEO, so the site keeps up as the business changes.',
   },
 ]
+
+// Client logos scroll in one continuous row, faded at both edges. The list is
+// drawn four times so the loop stays seamless on wide screens; the copies are
+// hidden from screen readers and keyboard focus. Pointing at the row slows it so a logo is easy to click.
+function LogoMarquee({ logos }) {
+  const track = useRef(null)
+  const setSpeed = (rate) => track.current?.getAnimations().forEach((animation) => {
+    animation.playbackRate = rate
+  })
+  const item = (logo, round) => {
+    const copy = round > 0
+    return (
+      <li className={`client-logo ${logo.className || ''}`} key={`${logo.src}-${round}`} aria-hidden={copy || undefined}>
+        <a href={logo.href} target="_blank" rel="noreferrer noopener" tabIndex={copy ? -1 : undefined}>
+          <img src={logo.src} alt={copy ? '' : `${logo.alt.replace(/ company logo$/, '')} website`} loading="lazy" />
+        </a>
+      </li>
+    )
+  }
+  return (
+    <div className="logo-marquee" onMouseEnter={() => setSpeed(0.25)} onMouseLeave={() => setSpeed(1)} onFocus={() => setSpeed(0)} onBlur={() => setSpeed(1)}>
+      <ul className="client-logos" ref={track}>
+        {[0, 1, 2, 3].flatMap((round) => logos.map((logo) => item(logo, round)))}
+      </ul>
+    </div>
+  )
+}
 
 export default function Home() {
   // The organization and website nodes come with every page's graph.
@@ -74,15 +102,7 @@ export default function Home() {
       <section className="clients-strip" aria-labelledby="clients-heading">
         <div className="page-frame clients-inner">
           <h2 id="clients-heading">Businesses we build for</h2>
-          <ul className="client-logos">
-            {clientLogos.map((logo) => (
-              <li className={`client-logo ${logo.className || ''}`} key={logo.src}>
-                <a href={logo.href} target="_blank" rel="noreferrer noopener">
-                  <img src={logo.src} alt={`${logo.alt.replace(/ company logo$/, '')} website`} loading="lazy" />
-                </a>
-              </li>
-            ))}
-          </ul>
+          <LogoMarquee logos={clientLogos} />
         </div>
       </section>
 
