@@ -11,7 +11,29 @@
     <link rel="icon" href="/favicon.webp" type="image/webp" />
     <link rel="apple-touch-icon" href="/favicon.webp" />
     <link rel="alternate" type="application/rss+xml" title="Wavefront Studio Blog" href="/rss.xml" />
-    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <!-- Both fonts are needed for the first paint, so they start downloading
+         now, and their @font-face rules are inline instead of a separate request. -->
+    <link rel="preload" href="/fonts/outfit-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/ibm-plex-sans-latin-variable.woff2" as="font" type="font/woff2" crossorigin />
+    <style>
+      @font-face {
+        font-family: 'IBM Plex Sans';
+        font-style: normal;
+        font-weight: 100 700;
+        font-display: swap;
+        src: url('/fonts/ibm-plex-sans-latin-variable.woff2') format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      @font-face {
+        font-family: 'Outfit';
+        font-style: normal;
+        font-weight: 400 800;
+        font-display: swap;
+        src: url('/fonts/outfit-latin-variable.woff2') format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+    </style>
     <script>
       // The visitor's opt-out of sale or sharing, resolved before any tracker
       // loads. Deciding this later would be too late: the pixel sets its cookie
@@ -63,9 +85,29 @@
         };
       })();
     </script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1FYC3V0JYT"></script>
     <script>
+      // Third-party tags download only once the page has loaded and the
+      // browser is idle, so they never compete with the first paint. Their
+      // queues (dataLayer, fbq) are set up immediately below, so every event
+      // recorded before then is replayed when the script arrives.
+      window.wfLoadLater = function (src) {
+        function add() {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = src;
+          document.head.appendChild(s);
+        }
+        function idle() {
+          if ('requestIdleCallback' in window) window.requestIdleCallback(add, { timeout: 2000 });
+          else window.setTimeout(add, 1);
+        }
+        if (document.readyState === 'complete') idle();
+        else window.addEventListener('load', idle, { once: true });
+      };
+    </script>
+    <!-- Google tag (gtag.js), loaded after the page -->
+    <script>
+      window.wfLoadLater('https://www.googletagmanager.com/gtag/js?id=G-1FYC3V0JYT');
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       // Analytics keeps running for an opted-out visitor: it is our own
@@ -85,13 +127,12 @@
       // Skipped entirely for an opted-out visitor: fbevents.js is never
       // fetched, no _fbp cookie is written and no beacon is sent.
       if (!window.wfPrivacy.optedOut) {
-        !function(f,b,e,v,n,t,s)
+        // Meta's standard stub, with the script itself fetched after the page.
+        !function(f,v,n)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
         n.callMethod.apply(n,arguments):n.queue.push(arguments)};
         if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        n.queue=[];f.wfLoadLater(v)}(window,
         'https://connect.facebook.net/en_US/fbevents.js');
 
         fbq('init', '1993858451301943');

@@ -1,15 +1,13 @@
-import { BlogIndex, BlogPost, LegalPage, LocationsPage } from './Longform.jsx'
-import { LocationPage, StatePage } from './PlacePage.jsx'
-import { locationBySlug } from '../data/generated/locations.js'
-import { legalBySlug } from '../data/generated/legal.js'
-import { postBySlug } from '../data/generated/posts.js'
-import { stateBySlug } from '../data/states.js'
+import { lazy } from 'react'
+
+// Each kind of long page loads only its own content: a blog post does not
+// download every city guide, and a city guide does not download the blog.
+const BlogRoute = lazy(() => import('./BlogRoute.jsx'))
+const PlaceRoute = lazy(() => import('./PlaceRoute.jsx'))
+const LegalRoute = lazy(() => import('./LegalRoute.jsx'))
 
 export default function LongformRoute({ kind, slug }) {
-  if (kind === 'blog') return <BlogIndex />
-  if (kind === 'locations') return <LocationsPage />
-  if (kind === 'location') return <LocationPage location={locationBySlug[slug]} />
-  if (kind === 'state') return <StatePage page={stateBySlug[slug]} />
-  if (kind === 'legal') return <LegalPage page={legalBySlug[slug]} />
-  return <BlogPost post={postBySlug[slug]} />
+  if (kind === 'locations' || kind === 'location' || kind === 'state') return <PlaceRoute kind={kind} slug={slug} />
+  if (kind === 'legal') return <LegalRoute slug={slug} />
+  return <BlogRoute kind={kind} slug={slug} />
 }

@@ -13,9 +13,20 @@ import { breadcrumbs, byOrganization, pageGraph } from '../data/seo.js'
 export function ServiceHeroMedia({ hero, autoPlay = true }) {
   const videoRef = useRef(null)
 
+  // Playback waits for the page to finish loading, so the video download never
+  // competes with the text and images. Data-saver and very slow connections
+  // keep the poster; the controls still let the visitor play it.
   useEffect(() => {
-    if (!autoPlay || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    videoRef.current?.play().catch(() => {})
+    if (!autoPlay || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
+    const connection = navigator.connection
+    if (connection?.saveData || /2g/.test(connection?.effectiveType || '')) return undefined
+    const play = () => videoRef.current?.play().catch(() => {})
+    if (document.readyState === 'complete') {
+      play()
+      return undefined
+    }
+    window.addEventListener('load', play, { once: true })
+    return () => window.removeEventListener('load', play)
   }, [hero.video, autoPlay])
 
   return (

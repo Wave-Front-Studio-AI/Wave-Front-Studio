@@ -86,10 +86,13 @@ p { margin: 0; text-wrap: pretty; }
 /* Motion ------------------------------------------------------------------ */
 
 /* One entrance per page load: the first screen settles in, once, in order.
-   Short distance and quick, so it reads as the page arriving, not a show. */
+   Short distance and quick, so it reads as the page arriving, not a show.
+   Movement only, no fade: the headline and hero image are what Google times
+   as the page's main paint, and an element that starts invisible is not
+   counted until the fade ends. */
 @keyframes rise-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: none; }
+  from { transform: translateY(10px); }
+  to { transform: none; }
 }
 .hero-copy > *, .page-hero .page-frame > *, .hub-hero-copy > *, .service-entry-intro > * {
   animation: rise-in 560ms var(--ease-out) both;

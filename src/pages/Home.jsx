@@ -35,7 +35,7 @@ function LogoMarquee({ logos }) {
     return (
       <li className={`client-logo ${logo.className || ''}`} key={`${logo.src}-${round}`} aria-hidden={copy || undefined}>
         <a href={logo.href} target="_blank" rel="noreferrer noopener" tabIndex={copy ? -1 : undefined}>
-          <img src={logo.src} alt={copy ? '' : `${logo.alt.replace(/ company logo$/, '')} website`} loading="lazy" />
+          <img src={logo.src} width={logo.width} height={logo.height} alt={copy ? '' : `${logo.alt.replace(/ company logo$/, '')} website`} loading="lazy" />
         </a>
       </li>
     )
@@ -80,6 +80,8 @@ export default function Home() {
             <img
               className="hero-work-desktop"
               src="/images/work/resinrock-site.webp"
+              srcSet="/images/work/resinrock-site-760.webp 760w, /images/work/resinrock-site.webp 1440w"
+              sizes="(max-width: 900px) 100vw, 640px"
               alt="The ResinRock homepage in a desktop browser"
               width="1440"
               height="900"
@@ -92,7 +94,7 @@ export default function Home() {
               alt="The same ResinRock page on a phone"
               width="600"
               height="1298"
-              loading="eager"
+              loading="lazy"
             />
             <figcaption>resinrock.com, one of the 12+ connected sites we built for ResinRock.</figcaption>
           </figure>
