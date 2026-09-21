@@ -140,13 +140,14 @@ export const testimonialsHeading = {
 // reviews come from /api/reviews/; this link works even when that is down.
 export const googleListingUrl = 'https://www.google.com/maps?cid=13638168247481718251'
 
-// Each logo links to that client's live site (checked 2026-09-18).
+// Each logo links to that client's live site (checked 2026-09-18; Epitrite 2026-09-21).
 export const clientLogos = [
   { src: '/images/clients/resin-rock.webp', alt: 'ResinRock company logo', href: 'https://resinrock.com/', className: 'is-light-wordmark' },
   { src: '/images/clients/glow-surfaces.webp', alt: 'Glow Surfaces company logo', href: 'https://glowsurfaces.com/', className: 'is-light-wordmark' },
   { src: '/images/clients/rr-leads.webp', alt: 'RR Leads company logo', href: 'https://resinrockleads.com/', className: 'is-light-wordmark' },
   { src: '/images/clients/titan-surfacing.webp', alt: 'Titan Surfacing company logo', href: 'https://titansurfacing.com/' },
   { src: '/images/clients/resin-rubber.webp', alt: 'Resin Rubber company logo', href: 'https://resin-rubber.com/', className: 'is-monochrome' },
+  { src: '/images/clients/epitrite.webp', alt: 'Epitrite company logo', href: 'https://www.epitrite.com/' },
 ]
 
 // Images are screenshots of the live sites, not stock photography.

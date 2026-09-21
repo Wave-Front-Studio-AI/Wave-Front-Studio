@@ -286,11 +286,11 @@ p { margin: 0; text-wrap: pretty; }
 .clients-strip { padding-block: 28px; border-block: 1px solid var(--line); background: var(--white); }
 .clients-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 40px; }
 .clients-strip h2 { margin: 0; color: var(--muted); font-family: inherit; font-size: 0.95rem; font-weight: 600; letter-spacing: 0; }
-.client-logos { display: flex; flex: 1; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 18px clamp(24px, 4vw, 56px); margin: 0; padding: 0; list-style: none; }
+.client-logos { display: flex; flex: 1; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 18px clamp(20px, 2.4vw, 36px); margin: 0; padding: 0; list-style: none; }
 .client-logo a { display: block; padding: 6px; border-radius: var(--r-sm); }
 /* Same height for every logo; the width cap is wide enough that a long,
    short wordmark (Resin Rubber) is not shrunk below the others. */
-.client-logo img { display: block; width: auto; max-width: 190px; height: 40px; object-fit: contain; }
+.client-logo img { display: block; width: auto; max-width: 170px; height: 34px; object-fit: contain; }
 .client-logo.is-light-wordmark img { filter: drop-shadow(0 1px 1px rgba(13, 27, 42, 0.72)); }
 .client-logo.is-monochrome img { filter: brightness(0) saturate(100%) invert(14%) sepia(18%) saturate(1660%) hue-rotate(167deg) brightness(90%) contrast(96%); }
 /* Logos sit quietly in grey and come up in their own colours when pointed at. */
