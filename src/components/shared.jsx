@@ -297,7 +297,7 @@ export function FaqAccordion({ items, heading }) {
 // form on the site shows exactly these words. The hidden field sends them with
 // the enquiry, so the record holds what the person actually agreed to.
 export const SMS_CONSENT_TEXT =
-  'Text me too. I agree to receive texts from Wavefront Studio LLC at this number, including automated ones. Not a condition of buying anything. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our SMS Policy (/sms-policy/) and Privacy Policy (/privacy-policy/).'
+  'Text me too. I agree to receive texts from Wavefront Studio LLC at this number, including appointment reminders, project updates and marketing offers, some sent automatically. Not a condition of buying anything. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our SMS Policy (/sms-policy/) and Privacy Policy (/privacy-policy/).'
 
 export function SmsConsentField({ className = '' }) {
   return (
@@ -305,8 +305,8 @@ export function SmsConsentField({ className = '' }) {
       <label className="sms-consent-label">
         <input type="checkbox" name="sms_consent" value="yes" />
         <span>
-          <b>Text me too.</b> I agree to receive texts from Wavefront Studio LLC at this number, including automated
-          ones. Not a condition of buying anything. Message frequency varies. Message and data rates may apply. Reply
+          <b>Text me too.</b> I agree to receive texts from Wavefront Studio LLC at this number, including appointment
+          reminders, project updates and marketing offers, some sent automatically. Not a condition of buying anything. Message frequency varies. Message and data rates may apply. Reply
           STOP to opt out, HELP for help. See our <a href="/sms-policy/">SMS Policy</a> and{' '}
           <a href="/privacy-policy/">Privacy Policy</a>.
         </span>
