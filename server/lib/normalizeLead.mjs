@@ -28,8 +28,12 @@ export function normalizeLead(body = {}) {
     `Submitted from the ${source} form on ${page || 'the website'} at ${submittedAt}.`,
     ...(labelledLines.length ? ['', 'Form answers:', ...labelledLines] : []),
   ].filter(Boolean).join('\n')
+  const truthy = (value) => (value ? /^(1|true|yes|on)$/i.test(value) : undefined)
   const consentValue = pick('sms_consent', 'smsConsent')
-  const smsConsent = consentValue ? /^(1|true|yes|on)$/i.test(consentValue) : undefined
+  const smsConsent = truthy(consentValue)
+  // Marketing permission is a separate box, kept separate all the way through:
+  // the Campaign Registry requires marketing consent to stand on its own.
+  const smsMarketingConsent = truthy(pick('sms_marketing_consent', 'smsMarketingConsent'))
   const pageUrl = page ? `https://wavefrontstudiollc.com${page}` : undefined
 
   return {
@@ -49,6 +53,10 @@ export function normalizeLead(body = {}) {
     // The exact wording the person ticked, kept as the proof of what they
     // agreed to. Only stored when they did agree.
     smsConsentText: smsConsent ? pick('sms_consent_text', 'smsConsentText') : undefined,
+    smsMarketingConsent,
+    smsMarketingConsentAt: smsMarketingConsent ? submittedAt : undefined,
+    smsMarketingConsentUrl: smsMarketingConsent ? pageUrl : undefined,
+    smsMarketingConsentText: smsMarketingConsent ? pick('sms_marketing_consent_text', 'smsMarketingConsentText') : undefined,
     consentUrl: pageUrl,
     consentCapturedAt: submittedAt,
   }

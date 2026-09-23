@@ -202,6 +202,31 @@ test('ticking the text box records the permission and the exact wording shown', 
   assert.equal(toBase44Record(lead).sms_consent_text, wording)
 })
 
+test('the marketing box is recorded on its own, separate from service texts', () => {
+  const service = 'Text me about my enquiry.'
+  const marketing = 'Send me offers too.'
+  const both = normalizeLead({
+    name: 'Ada', phone: '941 555 0123', page: '/contact/',
+    sms_consent: 'yes', sms_consent_text: service,
+    sms_marketing_consent: 'yes', sms_marketing_consent_text: marketing,
+  })
+  assert.equal(both.smsConsent, true)
+  assert.equal(both.smsMarketingConsent, true)
+  const record = toBase44Record(both)
+  assert.equal(record.sms_consent_text, service)
+  assert.equal(record.sms_marketing_consent_text, marketing)
+  assert.equal(record.sms_marketing_consent, true)
+
+  // Service texts without marketing: the marketing fields stay empty, which is
+  // what keeps the two consents separate for the Campaign Registry.
+  const serviceOnly = normalizeLead({
+    name: 'Ada', phone: '941 555 0123', page: '/contact/',
+    sms_consent: 'yes', sms_consent_text: service,
+  })
+  assert.equal(serviceOnly.smsMarketingConsent, undefined)
+  assert.equal('sms_marketing_consent' in toBase44Record(serviceOnly), false)
+})
+
 test('leaving the text box unticked stores no permission and no wording', () => {
   const lead = normalizeLead({ name: 'Ada', phone: '941 555 0123', sms_consent_text: 'Text me too.' })
   assert.equal(lead.smsConsent, undefined)

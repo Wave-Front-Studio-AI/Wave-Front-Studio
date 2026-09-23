@@ -297,7 +297,13 @@ export function FaqAccordion({ items, heading }) {
 // form on the site shows exactly these words. The hidden field sends them with
 // the enquiry, so the record holds what the person actually agreed to.
 export const SMS_CONSENT_TEXT =
-  'Text me too. I agree to receive texts from Wavefront Studio LLC at this number, including appointment reminders, project updates and marketing offers, some sent automatically. Not a condition of buying anything. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our SMS Policy (/sms-policy/) and Privacy Policy (/privacy-policy/).'
+  'Text me about my enquiry. I agree to receive texts from Wavefront Studio LLC at this number about my enquiry, quote and project, including appointment reminders, some sent automatically. Not a condition of buying anything. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our SMS Policy (/sms-policy/) and Privacy Policy (/privacy-policy/).'
+
+// Marketing permission is its own box. The Campaign Registry rejects a
+// campaign whose opt-in bundles marketing consent with any other consent, so
+// someone can agree to hear about their own project without agreeing to offers.
+export const SMS_MARKETING_CONSENT_TEXT =
+  'Send me offers too. I agree to receive marketing texts from Wavefront Studio LLC at this number, such as promotions, webinar invitations and company news, some sent automatically. Not a condition of buying anything. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help.'
 
 export function SmsConsentField({ className = '' }) {
   return (
@@ -305,13 +311,22 @@ export function SmsConsentField({ className = '' }) {
       <label className="sms-consent-label">
         <input type="checkbox" name="sms_consent" value="yes" />
         <span>
-          <b>Text me too.</b> I agree to receive texts from Wavefront Studio LLC at this number, including appointment
-          reminders, project updates and marketing offers, some sent automatically. Not a condition of buying anything. Message frequency varies. Message and data rates may apply. Reply
-          STOP to opt out, HELP for help. See our <a href="/sms-policy/">SMS Policy</a> and{' '}
-          <a href="/privacy-policy/">Privacy Policy</a>.
+          <b>Text me about my enquiry.</b> I agree to receive texts from Wavefront Studio LLC at this number about my
+          enquiry, quote and project, including appointment reminders, some sent automatically. Not a condition of
+          buying anything. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for
+          help. See our <a href="/sms-policy/">SMS Policy</a> and <a href="/privacy-policy/">Privacy Policy</a>.
         </span>
       </label>
       <input type="hidden" name="sms_consent_text" value={SMS_CONSENT_TEXT} />
+      <label className="sms-consent-label">
+        <input type="checkbox" name="sms_marketing_consent" value="yes" />
+        <span>
+          <b>Send me offers too.</b> I agree to receive marketing texts from Wavefront Studio LLC at this number, such
+          as promotions, webinar invitations and company news, some sent automatically. Not a condition of buying
+          anything. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help.
+        </span>
+      </label>
+      <input type="hidden" name="sms_marketing_consent_text" value={SMS_MARKETING_CONSENT_TEXT} />
     </div>
   )
 }
