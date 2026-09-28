@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { calculateQuote, customLandingQuote, landingPageBundle, money } from './packageQuote.js'
+import { calculateQuote, customLandingQuote, customQuoteItem, landingPageBundle, money } from './packageQuote.js'
 
 const selected = (tier = 1, pages = 1) => ({ tier, pages, addons: [], opts: {} })
 
@@ -175,4 +175,53 @@ test('a credit comes off the discounted one-time total and never goes below zero
   for (const amount of ['', ' ', null, '-50', '1.5', 'abc', 0]) {
     assert.equal(calculateQuote({ ...base, credit: { amount } }).oneAfter, 5225, String(amount))
   }
+})
+
+const logo = { id: 'custom-1', title: 'Logo refresh', description: 'Two concepts and one round of changes.', qty: '2', cost: '250.50' }
+
+test('custom items add at the exact price entered, outside the bundle count and discount', () => {
+  const state = { landing: selected(1), tradeshow: selected(1), customItems: [logo] }
+  const before = structuredClone(state)
+  const quote = calculateQuote(state)
+  assert.equal(quote.count, 2)
+  assert.equal(quote.customCount, 1)
+  assert.equal(quote.pct, 5)
+  assert.equal(quote.one, 5501)
+  assert.equal(quote.bundleAmount, 250)
+  assert.equal(quote.oneAfter, 5251)
+  assert.equal(quote.monthly, 199)
+  const row = quote.rows.at(-1)
+  assert.equal(row.label, 'Logo refresh · 2 × $250.50')
+  assert.equal(row.amount, '$501')
+  assert.equal(row.description, logo.description)
+  assert.equal(row.customId, 'custom-1')
+  assert.deepEqual(state, before)
+})
+
+test('a quote can be custom items alone, and a credit still comes off it', () => {
+  const quote = calculateQuote({ customItems: [{ title: 'Website audit', qty: 1, cost: 300 }, { title: 'Printed flyers', qty: 3, cost: 0.1 }] })
+  assert.equal(quote.count, 0)
+  assert.equal(quote.customCount, 2)
+  assert.equal(quote.pct, 0)
+  assert.equal(quote.one, 300.3)
+  assert.equal(quote.rows[0].label, 'Website audit')
+  assert.equal(quote.rows[0].amount, '$300')
+  assert.equal(quote.rows[0].customId, undefined)
+  assert.equal(quote.rows[1].amount, '$0.30')
+  assert.equal(calculateQuote({ customItems: [{ title: 'Website audit', qty: 1, cost: 300 }], credit: { amount: '100' } }).oneAfter, 200)
+})
+
+test('custom items need a title, a whole quantity and a cost in cents', () => {
+  assert.deepEqual(Object.keys(customQuoteItem({ title: 'A', qty: 1, cost: 0 }).errors), [])
+  assert.equal(customQuoteItem({ title: ' Logo ', qty: '4', cost: '19.99' }).total, 79.96)
+  assert.equal(customQuoteItem({ title: ' Logo ', qty: '4', cost: '19.99' }).title, 'Logo')
+  for (const [fields, key] of [
+    [{ title: ' ' }, 'title'], [{ qty: '' }, 'qty'], [{ qty: 0 }, 'qty'], [{ qty: 1.5 }, 'qty'], [{ qty: 10000 }, 'qty'],
+    [{ cost: '' }, 'cost'], [{ cost: '-1' }, 'cost'], [{ cost: '1.234' }, 'cost'], [{ cost: 'abc' }, 'cost'], [{ cost: 1000001 }, 'cost'], [{ cost: Infinity }, 'cost'],
+  ]) {
+    const item = customQuoteItem({ ...logo, ...fields })
+    assert.deepEqual(Object.keys(item.errors), [key], JSON.stringify(fields))
+  }
+  // Anything invalid that reaches the calculation is left off rather than priced wrongly.
+  assert.deepEqual(calculateQuote({ customItems: [{ ...logo, qty: 0 }] }).rows, [])
 })

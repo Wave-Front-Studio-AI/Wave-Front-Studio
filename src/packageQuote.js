@@ -54,6 +54,24 @@ export function customLandingQuote(custom = {}) {
   return { setup, monthly, perPage, perPageEnabled, pages, pagesTbc, name, details, errors }
 }
 
+// A custom line item: the owner's own title, description, quantity and cost per item.
+// Errors are keyed by field so the form can show each one next to its input.
+export function customQuoteItem(item = {}) {
+  const blank = (raw) => raw == null || String(raw).trim() === ''
+  const title = String(item.title ?? '').trim().slice(0, 120)
+  const description = String(item.description ?? '').trim().slice(0, 1000)
+  const qty = blank(item.qty) ? NaN : Number(item.qty)
+  const cost = blank(item.cost) ? NaN : Number(item.cost)
+  const errors = {}
+  if (!title) errors.title = 'Add a title for this item.'
+  if (blank(item.qty)) errors.qty = 'Enter a quantity.'
+  else if (!Number.isInteger(qty) || qty < 1 || qty > 9999) errors.qty = 'Enter a whole quantity from 1 to 9,999.'
+  if (blank(item.cost)) errors.cost = 'Enter a cost per item.'
+  else if (!(cost >= 0 && cost <= 1000000) || Math.abs(Math.round(cost * 100) - cost * 100) > 1e-6) errors.cost = 'Enter a cost from $0 to $1,000,000, with up to two decimal places.'
+  const total = errors.qty || errors.cost ? 0 : Math.round(qty * cost * 100) / 100
+  return { title, description, qty, cost, total, errors }
+}
+
 // Credits are whole dollars; anything else counts as no credit.
 export function creditAmount(credit) {
   const amount = Number(credit?.amount)
@@ -118,11 +136,27 @@ export function calculateQuote(state) {
     }
   }
 
+  // Custom items are quoted at exactly the price entered: they don't count towards the bundle or get its discount.
+  const serviceOne = one
+  let customCount = 0
+  for (const raw of Array.isArray(state.customItems) ? state.customItems : []) {
+    const item = customQuoteItem(raw)
+    if (Object.keys(item.errors).length) continue
+    customCount += 1
+    one = Math.round((one + item.total) * 100) / 100
+    rows.push({
+      label: item.qty > 1 ? `${item.title} · ${item.qty} × ${money(item.cost)}` : item.title,
+      amount: money(item.total),
+      ...(item.description ? { description: item.description } : {}),
+      ...(raw.id !== undefined ? { customId: raw.id } : {}),
+    })
+  }
+
   const pct = OFFER.bundleTiers.find((tier) => count >= tier.min)?.pct ?? 0
-  const bundleAmount = (one * pct) / 100
+  const bundleAmount = (serviceOne * pct) / 100
   // A credit — a deposit or earlier phase already paid — comes off the discounted one-time total.
   const discounted = one - bundleAmount
   const credit = Math.min(creditAmount(state.credit), discounted)
   const creditLabel = String(state.credit?.label ?? '').trim().slice(0, 80)
-  return { one, monthly, count, pct, bundleAmount, credit, creditLabel, oneAfter: discounted - credit, firstMonthsFree: monthly * OFFER.firstMonthsFree, rows, ...(pendingPageRate !== undefined ? { pendingPageRate, pendingPageRateAfter: pendingPageRate * (1 - pct / 100) } : {}), ...(errors.length ? { errors } : {}) }
+  return { one, monthly, count, pct, bundleAmount, credit, creditLabel, oneAfter: discounted - credit, firstMonthsFree: monthly * OFFER.firstMonthsFree, rows, ...(customCount ? { customCount } : {}), ...(pendingPageRate !== undefined ? { pendingPageRate, pendingPageRateAfter: pendingPageRate * (1 - pct / 100) } : {}), ...(errors.length ? { errors } : {}) }
 }

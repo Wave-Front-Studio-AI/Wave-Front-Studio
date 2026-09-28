@@ -1025,6 +1025,11 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
 .package-addon select { padding: 9px 12px; font-size: 0.875rem; }
 
 .package-quote { position: sticky; top: 78px; display: grid; gap: 16px; padding: clamp(20px, 2.6vw, 28px); border: 1px solid var(--line-strong); border-radius: var(--r-lg); background: var(--white); }
+@media (min-width: 1081px) {
+  /* The panel sticks while the services scroll. When it is taller than the screen it scrolls on its own, so the
+     buttons at its foot stay reachable instead of sitting below the fold until the end of the page. */
+  .package-quote { max-height: calc(100vh - 94px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+}
 .package-quote h2 { font-size: 1.25rem; }
 .package-empty { color: var(--muted); font-size: 0.925rem; }
 .package-lines { display: grid; gap: 7px; max-height: 260px; overflow-y: auto; padding-right: 4px; }
@@ -1039,7 +1044,7 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
 .package-note { color: var(--muted); font-size: 0.8125rem; line-height: 1.55; }
 .package-pdf-button:disabled { cursor: not-allowed; }
 .package-pdf-button[aria-busy="true"] { cursor: progress; }
-.package-email-button { box-shadow: inset 0 0 0 1px var(--line-strong); }
+.package-email-button, .package-custom-button { box-shadow: inset 0 0 0 1px var(--line-strong); }
 .package-pdf-error { color: #a32929; font-size: 0.875rem; line-height: 1.5; }
 .package-savings, .package-always { display: grid; gap: 8px; padding: 16px 18px; border-radius: var(--r-md); background: var(--mist); font-size: 0.9rem; }
 .package-savings > div { display: flex; justify-content: space-between; gap: 12px; }
@@ -1047,6 +1052,18 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
 .package-always span { color: var(--text); }
 .package-upsell { display: grid; gap: 10px; padding: 16px 18px; border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--white); font-size: 0.925rem; line-height: 1.55; }
 .package-upsell .text-link { color: var(--brand-deep); font-size: 0.9rem; }
+.package-line-actions { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 2px; }
+.package-line-actions button { min-height: 24px; padding: 0; border: 0; background: none; color: var(--brand-deep); font-size: 0.8125rem; font-weight: 600; cursor: pointer; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color 160ms ease; }
+.package-line-actions button:hover { text-decoration-color: currentColor; }
+.custom-item-form { display: grid; gap: 16px; }
+.custom-item-field { display: grid; gap: 6px; align-content: start; }
+.custom-item-numbers { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; }
+.package-client input[aria-invalid="true"], .package-client textarea[aria-invalid="true"] { border-color: #a32929; }
+.package-field-error { color: #a32929; font-size: 0.8125rem; line-height: 1.45; }
+.custom-item-total { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 0.925rem; }
+.custom-item-total small { color: var(--muted); font-size: 0.8125rem; }
+.custom-item-total b { font-family: var(--display); font-size: 1.1rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.custom-item-form .pkg-modal-actions { align-items: center; gap: 12px 20px; margin-top: 4px; }
 .package-smallprint { padding-block: 40px; }
 .package-smallprint p { max-width: 90ch; color: var(--muted); font-size: 0.875rem; line-height: 1.65; }
 .package-smallprint p + p { margin-top: 10px; }

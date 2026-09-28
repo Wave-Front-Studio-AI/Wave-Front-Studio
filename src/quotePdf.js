@@ -49,7 +49,7 @@ export async function loadQuoteBrandAssets() {
 // The quote object is the same snapshot rendered by the package builder.
 // Generating the file never sends the visitor's selections to a server.
 export function createQuotePdf(quote, assets, createdAt = new Date()) {
-  if (!quote.count || !quote.rows.length) throw new Error('Select a service before downloading a quote.')
+  if (!quote.rows?.length) throw new Error('Select a service or add a custom item before downloading a quote.')
   if (quote.errors?.length) throw new Error('Complete the custom quote details before downloading.')
   const pendingPages = quote.pendingPageRate !== undefined
 
@@ -67,6 +67,10 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
   doc.setCreationDate(createdAt)
 
   const date = createdAt.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  const selection = [
+    quote.count ? `${quote.count} service${quote.count === 1 ? '' : 's'}` : '',
+    quote.customCount ? `${quote.customCount} custom item${quote.customCount === 1 ? '' : 's'}` : '',
+  ].filter(Boolean).join(' + ')
   let y
 
   function text(value, x, top, { size = 10, bold = false, color = COLORS.ink, ...options } = {}) {
@@ -91,7 +95,7 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
     doc.setDrawColor(COLORS.line)
     doc.line(MARGIN, 107, RIGHT, 107)
     text(continued ? 'Your package, continued' : 'Your Wavefront package', MARGIN, 142, { size: 25, bold: true })
-    text(`${quote.count} service${quote.count === 1 ? '' : 's'} selected  /  All prices in USD`, MARGIN, 163, { color: COLORS.muted })
+    text(`${selection} selected  /  All prices in USD`, MARGIN, 163, { color: COLORS.muted })
     y = 180
     if (quote.clientName?.trim()) {
       const client = lines(`Prepared for: ${quote.clientName.trim().slice(0, 100)}`, WIDTH, 11, true)

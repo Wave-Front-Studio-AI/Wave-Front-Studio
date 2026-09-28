@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { CATEGORIES, DETAILS, LANDING_PAGE_BUNDLES, OFFER, PAIRS, SERVICES } from '../data/generated/packages.js'
 import { contact } from '../data/site.js'
-import { addonQty, calculateQuote, creditAmount, defaultOptionIndex, landingPageBundle, landingPagesPrice, money, selectedTiers, tierPrice } from '../packageQuote.js'
+import { addonQty, calculateQuote, creditAmount, customQuoteItem, defaultOptionIndex, landingPageBundle, landingPagesPrice, money, selectedTiers, tierPrice } from '../packageQuote.js'
 
 const serviceById = Object.fromEntries(SERVICES.map((service) => [service.id, service]))
 
@@ -109,6 +109,121 @@ function DetailsModal({ service, onClose, onSelect }) {
   )
 }
 
+// The quote panel is sticky and taller than the screen, so the form opens as a dialog rather than below the fold.
+function CustomItemModal({ item, onSave, onClose }) {
+  const [draft, setDraft] = useState(() => ({
+    title: item?.title ?? '',
+    description: item?.description ?? '',
+    qty: item ? String(item.qty) : '1',
+    cost: item ? (Number.isInteger(item.cost) ? String(item.cost) : item.cost.toFixed(2)) : '',
+  }))
+  const [showErrors, setShowErrors] = useState(false)
+  const panelRef = useRef(null)
+  const checked = customQuoteItem(draft)
+  const errors = showErrors ? checked.errors : {}
+
+  useEffect(() => {
+    const opener = document.activeElement
+    const onKey = (event) => event.key === 'Escape' && onClose()
+    document.addEventListener('keydown', onKey)
+    document.body.classList.add('modal-open')
+    panelRef.current?.querySelector('#custom-item-title')?.focus()
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.classList.remove('modal-open')
+      opener?.focus?.()
+    }
+  }, [onClose])
+
+  // Keeps Tab inside the dialog while it is open.
+  function trapFocus(event) {
+    if (event.key !== 'Tab') return
+    const focusable = [...panelRef.current.querySelectorAll('button, input, textarea')].filter((element) => !element.disabled)
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault()
+      last.focus()
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault()
+      first.focus()
+    }
+  }
+
+  function submit(event) {
+    event.preventDefault()
+    const invalid = ['title', 'qty', 'cost'].find((name) => checked.errors[name])
+    if (invalid) {
+      setShowErrors(true)
+      panelRef.current.querySelector(`#custom-item-${invalid}`)?.focus()
+      return
+    }
+    onSave({ title: checked.title, description: checked.description, qty: checked.qty, cost: checked.cost })
+  }
+
+  const field = (name) => ({
+    id: `custom-item-${name}`,
+    name,
+    value: draft[name],
+    onChange: (event) => setDraft((current) => ({ ...current, [name]: event.target.value })),
+    'aria-invalid': errors[name] ? true : undefined,
+    'aria-describedby': errors[name] ? `custom-item-${name}-error` : undefined,
+  })
+  const fieldError = (name) => (errors[name] ? <p className="package-field-error" id={`custom-item-${name}-error`}>{errors[name]}</p> : null)
+  const pricedUp = !checked.errors.qty && !checked.errors.cost
+
+  return (
+    <div className="modal-scrim" role="presentation" onClick={(event) => event.target === event.currentTarget && onClose()}>
+      <div className="modal-panel" role="dialog" aria-modal="true" aria-labelledby="custom-item-heading" ref={panelRef} onKeyDown={trapFocus}>
+        <button className="modal-close" type="button" onClick={onClose} aria-label="Close">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="m5 5 10 10M15 5 5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </button>
+        <div className="pkg-modal-head">
+          <h3 id="custom-item-heading">{item ? 'Edit custom item' : 'Add a custom item'}</h3>
+          <p>A line of your own on this quote, charged once at the price you enter. Bundle discounts don’t apply to it.</p>
+        </div>
+        <form className="custom-item-form" onSubmit={submit} noValidate>
+          <div className="custom-item-field">
+            <label className="package-client" htmlFor="custom-item-title">Title
+              <input {...field('title')} type="text" maxLength="120" autoComplete="off" placeholder="e.g. Logo refresh" />
+            </label>
+            {fieldError('title')}
+          </div>
+          <label className="package-client" htmlFor="custom-item-description">Description <span>(optional)</span>
+            <textarea {...field('description')} rows="4" maxLength="1000" placeholder="What’s included, so the client knows what they’re paying for." />
+          </label>
+          <div className="custom-item-numbers">
+            <div className="custom-item-field">
+              <label className="package-client" htmlFor="custom-item-qty">Quantity
+                <input {...field('qty')} type="number" min="1" max="9999" step="1" inputMode="numeric" />
+              </label>
+              {fieldError('qty')}
+            </div>
+            <div className="custom-item-field">
+              <label className="package-client" htmlFor="custom-item-cost">Cost per item ($)
+                <input {...field('cost')} type="number" min="0" max="1000000" step="0.01" inputMode="decimal" placeholder="e.g. 250" />
+              </label>
+              {fieldError('cost')}
+            </div>
+          </div>
+          <p className="custom-item-total" aria-live="polite">
+            <span>Line total{pricedUp && checked.qty > 1 ? <small> ({checked.qty} × {money(checked.cost)})</small> : null}</span>
+            <b>{money(checked.total)}</b>
+          </p>
+          <div className="pkg-modal-actions">
+            <button className="kinetic-button group" type="submit">
+              <span>{item ? 'Save changes' : 'Add to quote'}</span>
+            </button>
+            <button className="text-link" type="button" onClick={onClose}>Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
 export default function BuildYourPackage() {
   // state[id] = { tiers: [], pagesByTier: { [tierIndex]: pages }, notes: { [tierIndex]: text },
   //   addons: [], addonNotes: { [addonIndex]: text }, opts: { [addonIndex]: optionIndex } }
@@ -118,9 +233,34 @@ export default function BuildYourPackage() {
   const [pdfStatus, setPdfStatus] = useState('idle')
   const [clientName, setClientName] = useState('')
   const [quoteNotes, setQuoteNotes] = useState('')
+  // null when closed, { id: null } for a new custom item, { id } to edit one.
+  const [customEditor, setCustomEditor] = useState(null)
+  const customIdRef = useRef(0)
+  const customButtonRef = useRef(null)
+  const customItems = state.customItems ?? []
+  const closeCustomEditor = useCallback(() => setCustomEditor(null), [])
+
+  function saveCustomItem(values) {
+    const editingId = customEditor?.id
+    if (editingId) {
+      setState((current) => ({ ...current, customItems: (current.customItems ?? []).map((item) => (item.id === editingId ? { ...item, ...values } : item)) }))
+    } else {
+      customIdRef.current += 1
+      const id = `custom-${customIdRef.current}`
+      setState((current) => ({ ...current, customItems: [...(current.customItems ?? []), { id, ...values }] }))
+    }
+    setToast(editingId ? 'Custom item updated' : 'Custom item added')
+    setCustomEditor(null)
+  }
+
+  function removeCustomItem(id) {
+    setState((current) => ({ ...current, customItems: (current.customItems ?? []).filter((item) => item.id !== id) }))
+    setToast('Custom item removed')
+    customButtonRef.current?.focus()
+  }
 
   async function downloadPdf() {
-    if (!quote.count || quote.errors?.length || pdfStatus === 'loading') return
+    if (!hasItems || quote.errors?.length || pdfStatus === 'loading') return
     setPdfStatus('loading')
     try {
       const { downloadQuotePdf } = await import('../quotePdf.js')
@@ -212,6 +352,8 @@ export default function BuildYourPackage() {
   }
 
   const quote = useMemo(() => calculateQuote(state), [state])
+  // Services drive the bundle meter; a quote can also be custom items alone.
+  const hasItems = quote.rows.length > 0
   const pendingPages = quote.pendingPageRate !== undefined
   const pendingNote = pendingPages ? `Plus ${money(quote.pendingPageRateAfter)} per page${quote.pct ? ` after the ${quote.pct}% bundle discount` : ''}. Page count and final total to be confirmed.` : ''
 
@@ -230,8 +372,8 @@ export default function BuildYourPackage() {
 
   function emailQuote() {
     if (quote.errors?.length) return
-    if (!quote.count) {
-      setToast('Select a service first')
+    if (!hasItems) {
+      setToast('Select a service or add a custom item first')
       return
     }
     const lines = quote.rows.map((row) => `${row.sub ? '  + ' : ''}${row.label} — ${row.amount}${row.description ? `\n${row.description}` : ''}`)
@@ -268,7 +410,7 @@ export default function BuildYourPackage() {
         </div>
       </section>
 
-      {quote.count > 0 ? (
+      {hasItems ? (
         <div className="package-mini">
           <div className="page-frame">
             <span>
@@ -517,17 +659,29 @@ export default function BuildYourPackage() {
                 <input id="quote-credit-label" type="text" maxLength="80" placeholder="e.g. Phase 1 deposit" value={state.credit?.label ?? ''} onChange={(event) => setCreditField('label', event.target.value)} />
               </label>
             ) : null}
-            {quote.count === 0 ? (
-              <p className="package-empty">No services selected yet. Pick some on the left.</p>
+            {!hasItems ? (
+              <p className="package-empty">No services selected yet. Pick some on the left, or add a custom quote.</p>
             ) : (
               <>
                 <div className="package-lines">
-                  {quote.rows.map((row, index) => (
-                    <div key={`${row.label}-${index}`} className={row.sub ? 'is-sub' : ''}>
-                      <span>{row.sub ? `+ ${row.label}` : row.label}{row.description ? <small className="package-scope">{row.description}</small> : null}</span>
-                      <b>{row.amount}</b>
-                    </div>
-                  ))}
+                  {quote.rows.map((row, index) => {
+                    const item = row.customId ? customItems.find((entry) => entry.id === row.customId) : null
+                    return (
+                      <div key={`${row.label}-${index}`} className={row.sub ? 'is-sub' : ''}>
+                        <span>
+                          {row.sub ? `+ ${row.label}` : row.label}
+                          {row.description ? <small className="package-scope">{row.description}</small> : null}
+                          {item ? (
+                            <span className="package-line-actions">
+                              <button type="button" onClick={() => setCustomEditor({ id: item.id })} aria-label={`Edit ${item.title}`}>Edit</button>
+                              <button type="button" onClick={() => removeCustomItem(item.id)} aria-label={`Remove ${item.title}`}>Remove</button>
+                            </span>
+                          ) : null}
+                        </span>
+                        <b>{row.amount}</b>
+                      </div>
+                    )
+                  })}
                 </div>
                 {quote.errors?.length ? <div className="package-pdf-error" id="custom-quote-errors" aria-live="polite">{quote.errors.map((error) => <p key={error}>{error}</p>)}</div> : null}
                 <div className="package-totals">
@@ -567,7 +721,7 @@ export default function BuildYourPackage() {
               className="kinetic-button group package-pdf-button"
               type="button"
               onClick={downloadPdf}
-              disabled={!quote.count || Boolean(quote.errors?.length) || pdfStatus === 'loading'}
+              disabled={!hasItems || Boolean(quote.errors?.length) || pdfStatus === 'loading'}
               aria-busy={pdfStatus === 'loading'}
               aria-describedby={quote.errors?.length ? 'custom-quote-errors' : pdfStatus === 'error' ? 'quote-pdf-error' : undefined}
             >
@@ -588,6 +742,15 @@ export default function BuildYourPackage() {
               <span>Email me this quote</span>
               <span className="button-island">
                 <ArrowIcon className="size-4" />
+              </span>
+            </button>
+
+            <button ref={customButtonRef} className="kinetic-button light group package-custom-button" type="button" onClick={() => setCustomEditor({ id: null })} aria-haspopup="dialog">
+              <span>Custom quote</span>
+              <span className="button-island">
+                <svg className="size-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" />
+                </svg>
               </span>
             </button>
 
@@ -666,6 +829,15 @@ export default function BuildYourPackage() {
             setToast(`${modal.name}: ${modal.tiers[tier].n} selected`)
             setModal(null)
           }}
+        />
+      ) : null}
+
+      {customEditor ? (
+        <CustomItemModal
+          key={customEditor.id ?? 'new'}
+          item={customEditor.id ? customItems.find((item) => item.id === customEditor.id) : null}
+          onSave={saveCustomItem}
+          onClose={closeCustomEditor}
         />
       ) : null}
 

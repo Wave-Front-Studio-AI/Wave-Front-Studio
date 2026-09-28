@@ -110,3 +110,9 @@ test('quote notes and line notes export, including long notes across pages', () 
   assert.equal(createQuotePdf({ ...noted, notes: 'Timeline: four weeks.' }, assets, date).getNumberOfPages(), 1)
   assert.ok(createQuotePdf({ ...noted, notes: 'A long note line\n'.repeat(120) }, assets, date).getNumberOfPages() >= 3)
 })
+
+test('a quote of custom items alone exports, with or without services', () => {
+  const items = [{ title: 'Logo refresh', description: 'Two concepts.', qty: 2, cost: 250 }, { title: 'Website audit', qty: 1, cost: 300 }]
+  assert.equal(createQuotePdf(calculateQuote({ customItems: items }), assets, date).getNumberOfPages(), 1)
+  assert.equal(createQuotePdf(calculateQuote({ web: { tier: 0, addons: [] }, customItems: items }), assets, date).getNumberOfPages(), 1)
+})
