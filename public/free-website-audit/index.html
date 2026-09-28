@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -6,446 +6,346 @@
 <title>Free Website Audit - Wavefront Studio</title>
 <link rel="icon" href="/favicon.webp" type="image/webp">
 <link rel="apple-touch-icon" href="/favicon.webp">
-<meta name="description" content="100 Florida businesses get a free website audit. In 48 hours you'll know exactly why visitors leave without calling - and the fixes worth doing first. No charge, no contract.">
+<meta name="description" content="Find out why your website isn't bringing you customers. Free audit for the first 100 Florida businesses - written report in 48 hours, no charge, no contract.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#0B1F24">
-<meta property="og:title" content="100 Florida Businesses Get A Free Website Audit">
-<meta property="og:description" content="In 48 hours you'll know exactly why visitors leave your site without calling - and the fixes worth doing first.">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:title" content="Find out why your website isn't bringing you customers">
+<meta property="og:description" content="Free website audit for Florida businesses. A real person checks your site and sends a written report in 48 hours. No charge, no contract.">
 <meta property="og:image" content="https://cdn.shopify.com/s/files/1/0682/6495/2048/files/Wavefront_After.webp?v=1789767460">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.shopify.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap">
-<link rel="preload" as="image" href="https://cdn.shopify.com/s/files/1/0682/6495/2048/files/Wavefront_After.webp?v=1789767460&width=1600">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <style>
-/* Free Website Audit - standalone landing page.
-   Static file in public/free-website-audit/, served without the React app.
-   Form posts to /api/lead/ exactly like the site's own forms. */
 :root{
-  --ink:#0B1F24; --body:#41585C; --muted:#7E9599;
-  --teal:#50AFC5; --teal-2:#7FCEDE;
-  --teal-dk:#1F8199; --teal-dkr:#15697E; --teal-lt:#EAF6F9;
-  --line:#DDE9EB; --r:16px;
+  --ink:#0F2A30; --text:#3C5257; --muted:#6F868B;
+  --accent:#1F8199; --accent-dk:#17677A; --accent-lt:#E6F2F5;
+  --sky:#F3F8FA; --line:#E1EAEC; --white:#fff;
+  --bad:#C0392B; --mid:#B9770E; --ok:#1E8E5A;
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;background:#fff;color:var(--body);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
-img{max-width:100%;display:block}
-.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
-h1,h2,h3{color:var(--ink);margin:0;font-weight:800}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text);background:var(--white);line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:var(--accent)}
+h1,h2,h3{color:var(--ink);line-height:1.15;letter-spacing:-.02em;font-weight:700}
+h2{font-size:clamp(24px,3.6vw,34px);margin-bottom:12px;max-width:760px}
+h3{font-size:17px;letter-spacing:-.01em}
+p{max-width:640px}
+.wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 20px}
+@media(min-width:900px){.wrap{padding:0 32px}}
+.kicker{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+section{padding:56px 0}
+@media(min-width:900px){section{padding:88px 0}}
+.lead{font-size:17px;color:var(--text)}
+@media(min-width:900px){.lead{font-size:18px}}
+.sky{background:var(--sky)}
+.hr{border:0;border-top:1px solid var(--line)}
 
-/* reveal */
-.rv{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.2,.7,.3,1),transform .6s cubic-bezier(.2,.7,.3,1)}
-.rv.in{opacity:1;transform:none}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:50px;padding:0 22px;border:0;border-radius:6px;background:var(--accent);color:#fff;font:inherit;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .15s}
+.btn:hover{background:var(--accent-dk)}
+.btn:disabled{opacity:.65;cursor:default}
+.btn.block{width:100%}
+.btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 
-/* ---------- header ---------- */
-.hdr{position:sticky;top:0;z-index:70;background:#fff;border-bottom:1px solid var(--line)}
-.hdr-in{display:flex;align-items:center;justify-content:center;height:78px;gap:16px}
+/* header */
+.hdr{height:72px;border-bottom:1px solid var(--line);background:#fff;position:relative;z-index:2}
+@media(min-width:700px){.hdr{height:68px}}
+.hdr .wrap{height:100%;display:flex;align-items:center;justify-content:center}
+@media(min-width:700px){.hdr .wrap{justify-content:space-between}}
+.hdr a{text-decoration:none;display:inline-flex}
 .hdr img{height:46px;width:auto}
-.hdr a.mail{display:none;align-items:center;gap:9px;color:var(--ink);text-decoration:none;font-size:14.5px;font-weight:600;white-space:nowrap}
-.hdr a.mail:hover{color:var(--teal-dk)}
-@media(min-width:760px){.hdr-in{justify-content:space-between}.hdr a.mail{display:inline-flex}.hdr img{height:52px}}
+@media(min-width:700px){.hdr img{height:40px}}
+.hdr .contact{font-size:13px;color:var(--muted);display:none}
+.hdr .contact a{color:var(--ink);text-decoration:none;font-weight:500}
+@media(min-width:700px){.hdr .contact{display:block}}
 
-/* ---------- hero ---------- */
-.hero{position:relative;overflow:hidden;background:#0B1F24;color:#C6DEE3;padding:32px 0 44px}
-.hero .bgimg{position:absolute;inset:0;background:url("https://cdn.shopify.com/s/files/1/0682/6495/2048/files/Wavefront_After.webp?v=1789767460&width=1600") center/cover no-repeat;opacity:.28;filter:saturate(.75)}
-.hero .scrim{position:absolute;inset:0;background:linear-gradient(103deg,rgba(11,31,36,.975) 0%,rgba(11,31,36,.91) 46%,rgba(11,31,36,.58) 100%)}
-.hero .glow{position:absolute;width:640px;height:640px;right:-160px;top:-260px;border-radius:50%;background:radial-gradient(circle,rgba(80,175,197,.34),transparent 65%);pointer-events:none}
-.hero-grid{position:relative;display:grid;gap:28px}
-@media(min-width:1000px){.hero{padding:58px 0 76px}.hero-grid{grid-template-columns:1fr 452px;gap:58px;align-items:center}}
-.kick{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-2);margin-bottom:18px}
-.kick:before{content:"";width:30px;height:2px;background:var(--teal);flex:0 0 auto}
-h1{color:#fff;font-size:clamp(34px,7.6vw,70px);line-height:.98;letter-spacing:-.032em;text-transform:uppercase;margin-bottom:18px;font-weight:900}
-h1 em{font-style:normal;color:var(--teal)}
-.sub{font-size:16.5px;color:#A8C7CD;margin:0 0 22px;max-width:560px}
-@media(min-width:1000px){.sub{font-size:19px}}
-.disc{list-style:none;margin:0 0 26px;padding:0;display:grid;gap:11px;max-width:560px}
-.disc li{display:flex;gap:11px;align-items:flex-start;font-size:15.5px;color:#D3E7EB}
-.disc svg{flex:0 0 auto;margin-top:3px}
-.disc b{color:#fff;font-weight:700}
-.proof{display:grid;grid-template-columns:repeat(3,auto);gap:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,.17);max-width:560px}
-.proof .n{display:block;font-size:30px;font-weight:900;color:var(--teal);line-height:1;letter-spacing:-.02em}
-.proof .t{display:block;font-size:12.5px;color:#93B4BB;margin-top:8px;line-height:1.35}
-@media(min-width:1000px){.proof .n{font-size:38px}}
-
-/* ---------- form card ---------- */
-.card{background:#fff;border-radius:var(--r);box-shadow:0 34px 76px rgba(0,10,13,.5);padding:24px;color:var(--body)}
-@media(min-width:1000px){.card{padding:32px}}
-.badge{display:inline-block;background:var(--teal-lt);color:var(--teal-dkr);font-size:11.5px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;padding:8px 13px;border-radius:7px;margin-bottom:15px}
-.card h2{font-size:23px;line-height:1.1;letter-spacing:-.02em;text-transform:uppercase;font-weight:900;margin-bottom:8px}
-.card .note{font-size:13.5px;color:var(--muted);margin:0 0 18px}
-.field{margin-bottom:12px}
-label{display:block;font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--ink);margin-bottom:6px}
-label .opt{font-weight:600;color:var(--muted);letter-spacing:0;text-transform:none}
-input,textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);padding:13px 14px;border:1.5px solid #CBDDE0;border-radius:10px;background:#fff;transition:border-color .12s,box-shadow .12s}
-input::placeholder,textarea::placeholder{color:#A9BDC1}
-input:focus,textarea:focus{outline:none;border-color:var(--teal-dk);box-shadow:0 0 0 3px rgba(31,129,153,.15)}
-input.bad,textarea.bad{border-color:#D14A3A;box-shadow:0 0 0 3px rgba(209,74,58,.12)}
-textarea{resize:vertical;min-height:64px}
-.err{display:none;color:#C0392B;font-size:12.5px;margin-top:5px}
-.err.on{display:block}
-.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;cursor:pointer;background:var(--teal-dk);color:#fff;font:inherit;font-size:16px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding:19px 16px;border-radius:11px;margin-top:8px;transition:background .13s,transform .08s}
-.btn:hover{background:var(--teal-dkr)}
-.btn:active{transform:translateY(1px)}
-.btn[disabled]{opacity:.62;cursor:default}
-.under{text-align:center;font-size:12.8px;color:var(--muted);margin-top:13px;font-weight:600}
-.fineprint{font-size:11.5px;color:var(--muted);margin:10px 0 0;line-height:1.45;text-align:center}
-.formmsg{display:none;margin-top:12px;padding:11px 13px;border-radius:9px;font-size:13.5px;background:#FDECEA;color:#A3271A;border:1px solid #F6C8C1}
-.formmsg.on{display:block}
-.done{display:none;text-align:center;padding:16px 4px 8px}
-.done.on{display:block}
-.done .big{width:60px;height:60px;margin:0 auto 15px;border-radius:50%;background:var(--teal-lt);display:flex;align-items:center;justify-content:center}
-.done h2{margin-bottom:10px}
-.done p{margin:0 0 11px;font-size:14.5px}
-
-/* ---------- marquee ---------- */
-.mq{background:var(--teal);overflow:hidden;white-space:nowrap;padding:14px 0}
-.mq div{display:inline-block;animation:m 34s linear infinite;font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#06232A}
-.mq span{padding:0 26px}
-.mq b{opacity:.42}
-@keyframes m{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* ---------- sections ---------- */
-section{padding:54px 0}
-@media(min-width:1000px){section{padding:82px 0}}
-.alt{background:#F5FAFB}
-.kick2{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-dk);margin-bottom:13px}
-.kick2:before{content:"";width:28px;height:2px;background:var(--teal);flex:0 0 auto}
-h2.sec{font-size:clamp(26px,4.4vw,46px);line-height:1.02;letter-spacing:-.03em;text-transform:uppercase;font-weight:900;margin-bottom:13px;max-width:17ch}
-.sec-sub{margin:0 0 32px;color:#5C767A;font-size:16.5px;max-width:630px}
-.grid{display:grid;gap:16px}
-@media(min-width:1000px){.g4{grid-template-columns:repeat(4,1fr)}}
-.tile{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;overflow:hidden;transition:transform .17s,box-shadow .17s,border-color .17s}
-.tile:before{content:"";position:absolute;left:0;top:0;height:3px;width:0;background:var(--teal);transition:width .3s}
-.tile:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(11,31,36,.11);border-color:#C7DEE2}
-.tile:hover:before{width:100%}
-.tile h3{font-size:15px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:9px}
-.tile p{margin:0;font-size:14.5px}
-.ico{width:44px;height:44px;border-radius:11px;background:var(--teal-lt);display:flex;align-items:center;justify-content:center;margin-bottom:17px}
-
-/* ---------- before / after ---------- */
-.ba{position:relative;border-radius:var(--r);overflow:hidden;background:#0B1F24;user-select:none;touch-action:pan-y;cursor:ew-resize;box-shadow:0 24px 56px rgba(11,31,36,.22)}
-.ba .pane{display:block;width:100%;aspect-ratio:1376/768}
-.ba img{width:100%;height:100%;object-fit:cover}
-.ba .aft{position:absolute;inset:0;clip-path:inset(0 0 0 50%)}
-.ba .handle{position:absolute;top:0;bottom:0;left:50%;width:3px;background:#fff;box-shadow:0 0 16px rgba(0,0,0,.5)}
-.ba .knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;background:#fff;box-shadow:0 6px 22px rgba(0,0,0,.42);display:flex;align-items:center;justify-content:center}
-.ba .tag{position:absolute;top:16px;font-size:11px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;padding:8px 14px;border-radius:7px;color:#fff}
-.ba .tag.l{left:16px;background:rgba(176,52,38,.9)}
-.ba .tag.r{right:16px;background:rgba(21,105,126,.94)}
-.cap{font-size:12.5px;color:var(--muted);margin:15px 0 0;text-align:center}
-
-/* ---------- report ---------- */
-.report{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:0 18px 44px rgba(11,31,36,.1);overflow:hidden;max-width:760px}
-.report-bar{display:flex;align-items:center;gap:7px;padding:13px 17px;background:#EEF6F7;border-bottom:1px solid var(--line)}
-.tl{width:10px;height:10px;border-radius:50%;background:#C6DADE}
-.report-bar .ttl{margin-left:10px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#6F8A8F}
-.report-body{padding:22px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
-.row:last-child{border-bottom:0}
-.row .lab{font-size:14.5px;color:var(--ink);font-weight:700}
-.bar{flex:1;height:9px;border-radius:99px;background:#E7EFF1;overflow:hidden;max-width:260px}
-.bar i{display:block;height:100%;border-radius:99px}
-.scr{font-size:13px;font-weight:900;min-width:58px;text-align:right;letter-spacing:.04em;text-transform:uppercase}
-.fixrow{background:#FDF4E7;border:1px solid #F2DCBB;border-radius:11px;padding:15px 16px;margin-top:18px;display:flex;gap:12px;align-items:flex-start}
-.fixrow .warn{flex:0 0 auto;margin-top:1px}
-.fixrow b{display:block;font-size:11.5px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:#B86F0C;margin-bottom:5px}
-.fixrow p{margin:0;font-size:14.3px;color:var(--ink)}
-
-
-/* ---------- cost calculator ---------- */
-.cost{position:relative;overflow:hidden;background:#0B1F24;color:#A8C7CD}
-.cost:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 90% at 85% 10%,rgba(80,175,197,.20),transparent 65%)}
-.cost .wrap{position:relative}
-.cost .kick2{color:var(--teal-2)}
-.cost h2.sec{color:#fff;max-width:26ch}
-.cost .sec-sub{color:#A8C7CD}
-.calc{display:grid;gap:18px;margin-top:6px}
-@media(min-width:900px){.calc{grid-template-columns:1.1fr .9fr;gap:22px}}
-.calc-in{background:#fff;border-radius:var(--r);padding:22px;color:var(--body)}
-@media(min-width:900px){.calc-in{padding:28px}}
-.calc-in .field{margin-bottom:16px}
-.calc-in label{margin-bottom:7px}
-.calc-in select{width:100%;font:inherit;font-size:16px;color:var(--ink);padding:13px 14px;border:1.5px solid #CBDDE0;border-radius:10px;background:#fff}
-.money{position:relative}
-.money span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-weight:700}
-.money input{padding-left:28px}
-.range-row{display:flex;align-items:center;gap:14px}
-.range-row input[type=range]{flex:1;accent-color:#1F8199;padding:0;border:0;height:28px}
-.range-row output{min-width:52px;text-align:right;font-weight:900;color:var(--ink);font-size:17px}
-.calc-note{font-size:12.5px;color:var(--muted);margin:6px 0 0;line-height:1.45}
-.calc-out{background:linear-gradient(160deg,#16383D,#123037);border:1px solid rgba(127,206,222,.22);border-radius:var(--r);padding:26px;display:flex;flex-direction:column;justify-content:center}
-@media(min-width:900px){.calc-out{padding:32px}}
-.calc-out .lbl{font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#7FCEDE}
-.calc-out .big{font-size:clamp(44px,8vw,68px);font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1;margin:10px 0 6px;font-variant-numeric:tabular-nums}
-.calc-out .yr{font-size:17px;color:#fff;margin:0 0 4px}
-.calc-out .yr b{color:#50AFC5}
-.calc-out .cust{font-size:14.5px;color:#A8C7CD;margin:0 0 22px}
-.calc-out .cta-btn{text-align:center;justify-content:center;padding:18px 20px;font-size:15px;letter-spacing:.04em}
-.src{font-size:12px;color:#7FA1A8;margin:16px 0 0}
-
-/* ---------- why first ---------- */
-.wide-h h2.sec{max-width:24ch}
-.why{display:grid;gap:16px;margin-top:30px}
-@media(min-width:900px){.why{grid-template-columns:repeat(3,1fr);gap:18px}}
-.why .card2{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px 24px;position:relative}
-.why .num{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:#FDECE8;color:#C8412C;font-weight:900;font-size:15px;margin-bottom:16px}
-.why h3{font-size:17px;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:9px;line-height:1.2}
-.why p{margin:0;font-size:14.8px}
-.why-close{margin:26px 0 0;font-size:16.5px;color:var(--ink);font-weight:600;max-width:62ch}
-
-
-/* ================= polish pass ================= */
-h2.sec em{font-style:normal;color:var(--teal-dk);background:linear-gradient(transparent 80%,rgba(80,175,197,.30) 80%,rgba(80,175,197,.30) 94%,transparent 94%);-webkit-box-decoration-break:clone;box-decoration-break:clone}
-.cost h2.sec em{color:#50AFC5;background:linear-gradient(transparent 80%,rgba(80,175,197,.28) 80%,rgba(80,175,197,.28) 94%,transparent 94%)}
-
-/* staggered card entrance */
-.stagger{opacity:1!important;transform:none!important}
-.stagger>*{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.2,.7,.3,1),transform .6s cubic-bezier(.2,.7,.3,1),box-shadow .2s,border-color .2s}
-.stagger.in>*{opacity:1;transform:none}
-.stagger.in>*:nth-child(2){transition-delay:.09s,.09s,0s,0s}
-.stagger.in>*:nth-child(3){transition-delay:.18s,.18s,0s,0s}
-.stagger.in>*:nth-child(4){transition-delay:.27s,.27s,0s,0s}
-.stagger.in>*:nth-child(5){transition-delay:.36s,.36s,0s,0s}
-.stagger.in>*:nth-child(6){transition-delay:.45s,.45s,0s,0s}
-
-/* ---------- why fix first ---------- */
-.sec-why{position:relative;overflow:hidden;background:linear-gradient(180deg,#EAF6F9 0%,#FFFFFF 55%,#F3F9FA 100%)}
-.sec-why:before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(31,129,153,.13) 1px,transparent 1.3px);background-size:22px 22px;-webkit-mask-image:linear-gradient(180deg,#000 0%,transparent 70%);mask-image:linear-gradient(180deg,#000 0%,transparent 70%)}
-.sec-why .wrap{position:relative}
-.why .card2{position:relative;overflow:hidden;background:#fff;border:1px solid #D6E8EC;border-radius:20px;padding:30px 26px 28px;box-shadow:0 1px 2px rgba(11,31,36,.04),0 14px 34px rgba(11,31,36,.07)}
-.why .card2:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#0B1F24,#50AFC5)}
-.why .card2 .bgnum{position:absolute;right:24px;top:22px;font-size:64px;font-weight:900;line-height:1;letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1.6px rgba(31,129,153,.34);pointer-events:none;transition:-webkit-text-stroke-color .25s,color .25s}
-.why .card2:hover .bgnum{-webkit-text-stroke-color:rgba(31,129,153,.7);color:rgba(80,175,197,.08)}
-@supports not (-webkit-text-stroke:1px black){.why .card2 .bgnum{color:rgba(31,129,153,.14)}}
-.why .card2:hover{transform:translateY(-6px);box-shadow:0 22px 48px rgba(31,129,153,.16);border-color:#A9D5DF}
-.why .wico{display:flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:15px;background:linear-gradient(135deg,#0B1F24,#1B5966);box-shadow:0 8px 20px rgba(11,31,36,.28);margin-bottom:18px}
-.why .num{display:none}
-.why h3{font-size:17.5px;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:10px;line-height:1.2;position:relative}
-.why p{margin:0;font-size:15px;position:relative}
-.why-close{display:flex;gap:16px;align-items:center;margin:28px 0 0;padding:20px 24px;border-radius:16px;background:#0B1F24;color:#fff;font-size:16.5px;font-weight:600;line-height:1.45;box-shadow:0 16px 40px rgba(11,31,36,.18);border-left:5px solid var(--teal)}
-.why-close svg{flex:0 0 auto}
-@media(max-width:600px){.why .card2{padding:26px 22px 24px}.why .card2 .bgnum{font-size:52px;top:22px;right:20px}.why-close{font-size:15.5px;padding:18px 18px;align-items:flex-start}}
-
-/* ---------- what we check ---------- */
-.sec-check{position:relative;overflow:hidden;background:#F2F9FA}
-.sec-check:before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(31,129,153,.13) 1px,transparent 1.3px);background-size:24px 24px}
-.sec-check:after{content:"";position:absolute;width:560px;height:560px;right:-220px;top:-220px;border-radius:50%;background:radial-gradient(circle,rgba(80,175,197,.22),transparent 65%)}
-.sec-check .wrap{position:relative;z-index:1}
-.sec-check .g4{gap:18px}
-@media(min-width:680px) and (max-width:999px){.sec-check .g4{grid-template-columns:1fr 1fr}}
-.sec-check .tile{border-radius:20px;padding:28px 24px 24px;border:1px solid #D6E8EC;box-shadow:0 1px 2px rgba(11,31,36,.04),0 14px 32px rgba(11,31,36,.06);display:flex;flex-direction:column}
-.sec-check .tile:before{height:4px;background:linear-gradient(90deg,#50AFC5,#1F8199)}
-.sec-check .tile:hover{transform:translateY(-6px);box-shadow:0 22px 48px rgba(31,129,153,.18);border-color:#A9D5DF}
-.sec-check .tno{position:absolute;right:20px;top:22px;font-size:13px;font-weight:900;letter-spacing:.12em;color:#A9C7CD}
-.sec-check .ico{width:54px;height:54px;border-radius:15px;background:linear-gradient(135deg,#50AFC5,#1F8199);box-shadow:0 8px 20px rgba(31,129,153,.3);margin-bottom:18px}
-.sec-check .ico svg [stroke]{stroke:#fff}
-.sec-check .ico svg [fill]:not([fill="none"]){fill:#fff}
-.sec-check .tile h3{font-size:16px;margin-bottom:9px}
-.sec-check .tile p{font-size:14.8px;flex:1}
-.find{margin-top:18px;padding:11px 13px;border-radius:11px;background:#FDF0EC;border:1px solid #F4D6CE;font-size:13.3px;color:#6B2A1D;line-height:1.4}
-.find b{display:block;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:#C8412C;margin-bottom:3px}
-
-/* ---------- steps ---------- */
-.sec-steps .steps{position:relative}
-@media(min-width:1000px){
-  .sec-steps .steps:before{content:"";position:absolute;left:20px;right:calc((100% - 72px)/3 - 20px);top:19px;height:2px;background:repeating-linear-gradient(90deg,#9FD2DE 0 8px,transparent 8px 16px)}
+/* hero */
+.hero{padding:28px 0 40px;background:linear-gradient(180deg,#fff 0%,var(--sky) 100%);border-bottom:1px solid var(--line)}
+.hero-grid{display:grid;gap:24px}
+.hero h1{font-size:clamp(28px,5.2vw,48px);margin-bottom:12px}
+.hero .lead{margin-bottom:18px;font-size:16px}
+.hero .points{list-style:none;display:none;gap:10px}
+.hero .points li{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--text)}
+.hero .points svg{flex:0 0 18px;height:18px;margin-top:3px;fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.hero .points b{color:var(--ink);font-weight:600}
+@media(min-width:900px){
+  .hero{padding:72px 0 84px}
+  .hero-grid{grid-template-columns:1.05fr .95fr;gap:64px;align-items:center}
+  .hero .lead{font-size:18px;margin-bottom:26px}
+  .hero .points{display:grid}
 }
-.sec-steps .step{border-top:0;padding-top:0;position:relative}
-.sec-steps .step:before{content:"0" counter(s);counter-increment:s;display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#50AFC5,#1F8199);color:#fff;font-size:14px;letter-spacing:.02em;margin-bottom:18px;box-shadow:0 0 0 7px #fff,0 8px 18px rgba(31,129,153,.3);position:relative}
-.sec-steps .step .sbox{background:#F5FAFB;border:1px solid var(--line);border-radius:16px;padding:20px 20px 22px}
 
-/* ---------- rules as a promise panel ---------- */
-.sec-rules{background:#F2F9FA}
-.promise{position:relative;overflow:hidden;margin-top:30px;border-radius:24px;padding:26px;background:linear-gradient(140deg,#0B1F24 0%,#123037 55%,#16434B 100%);box-shadow:0 26px 60px rgba(11,31,36,.25)}
-@media(min-width:900px){.promise{padding:40px}}
-@media(max-width:600px){.promise{padding:18px;border-radius:20px}.sec-rules .rule{padding:16px}.seal{margin-bottom:16px}}
-.promise:before{content:"";position:absolute;width:520px;height:520px;right:-180px;top:-240px;border-radius:50%;background:radial-gradient(circle,rgba(80,175,197,.32),transparent 66%)}
-.promise:after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(127,206,222,.10) 1px,transparent 1.3px);background-size:22px 22px}
-.promise>*{position:relative;z-index:1}
-.seal{display:inline-flex;align-items:center;gap:10px;background:rgba(80,175,197,.14);border:1px solid rgba(127,206,222,.35);color:#BFE7F0;font-size:12px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;padding:9px 15px;border-radius:999px;margin-bottom:22px}
-.sec-rules .rules{gap:14px}
-.sec-rules .rule{background:rgba(255,255,255,.055);border:1px solid rgba(127,206,222,.2);border-radius:16px;padding:20px 20px;backdrop-filter:blur(2px)}
-.sec-rules .rule:hover{border-color:rgba(127,206,222,.5);background:rgba(255,255,255,.08)}
-.sec-rules .rule .k{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#50AFC5,#1F8199);color:#fff;box-shadow:0 6px 16px rgba(31,129,153,.4)}
-.sec-rules .rule b{color:#fff}
-.sec-rules .rule p{color:#A8C7CD}
+/* form card */
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 40px rgba(15,42,48,.08);padding:22px 20px 18px}
+@media(min-width:900px){.card{padding:28px 28px 22px}}
+.card h2{font-size:20px;margin-bottom:4px}
+.card .sub{font-size:14px;color:var(--muted);margin-bottom:16px}
+.fields{display:grid;gap:12px}
+@media(min-width:380px){.fields{grid-template-columns:1fr 1fr}.fields .full{grid-column:1/-1}}
+.f label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.f input{width:100%;height:48px;border:1px solid #C9D7DA;border-radius:6px;padding:0 14px;font:inherit;font-size:16px;color:var(--ink);background:#fff;outline:none;transition:border-color .15s,box-shadow .15s}
+.f input::placeholder{color:#9AACB0}
+.f input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(31,129,153,.15)}
+.f.bad input{border-color:var(--bad)}
+.err{display:none;color:var(--bad);font-size:12.5px;margin-top:5px}
+.err.on{display:block}
+.card .btn{margin-top:16px;height:52px;font-size:16px}
+.card .fine{font-size:13px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.45}
+.msg{display:none;background:#FDF0EE;color:#8a1f1a;border:1px solid #F3C9C4;border-radius:6px;padding:10px 12px;font-size:14px;margin-top:12px}
+.msg.on{display:block}
+.hp{position:absolute;left:-9999px;top:-9999px;height:0;width:0;opacity:0}
+.done{display:none;padding:8px 0 4px}
+.done.on{display:block}
+.done .ok{width:44px;height:44px;border-radius:50%;background:var(--accent-lt);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.done .ok svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.done h2{font-size:22px;margin-bottom:8px}
+.done p{font-size:15px;margin-bottom:12px}
+.done ol{padding-left:18px;font-size:15px;display:grid;gap:6px}
+.done ol b{color:var(--ink);font-weight:600}
+.done .tiny{font-size:13px;color:var(--muted);margin-top:14px}
 
-/* ---------- rules ---------- */
-.rules{display:grid;gap:12px}
-@media(min-width:760px){.rules{grid-template-columns:1fr 1fr}}
-.rule{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:19px 20px}
-.rule .k{flex:0 0 auto;width:30px;height:30px;border-radius:8px;background:var(--ink);color:var(--teal-2);font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center}
-.rule b{display:block;color:var(--ink);font-size:14px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px}
-.rule p{margin:0;font-size:14.3px}
+/* stats */
+.stats{padding:0;border-bottom:1px solid var(--line)}
+.stats .wrap{display:grid;grid-template-columns:repeat(3,1fr)}
+.stat{padding:20px 0;border-right:1px solid var(--line);padding-right:12px}
+.stat:last-child{border-right:0}
+.stat+.stat{padding-left:16px}
+.stat b{display:block;font-size:24px;font-weight:700;color:var(--ink);letter-spacing:-.02em;line-height:1.1}
+.stat span{display:block;font-size:13px;color:var(--muted);margin-top:4px}
+@media(min-width:700px){.stat{padding:26px 0}.stat+.stat{padding-left:28px}.stat b{font-size:30px}.stat span{font-size:14px}}
 
-/* ---------- steps ---------- */
-.steps{counter-reset:s;display:grid;gap:26px}
-@media(min-width:1000px){.steps{grid-template-columns:repeat(3,1fr);gap:36px}}
-.step{border-top:3px solid var(--teal);padding-top:19px}
-.step:before{counter-increment:s;content:"0" counter(s);display:block;font-size:14px;font-weight:900;letter-spacing:.14em;color:var(--teal-dk);margin-bottom:11px}
-.step h3{font-size:19px;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:9px}
-.step p{margin:0;font-size:15px}
+/* before/after */
+.ba{position:relative;border-radius:8px;overflow:hidden;aspect-ratio:16/10;background:#E6EEF0;user-select:none;touch-action:pan-y;margin-top:28px;border:1px solid var(--line)}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.ba .aft{clip-path:inset(0 0 0 50%)}
+.ba .tag{position:absolute;top:12px;padding:4px 9px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:rgba(15,42,48,.7)}
+.ba .tag.l{left:12px}.ba .tag.r{right:12px;background:var(--accent)}
+.handle{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;transform:translateX(-50%);box-shadow:0 0 0 1px rgba(0,0,0,.12)}
+.handle::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.2);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230F2A30' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M9 7l-5 5 5 5M15 7l5 5-5 5'/></svg>");background-size:20px;background-repeat:no-repeat;background-position:center}
+.ba-note{font-size:14px;color:var(--muted);margin-top:12px}
 
-/* ---------- band ---------- */
-.band{position:relative;overflow:hidden;background:#0B1F24;padding:78px 0;text-align:center}
-.band:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 120% at 50% 0%,rgba(80,175,197,.22),transparent 68%)}
-.band:after{content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);width:120px;height:3px;background:var(--teal)}
-.band .wrap{position:relative}
-.band h2{color:#fff;font-size:clamp(24px,4.2vw,42px);line-height:1.06;letter-spacing:-.03em;text-transform:uppercase;max-width:20ch;margin:0 auto}
-.band p{color:#A8C7CD;margin:17px auto 0;max-width:54ch;font-size:16.5px}
+/* columns */
+.cols{display:grid;gap:22px;margin-top:32px}
+@media(min-width:700px){.cols{grid-template-columns:repeat(2,1fr);gap:28px}}
+@media(min-width:1000px){.cols.c3{grid-template-columns:repeat(3,1fr)}.cols.c4{grid-template-columns:repeat(4,1fr)}}
+.col{border-top:2px solid var(--line);padding-top:16px}
+.col .num{font-size:13px;font-weight:600;color:var(--accent);margin-bottom:10px;font-variant-numeric:tabular-nums}
+.col h3{margin-bottom:6px}
+.col p{font-size:15px}
+.col .found{margin-top:12px;font-size:13.5px;color:var(--muted);padding-left:10px;border-left:2px solid var(--line)}
+.col .found b{color:var(--text);font-weight:600}
+.callout{margin-top:32px;padding:18px 22px;background:var(--accent-lt);border-left:3px solid var(--accent);border-radius:0 6px 6px 0;color:var(--ink);font-size:16px;max-width:820px}
 
-/* ---------- faq ---------- */
-details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;transition:border-color .15s}
-details[open]{border-color:#BFDCE2}
-summary{cursor:pointer;list-style:none;padding:19px 20px;font-weight:800;color:var(--ink);font-size:15.5px;display:flex;justify-content:space-between;gap:14px;align-items:center}
-summary::-webkit-details-marker{display:none}
-summary:after{content:"+";font-size:23px;color:var(--teal-dk);font-weight:600;line-height:1}
-details[open] summary:after{content:"-"}
-details p{margin:0;padding:0 20px 20px;font-size:14.8px}
+/* calculator */
+.calc{display:grid;gap:18px;margin-top:32px}
+@media(min-width:900px){.calc{grid-template-columns:1.1fr .9fr;gap:24px;align-items:stretch}}
+.panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:24px 22px}
+.panel label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.panel .row+.row{margin-top:18px}
+.panel input[type=number],.panel select{width:100%;height:48px;border:1px solid #C9D7DA;border-radius:6px;padding:0 14px;font:inherit;font-size:16px;color:var(--ink);background:#fff;outline:none}
+.panel input:focus,.panel select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(31,129,153,.15)}
+.panel .money{position:relative}
+.panel .money::before{content:"$";position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.panel .money input{padding-left:28px}
+.panel input[type=range]{width:100%;accent-color:var(--accent);margin-top:8px}
+.panel .rng{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.panel .rng output{font-weight:600;color:var(--ink)}
+.panel .note{font-size:13px;color:var(--muted);margin-top:8px}
+.result{display:flex;flex-direction:column;justify-content:center}
+.result .k{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.result .big{font-size:clamp(40px,7vw,56px);font-weight:700;color:var(--ink);letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.result .yr{font-size:16px;color:var(--ink);margin-top:10px;font-weight:500}
+.result .cu{font-size:14px;color:var(--muted);margin-top:4px}
+.result .btn{margin-top:22px;align-self:flex-start}
+.src{font-size:12.5px;color:var(--muted);margin-top:16px}
 
-/* ---------- final ---------- */
-.final{position:relative;overflow:hidden;background:#0B1F24;color:#A8C7CD;text-align:center;padding:82px 0}
-.final:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(80,175,197,.32),transparent 62%)}
-.final .wrap{position:relative}
-.final h2{color:#fff;font-size:clamp(26px,4.6vw,46px);line-height:1.02;letter-spacing:-.03em;text-transform:uppercase;margin:0 auto 15px;max-width:18ch}
-.final p{margin:0 0 30px;font-size:17px}
-.cta-btn{display:inline-flex;align-items:center;gap:11px;background:var(--teal-dk);color:#fff;text-decoration:none;font-weight:900;font-size:16px;letter-spacing:.07em;text-transform:uppercase;padding:20px 46px;border-radius:11px}
-.cta-btn:hover{background:var(--teal-dkr)}
-.final .tiny{margin:18px 0 0;font-size:13px;color:#7FA1A8}
+/* report preview */
+.rep-grid{display:grid;gap:28px}
+@media(min-width:900px){.rep-grid{grid-template-columns:1fr 1fr;gap:64px;align-items:center}}
+.list{list-style:none;display:grid;gap:12px;margin-top:20px}
+.list li{display:flex;gap:12px;font-size:15px}
+.list svg{flex:0 0 18px;height:18px;margin-top:3px;fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.list b{color:var(--ink);font-weight:600}
+.doc{background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 20px 50px rgba(15,42,48,.10);padding:24px 22px;max-width:460px}
+@media(min-width:900px){.doc{padding:30px 30px}}
+.doc .dh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:6px}
+.doc .dh b{color:var(--ink);font-size:15px}
+.doc .dh span{font-size:12px;color:var(--muted)}
+.doc .r{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--ink)}
+.doc .s{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600}
+.doc .s::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.s.bad{color:var(--bad)}.s.mid{color:var(--mid)}.s.ok{color:var(--ok)}
+.doc .fix{margin-top:16px;background:var(--sky);border-radius:6px;padding:14px 16px}
+.doc .fix b{display:block;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.doc .fix p{font-size:14px;color:var(--ink)}
 
-.foot{padding:30px 0 38px;font-size:12.5px;color:var(--muted);text-align:center}
-.foot a{color:var(--muted)}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}.rv,.stagger>*{opacity:1;transform:none}}
+/* steps */
+.steps{display:grid;gap:22px;margin-top:32px;counter-reset:s}
+@media(min-width:700px){.steps{grid-template-columns:repeat(3,1fr);gap:28px}}
+.step{position:relative;padding-left:52px}
+.step::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px}
+.step h3{margin-bottom:6px;padding-top:6px}
+.step p{font-size:15px}
+
+/* rules */
+.rules-grid{display:grid;gap:18px 28px;margin-top:28px}
+@media(min-width:700px){.rules-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1000px){.rules-grid{grid-template-columns:repeat(3,1fr)}}
+.rule{display:flex;gap:12px;font-size:15px}
+.rule svg{flex:0 0 20px;height:20px;margin-top:2px;fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.rule b{display:block;color:var(--ink);font-weight:600;margin-bottom:2px}
+
+/* faq */
+.faq{max-width:760px}
+.faq details{border-bottom:1px solid var(--line);padding:16px 0}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;font-weight:600;color:var(--ink);font-size:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";flex:0 0 auto;color:var(--accent);font-size:20px;line-height:1;font-weight:400}
+.faq details[open] summary::after{content:"–"}
+.faq details p{padding-top:10px;font-size:15px}
+
+/* final */
+.final{text-align:center}
+.final h2{margin:0 auto 10px}
+.final p{margin:0 auto 22px}
+.final .tiny{font-size:13px;color:var(--muted);margin-top:12px}
+
+/* footer */
+.foot{border-top:1px solid var(--line);padding:26px 0 110px;font-size:13px;color:var(--muted)}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+.foot img{height:26px;width:auto}
+.foot a{color:var(--text);text-decoration:none}
+@media(min-width:900px){.foot{padding-bottom:28px}}
+
+/* sticky mobile CTA */
+.sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid var(--line);backdrop-filter:blur(8px);transform:translateY(110%);transition:transform .25s}
+.sticky.show{transform:none}
+@media(min-width:900px){.sticky{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 
 <header class="hdr">
-  <div class="wrap hdr-in">
-    <img src="data:image/webp;base64,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" alt="Wavefront Studio" width="173" height="52">
-    <a class="mail" href="mailto:info@wavefrontstudiollc.com"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5" stroke="#1F8199" stroke-width="1.9"/><path d="M3.5 6.5l8.5 6.4 8.5-6.4" stroke="#1F8199" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>info@wavefrontstudiollc.com</a>
+  <div class="wrap">
+    <a href="https://www.wavefrontstudiollc.com/" aria-label="Wavefront Studio"><img src="/wave-logo.webp" alt="Wavefront Studio" width="147" height="46"></a>
+    <div class="contact">Questions? <a href="mailto:info@wavefrontstudiollc.com">info@wavefrontstudiollc.com</a></div>
   </div>
 </header>
 
-<div class="hero">
-  <div class="bgimg"></div><div class="scrim"></div><div class="glow"></div>
+<!-- ================= HERO + FORM ================= -->
+<section class="hero" id="top">
   <div class="wrap hero-grid">
     <div>
-      <div class="kick">The Wavefront free audit</div>
-      <h1>100 Florida businesses get a <em>free website audit</em></h1>
-      <p class="sub">A real person goes through your site and sends you a written report in 48 hours. No charge. No contract. No pressure.</p>
-      <ul class="disc">
-        <li><svg width="19" height="19" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="rgba(80,175,197,.24)"/><path d="M6 10.2l2.7 2.6L14 7.6" stroke="#7FCEDE" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>How many seconds</b> your page takes before anything appears</span></li>
-        <li><svg width="19" height="19" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="rgba(80,175,197,.24)"/><path d="M6 10.2l2.7 2.6L14 7.6" stroke="#7FCEDE" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>The exact spot</b> where visitors give up instead of calling</span></li>
-        <li><svg width="19" height="19" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="rgba(80,175,197,.24)"/><path d="M6 10.2l2.7 2.6L14 7.6" stroke="#7FCEDE" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Whether you show up</b> when locals search for what you sell</span></li>
-        <li><svg width="19" height="19" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="rgba(80,175,197,.24)"/><path d="M6 10.2l2.7 2.6L14 7.6" stroke="#7FCEDE" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>The 3 fixes</b> ranked by what is costing you most</span></li>
+      <p class="kicker">Free website audit · Florida businesses</p>
+      <h1>Find out why your website isn't bringing you customers.</h1>
+      <p class="lead">A real person goes through your site and sends you a written report within 48 hours. No charge, no contract, and no obligation to work with us afterwards.</p>
+      <ul class="points">
+        <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><span><b>How long your page takes</b> to show anything on a phone</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><span><b>The exact point</b> where visitors give up instead of calling</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><span><b>Whether you show up</b> when locals search for what you sell</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><span><b>The three fixes</b> ranked by what is costing you most</span></li>
       </ul>
-      <div class="proof">
-        <div><span class="n">$0</span><span class="t">Free to claim.<br>Nothing to pay, ever.</span></div>
-        <div><span class="n">48h</span><span class="t">Written report,<br>on business days.</span></div>
-        <div><span class="n">100</span><span class="t">Spots only -<br>one per business.</span></div>
-      </div>
     </div>
 
     <div class="card" id="form">
       <div id="formPane">
-        <span class="badge">Free audit &middot; No obligation</span>
-        <h2>Claim one of the 100 spots</h2>
-        <p class="note">Five fields, about 40 seconds. We only ask for enough to review your site and send you the report.</p>
-        <form id="leadForm" novalidate>
-          <div class="field">
-            <label for="f-name">Full name</label>
-            <input id="f-name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" required>
-            <div class="err" id="e-name">Please enter your name.</div>
+        <h2>Request your free audit</h2>
+        <p class="sub">Four short fields. Your report is emailed within 48 hours on business days.</p>
+        <form id="leadForm" novalidate autocomplete="on">
+          <div class="fields">
+            <div class="f full" id="f-site-w">
+              <label for="f-site">Website address</label>
+              <input id="f-site" name="website" type="text" inputmode="url" autocomplete="url" placeholder="yourbusiness.com" required>
+              <div class="err" id="e-site">Please enter your website address, e.g. yourbusiness.com</div>
+            </div>
+            <div class="f" id="f-name-w">
+              <label for="f-name">Your name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" required>
+              <div class="err" id="e-name">Please enter your name</div>
+            </div>
+            <div class="f" id="f-phone-w">
+              <label for="f-phone">Phone</label>
+              <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="941 555 0142" required>
+              <div class="err" id="e-phone">Please enter a phone number</div>
+            </div>
+            <div class="f full" id="f-email-w">
+              <label for="f-email">Email for the report</label>
+              <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="jane@yourbusiness.com" required>
+              <div class="err" id="e-email">Please enter a valid email address</div>
+            </div>
           </div>
-          <div class="field">
-            <label for="f-email">Email</label>
-            <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="jane@yourbusiness.com" required>
-            <div class="err" id="e-email">Please enter a valid email address.</div>
-          </div>
-          <div class="field">
-            <label for="f-phone">Phone</label>
-            <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(941) 555 0142" required>
-            <div class="err" id="e-phone">Please enter a phone number we can reach you on.</div>
-          </div>
-          <div class="field">
-            <label for="f-site">Your website</label>
-            <input id="f-site" name="website" type="text" inputmode="url" placeholder="yourbusiness.com" required>
-            <div class="err" id="e-site">Please enter your website address.</div>
-          </div>
-          <div class="field">
-            <label for="f-msg">Anything we should look at first? <span class="opt">(optional)</span></label>
-            <textarea id="f-msg" name="message" rows="2" placeholder="e.g. nobody fills in my contact form"></textarea>
-          </div>
-
-          <input type="hidden" name="source" value="free-audit-lp">
-          <input type="hidden" name="utm_source" id="h-source">
-          <input type="hidden" name="utm_medium" id="h-medium">
-          <input type="hidden" name="utm_campaign" id="h-campaign">
-          <input type="hidden" name="utm_content" id="h-content">
-          <input type="hidden" name="page" id="h-page">
-          <input type="text" name="website_url" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-
-          <button class="btn" type="submit" id="submitBtn">Get my free audit
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <div class="formmsg" id="formMsg"></div>
-          <div class="under">No card. No contract. No obligation to hire us.</div>
-          <p class="fineprint">By sending this you're asking us to review your site and agreeing we can contact you about it by email or phone, and email you occasional tips. Unsubscribe any time. Wavefront Studio LLC, Sarasota, FL.</p>
+          <input class="hp" id="hp" name="website_url" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <input type="hidden" id="h-source"   name="utm_source">
+          <input type="hidden" id="h-medium"   name="utm_medium">
+          <input type="hidden" id="h-campaign" name="utm_campaign">
+          <input type="hidden" id="h-content"  name="utm_content">
+          <input type="hidden" id="h-page"     name="page">
+          <button class="btn block" id="submitBtn" type="submit">Request my free audit</button>
+          <div class="msg" id="formMsg" role="alert"></div>
+          <p class="fine">Free for the first 100 Florida businesses. One short call to confirm details, then the report by email. No card, no contract.</p>
         </form>
       </div>
 
-      <div class="done" id="donePane">
-        <div class="big"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 7" stroke="#1F8199" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h2>Your spot is reserved</h2>
-        <p>A confirmation email is on its way to you now, and the full written report follows within 48 hours on business days.</p>
-        <p style="color:#7E9599;font-size:13px">If the confirmation isn't there in a few minutes, check your spam folder and mark it as safe so the report reaches you.</p>
+      <div class="done" id="donePane" aria-live="polite">
+        <div class="ok"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg></div>
+        <h2>Your audit is booked</h2>
+        <p>A confirmation email is on its way. Here is what happens next:</p>
+        <ol>
+          <li><b>Within one business day</b> – a two-minute call from our team to confirm which pages and services matter most to you.</li>
+          <li><b>Within 48 hours</b> – your written report arrives by email.</li>
+          <li><b>Then it's yours</b> – fix it yourself, pass it to your developer, or ask us to help. Any of the three is fine.</li>
+        </ol>
+        <p class="tiny">If the confirmation isn't in your inbox within a few minutes, please check your spam folder and mark us as safe so the report reaches you.</p>
       </div>
     </div>
-  </div>
-</div>
-
-<div class="mq" aria-hidden="true">
-  <div id="mqTrack"><span>Free website audit</span><b>&bull;</b><span>No contract</span><b>&bull;</b><span>Written by a real person</span><b>&bull;</b><span>48-hour turnaround</span><b>&bull;</b><span>One per business</span><b>&bull;</b><span>100 spots only</span><b>&bull;</b></div>
-</div>
-
-<section>
-  <div class="wrap">
-    <div class="rv"><span class="kick2">See the difference</span>
-    <h2 class="sec">Same business. One of them gets the call.</h2>
-    <p class="sec-sub">Drag the handle. Nothing about the business changed - only how fast a visitor understands it and how obvious the next step is. That is what the audit points at.</p></div>
-    <div class="ba rv" id="ba">
-      <div class="pane">
-        <img src="https://cdn.shopify.com/s/files/1/0682/6495/2048/files/Wavefront_Before.webp?v=1789767461&width=1400" alt="A cluttered, dated website layout" width="1376" height="768" loading="lazy" decoding="async">
-      </div>
-      <div class="aft">
-        <img src="https://cdn.shopify.com/s/files/1/0682/6495/2048/files/Wavefront_After.webp?v=1789767460&width=1400" alt="The same website, redesigned and clear" width="1376" height="768" loading="lazy" decoding="async">
-      </div>
-      <span class="tag l">Before</span>
-      <span class="tag r">After</span>
-      <div class="handle" id="handle"><div class="knob"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l-5 6 5 6M15 6l5 6-5 6" stroke="#15697E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
-    </div>
-    <p class="cap">An illustration of the kind of change we recommend, not a specific client's site.</p>
   </div>
 </section>
 
-<section class="cost" id="cost">
+<!-- ================= STATS ================= -->
+<div class="stats">
   <div class="wrap">
-    <div class="rv"><span class="kick2">What it's costing you</span>
-    <h2 class="sec">A slow, confusing website doesn't look broken. It just quietly <em>costs you customers.</em></h2>
-    <p class="sec-sub">Put in your own numbers. This is a rough estimate, not a promise - but most owners have never done this maths, and the answer is usually bigger than they expect.</p></div>
+    <div class="stat"><b>$0</b><span>Free to claim. Nothing to pay, now or later.</span></div>
+    <div class="stat"><b>48 hrs</b><span>Written report, on business days.</span></div>
+    <div class="stat"><b>100</b><span>Spots in total, one per business.</span></div>
+  </div>
+</div>
 
-    <div class="calc rv">
-      <div class="calc-in">
-        <div class="field">
+<!-- ================= BEFORE / AFTER ================= -->
+<section>
+  <div class="wrap">
+    <p class="kicker">Same business, two websites</p>
+    <h2>One of them gets the call.</h2>
+    <p class="lead">Both sites sell the same service in the same town. The one on the right loads in under two seconds, says what it does and where, and puts the phone number where a thumb can reach it. Drag the handle to compare.</p>
+    <div class="ba" id="ba" aria-label="Before and after comparison">
+      <img class="bef" src="https://cdn.shopify.com/s/files/1/0682/6495/2048/files/Wavefront_Before.webp?v=1789767461" alt="Website before" loading="lazy">
+      <img class="aft" src="https://cdn.shopify.com/s/files/1/0682/6495/2048/files/Wavefront_After.webp?v=1789767460" alt="Website after" loading="lazy">
+      <span class="tag l">Before</span><span class="tag r">After</span>
+      <div class="handle" id="handle"></div>
+    </div>
+    <p class="ba-note">Most sites lose the visitor in the first three seconds: slow loading, no obvious next step, a phone number buried at the bottom. The report tells you which of these is costing you most, so you fix that first instead of rebuilding everything.</p>
+  </div>
+</section>
+
+<!-- ================= COST CALCULATOR ================= -->
+<section class="sky" id="cost">
+  <div class="wrap">
+    <p class="kicker">What it's costing you</p>
+    <h2>A slow, confusing website doesn't look broken. It just quietly costs you customers.</h2>
+    <p class="lead">Put in your own numbers. This is a rough estimate, not a promise – but most owners have never done this maths, and the answer is usually bigger than they expect.</p>
+    <div class="calc">
+      <div class="panel">
+        <div class="row">
           <label for="c-vis">Visitors to your website per month</label>
           <input id="c-vis" type="number" inputmode="numeric" min="0" step="50" value="500">
         </div>
-        <div class="field">
+        <div class="row">
           <label for="c-val">What one new customer is worth to you</label>
-          <div class="money"><span>$</span><input id="c-val" type="number" inputmode="numeric" min="0" step="50" value="1000"></div>
+          <div class="money"><input id="c-val" type="number" inputmode="numeric" min="0" step="50" value="1000"></div>
         </div>
-        <div class="field">
+        <div class="row">
           <label for="c-rate">How many visitors would normally become a customer?</label>
           <select id="c-rate">
             <option value="0.01">1 in 100</option>
@@ -453,135 +353,141 @@ details p{margin:0;padding:0 20px 20px;font-size:14.8px}
             <option value="0.04">1 in 25</option>
           </select>
         </div>
-        <div class="field" style="margin-bottom:0">
-          <label for="c-lost">Visitors you lose to slow loading and confusion</label>
-          <div class="range-row"><input id="c-lost" type="range" min="10" max="80" step="5" value="50"><output id="c-lost-out">50%</output></div>
-          <p class="calc-note">Google found that 53% of mobile visitors leave a page that takes longer than 3 seconds to load.</p>
+        <div class="row">
+          <div class="rng"><label for="c-lost" style="margin:0">Visitors lost to slow loading and confusion</label><output id="c-lost-out">50%</output></div>
+          <input id="c-lost" type="range" min="10" max="80" step="5" value="50">
+          <p class="note">Google found that 53% of mobile visitors leave a page that takes longer than 3 seconds to load.</p>
         </div>
       </div>
-
-      <div class="calc-out" aria-live="polite">
-        <span class="lbl">Walking away every month</span>
+      <div class="panel result">
+        <div class="k">Walking away every month</div>
         <div class="big" id="c-month">$5,000</div>
-        <p class="yr">That is about <b id="c-year">$60,000</b> a year.</p>
-        <p class="cust" id="c-cust">Roughly 5 customers a month who went to someone else instead.</p>
-        <a class="cta-btn" href="#form">Find out where you're losing it
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
+        <div class="yr">About <span id="c-year">$60,000</span> a year.</div>
+        <div class="cu" id="c-cust">Roughly 5 customers a month who went to someone else instead.</div>
+        <a class="btn" href="#form">Find out where you're losing it <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
     </div>
     <p class="src">Source: Google, "The Need for Mobile Speed" (2016). The estimate above uses only the numbers you enter.</p>
   </div>
 </section>
 
-<section class="sec-why">
-  <div class="wrap">
-    <div class="rv wide-h"><span class="kick2">Why fix this first</span>
-    <h2 class="sec">Fix the website <em>before</em> you spend another dollar on marketing</h2></div>
-    <div class="why rv stagger">
-      <div class="card2"><span class="bgnum">01</span><span class="wico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5z" stroke="#7FCEDE" stroke-width="2" stroke-linejoin="round"/></svg></span><span class="num">1</span><h3>Every customer passes through it</h3><p>Google, Facebook, referrals, the sign on your van. They all end up on your website. If it leaks, every one of them leaks with it.</p></div>
-      <div class="card2"><span class="bgnum">02</span><span class="wico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2v20M17 6.5c-.8-1.4-2.6-2.3-5-2.3-3 0-4.8 1.5-4.8 3.6 0 5 9.8 2.6 9.8 7.9 0 2.2-2 3.8-5 3.8-2.6 0-4.4-1-5.3-2.6" stroke="#7FCEDE" stroke-width="2" stroke-linecap="round"/></svg></span><span class="num">2</span><h3>You already paid for that visitor</h3><p>Ads, SEO and word of mouth cost you every month. Fixing what happens after the click costs once, and keeps paying you back.</p></div>
-      <div class="card2"><span class="bgnum">03</span><span class="wico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#7FCEDE" stroke-width="2"/><path d="M12 7v5l3.5 2.5" stroke="#7FCEDE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="num">3</span><h3>Every week you wait, they call someone else</h3><p>The person who gave up on your site still needed the job done. They just found a competitor whose website made it easy.</p></div>
-    </div>
-    <p class="why-close rv"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#50AFC5"/><path d="M7.5 12.3l3 2.9L16.8 9" stroke="#0B1F24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>That is why the audit ranks every fix by how much it is costing you - so you fix the expensive problem first, not the one that looks worst.</span></p>
-  </div>
-</section>
-
-<section class="sec-check">
-  <div class="wrap">
-    <div class="rv"><span class="kick2">What we check</span>
-    <h2 class="sec">Four things decide whether a visitor <em>calls</em></h2>
-    <p class="sec-sub">Someone opens your site on a phone and on a laptop, the way your customers do, and writes down what goes wrong.</p></div>
-    <div class="grid g4 rv stagger">
-      <div class="tile"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12L13 2z" fill="#1F8199"/></svg></div><span class="tno">01</span><h3>Speed</h3><p>How long someone waits before anything appears - and exactly what is making them wait.</p><div class="find"><b>What we often find</b>Pages taking 5 seconds or more to show anything on a phone.</div></div>
-      <div class="tile"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="6" y="2" width="12" height="20" rx="2.5" stroke="#1F8199" stroke-width="2"/><circle cx="12" cy="18" r="1" fill="#1F8199"/></svg></div><span class="tno">02</span><h3>Mobile</h3><p>What your page really looks like on a phone, where most of your visitors actually are.</p><div class="find"><b>What we often find</b>Buttons too small to tap, and text you have to pinch to read.</div></div>
-      <div class="tile"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#1F8199" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="#1F8199" stroke-width="2" stroke-linecap="round"/></svg></div><span class="tno">03</span><h3>Google</h3><p>Whether you show up for what people near you are searching for right now.</p><div class="find"><b>What we often find</b>No city or service named on the page, so Google cannot tell where you work.</div></div>
-      <div class="tile"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 18V9M10 18V4M16 18v-6M22 18H2" stroke="#1F8199" stroke-width="2" stroke-linecap="round"/></svg></div><span class="tno">04</span><h3>Enquiries</h3><p>The exact points where a visitor decides not to call, and what to change first.</p><div class="find"><b>What we often find</b>A phone number buried at the bottom and a contact form nobody answers.</div></div>
-    </div>
-  </div>
-</section>
-
+<!-- ================= WHY FIX FIRST ================= -->
 <section>
   <div class="wrap">
-    <div class="rv"><span class="kick2">What lands in your inbox</span>
-    <h2 class="sec">A short report you can act on the same day</h2>
-    <p class="sec-sub">Scored, prioritised and written in plain English - not a 90-page export nobody reads.</p></div>
-    <div class="report rv">
-      <div class="report-bar"><span class="tl"></span><span class="tl"></span><span class="tl"></span><span class="ttl">Website audit &middot; your business</span></div>
-      <div class="report-body">
-        <div class="row"><span class="lab">Load speed</span><span class="bar"><i style="width:28%;background:#C8412C"></i></span><span class="scr" style="color:#C8412C">Slow</span></div>
-        <div class="row"><span class="lab">Mobile layout</span><span class="bar"><i style="width:52%;background:#DD8A1A"></i></span><span class="scr" style="color:#B86F0C">Issues</span></div>
-        <div class="row"><span class="lab">Local search</span><span class="bar"><i style="width:40%;background:#DD8A1A"></i></span><span class="scr" style="color:#B86F0C">Weak</span></div>
-        <div class="row"><span class="lab">Enquiry flow</span><span class="bar"><i style="width:82%;background:#1F8199"></i></span><span class="scr" style="color:#15697E">Good</span></div>
-        <div class="fixrow"><svg class="warn" width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.6l9 15.6H3l9-15.6z" stroke="#B86F0C" stroke-width="1.9" stroke-linejoin="round"/><path d="M12 9.6v4.2" stroke="#B86F0C" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16.6" r="1.05" fill="#B86F0C"/></svg><div><b>Fix this first</b><p>Cut the homepage load time and put the phone number in the header - that one change is costing you the most calls.</p></div></div>
-      </div>
+    <p class="kicker">Why fix this first</p>
+    <h2>Fix the website before you spend another dollar on marketing.</h2>
+    <div class="cols c3">
+      <div class="col"><div class="num">01</div><h3>Every customer passes through it</h3><p>Google, Facebook, referrals, the sign on your van. They all end up on your website. If it leaks, every one of them leaks with it.</p></div>
+      <div class="col"><div class="num">02</div><h3>You already paid for that visitor</h3><p>Ads, SEO and word of mouth cost you every month. Fixing what happens after the click costs once, and keeps paying you back.</p></div>
+      <div class="col"><div class="num">03</div><h3>Every week you wait, they call someone else</h3><p>The person who gave up on your site still needed the job done. They just found a competitor whose website made it easy.</p></div>
+    </div>
+    <div class="callout">That is why the audit ranks every fix by how much it is costing you – so you fix the expensive problem first, not the one that looks worst.</div>
+  </div>
+</section>
+
+<!-- ================= WHAT WE CHECK ================= -->
+<section class="sky">
+  <div class="wrap">
+    <p class="kicker">What we check</p>
+    <h2>Four things decide whether a visitor calls.</h2>
+    <p class="lead">Someone opens your site on a phone and on a laptop, the way your customers do, and writes down what goes wrong.</p>
+    <div class="cols c4">
+      <div class="col"><div class="num">01</div><h3>Speed</h3><p>How long someone waits before anything appears, and exactly what is making them wait.</p><div class="found"><b>Often found:</b> pages taking five seconds or more to show anything on a phone.</div></div>
+      <div class="col"><div class="num">02</div><h3>Mobile</h3><p>What your page really looks like on a phone, where most of your visitors actually are.</p><div class="found"><b>Often found:</b> buttons too small to tap, and text you have to pinch to read.</div></div>
+      <div class="col"><div class="num">03</div><h3>Google</h3><p>Whether you show up for what people near you are searching for right now.</p><div class="found"><b>Often found:</b> no city or service named on the page, so Google cannot tell where you work.</div></div>
+      <div class="col"><div class="num">04</div><h3>Enquiries</h3><p>The exact points where a visitor decides not to call, and what to change first.</p><div class="found"><b>Often found:</b> a phone number buried at the bottom and a contact form nobody answers.</div></div>
     </div>
   </div>
 </section>
 
-<div class="band">
-  <div class="wrap">
-    <h2>Most sites lose the visitor in the first three seconds</h2>
-    <p>Slow loading, no obvious next step, a phone number buried at the bottom. The report tells you which one is costing you most - so you fix that first instead of rebuilding everything.</p>
-  </div>
-</div>
-
-<section class="sec-steps">
-  <div class="wrap">
-    <div class="rv"><span class="kick2">Three steps</span>
-    <h2 class="sec">From this page to your report</h2></div>
-    <div class="steps rv stagger" style="margin-top:36px">
-      <div class="step"><div class="sbox"><h3>You send the address</h3><p>Name, email, phone and your website. That is everything we need to start.</p></div></div>
-      <div class="step"><div class="sbox"><h3>We go through the site</h3><p>On a phone and on a laptop - speed, layout, search, and where enquiries get lost.</p></div></div>
-      <div class="step"><div class="sbox"><h3>The report arrives</h3><p>Within 48 hours on business days, by email. Yours to keep and act on however you like.</p></div></div>
+<!-- ================= REPORT PREVIEW ================= -->
+<section>
+  <div class="wrap rep-grid">
+    <div>
+      <p class="kicker">What lands in your inbox</p>
+      <h2>A short report you can act on the same day.</h2>
+      <p class="lead">Scored, prioritised and written in plain English – not a 90-page export nobody reads.</p>
+      <ul class="list">
+        <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><span><b>A rating for each of the four areas</b> – speed, mobile, Google and enquiries – so you can see where you stand at a glance.</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><span><b>The one fix to do first</b>, with why it matters and what it is likely costing you.</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><span><b>Two more fixes, in order</b> – each explained so your own developer could do it, or we can.</span></li>
+        <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><span><b>Screenshots of the exact spots</b> on your site, on a phone, so nothing is abstract.</span></li>
+      </ul>
+    </div>
+    <div class="doc" aria-hidden="true">
+      <div class="dh"><b>Website audit</b><span>Your business · Sample</span></div>
+      <div class="r"><span>Load speed</span><span class="s bad">Slow</span></div>
+      <div class="r"><span>Mobile layout</span><span class="s mid">Issues</span></div>
+      <div class="r"><span>Local search</span><span class="s mid">Weak</span></div>
+      <div class="r"><span>Enquiry flow</span><span class="s ok">Good</span></div>
+      <div class="fix"><b>Fix this first</b><p>Cut the homepage load time and put the phone number in the header – that one change is costing you the most calls.</p></div>
     </div>
   </div>
 </section>
 
-<section class="sec-rules">
+<!-- ================= HOW IT WORKS ================= -->
+<section class="sky">
   <div class="wrap">
-    <div class="rv"><span class="kick2">The rules, plainly</span>
-    <h2 class="sec">No catch. Here is exactly <em>how it works.</em></h2></div>
-    <div class="promise rv"><span class="seal"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.5l7.5 3v6c0 4.6-3.2 8.4-7.5 10-4.3-1.6-7.5-5.4-7.5-10v-6l7.5-3z" stroke="#7FCEDE" stroke-width="2" stroke-linejoin="round"/><path d="M8.5 12.2l2.5 2.4 4.6-4.8" stroke="#7FCEDE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Our promise to you</span>
-    <div class="rules stagger">
-      <div class="rule"><span class="k">1</span><div><b>It really is free</b><p>No card, no trial, no invoice at the end. The first 100 businesses get it at no cost.</p></div></div>
-      <div class="rule"><span class="k">2</span><div><b>One audit per business</b><p>So the 100 spots go to 100 different owners.</p></div></div>
-      <div class="rule"><span class="k">3</span><div><b>You need a live website</b><p>Any platform - WordPress, Shopify, Wix, Squarespace, custom. It just has to be online.</p></div></div>
-      <div class="rule"><span class="k">4</span><div><b>48 hours, business days</b><p>If we are running behind we tell you, instead of leaving you waiting.</p></div></div>
-      <div class="rule"><span class="k">5</span><div><b>Email first, one follow-up</b><p>The report by email, then one check that it was useful - by email or a quick call. Ask us to stop and we stop.</p></div></div>
-      <div class="rule"><span class="k">6</span><div><b>No obligation to hire us</b><p>Take the report and fix it yourself, or hand it to your own developer. Genuinely fine either way.</p></div></div>
-    </div></div>
+    <p class="kicker">How it works</p>
+    <h2>From this page to your report.</h2>
+    <div class="steps">
+      <div class="step"><h3>You send the address</h3><p>Name, email, phone and your website. That is everything we need to start.</p></div>
+      <div class="step"><h3>We go through the site</h3><p>On a phone and on a laptop – speed, layout, search, and where enquiries get lost. One two-minute call to confirm what matters most to you.</p></div>
+      <div class="step"><h3>The report arrives</h3><p>Within 48 hours on business days, by email. Yours to keep and act on however you like.</p></div>
+    </div>
   </div>
 </section>
 
+<!-- ================= RULES ================= -->
 <section>
   <div class="wrap">
-    <div class="rv"><span class="kick2">Before you ask</span>
-    <h2 class="sec">Questions people have first</h2></div>
-    <div class="rv" style="margin-top:30px">
+    <p class="kicker">The rules, plainly</p>
+    <h2>No catch. Here is exactly how it works.</h2>
+    <div class="rules-grid">
+      <div class="rule"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><div><b>It really is free</b>No card, no trial, no invoice at the end. The first 100 businesses get it at no cost.</div></div>
+      <div class="rule"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><div><b>One audit per business</b>So the 100 spots go to 100 different owners.</div></div>
+      <div class="rule"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><div><b>You need a live website</b>Any platform – WordPress, Shopify, Wix, Squarespace, custom. It just has to be online.</div></div>
+      <div class="rule"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><div><b>48 hours, business days</b>If we are running behind we tell you, instead of leaving you waiting.</div></div>
+      <div class="rule"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><div><b>One call, then email</b>A short call to confirm details, then the report by email. Ask us to stop and we stop.</div></div>
+      <div class="rule"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg><div><b>No obligation to hire us</b>Take the report and fix it yourself, or hand it to your own developer. Fine either way.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="sky">
+  <div class="wrap">
+    <p class="kicker">Before you ask</p>
+    <h2>Questions people have first.</h2>
+    <div class="faq">
       <details><summary>Why would you do this for free?</summary><p>Because a fair number of owners who read the report decide they would rather we did the work than do it themselves. Plenty don't, and that is a fair trade for us either way.</p></details>
-      <details><summary>Will I get chased with phone calls?</summary><p>You will not be hassled. The report comes by email first. If we spot something urgent, or you asked us to look at something specific, we may call once to talk it through. Tell us you would rather keep it to email and that is exactly what we will do.</p></details>
+      <details><summary>Will I get chased with phone calls?</summary><p>No. You get one short call to confirm what to look at, then the report by email. Tell us you would rather keep it to email and that is exactly what we will do.</p></details>
       <details><summary>My site is old and I already know it's bad.</summary><p>That is the most useful case. The report tells you which problem is actually costing you enquiries, so you fix that one first instead of rebuilding everything.</p></details>
-      <details><summary>Do you only work with certain industries?</summary><p>No. Most of the businesses we audit are local service companies - trades, clinics, restaurants, professional services - but any live site is welcome.</p></details>
+      <details><summary>Do you only work with certain industries?</summary><p>No. Most of the businesses we audit are local service companies – trades, clinics, restaurants, professional services – but any live site is welcome.</p></details>
       <details><summary>What happens when the 100 spots are gone?</summary><p>We stop taking free audits and this form comes down. If you have already submitted, your audit still gets done.</p></details>
     </div>
   </div>
 </section>
 
-<div class="final">
+<!-- ================= FINAL CTA ================= -->
+<section class="final">
   <div class="wrap">
+    <p class="kicker">Free for the first 100 Florida businesses</p>
     <h2>Your competitors' sites aren't better. They're just clearer.</h2>
-    <p>Find out what yours is doing wrong - free, while spots last.</p>
-    <a class="cta-btn" href="#form">Claim my free audit
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
-    <p class="tiny">Takes 40 seconds. Nothing to pay, now or later.</p>
+    <p class="lead">Find out what yours is doing wrong – free, while spots last.</p>
+    <a class="btn" href="#form">Request my free audit <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <p class="tiny">Takes about 20 seconds. Nothing to pay, now or later.</p>
   </div>
-</div>
+</section>
 
-<div class="foot">
-  <div class="wrap">Wavefront Studio LLC &middot; Sarasota, Florida &middot; <a href="mailto:info@wavefrontstudiollc.com">info@wavefrontstudiollc.com</a></div>
-</div>
+<footer class="foot">
+  <div class="wrap">
+    <img src="/wave-logo.webp" alt="Wavefront Studio" width="83" height="26">
+    <div>Wavefront Studio LLC · Sarasota, Florida · <a href="mailto:info@wavefrontstudiollc.com">info@wavefrontstudiollc.com</a></div>
+  </div>
+</footer>
+
+<div class="sticky" id="sticky"><a class="btn block" href="#form">Request my free audit</a></div>
 
 <script>
 (function(){
@@ -592,34 +498,19 @@ details p{margin:0;padding:0 20px 20px;font-size:14.8px}
    2. SHEET_ENDPOINT - adds the sheet row and sends the customer + admin emails
    The visitor sees success if EITHER one confirms, so a lead is never lost
    because one side is down. */
-var LEAD_ENDPOINT = "/api/lead/";
-/* Google Sheet + customer confirmation + admin notification (Apps Script on the leads sheet). */
+var LEAD_ENDPOINT  = "/api/lead/";
 var SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbz0eq3J-pQlg9lSTQrw-sIKVWxEtfpdoDGy0V7Wd0qW0YFnyZgGNz0JfJ-e9ewjlpzi/exec";
-var FB_PIXEL_ID   = "1993858451301943";
-/* ============================= */
+var FB_PIXEL_ID    = "1993858451301943";
+var PAGE_VERSION   = "Free Website Audit - v2";
+/* ============================== */
 
-if(FB_PIXEL_ID.indexOf("REPLACE") === -1){
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
-  (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', FB_PIXEL_ID); fbq('track','PageView');
-}
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', FB_PIXEL_ID); fbq('track','PageView');
 function track(ev,d){ if(window.fbq){ try{ fbq('track',ev,d||{}); }catch(e){} } }
-
-/* ---- marquee: duplicate so the loop is seamless ---- */
-(function(){ var t=document.getElementById('mqTrack'); t.innerHTML += t.innerHTML; })();
-
-/* ---- reveal on scroll ---- */
-if('IntersectionObserver' in window){
-  var ro=new IntersectionObserver(function(en){
-    en.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target); } });
-  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
-  document.querySelectorAll('.rv, .stagger').forEach(function(el){ ro.observe(el); });
-}else{
-  document.querySelectorAll('.rv, .stagger').forEach(function(el){ el.classList.add('in'); });
-}
 
 /* ---- keep the ad attribution ---- */
 var qs=new URLSearchParams(location.search), KEYS=['utm_source','utm_medium','utm_campaign','utm_content'], store={};
@@ -634,6 +525,17 @@ document.getElementById('h-medium').value   = store.utm_medium   || '';
 document.getElementById('h-campaign').value = store.utm_campaign || '';
 document.getElementById('h-content').value  = store.utm_content  || '';
 document.getElementById('h-page').value     = location.href;
+
+/* ---- sticky CTA: show once the form has scrolled out of view ---- */
+(function(){
+  var st=document.getElementById('sticky'), card=document.getElementById('form');
+  if(!st||!card||!('IntersectionObserver' in window)) return;
+  new IntersectionObserver(function(en){
+    var formVisible=en[0].isIntersecting;
+    var done=document.getElementById('donePane').classList.contains('on');
+    st.classList.toggle('show', !formVisible && !done);
+  },{threshold:0}).observe(card);
+})();
 
 /* ---- before / after ---- */
 (function(){
@@ -665,7 +567,6 @@ document.getElementById('h-page').value     = location.href;
   }
 })();
 
-
 /* ---- cost calculator ---- */
 (function(){
   var vis=document.getElementById('c-vis'), val=document.getElementById('c-val'),
@@ -682,7 +583,7 @@ document.getElementById('h-page').value     = location.href;
     var month=customers*num(val);
     mo.textContent=usd(month);
     yr.textContent=usd(month*12);
-    var n = Math.round(customers);
+    var n=Math.round(customers);
     cust.textContent = customers<1 ? 'Less than one customer a month - but it adds up over a year.' : 'Roughly '+n.toLocaleString('en-US')+(n===1?' customer':' customers')+' a month who went to someone else instead.';
   }
   [vis,val,rate,lost].forEach(function(el){ el.addEventListener('input',calc); el.addEventListener('change',calc); });
@@ -693,7 +594,7 @@ document.getElementById('h-page').value     = location.href;
 var card=document.getElementById('form');
 var form=document.getElementById('leadForm'), btn=document.getElementById('submitBtn'), msg=document.getElementById('formMsg');
 var BTN_HTML=btn.innerHTML;
-function show(id,on){ var e=document.getElementById('e-'+id), f=document.getElementById('f-'+id);
+function show(id,on){ var e=document.getElementById('e-'+id), f=document.getElementById('f-'+id+'-w');
   if(e) e.classList.toggle('on',on); if(f) f.classList.toggle('bad',on); }
 function normSite(v){ v=v.trim(); return !v?'':(/^https?:\/\//i.test(v)?v:'https://'+v); }
 
@@ -711,11 +612,11 @@ form.addEventListener('submit', function(ev){
       okSite=/\.[a-z]{2,}/i.test(site);
 
   show('name',!okName); show('email',!okEmail); show('phone',!okPhone); show('site',!okSite);
-  if(!(okName&&okEmail&&okPhone&&okSite)){ var b=form.querySelector('.bad'); if(b) b.focus(); return; }
+  if(!(okName&&okEmail&&okPhone&&okSite)){ var b=form.querySelector('.bad input'); if(b) b.focus(); return; }
 
   btn.disabled=true; btn.textContent='Sending...';
 
-  var msgText=document.getElementById('f-msg').value.trim();
+  var msgText='';
   var siteUrl=normSite(site);
   var labelled={
     'Name': name,
@@ -724,7 +625,7 @@ form.addEventListener('submit', function(ev){
     'Website': siteUrl,
     'Subject': 'Free Website Performance Audit',
     'Message': msgText,
-    'Landing page': 'Free Website Audit - first 100',
+    'Landing page': PAGE_VERSION,
     'utm_source': document.getElementById('h-source').value,
     'utm_medium': document.getElementById('h-medium').value,
     'utm_campaign': document.getElementById('h-campaign').value,
@@ -777,9 +678,10 @@ form.addEventListener('submit', function(ev){
       if(a && a.body && a.body.error && /Too many/i.test(a.body.error)) return fail('We have already received a few requests from this connection. Please wait a few minutes and try again.');
       return fail(FAIL_TEXT);
     }
-    track('Lead',{content_name:location.pathname});
+    track('Lead',{content_name:location.pathname, content_category:'v2'});
     document.getElementById('formPane').style.display='none';
     var d=document.getElementById('donePane'); d.classList.add('on');
+    document.getElementById('sticky').classList.remove('show');
     d.scrollIntoView({block:'center',behavior:'smooth'});
   });
 });
@@ -788,7 +690,7 @@ document.querySelectorAll('a[href="#form"]').forEach(function(a){
   a.addEventListener('click',function(e){
     e.preventDefault();
     card.scrollIntoView({behavior:'smooth',block:'start'});
-    setTimeout(function(){ var n=document.getElementById('f-name'); if(n) n.focus({preventScroll:true}); },420);
+    setTimeout(function(){ var n=document.getElementById('f-site'); if(n) n.focus({preventScroll:true}); },420);
   });
 });
 })();
