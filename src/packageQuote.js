@@ -42,6 +42,13 @@ export function selectedTiers(service, entry = {}) {
   return custom === undefined ? tiers : [custom]
 }
 
+// How many of a service are being bought across its selected tiers. Add-ons are charged once for each,
+// so two Launch sites and one Grow site with a care plan pay for three care plans.
+export function serviceUnits(service, entry = {}) {
+  const units = selectedTiers(service, entry).reduce((sum, index) => sum + (service.id === 'landing' ? 1 : tierQty(entry.qtyByTier?.[index])), 0)
+  return Math.max(units, 1)
+}
+
 // Landing page tiers are priced per page: tier price × total pages.
 export const landingPagesPrice = (tier, pages) => tier.s * landingPageBundle(pages).pages
 
@@ -138,13 +145,16 @@ export function calculateQuote(state) {
       rows.push({ label: `${service.name} — ${tier.n}${pageLabel}${qtyLabel}`, amount: tierPrice(total), ...(description ? { description } : {}) })
     }
 
+    const units = serviceUnits(service, entry)
     for (const addonIndex of [...(entry.addons ?? [])].sort((a, b) => a - b)) {
       const addon = service.addons[addonIndex]
       const chosen = entry.opts?.[addonIndex] ?? defaultOptionIndex(addon)
-      const price = addon.p * addonQty(addon, chosen)
+      const each = addon.p * addonQty(addon, chosen)
+      const price = each * units
       if (addon.t === 'monthly') monthly += price
       else one += price
-      const label = addon.opts ? `${addon.l} × ${addonQty(addon, chosen)}/mo — ${addon.opts[chosen].l}` : addon.l
+      const base = addon.opts ? `${addon.l} × ${addonQty(addon, chosen)}/mo — ${addon.opts[chosen].l}` : addon.l
+      const label = units > 1 ? `${base} · ${units} × ${money(each)}${addon.t === 'monthly' ? '/mo' : ''}` : base
       const note = cleanNote(entry.addonNotes?.[addonIndex])
       rows.push({ label, amount: `${money(price)}${addon.t === 'monthly' ? '/mo' : ''}`, sub: true, ...(note ? { description: note } : {}) })
     }

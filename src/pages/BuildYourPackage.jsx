@@ -3,7 +3,7 @@ import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { CATEGORIES, DETAILS, LANDING_PAGE_BUNDLES, OFFER, PAIRS, SERVICES } from '../data/generated/packages.js'
 import { contact } from '../data/site.js'
-import { MAX_TIER_QTY, addonQty, calculateQuote, creditAmount, customQuoteItem, defaultOptionIndex, landingPageBundle, landingPagesPrice, money, selectedTiers, tierPrice, tierQty } from '../packageQuote.js'
+import { MAX_TIER_QTY, addonQty, calculateQuote, creditAmount, customQuoteItem, defaultOptionIndex, landingPageBundle, landingPagesPrice, money, selectedTiers, serviceUnits, tierPrice, tierQty } from '../packageQuote.js'
 
 const serviceById = Object.fromEntries(SERVICES.map((service) => [service.id, service]))
 
@@ -485,6 +485,7 @@ export default function BuildYourPackage() {
                   const on = Boolean(entry)
                   const tiers = on ? selectedTiers(service, entry) : []
                   const customSelected = tiers.some((index) => service.tiers[index].custom)
+                  const units = on ? serviceUnits(service, entry) : 1
                   return (
                     <article className={`package-card ${on ? 'is-on' : ''}`} key={id}>
                       {/* The whole row toggles the service; the checkbox button stays the keyboard control. */}                      <div className="package-card-head" onClick={(event) => !event.target.closest('button') && toggleService(id)}>
@@ -636,6 +637,7 @@ export default function BuildYourPackage() {
                               <div>
                                 {service.addons.map((addon, addonIndex) => {
                                   const selected = entry.addons.includes(addonIndex)
+                                  const perMonth = addon.t === 'monthly' ? '/mo' : ''
                                   return (
                                     <div className="package-addon" key={addon.l}>
                                       <button
@@ -645,10 +647,13 @@ export default function BuildYourPackage() {
                                         aria-pressed={selected}
                                       >
                                         <i aria-hidden="true">✓</i>
-                                        <span>{addon.l}</span>
+                                        <span>
+                                          {addon.l}
+                                          {units > 1 ? <small>{units} × {money(addonPrice(id, addonIndex))}{perMonth}</small> : null}
+                                        </span>
                                         <b>
-                                          {money(addonPrice(id, addonIndex))}
-                                          {addon.t === 'monthly' ? '/mo' : ''}
+                                          {money(addonPrice(id, addonIndex) * units)}
+                                          {perMonth}
                                         </b>
                                       </button>
                                       {addon.opts ? (
@@ -659,7 +664,7 @@ export default function BuildYourPackage() {
                                         >
                                           {addon.opts.map((option, index) => (
                                             <option key={option.l} value={index}>
-                                              {option.l} — {option.q} article{option.q > 1 ? 's' : ''} · {money(addon.p * option.q)}/mo
+                                              {option.l} — {option.q} article{option.q > 1 ? 's' : ''} · {money(addon.p * option.q)}/mo{units > 1 ? ' each' : ''}
                                             </option>
                                           ))}
                                         </select>

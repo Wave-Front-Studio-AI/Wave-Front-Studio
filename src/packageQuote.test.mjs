@@ -206,6 +206,33 @@ test('each tier keeps its own quantity, and the bundle discount covers the multi
   assert.equal(quote.rows[1].label, 'Website Development — Grow')
 })
 
+test('add-ons are charged once for each item bought', () => {
+  const quote = calculateQuote({ web: { tiers: [0], qtyByTier: { 0: 2 }, addons: [1, 3], opts: {} } })
+  assert.equal(quote.one, 3600 + 750 * 2)
+  assert.equal(quote.monthly, 99 * 2)
+  assert.equal(quote.firstMonthsFree, 198)
+  assert.equal(quote.rows[1].label, 'E-commerce setup · 2 × $750')
+  assert.equal(quote.rows[1].amount, '$1,500')
+  assert.equal(quote.rows[2].label, 'Website care plan · 2 × $99/mo')
+  assert.equal(quote.rows[2].amount, '$198/mo')
+})
+
+test('add-ons follow the total across tiers, including frequency add-ons', () => {
+  const sites = calculateQuote({ web: { tiers: [0, 1], qtyByTier: { 0: 2 }, addons: [3], opts: {} } })
+  assert.equal(sites.monthly, 99 * 3)
+  assert.equal(sites.rows.at(-1).label, 'Website care plan · 3 × $99/mo')
+
+  const blogs = calculateQuote({ seo: { tiers: [1], qtyByTier: { 1: 2 }, addons: [1], opts: { 1: 4 } } })
+  assert.equal(blogs.monthly, 850 * 2 + 75 * 4 * 2)
+  assert.equal(blogs.rows[1].label, 'Blog article × 4/mo — Weekly · 2 × $300/mo')
+  assert.equal(blogs.rows[1].amount, '$600/mo')
+
+  // With one of everything, add-ons read and price exactly as before.
+  const single = calculateQuote({ web: { tiers: [0], addons: [3], opts: {} } })
+  assert.equal(single.monthly, 99)
+  assert.equal(single.rows[1].label, 'Website care plan')
+})
+
 test('a missing or unusable quantity counts as one, and landing pages ignore it', () => {
   for (const raw of [undefined, null, '', ' ', 0, -2, 1.5, 'abc', NaN, Infinity]) assert.equal(tierQty(raw), 1, String(raw))
   assert.equal(tierQty('4'), 4)

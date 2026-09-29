@@ -1051,6 +1051,7 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
 .package-addon button.is-on { border-color: var(--brand-deep); }
 .package-addon button.is-on i { background: var(--ink); color: var(--white); border-color: var(--ink); }
 .package-addon button b { font-variant-numeric: tabular-nums; }
+.package-addon button small { display: block; margin-top: 2px; color: var(--muted); font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
 .package-addon select { padding: 9px 12px; font-size: 0.875rem; }
 
 .package-quote { position: sticky; top: 78px; display: grid; gap: 16px; padding: clamp(20px, 2.6vw, 28px); border: 1px solid var(--line-strong); border-radius: var(--r-lg); background: var(--white); }
