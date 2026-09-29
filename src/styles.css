@@ -990,6 +990,35 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
 .package-page-bundle p { margin: 4px 0 0; color: var(--muted); font-size: 0.875rem; line-height: 1.5; }
 .package-page-bundle select { flex: 1 1 220px; width: 100%; min-width: 0; min-height: 44px; }
 .package-page-bundle .package-bundle-total { flex-basis: 100%; margin: 0; padding-top: 12px; border-top: 1px solid var(--line); color: var(--ink); }
+/* Quantity per selected tier: a ruled list rather than boxes, since it already sits inside the service card. */
+.package-qty .pkg-label { margin-bottom: 4px; }
+.package-qty-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(96px, auto); gap: 8px 16px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); }
+.package-qty-row:last-child { border-bottom: 1px solid var(--line); }
+.package-qty-row label { display: grid; gap: 2px; min-width: 0; cursor: pointer; }
+.package-qty-row strong { font-size: 0.925rem; }
+.package-qty-row small { color: var(--muted); font-size: 0.8125rem; }
+.package-qty-row > b { font-family: var(--display); font-size: 1.05rem; text-align: right; font-variant-numeric: tabular-nums; }
+.package-stepper { display: inline-grid; grid-template-columns: 40px 38px 40px; align-items: center; padding: 1px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--white); transition: border-color 160ms ease; }
+.package-stepper:has(input:focus-visible) { border-color: var(--brand-deep); outline: 2px solid var(--brand-deep); outline-offset: 2px; }
+.package-stepper button { display: grid; width: 40px; height: 40px; place-items: center; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--ink); cursor: pointer; transition: background-color 160ms ease, transform 160ms var(--ease-out); }
+.package-stepper button svg { width: 16px; height: 16px; }
+.package-stepper button:active { transform: scale(0.95); }
+.package-stepper button:focus-visible { outline: 2px solid var(--brand-deep); outline-offset: -2px; }
+.package-stepper button[aria-disabled='true'] { color: var(--muted); opacity: 0.4; cursor: not-allowed; }
+.package-stepper button[aria-disabled='true']:active { transform: none; }
+@media (hover: hover) and (pointer: fine) {
+  .package-stepper button:not([aria-disabled='true']):hover { background: var(--paper); }
+}
+.package-stepper input { width: 100%; min-width: 0; height: 40px; padding: 0; border: 0; background: transparent; color: var(--ink); font-family: var(--display); font-size: 1rem; font-weight: 600; text-align: center; font-variant-numeric: tabular-nums; appearance: textfield; -moz-appearance: textfield; }
+.package-stepper input:focus-visible { outline: none; }
+.package-stepper input::-webkit-inner-spin-button, .package-stepper input::-webkit-outer-spin-button { margin: 0; -webkit-appearance: none; }
+@media (max-width: 520px) {
+  .package-qty-row { grid-template-columns: auto minmax(0, 1fr); }
+  .package-qty-row label { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .package-stepper button:active { transform: none; }
+}
 .package-custom { min-width: 0; margin: 0; padding: 18px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--white); }
 .package-custom legend { padding: 0 6px; font-weight: 600; }
 .package-custom p { margin: 0 0 14px; color: var(--muted); font-size: 0.875rem; line-height: 1.5; }

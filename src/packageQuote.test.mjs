@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { calculateQuote, customLandingQuote, customQuoteItem, landingPageBundle, money } from './packageQuote.js'
+import { calculateQuote, customLandingQuote, customQuoteItem, landingPageBundle, money, tierQty } from './packageQuote.js'
 
 const selected = (tier = 1, pages = 1) => ({ tier, pages, addons: [], opts: {} })
 
@@ -175,6 +175,43 @@ test('a credit comes off the discounted one-time total and never goes below zero
   for (const amount of ['', ' ', null, '-50', '1.5', 'abc', 0]) {
     assert.equal(calculateQuote({ ...base, credit: { amount } }).oneAfter, 5225, String(amount))
   }
+})
+
+test('a tier quantity multiplies its setup and monthly price but still counts as one service', () => {
+  const quote = calculateQuote({ web: { tiers: [0], qtyByTier: { 0: 2 }, addons: [], opts: {} } })
+  assert.equal(quote.one, 3600)
+  assert.equal(quote.count, 1)
+  assert.equal(quote.pct, 0)
+  assert.equal(quote.rows[0].label, 'Website Development — Launch · 2 × $1,800')
+  assert.equal(quote.rows[0].amount, '$3,600')
+
+  const hybrid = calculateQuote({ bot: { tiers: [0], qtyByTier: { 0: '3' }, addons: [], opts: {} } })
+  assert.equal(hybrid.one, 4500)
+  assert.equal(hybrid.monthly, 297)
+  assert.equal(hybrid.firstMonthsFree, 297)
+  assert.equal(hybrid.rows[0].label, 'AI Chatbot Integration — Launch · 3 × ($1,500 + $99/mo)')
+  assert.equal(hybrid.rows[0].amount, '$4,500 + $297/mo')
+
+  const monthlyOnly = calculateQuote({ seo: { tiers: [1], qtyByTier: { 1: 2 }, addons: [], opts: {} } })
+  assert.equal(monthlyOnly.monthly, 1700)
+  assert.equal(monthlyOnly.rows[0].label, 'Website SEO — Grow · 2 × $850/mo')
+})
+
+test('each tier keeps its own quantity, and the bundle discount covers the multiplied setup', () => {
+  const quote = calculateQuote({ web: { tiers: [0, 1], qtyByTier: { 0: 2 }, addons: [], opts: {} }, logo: selected(0) })
+  assert.equal(quote.one, 1800 * 2 + 4500 + 250)
+  assert.equal(quote.count, 2)
+  assert.equal(quote.pct, 5)
+  assert.equal(quote.bundleAmount, 417.5)
+  assert.equal(quote.rows[1].label, 'Website Development — Grow')
+})
+
+test('a missing or unusable quantity counts as one, and landing pages ignore it', () => {
+  for (const raw of [undefined, null, '', ' ', 0, -2, 1.5, 'abc', NaN, Infinity]) assert.equal(tierQty(raw), 1, String(raw))
+  assert.equal(tierQty('4'), 4)
+  assert.equal(tierQty(500), 99)
+  assert.equal(calculateQuote({ web: { tiers: [0], qtyByTier: { 0: '' }, addons: [], opts: {} } }).one, 1800)
+  assert.equal(calculateQuote({ landing: { tiers: [1], pagesByTier: { 1: 10 }, qtyByTier: { 1: 5 }, addons: [], opts: {} } }).one, 5000)
 })
 
 const logo = { id: 'custom-1', title: 'Logo refresh', description: 'Two concepts and one round of changes.', qty: '2', cost: '250.50' }

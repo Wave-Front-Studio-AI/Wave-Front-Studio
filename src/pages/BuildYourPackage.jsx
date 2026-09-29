@@ -3,7 +3,7 @@ import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { CATEGORIES, DETAILS, LANDING_PAGE_BUNDLES, OFFER, PAIRS, SERVICES } from '../data/generated/packages.js'
 import { contact } from '../data/site.js'
-import { addonQty, calculateQuote, creditAmount, customQuoteItem, defaultOptionIndex, landingPageBundle, landingPagesPrice, money, selectedTiers, tierPrice } from '../packageQuote.js'
+import { MAX_TIER_QTY, addonQty, calculateQuote, creditAmount, customQuoteItem, defaultOptionIndex, landingPageBundle, landingPagesPrice, money, selectedTiers, tierPrice, tierQty } from '../packageQuote.js'
 
 const serviceById = Object.fromEntries(SERVICES.map((service) => [service.id, service]))
 
@@ -105,6 +105,31 @@ function DetailsModal({ service, onClose, onSelect }) {
           ))}
         </div>
       </div>
+    </div>
+  )
+}
+
+// Minus and plus stay focusable at the limits (aria-disabled, not disabled) so keyboard focus isn't dropped mid-press.
+// The field accepts typing; it tidies itself to a whole number when it loses focus.
+function QtyStepper({ id, name, value, onChange }) {
+  const qty = tierQty(value)
+  const step = (by) => {
+    const next = qty + by
+    if (next >= 1 && next <= MAX_TIER_QTY) onChange(next)
+  }
+  return (
+    <div className="package-stepper">
+      <button type="button" onClick={() => step(-1)} aria-disabled={qty <= 1} aria-label={`One fewer ${name}`}>
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M5 10h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      </button>
+      <input id={id} type="number" min="1" max={MAX_TIER_QTY} step="1" inputMode="numeric" value={value} onChange={(event) => onChange(event.target.value)} onBlur={() => onChange(qty)} />
+      <button type="button" onClick={() => step(1)} aria-disabled={qty >= MAX_TIER_QTY} aria-label={`One more ${name}`}>
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M10 5v10M5 10h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      </button>
     </div>
   )
 }
@@ -225,7 +250,7 @@ function CustomItemModal({ item, onSave, onClose }) {
 }
 
 export default function BuildYourPackage() {
-  // state[id] = { tiers: [], pagesByTier: { [tierIndex]: pages }, notes: { [tierIndex]: text },
+  // state[id] = { tiers: [], pagesByTier: { [tierIndex]: pages }, qtyByTier: { [tierIndex]: qty }, notes: { [tierIndex]: text },
   //   addons: [], addonNotes: { [addonIndex]: text }, opts: { [addonIndex]: optionIndex } }
   const [state, setState] = useState({})
   const [modal, setModal] = useState(null)
@@ -568,6 +593,28 @@ export default function BuildYourPackage() {
                               </div>
                             )
                           }) : null}
+
+                          {id !== 'landing' ? (
+                            <div className="package-qty">
+                              <span className="pkg-label">Quantity</span>
+                              {tiers.map((index) => {
+                                const tier = service.tiers[index]
+                                const raw = entry.qtyByTier?.[index] ?? 1
+                                const qty = tierQty(raw)
+                                const fieldId = `qty-${id}-${index}`
+                                return (
+                                  <div className="package-qty-row" key={tier.n}>
+                                    <label htmlFor={fieldId}>
+                                      <strong>{tier.n}<span className="sr-only"> quantity</span></strong>
+                                      <small>{tierPrice(tier)} each</small>
+                                    </label>
+                                    <QtyStepper id={fieldId} name={tier.n} value={raw} onChange={(value) => setEntryMap(id, 'qtyByTier', index, value)} />
+                                    <b aria-live="polite">{tierPrice({ s: tier.s * qty, m: tier.m * qty })}</b>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          ) : null}
 
                           <div className="package-notes">
                             <span className="pkg-label">Notes shown on the quote (optional)</span>

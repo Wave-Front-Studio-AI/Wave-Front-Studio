@@ -16,6 +16,17 @@ export function tierPrice(tier) {
   return tier.s > 0 ? money(tier.s) : `${money(tier.m)}/mo`
 }
 
+// How many of a tier are on the quote, e.g. two Launch websites. Anything that isn't a whole number counts as one.
+export const MAX_TIER_QTY = 99
+
+export function tierQty(value) {
+  const qty = Number(value)
+  return Number.isInteger(qty) && qty >= 1 ? Math.min(qty, MAX_TIER_QTY) : 1
+}
+
+// The price of one, bracketed when it has a setup and a monthly part so "2 × ($1,500 + $99/mo)" reads correctly.
+export const eachPrice = (tier) => (tier.s > 0 && tier.m > 0 ? `(${tierPrice(tier)})` : tierPrice(tier))
+
 export function landingPageBundle(pages) {
   return LANDING_PAGE_BUNDLES.find((bundle) => bundle.pages === Number(pages)) ?? LANDING_PAGE_BUNDLES[0]
 }
@@ -116,12 +127,15 @@ export function calculateQuote(state) {
         continue
       }
       const bundle = service.id === 'landing' ? landingPageBundle(entry.pagesByTier?.[tierIndex] ?? entry.pages) : null
-      const total = { s: bundle ? landingPagesPrice(tier, bundle.pages) : tier.s, m: tier.m }
+      // Landing pages already count pages, so a quantity only applies to the other services.
+      const qty = bundle ? 1 : tierQty(entry.qtyByTier?.[tierIndex])
+      const total = { s: (bundle ? landingPagesPrice(tier, bundle.pages) : tier.s) * qty, m: tier.m * qty }
       one += total.s
       monthly += total.m
       const pageLabel = bundle ? ` · ${bundle.pages} page${bundle.pages === 1 ? '' : 's'}` : ''
+      const qtyLabel = qty > 1 ? ` · ${qty} × ${eachPrice(tier)}` : ''
       const description = [service.id === 'email' ? tier.note : '', note].filter(Boolean).join('\n')
-      rows.push({ label: `${service.name} — ${tier.n}${pageLabel}`, amount: tierPrice(total), ...(description ? { description } : {}) })
+      rows.push({ label: `${service.name} — ${tier.n}${pageLabel}${qtyLabel}`, amount: tierPrice(total), ...(description ? { description } : {}) })
     }
 
     for (const addonIndex of [...(entry.addons ?? [])].sort((a, b) => a - b)) {
