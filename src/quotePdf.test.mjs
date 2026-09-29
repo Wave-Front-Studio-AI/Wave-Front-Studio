@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import test from 'node:test'
-import { createQuotePdf, loadQuoteBrandAssets } from './quotePdf.js'
+import { createQuotePdf, loadQuoteBrandAssets, renderQuotePdf } from './quotePdf.js'
 import { SERVICES } from './data/generated/packages.js'
 import { calculateQuote } from './packageQuote.js'
 
@@ -103,6 +103,14 @@ test('branding failures can be retried and successful assets are cached', async 
   assert.deepEqual(loaded, assets)
   assert.equal(await loadQuoteBrandAssets(), loaded)
   assert.equal(fetch.mock.callCount(), 6)
+})
+
+test('the quote PDF comes back as a dated file for the page to download', async (t) => {
+  t.mock.method(globalThis, 'fetch', async (url) => new Response(url.endsWith('.jpg') ? assets.logo : url.includes('semibold') ? assets.semibold : assets.regular))
+  const { blob, filename } = await renderQuotePdf(quote)
+  assert.equal(blob.type, 'application/pdf')
+  assert.match(filename, /^Wavefront-Studio-Quote-\d{4}-\d{2}-\d{2}\.pdf$/)
+  assert.match(await blob.text(), /^%PDF-/)
 })
 
 test('quote notes and line notes export, including long notes across pages', () => {

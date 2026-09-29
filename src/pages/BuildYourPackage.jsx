@@ -256,6 +256,8 @@ export default function BuildYourPackage() {
   const [modal, setModal] = useState(null)
   const [toast, setToast] = useState('')
   const [pdfStatus, setPdfStatus] = useState('idle')
+  // The last PDF made, { url, filename }, offered as a link in case the browser blocked the automatic download.
+  const [pdfFile, setPdfFile] = useState(null)
   const [clientName, setClientName] = useState('')
   const [quoteNotes, setQuoteNotes] = useState('')
   // null when closed, { id: null } for a new custom item, { id } to edit one.
@@ -288,8 +290,14 @@ export default function BuildYourPackage() {
     if (!hasItems || quote.errors?.length || pdfStatus === 'loading') return
     setPdfStatus('loading')
     try {
-      const { downloadQuotePdf } = await import('../quotePdf.js')
-      await downloadQuotePdf({ ...quote, clientName: clientName.trim(), notes: quoteNotes.trim() })
+      const { renderQuotePdf } = await import('../quotePdf.js')
+      const { blob, filename } = await renderQuotePdf({ ...quote, clientName: clientName.trim(), notes: quoteNotes.trim() })
+      const file = { url: URL.createObjectURL(blob), filename }
+      const link = Object.assign(document.createElement('a'), { href: file.url, download: filename, rel: 'noopener' })
+      document.body.append(link)
+      link.click()
+      link.remove()
+      setPdfFile(file)
       setPdfStatus('idle')
       setToast('Your quote PDF is ready')
     } catch {
@@ -381,6 +389,22 @@ export default function BuildYourPackage() {
   const hasItems = quote.rows.length > 0
   const pendingPages = quote.pendingPageRate !== undefined
   const pendingNote = pendingPages ? `Plus ${money(quote.pendingPageRateAfter)} per page${quote.pct ? ` after the ${quote.pct}% bundle discount` : ''}. Page count and final total to be confirmed.` : ''
+
+  // Loads the PDF code and branding as soon as there's a quote, so the download starts straight after the click
+  // while the browser still counts it as the visitor's own. A failed load is retried on the click.
+  useEffect(() => {
+    if (!hasItems) return
+    import('../quotePdf.js').then((module) => module.loadQuoteBrandAssets()).catch(() => {})
+  }, [hasItems])
+
+  // A PDF link goes out of date as soon as the quote changes.
+  useEffect(() => setPdfFile(null), [state, clientName, quoteNotes])
+
+  // Old files are released a few minutes after they're replaced, so a download still sitting in a Save As dialog can finish.
+  useEffect(() => {
+    if (!pdfFile) return undefined
+    return () => window.setTimeout(() => URL.revokeObjectURL(pdfFile.url), 300000)
+  }, [pdfFile])
 
   const nextTier = [...OFFER.bundleTiers].sort((a, b) => a.min - b.min).find((tier) => quote.count < tier.min)
   const maxMin = Math.max(...OFFER.bundleTiers.map((tier) => tier.min))
@@ -784,6 +808,11 @@ export default function BuildYourPackage() {
                 </svg>
               </span>
             </button>
+            {pdfFile ? (
+              <p className="package-pdf-fallback">
+                Didn’t download? <a href={pdfFile.url} download={pdfFile.filename} target="_blank" rel="noopener">Open your PDF</a>
+              </p>
+            ) : null}
             {pdfStatus === 'error' ? (
               <p className="package-pdf-error" id="quote-pdf-error" role="alert">
                 We couldn’t create your PDF. Please try again.

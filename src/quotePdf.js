@@ -252,10 +252,12 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
   return doc
 }
 
-export async function downloadQuotePdf(quote) {
+// Returns the file rather than saving it: the page starts the download and keeps a link to the file on
+// screen, because some browsers block a download that starts a moment after the click instead of on it.
+export async function renderQuotePdf(quote) {
   const assets = await loadQuoteBrandAssets()
   const createdAt = new Date()
   const date = [createdAt.getFullYear(), String(createdAt.getMonth() + 1).padStart(2, '0'), String(createdAt.getDate()).padStart(2, '0')].join('-')
   const doc = createQuotePdf(quote, assets, createdAt)
-  await doc.save(`Wavefront-Studio-Quote-${date}.pdf`, { returnPromise: true })
+  return { blob: doc.output('blob'), filename: `Wavefront-Studio-Quote-${date}.pdf` }
 }
