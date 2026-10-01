@@ -40,6 +40,9 @@ const postSlugs = [
   'who-owns-your-website',
   'redesign-starts-with-your-enquiries',
   'your-contact-form-is-losing-enquiries',
+  'seo-company-that-guarantees-page-one',
+  'what-a-monthly-marketing-report-should-show',
+  'a-chatbot-that-guesses-is-worse-than-none',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
