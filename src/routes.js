@@ -39,6 +39,7 @@ const postSlugs = [
   'nobody-waits-for-a-slow-website',
   'who-owns-your-website',
   'redesign-starts-with-your-enquiries',
+  'your-contact-form-is-losing-enquiries',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
