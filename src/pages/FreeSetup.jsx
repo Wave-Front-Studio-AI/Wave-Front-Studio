@@ -6,9 +6,6 @@ import { contact, googleListingUrl } from '../data/site.js'
 import { freeSetupFaqs as FAQ } from '../data/faqs.js'
 import { deliverLead } from '../formSubmission.js'
 
-// The single number the live page exposes for editing.
-const PLACES_TOTAL = 5
-const PLACES_LEFT = 5
 
 const COVERED = [
   {
@@ -256,9 +253,6 @@ function ClaimForm() {
 }
 
 export default function FreeSetup() {
-  const taken = PLACES_TOTAL - PLACES_LEFT
-  const gone = PLACES_LEFT === 0
-
   return (
     <Layout
       className="offer-page"
@@ -290,16 +284,12 @@ export default function FreeSetup() {
             </div>
           </div>
 
+          {/* No running count of places: nobody updates one, and a number that
+              may be wrong is worse than none. The terms say how places work. */}
           <aside className="offer-meter">
-            <span className="offer-meter-label">Places left this quarter</span>
-            <strong className={PLACES_LEFT <= 2 ? 'is-low' : ''}>{PLACES_LEFT}</strong>
-            <p>{PLACES_LEFT} of {PLACES_TOTAL} places left this quarter</p>
-            <div className="offer-track" role="img" aria-label={`${taken} of ${PLACES_TOTAL} places allocated so far`}>
-              {Array.from({ length: PLACES_TOTAL }).map((_, index) => (
-                <i key={index} className={index < taken ? 'is-taken' : ''} />
-              ))}
-            </div>
-            <p className="offer-allocated">Allocated · {taken} of {PLACES_TOTAL} places allocated so far</p>
+            <span className="offer-meter-label">This quarter</span>
+            <strong>5 places</strong>
+            <p>A place is confirmed when an agreement is signed. Ask us whether one is still open.</p>
             <Countdown />
           </aside>
         </div>
@@ -365,15 +355,6 @@ export default function FreeSetup() {
               Get in touch and tell us which of the three you want. We’ll come back within two working days with whether a place is still
               open and what it would involve. No obligation, and we’ll tell you honestly if we’re not a fit.
             </p>
-            {gone ? (
-              <div className="offer-closed">
-                <h3>This quarter’s places are gone.</h3>
-                <p>
-                  You can still get in touch. We’ll put you at the front of the queue for next quarter and contact you before the offer
-                  goes out to anyone else.
-                </p>
-              </div>
-            ) : null}
             <div className="offer-checklist">
               {COVERED.map((item) => (
                 <span key={item.title}>

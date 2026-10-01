@@ -1192,14 +1192,9 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
 .offer-hero h1 { max-width: 17ch; }
 .offer-hero > .page-frame > div > p { max-width: 54ch; margin-top: 18px; color: var(--text); font-size: 1.08rem; line-height: 1.65; }
 .offer-meter { display: grid; gap: 10px; padding: clamp(22px, 3vw, 32px); border-radius: var(--r-lg); color: var(--white); background: var(--ink); }
-.offer-meter-label { color: var(--cyan); font-size: 0.9rem; font-weight: 600; }
+.offer-meter-label { color: rgba(255, 255, 255, 0.86); font-size: 0.9rem; font-weight: 600; }
 .offer-meter strong { font-family: var(--display); font-size: 3.6rem; font-weight: 600; line-height: 1; }
-.offer-meter strong.is-low { color: #ffb45c; }
 .offer-meter p { color: rgba(255, 255, 255, 0.86); font-size: 0.9rem; }
-.offer-track { display: flex; gap: 6px; margin: 6px 0; }
-.offer-track i { flex: 1; height: 6px; border-radius: 999px; background: var(--cyan); }
-.offer-track i.is-taken { background: rgba(255, 255, 255, 0.22); }
-.offer-allocated { font-size: 0.875rem !important; }
 .offer-countdown { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px; margin-top: 12px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.18); }
 .offer-countdown:not([data-ready]) { visibility: hidden; }
 .offer-countdown-label { width: 100%; color: rgba(255, 255, 255, 0.86); font-size: 0.875rem; }
@@ -1236,8 +1231,6 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
 .claim-choices input, .audit-check input { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--brand-deep); flex: 0 0 auto; }
 .claim-note { color: var(--muted); font-size: 0.875rem; line-height: 1.6; }
 .claim-note a { color: var(--brand-deep); }
-.offer-closed { margin-top: 22px; padding: 20px 24px; border-radius: var(--r-md); background: var(--mist); }
-.offer-closed p { margin-top: 9px; color: var(--text); font-size: 0.975rem; line-height: 1.6; }
 .offer-checklist { display: grid; gap: 8px; margin-top: 26px; }
 .offer-checklist span { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 16px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--white); font-size: 0.95rem; }
 .offer-checklist b { color: var(--cyan-deep); font-size: 0.875rem; font-weight: 600; }
