@@ -17,6 +17,9 @@ export const contact = {
   emailHref: 'mailto:info@wavefrontstudiollc.com',
   address: 'Sarasota, FL 34234, United States',
   instagram: 'https://www.instagram.com/wavefrontstudio',
+  facebook: 'https://www.facebook.com/p/Wavefront-Studio-61593264447650/',
+  // The Google Business Profile, without the tracking parameters on the shared link.
+  googleProfile: 'https://www.google.com/maps/place/Wavefront+Studio+LLC/data=!4m2!3m1!1s0x0:0xbd4481c35228d5eb',
   maps: 'https://www.google.com/maps/place/4363+Independence+Ct,+Sarasota,+FL+34234,+USA/',
 }
 

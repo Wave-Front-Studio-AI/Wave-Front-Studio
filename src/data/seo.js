@@ -32,7 +32,7 @@ export const organization = {
     postalCode: '34234',
     addressCountry: 'US',
   },
-  sameAs: [contact.instagram],
+  sameAs: [contact.instagram, contact.facebook, contact.googleProfile],
   hasMap: contact.maps,
   // The studio works remotely for clients across the US (location pages say so).
   areaServed: { '@type': 'Country', name: 'United States' },
