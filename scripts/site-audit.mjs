@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { routes } from '../src/routes.js'
@@ -25,6 +26,20 @@ const decode = (text) => text.replace(/&amp;/g, '&').replace(/&#39;/g, "'").repl
 const JSONLD = /<script type="application\/ld\+json"([^>]*)>([\s\S]*?)<\/script>/g
 const ORGANIZATION_ID = `${siteOrigin}/#organization`
 
+// Every inline script must be named by hash in the page's CSP meta tag
+// (scripts/prerender.mjs), or the browser refuses to run it.
+function checkCsp(path, html) {
+  const policy = html.match(/<meta http-equiv="Content-Security-Policy" content="([^"]+)"/)?.[1]
+  if (!policy) return failures.push(`${path}: no Content-Security-Policy meta tag`)
+  if (html.indexOf('http-equiv="Content-Security-Policy"') > html.indexOf('<script')) failures.push(`${path}: CSP comes after a script`)
+  for (const [, attributes, code] of html.matchAll(/<script(?![^>]*\bsrc=)([^>]*)>([\s\S]*?)<\/script>/g)) {
+    if (/application\/ld\+json/.test(attributes)) continue
+    const hash = `'sha256-${createHash('sha256').update(code, 'utf8').digest('base64')}'`
+    if (!policy.includes(hash)) failures.push(`${path}: an inline script is not in the CSP`)
+  }
+}
+for (const file of ['404.html', 'free-website-audit/index.html']) checkCsp(`/${file}`, await readFile(resolve(dist, file), 'utf8'))
+
 for (const route of routes) {
   const file = route.path === '/' ? resolve(dist, 'index.html') : resolve(dist, `.${route.path}index.html`)
   const html = await readFile(file, 'utf8')
@@ -43,6 +58,7 @@ for (const route of routes) {
   if (h1Count !== 1) failures.push(`${route.path}: expected one h1, found ${h1Count}`)
   if (plainText(body).length < 300) failures.push(`${route.path}: body is only ${plainText(body).length} characters`)
   if (/class="[^"]*chat-agent/.test(html)) failures.push(`${route.path}: chat markup was prerendered`)
+  checkCsp(route.path, html)
 
   // An AI-writing tell (DESIGN.md, "Copy"). Advice rather than a failure: a few
   // price separators and the Google data disclosure keep theirs on purpose.

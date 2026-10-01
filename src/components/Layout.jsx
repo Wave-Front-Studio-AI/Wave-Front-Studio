@@ -64,7 +64,6 @@ export function useSeo({ title, description, canonical, schema }) {
 // and nothing is hidden at all without JavaScript or with reduced motion.
 const REVEAL_SELECTOR = [
   '.section-head',
-  '.work-grid',
   '.offering-groups',
   '.process-timeline',
   '.studio-grid',

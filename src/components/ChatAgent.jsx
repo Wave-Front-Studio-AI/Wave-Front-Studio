@@ -3,6 +3,7 @@ import { ArrowIcon, ChatIcon, CloseIcon, MailIcon, PhoneIcon, SendIcon, WaveGlyp
 import { contact, customWorkLinks, serviceLinks } from '../data/site.js'
 import { deliverLead } from '../formSubmission.js'
 import { CHIPS, HANDOFF_PHRASES, SUPPORTED_LANGUAGES, strings } from '../chatLocale.js'
+import { Honeypot } from './shared.jsx'
 
 const STORAGE_KEY = 'wavefront-chat-session'
 const MAX_TRANSCRIPT_LENGTH = 5_000
@@ -402,6 +403,7 @@ export default function ChatAgent() {
               </div>
             ) : (
               <form className="chat-form" onSubmit={submitRequest}>
+                <Honeypot />
                 <p className="chat-form-intro">{copy.formIntro}</p>
                 <label>
                   <span>{copy.name}</span>

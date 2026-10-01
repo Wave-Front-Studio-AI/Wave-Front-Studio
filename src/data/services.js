@@ -17,13 +17,13 @@ export const services = [
     approach: {
       title: 'What we build',
       paragraphs: [
-        'We build every type of website: B2B and corporate sites, e-commerce stores, portfolios, SaaS platforms, landing pages and multi-site setups. For ResinRock we built more than 12 connected sites. Every project starts from scratch, built for speed, search visibility and conversions.',
+        'We build every type of website: B2B and corporate sites, e-commerce stores, portfolios, SaaS platforms, landing pages and multi-site setups. For our sister company, a surfacing manufacturer, we built more than 12 connected sites. Every project starts from scratch, built for speed, search visibility and conversions.',
         'Our team works with WordPress, Shopify, WooCommerce, custom HTML/CSS and modern JavaScript frameworks. The result loads fast, ranks on Google and works properly on every device. You’re involved at each stage, from strategy and wireframes through design, development and launch, so what ships is what your business actually needs.',
       ],
       image: {
         image: '/images/work/resinrock-site.webp',
-        alt: 'The ResinRock homepage in a desktop browser',
-        caption: 'resinrock.com, one of the 12+ connected sites we built for ResinRock.',
+        alt: 'A surfacing manufacturer’s homepage in a desktop browser',
+        caption: 'The main site in a network of 12+ connected sites we built for our sister company.',
       },
     },
     features: [
@@ -43,8 +43,8 @@ export const services = [
         'We don’t disappear after launch. That covers maintenance, security updates, performance monitoring, content updates and new features as you need them. Adding a product line, expanding into a new market, or wanting a calculator or chatbot bolted on? We build those in as your site grows.',
       ],
       image: '/images/calc.webp',
-      alt: 'The ResinRock material calculator, showing a price breakdown for a patio project',
-      caption: 'A material calculator we built for ResinRock. It prices the job and adds everything to the cart.',
+      alt: 'A material calculator showing a price breakdown for a patio project',
+      caption: 'A material calculator we built for our sister company, a surfacing manufacturer. It prices the job and adds everything to the cart.',
     },
     cta: {
       title: 'Your website should work as hard as you do',
@@ -85,7 +85,7 @@ export const services = [
       title: 'What we deliver',
       paragraphs: [
         'Technical SEO is where a lot of agencies cut corners. We don’t: we go through your site’s structure, fix crawl errors, improve page speed, clean up broken links and make sure Google can index every page that matters. A good-looking website is wasted if search engines can’t find it.',
-        'SEO isn’t a one-off project. We provide monthly reporting, keyword tracking, content recommendations and ongoing optimisation so rankings keep moving in the right direction. We took ResinRock from low visibility to Google’s first page for competitive industry terms, working the same way: steady, monthly effort rather than a single push.',
+        'SEO isn’t a one-off project. We provide monthly reporting, keyword tracking, content recommendations and ongoing optimisation so rankings keep moving in the right direction. We took our sister company, a surfacing manufacturer, from low visibility to Google’s first page for competitive industry terms, working the same way: steady, monthly effort rather than a single push.',
       ],
     },
     plans: {
@@ -271,7 +271,7 @@ export const services = [
       'Website banners, ad creatives, and email headers',
       'Brand guidelines and style documentation',
       'Print-ready and digital-ready file delivery',
-      'Unlimited revisions until it’s right',
+      'Revision rounds in every package, unlimited within scope on the largest',
     ],
     deliver: {
       title: 'What we deliver',
@@ -381,7 +381,7 @@ export const services = [
     faqs: [
       ['Is the website audit really free?', 'Yes. The initial website performance audit is free and does not require a card or a service commitment. It is designed to show you the strongest opportunities before you decide whether to make changes yourself or ask Wavefront to help.'],
       ['What does the free audit cover?', 'It covers visible mobile usability, performance, technical SEO, search visibility, calls to action, forms, and the path from a landing page to an enquiry. Deeper analytics or private-system reviews require your permission and access.'],
-      ['How do I request an audit?', 'Submit your name, email, and website URL through the form on this page. Add any specific concern in the message, such as slow pages, poor rankings, or forms that are not converting.'],
+      ['How do I request an audit?', 'Fill in the short form on this page: your name, phone, email and website address. If something specific worries you, such as slow pages, poor rankings or a form that never seems to send anything, tell us when we get in touch and we will look at it first.'],
       ['Can I use the recommendations myself?', 'Yes. The recommendations are written to be useful whether you handle them internally, share them with another provider, or ask Wavefront Studio to implement them.'],
       ['What if I do not have a website yet?', 'Tell us what online presence you currently use, such as a Google Business Profile or social page. We can review the current path from search or social to contact, and explain what a dedicated website would change.'],
     ],
@@ -419,8 +419,8 @@ export const services = [
       ],
       image: {
         image: '/images/work/resinrockleads-site.webp',
-        alt: 'The Resin Rock Leads homepage, offering verified leads to installers',
-        caption: 'Resin Rock Leads, where enquiries from several sites are routed to the nearest installer.',
+        alt: 'A lead network homepage offering verified leads to installers',
+        caption: 'A lead network we built for our sister company, where enquiries from several sites are routed to the nearest installer.',
       },
     },
     featuresHeading: {

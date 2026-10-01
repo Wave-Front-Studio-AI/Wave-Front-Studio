@@ -3,7 +3,8 @@ import { ArrowIcon } from '../components/Icons.jsx'
 import { CtaBand, EnquiryForm, FaqAccordion, OfferingList, SectionHeading, SupportCallout, Testimonials } from '../components/shared.jsx'
 import { contact, offerings, projects, siteOrigin } from '../data/site.js'
 import { siteFaqs as faqItems } from '../data/faqs.js'
-import { breadcrumbs, pageGraph } from '../data/seo.js'
+import { pageGraph } from '../data/seo.js'
+import { sizeOf } from '../data/imageSizes.js'
 
 /* ------------------------------------------------------------------ */
 /* About                                                               */
@@ -33,7 +34,7 @@ export function AboutPage() {
             <h2>What we have built</h2>
             <div className="prose">
               <p>
-                For ResinRock, a resin-bound surfacing company, we built more than 12 connected websites, the material calculators on
+                For ResinRock, a resin-bound surfacing company in the same group as Wavefront, we built more than 12 connected websites, the material calculators on
                 them, and the system that sends each enquiry to the nearest available installer. We also took their main site onto the
                 first page of Google for its core industry searches.
               </p>
@@ -107,7 +108,7 @@ export function PortfolioPage() {
       className="portfolio-page"
       seo={{
         title: 'Our Work & Portfolio | Wavefront Studio LLC',
-        description: 'Websites, lead routing and SEO work Wavefront Studio has built for clients, from a ResinRock site network to first-page Google results, all live.',
+        description: 'Websites, lead routing and SEO work Wavefront Studio has built for clients, from a 12-site manufacturer network to first-page search results, all live.',
         canonical: '/portfolio/',
       }}
     >
@@ -124,7 +125,7 @@ export function PortfolioPage() {
             {projects.map((project) => (
               <article key={project.title} className="project-row">
                 <div className="project-row-media">
-                  <img src={project.image} alt={project.alt} loading="lazy" style={project.focus ? { '--focus': project.focus } : undefined} />
+                  <img src={project.image} alt={project.alt} loading="lazy" {...sizeOf(project.image)} style={project.focus ? { '--focus': project.focus } : undefined} />
                 </div>
                 <div className="project-row-body">
                   <h2>{project.title}</h2>
@@ -170,14 +171,14 @@ export function ContactPage() {
       className="contact-page"
       seo={{
         title: 'Contact Wavefront Studio | Free Consultation',
-        description: 'Call, email or message Wavefront Studio at our Sarasota, Florida office about a website, SEO, app or lead system. We reply within one to two working days.',
+        description: 'Call, email or message Wavefront Studio at our Sarasota, Florida office about a website, SEO, app or lead system. We reply within two working days.',
         canonical: '/contact/',
       }}
     >
       <section className="page-hero">
         <div className="page-frame">
           <h1>Contact the studio</h1>
-          <p>Tell us what you are working on. We reply within one to two working days.</p>
+          <p>Tell us what you are working on. We reply within two working days.</p>
         </div>
       </section>
 
@@ -200,6 +201,10 @@ export function ContactPage() {
               <li>
                 <span>Phone</span>
                 <a href={contact.phoneHref}>{contact.phone}</a>
+              </li>
+              <li>
+                <span>Hours</span>
+                {contact.hours}
               </li>
               <li>
                 <span>Instagram</span>
@@ -242,7 +247,6 @@ export function FaqsPage() {
         acceptedAnswer: { '@type': 'Answer', text },
       })),
     },
-    breadcrumbs([['Home', '/'], ['FAQs', '/faqs/']]),
   )
 
   return (
@@ -250,7 +254,7 @@ export function FaqsPage() {
       className="faqs-page"
       seo={{
         title: 'Frequently Asked Questions | Wavefront Studio LLC',
-        description: 'Answers to the questions clients ask Wavefront Studio before a project starts: pricing, timelines, SEO results, ownership, support and how we work remotely.',
+        description: 'Answers to what clients ask Wavefront Studio before a project starts: build times, platforms, mobile, support, AI chatbots, calculators and remote work.',
         canonical: '/faqs/',
         schema,
       }}

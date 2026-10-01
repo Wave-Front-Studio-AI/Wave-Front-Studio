@@ -1,6 +1,6 @@
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { CtaBand, EnquiryForm, FaqAccordion, OfferingList, SectionHeading, Testimonials } from '../components/shared.jsx'
+import { Breadcrumbs, CtaBand, EnquiryForm, FaqAccordion, OfferingList, SectionHeading, Testimonials } from '../components/shared.jsx'
 import { ServiceHeroMedia } from './ServicePage.jsx'
 import { locations } from '../data/generated/locations.js'
 import { services } from '../data/services.js'
@@ -114,6 +114,7 @@ function PlaceLayout({ slug, title, heading, mediaTag, place, description, conte
   const canonical = `/${slug}/`
   const url = absoluteUrl(canonical)
   const { body, faqs } = splitGuide(content, place)
+  const trail = [['Home', '/'], ['Where We Work', '/locations/'], [heading, canonical]]
   const schema = pageGraph(
     webPage({ path: canonical, name: heading, description }),
     {
@@ -127,7 +128,7 @@ function PlaceLayout({ slug, title, heading, mediaTag, place, description, conte
       areaServed,
       hasOfferCatalog: offerCatalog,
     },
-    breadcrumbs([['Home', '/'], ['Where We Work', '/locations/'], [heading, canonical]]),
+    breadcrumbs(trail),
     faqs.length
       ? {
           '@type': 'FAQPage',
@@ -151,6 +152,7 @@ function PlaceLayout({ slug, title, heading, mediaTag, place, description, conte
               <span className="service-media-tag">{mediaTag}</span>
             </div>
             <div>
+              <Breadcrumbs trail={trail} />
               <h1>{heading}</h1>
               <p className="service-subhead">{description}</p>
               <div className="hero-actions">
@@ -214,13 +216,20 @@ export function LocationPage({ location }) {
   const name = placeName(location.title)
   const place = name.slice(0, name.lastIndexOf(', '))
   const local = LOCAL_PLACES.has(location.slug)
-  // Same-state pages first, then the rest, so the links a visitor sees are the
-  // ones most likely to be useful. The hub holds the full list.
-  const others = locations
-    .filter((item) => item.slug !== location.slug && isLive(item.slug))
-    .sort((a, b) => Number(b.title.endsWith(`, ${state}`)) - Number(a.title.endsWith(`, ${state}`)))
+  // Nearby pages first (local with local, remote with remote, same state ahead
+  // of the rest), then everything else. Each page starts the list from the one
+  // after itself, so every place gets roughly the same number of links instead
+  // of the first eleven in the data taking them all. The hub holds the full list.
+  const at = liveLocations.findIndex((item) => item.slug === location.slug)
+  const others = [...liveLocations.slice(at + 1), ...liveLocations.slice(0, Math.max(at, 0))]
+    .map((item, order) => ({
+      item,
+      order,
+      rank: (LOCAL_PLACES.has(item.slug) === local ? 0 : 2) + (item.title.endsWith(`, ${state}`) ? 0 : 1),
+    }))
+    .sort((a, b) => a.rank - b.rank || a.order - b.order)
     .slice(0, 11)
-    .map((item) => ({ slug: item.slug, name: placeName(item.title) }))
+    .map(({ item }) => ({ slug: item.slug, name: placeName(item.title) }))
 
   return (
     <PlaceLayout

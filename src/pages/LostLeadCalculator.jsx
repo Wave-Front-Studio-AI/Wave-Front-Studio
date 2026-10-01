@@ -84,7 +84,7 @@ export default function LostLeadCalculator() {
     <Layout
       className="calculator-page"
       seo={{
-        title: 'Lost Lead Calculator | Wavefront Studio',
+        title: 'Lost Lead Calculator for Small Businesses | Wavefront Studio',
         description:
           'Missed calls. Slow replies. Enquiries nobody followed up. Put your own numbers in and see what it adds up to over twelve months.',
         canonical: '/lost-lead-calculator/',
@@ -242,7 +242,7 @@ export default function LostLeadCalculator() {
 
       <CtaBand
         title="Ready to plug the leak?"
-        copy="We will set up the answering, follow-up and review systems for you, free to get started."
+        copy="We will set up the answering, follow-up and review systems for you. The setup fee is waived for up to five businesses a quarter; monthly fees still apply."
         label="See the free setup offer"
         href="/free-setup/"
         secondary={[`Prefer to talk it through? Call ${contact.phone}`, contact.phoneHref]}

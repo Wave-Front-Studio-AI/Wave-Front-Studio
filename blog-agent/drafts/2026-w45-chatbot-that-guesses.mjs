@@ -2,7 +2,7 @@
 export default {
   slug: 'a-chatbot-that-guesses-is-worse-than-none',
   title: 'A Chatbot That Guesses Is Worse Than No Chatbot at All',
-  date: '2026-11-06',
+  date: '2026-10-01',
   excerpt: 'An assistant that makes up a price or a promise costs more than it saves. Here is what a safe website chatbot does, and the questions to ask before you add one.',
   image: '/images/blog/a-chatbot-that-guesses-is-worse-than-none.webp',
   content: [

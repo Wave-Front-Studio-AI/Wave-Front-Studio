@@ -53,11 +53,20 @@ for (const f of list) {
 const publishedSlugs = new Set(posts.map((p) => p.slug))
 const routePaths = new Set(routes.map((r) => r.path))
 
+// A post goes out on its date, not before: a future date on a live page reads
+// as wrong to readers and to Google. Drafts dated later are held, not refused,
+// so --all can publish whatever is due and leave the rest for their week.
+const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+
 const ready = []
 let blocked = 0
 for (const { post, source } of drafts) {
   if (publishedSlugs.has(post?.slug)) {
     console.log(`skip   ${post.slug} — already published`)
+    continue
+  }
+  if (typeof post?.date === 'string' && post.date > today) {
+    console.log(`hold   ${post.slug} — dated ${post.date}; publish on or after that day`)
     continue
   }
   const { errors, warnings } = await validate(post, { existingSlugs: publishedSlugs, routePaths, source })

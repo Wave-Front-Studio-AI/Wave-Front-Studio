@@ -83,7 +83,7 @@ export const SERVICES = [
   {
     "id": "landing",
     "name": "Landing Pages",
-    "blurb": "Choose a tier and number of pages, or enter your own scope and pricing with Custom. Grow and Scale include high-intent SEO. Scale adds custom design and conversion tracking.",
+    "blurb": "Choose a tier and number of pages, or pick Custom for a unique build priced to your scope. Grow and Scale include high-intent SEO. Scale adds custom design and conversion tracking.",
     "billing": "onetime",
     "tiers": [
       {
@@ -109,7 +109,7 @@ export const SERVICES = [
         "custom": true,
         "s": 0,
         "m": 0,
-        "note": "Unique builds with your own scope & pricing"
+        "note": "Unique builds, priced to your scope"
       }
     ],
     "addons": []

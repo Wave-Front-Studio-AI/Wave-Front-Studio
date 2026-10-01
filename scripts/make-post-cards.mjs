@@ -35,8 +35,8 @@ const RENDER_SCALE = 2
 // Copied from :root in src/styles.css.
 const ink = '#0d1b2a'
 const ink2 = '#143a5c'
-const brand = '#4284cb'
-const cyan = '#36f0ee'
+const brand = '#3578c1'
+const cyan = '#2bb3c8'
 
 // Motifs are drawn inside a 400x400 box centred on the canvas; the helpers keep
 // each one to plain shapes so they stay legible at thumbnail size.

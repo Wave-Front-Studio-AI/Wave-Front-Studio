@@ -1,11 +1,12 @@
 import { useEffect, useRef } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { CtaBand, EnquiryForm, FaqAccordion, SectionHeading, SupportCallout, Testimonials } from '../components/shared.jsx'
+import { Breadcrumbs, CtaBand, EnquiryForm, FaqAccordion, SectionHeading, SupportCallout, Testimonials, choosePlan } from '../components/shared.jsx'
 import { services } from '../data/services.js'
 import { customWorks } from '../data/customWorks.js'
 import { siteOrigin } from '../data/site.js'
 import { breadcrumbs, byOrganization, pageGraph } from '../data/seo.js'
+import { sizeOf } from '../data/imageSizes.js'
 
 // The studio's own promo videos. Pages without one show no hero media at all
 // rather than a stock photo. With autoPlay off, only the poster loads until
@@ -42,7 +43,6 @@ export function ServiceHeroMedia({ hero, autoPlay = true }) {
       aria-label={hero.alt}
     >
       <source src={hero.video} type="video/mp4" />
-      Your browser does not support embedded video.
     </video>
   )
 }
@@ -75,7 +75,7 @@ function PlanCard({ plan }) {
           </li>
         ))}
       </ul>
-      <a className="kinetic-button group plan-cta" href="/contact/">
+      <a className="kinetic-button group plan-cta" href="#service-form" onClick={() => choosePlan(plan.name)}>
         <span>Request pricing</span>
         <span className="button-island">
           <ArrowIcon className="size-4" />
@@ -125,6 +125,7 @@ function RelatedServices({ current }) {
 export default function ServicePage({ service }) {
   const canonical = `/${service.slug}/`
   const url = `${siteOrigin}${canonical}`
+  const trail = [['Home', '/'], ['Our Services', '/services/'], [service.name, canonical]]
   const schema = pageGraph(
     {
       '@type': 'Service',
@@ -136,7 +137,7 @@ export default function ServicePage({ service }) {
       areaServed: 'Worldwide',
       provider: byOrganization,
     },
-    breadcrumbs([['Home', '/'], ['Our Services', '/services/'], [service.name, canonical]]),
+    breadcrumbs(trail),
     service.faqs
       ? {
           '@type': 'FAQPage',
@@ -154,7 +155,7 @@ export default function ServicePage({ service }) {
   const serviceForm = (
     <EnquiryForm
       heading={service.form?.heading || 'Tell us what you need'}
-      copy={service.form?.copy || 'A few lines about the business and the problem is enough. We reply within one to two working days.'}
+      copy={service.form?.copy || 'A few lines about the business and the problem is enough. We reply within two working days.'}
       subjectDefault={service.name}
       source={service.slug}
       websiteField={service.form?.websiteField}
@@ -174,6 +175,7 @@ export default function ServicePage({ service }) {
           // it on a wide screen), and the video waits below until played.
           <div className="page-frame service-entry-grid is-landing">
             <div className="service-landing-intro">
+              <Breadcrumbs trail={trail} />
               <h1>{service.name}</h1>
               <p className="service-subhead">{service.subhead}</p>
               {service.landingNote ? <p className="service-landing-note">{service.landingNote}</p> : null}
@@ -196,10 +198,11 @@ export default function ServicePage({ service }) {
                 </div>
               ) : null}
               <div>
+                <Breadcrumbs trail={trail} />
                 <h1>{service.name}</h1>
                 <p className="service-subhead">{service.subhead}</p>
                 <div className="hero-actions">
-                  <a className="kinetic-button group" href={service.primaryCta?.href || '/contact/'}>
+                  <a className="kinetic-button group" href={service.primaryCta?.href || '#service-form'}>
                     <span>{service.primaryCta?.label || 'Get a free consultation'}</span>
                     <span className="button-island">
                       <ArrowIcon className="size-4" />
@@ -230,7 +233,7 @@ export default function ServicePage({ service }) {
           </div>
           {service.approach.image ? (
             <figure className="service-approach-media">
-              <img src={service.approach.image.image} alt={service.approach.image.alt} loading="lazy" />
+              <img src={service.approach.image.image} alt={service.approach.image.alt} loading="lazy" {...sizeOf(service.approach.image.image)} />
               {service.approach.image.caption ? <figcaption>{service.approach.image.caption}</figcaption> : null}
             </figure>
           ) : null}
@@ -256,7 +259,7 @@ export default function ServicePage({ service }) {
           <div className={`page-frame ${service.extra.image ? 'service-split is-reverse' : 'service-single'}`}>
             {service.extra.image ? (
               <div className="service-approach-media">
-                <img src={service.extra.image} alt={service.extra.alt} loading="lazy" />
+                <img src={service.extra.image} alt={service.extra.alt} loading="lazy" {...sizeOf(service.extra.image)} />
               </div>
             ) : null}
             <div>
@@ -289,7 +292,7 @@ export default function ServicePage({ service }) {
           </div>
           {service.deliver.image ? (
             <figure className="service-deliver-media">
-              <img src={service.deliver.image} alt={service.deliver.alt} loading="lazy" />
+              <img src={service.deliver.image} alt={service.deliver.alt} loading="lazy" {...sizeOf(service.deliver.image)} />
               {service.deliver.caption ? <figcaption>{service.deliver.caption}</figcaption> : null}
             </figure>
           ) : null}

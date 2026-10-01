@@ -1,9 +1,19 @@
+import { consentWording } from '../../src/data/smsConsent.js'
+
 const text = (value) => (typeof value === 'string' ? value.trim() : value == null ? '' : String(value))
 
+// Only http and https addresses are kept; anything else with a scheme
+// (javascript:, data:, file:) is dropped rather than stored in the CRM.
 const website = (value) => {
   const normalized = text(value)
-  if (!normalized || /^[a-z][a-z\d+.-]*:\/\//i.test(normalized)) return normalized
-  return `https://${normalized}`
+  if (!normalized) return ''
+  const candidate = /^[a-z][a-z\d+.-]*:/i.test(normalized) ? normalized : `https://${normalized}`
+  try {
+    const url = new URL(candidate)
+    return url.protocol === 'http:' || url.protocol === 'https:' ? candidate : ''
+  } catch {
+    return ''
+  }
 }
 
 export function normalizeLead(body = {}) {
@@ -29,12 +39,25 @@ export function normalizeLead(body = {}) {
     ...(labelledLines.length ? ['', 'Form answers:', ...labelledLines] : []),
   ].filter(Boolean).join('\n')
   const truthy = (value) => (value ? /^(1|true|yes|on)$/i.test(value) : undefined)
-  const consentValue = pick('sms_consent', 'smsConsent')
-  const smsConsent = truthy(consentValue)
+  // The wording is looked up from the version the form names, never taken
+  // from the request, so the record holds what the site actually showed. A
+  // ticked box with a wording this site never showed is not recorded as
+  // permission; the notes say so, for a person to follow up.
+  const consent = (box, version, textKey) => {
+    if (!truthy(pick(box))) return { given: undefined, wording: undefined, unverified: false }
+    const wording = consentWording(pick(version), pick(textKey))
+    return wording ? { given: true, wording, unverified: false } : { given: undefined, wording: undefined, unverified: true }
+  }
+  const service = consent('sms_consent', 'sms_consent_version', 'sms_consent_text')
   // Marketing permission is a separate box, kept separate all the way through:
   // the Campaign Registry requires marketing consent to stand on its own.
-  const smsMarketingConsent = truthy(pick('sms_marketing_consent', 'smsMarketingConsent'))
+  const marketing = consent('sms_marketing_consent', 'sms_marketing_consent_version', 'sms_marketing_consent_text')
+  const smsConsent = service.given
+  const smsMarketingConsent = marketing.given
   const pageUrl = page ? `https://wavefrontstudiollc.com${page}` : undefined
+  const consentNote = [service, marketing].some((box) => box.unverified)
+    ? 'A text-message box was ticked, but the form did not send a wording this site shows, so no permission to text was recorded. Ask before texting.'
+    : ''
 
   return {
     name: pick('name', 'full_name'),
@@ -45,18 +68,18 @@ export function normalizeLead(body = {}) {
     industry: pick('industry', 'trade', 'sector'),
     location: pick('city', 'location', 'service_area'),
     website: website(pick('website')),
-    notes,
+    notes: [notes, consentNote].filter(Boolean).join('\n'),
     source,
     smsConsent,
     smsConsentAt: smsConsent ? submittedAt : undefined,
     smsConsentUrl: smsConsent ? pageUrl : undefined,
     // The exact wording the person ticked, kept as the proof of what they
     // agreed to. Only stored when they did agree.
-    smsConsentText: smsConsent ? pick('sms_consent_text', 'smsConsentText') : undefined,
+    smsConsentText: service.wording,
     smsMarketingConsent,
     smsMarketingConsentAt: smsMarketingConsent ? submittedAt : undefined,
     smsMarketingConsentUrl: smsMarketingConsent ? pageUrl : undefined,
-    smsMarketingConsentText: smsMarketingConsent ? pick('sms_marketing_consent_text', 'smsMarketingConsentText') : undefined,
+    smsMarketingConsentText: marketing.wording,
     consentUrl: pageUrl,
     consentCapturedAt: submittedAt,
   }

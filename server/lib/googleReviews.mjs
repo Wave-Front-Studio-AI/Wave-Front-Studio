@@ -4,9 +4,14 @@
 
 const PLACES_API = 'https://places.googleapis.com/v1'
 
-// Wavefront Studio LLC is a service-area business (no public address), so the
-// listing is found by name with service-area results switched on. Setting
-// GOOGLE_PLACE_ID skips that lookup.
+// The listing's place ID. It is public (Google puts it in the "write a review"
+// link), and knowing it means each call is one Place Details request rather
+// than a billed Text Search first. GOOGLE_PLACE_ID overrides it.
+export const STUDIO_PLACE_ID = 'ChIJZ-v0EZy0UogR69UoUsOBRL0'
+
+// Only used if Google retires that ID: Wavefront Studio LLC is a service-area
+// business (no public address), so the listing is found by name with
+// service-area results switched on.
 const LISTING_QUERY = 'Wavefront Studio LLC, Sarasota, FL'
 
 // The listing's permanent Maps link (its CID), used whenever the API cannot
@@ -14,10 +19,11 @@ const LISTING_QUERY = 'Wavefront Studio LLC, Sarasota, FL'
 export const GOOGLE_LISTING_URL = 'https://www.google.com/maps?cid=13638168247481718251'
 
 export class ReviewsError extends Error {
-  constructor(message, status) {
+  constructor(message, status, googleStatus) {
     super(message)
     this.name = 'ReviewsError'
     this.status = status
+    this.googleStatus = googleStatus
   }
 }
 
@@ -25,7 +31,7 @@ export function loadReviewsConfig(env = process.env) {
   const timeout = Number(env.GOOGLE_PLACES_TIMEOUT_MS)
   return {
     apiKey: env.GOOGLE_PLACES_API_KEY || '',
-    placeId: env.GOOGLE_PLACE_ID || '',
+    placeId: env.GOOGLE_PLACE_ID || STUDIO_PLACE_ID,
     timeoutMs: Number.isFinite(timeout) && timeout > 0 ? timeout : 8000,
   }
 }
@@ -53,7 +59,7 @@ async function placesRequest(url, { method = 'GET', body, fieldMask }, config, f
   }
   if (!response.ok) {
     const detail = (await response.text()).replace(/[\r\n]+/g, ' ').slice(0, 240)
-    throw new ReviewsError(`Google rejected the request (${response.status}): ${detail}`, 502)
+    throw new ReviewsError(`Google rejected the request (${response.status}): ${detail}`, 502, response.status)
   }
   return response.json()
 }
@@ -86,13 +92,24 @@ export function resetPlaceIdCache() {
 
 export async function fetchReviews(config, fetchImpl = fetch) {
   if (!config.apiKey) throw new ReviewsError('Google reviews are not configured.', 503)
-  const id = await resolvePlaceId(config, fetchImpl)
-  const place = await placesRequest(
-    `${PLACES_API}/places/${encodeURIComponent(id)}?languageCode=en`,
-    { fieldMask: 'id,displayName,rating,userRatingCount,googleMapsUri,reviews' },
-    config,
-    fetchImpl,
-  )
+  const details = (placeId) =>
+    placesRequest(
+      `${PLACES_API}/places/${encodeURIComponent(placeId)}?languageCode=en`,
+      { fieldMask: 'id,displayName,rating,userRatingCount,googleMapsUri,reviews' },
+      config,
+      fetchImpl,
+    )
+  let id = await resolvePlaceId(config, fetchImpl)
+  let place
+  try {
+    place = await details(id)
+  } catch (error) {
+    // Google occasionally retires a place ID. Find the listing by name once
+    // and carry on, rather than showing no reviews until someone notices.
+    if (error.googleStatus !== 404 || !config.placeId) throw error
+    id = await resolvePlaceId({ ...config, placeId: '' }, fetchImpl)
+    place = await details(id)
+  }
   const placeId = place.id || id
 
   return {

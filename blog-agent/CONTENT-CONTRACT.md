@@ -120,12 +120,11 @@ after, in the CTA block, not woven through the argument.
 - **Verify against the primary source, not the summary.** Several vendor posts
   claim Google tightened the LCP threshold to 2.0s in March 2026; Google's own
   documentation still says 2.5s. That claim is not in our blog as a result.
-- **Client quotes must be real.** Only the three testimonials in
-  `src/data/site.js` may be quoted, word for word, attributed to the right
-  person: Tony Dyke (ResinRock, 12+ connected sites), Sharon Diaz (page five to
-  page one), James Adkins (lead routing and response time). The validator refuses
-  anything else. A quote attributed to Wavefront Studio itself is a pull quote
-  and needs no source.
+- **No client quotes.** Client reviews live on Google and appear on the site
+  live from there; Google's terms do not allow copying them into pages, and
+  the studio has no other testimonials. The validator refuses any `lf-quote`
+  attributed to a person. A quote attributed to Wavefront Studio itself is a
+  pull quote and needs no source.
 - **No invented proof.** No client counts, revenue figures, awards, team size, or
   case studies beyond what the site already publishes.
 

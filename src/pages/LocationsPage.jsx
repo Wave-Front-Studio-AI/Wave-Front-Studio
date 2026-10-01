@@ -3,7 +3,7 @@ import { CtaBand } from '../components/shared.jsx'
 import { PlaceLinks, liveLocations, liveStates, placeName } from './PlacePage.jsx'
 import { locationsHub } from '../data/generated/locations.js'
 import { publishDates } from '../data/schedule.js'
-import { absoluteUrl, breadcrumbs, locationsHubTitle, pageGraph, webPage } from '../data/seo.js'
+import { absoluteUrl, locationsHubTitle, pageGraph, webPage } from '../data/seo.js'
 
 // Pre-cleaned HTML from the content pipeline, styled by the .longform rules.
 function Prose({ html }) {
@@ -39,7 +39,6 @@ export function LocationsPage() {
         })),
       },
     }),
-    breadcrumbs([['Home', '/'], ['Where We Work', '/locations/']]),
   )
 
   return (
@@ -69,6 +68,7 @@ export function LocationsPage() {
         title="Not sure how you rank in your city right now?"
         copy="We will audit your site for free and tell you what is actually holding it back, including if the answer is that you do not need a rebuild."
         label="Get a free audit"
+        href="/free-audit/"
       />
     </Layout>
   )

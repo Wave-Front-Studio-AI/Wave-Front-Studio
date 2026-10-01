@@ -1,7 +1,8 @@
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { CtaBand, SectionHeading } from '../components/shared.jsx'
+import { Breadcrumbs, CtaBand, SectionHeading } from '../components/shared.jsx'
 import { posts } from '../data/generated/posts.js'
+import { blogAuthor } from '../data/site.js'
 import {
   absoluteUrl,
   blogSeo,
@@ -44,7 +45,6 @@ export function BlogIndex() {
         datePublished: post.date,
       })),
     },
-    breadcrumbs([['Home', '/'], ['Blog', '/blog/']]),
   )
 
   return (
@@ -106,6 +106,7 @@ export function BlogPost({ post }) {
   const canonical = `/${post.slug}/`
   const url = absoluteUrl(canonical)
   const modified = post.updated || post.date
+  const trail = [['Home', '/'], ['Blog', '/blog/'], [post.title, canonical]]
   const schema = pageGraph(
     {
       '@type': 'BlogPosting',
@@ -116,13 +117,13 @@ export function BlogPost({ post }) {
       dateModified: modified,
       url,
       mainEntityOfPage: url,
-      author: byOrganization,
+      author: { '@type': 'Person', name: blogAuthor.name, worksFor: byOrganization },
       publisher: byOrganization,
       isPartOf: { '@id': `${absoluteUrl('/blog/')}#blog` },
       inLanguage: 'en-US',
       ...(post.image ? { image: absoluteUrl(post.image) } : {}),
     },
-    breadcrumbs([['Home', '/'], ['Blog', '/blog/'], [post.title, canonical]]),
+    breadcrumbs(trail),
   )
 
   return (
@@ -141,10 +142,13 @@ export function BlogPost({ post }) {
     >
       <section className="article-hero">
         <div className="page-frame">
-          <a className="text-link back-link" href="/blog/">
-            <span aria-hidden="true">←</span> All articles
-          </a>
-          <time dateTime={post.date}>{formatDate(post.date)}</time>
+          <Breadcrumbs trail={trail} />
+          <p className="article-meta">
+            <time dateTime={post.date}>{formatDate(post.date)}</time>
+            <span>
+              By {blogAuthor.name}, {blogAuthor.role}
+            </span>
+          </p>
           <h1>{post.title}</h1>
           <p>{post.excerpt}</p>
           {post.image ? (

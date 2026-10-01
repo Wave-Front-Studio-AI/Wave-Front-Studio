@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowIcon } from './Icons.jsx'
-import { SmsConsentField } from './shared.jsx'
+import { Honeypot, SmsConsentField } from './shared.jsx'
 import { contact } from '../data/site.js'
 import { deliverLead } from '../formSubmission.js'
 import { useCurrentPath } from '../routeContext.js'
@@ -113,6 +113,7 @@ function AuditPopup({ open, onClose }) {
         </p>
       </div>
       <form className="audit-popup-form" onSubmit={submit}>
+        <Honeypot />
         <label>
           <span>Name</span>
           <input required name="name" type="text" autoComplete="name" />
@@ -173,9 +174,11 @@ function AuditPopup({ open, onClose }) {
 }
 
 // Pages that must stay readable with nothing overlaying them. /platform/ is the
-// public app home page Google's OAuth reviewers open logged out, so no modal may
-// cover it.
-const noPopupPaths = new Set(['/platform'])
+// public app home page Google's OAuth reviewers open logged out, and Meta's
+// reviewers check /data-deletion/, so no modal may cover either. The rest
+// already ask for the visitor's details, and a second form on top of the
+// first only gets in the way.
+const noPopupPaths = new Set(['/platform', '/data-deletion', '/contact', '/free-audit', '/free-setup', '/package-builder'])
 
 export default function SitePopups() {
   const path = useCurrentPath()
@@ -184,10 +187,11 @@ export default function SitePopups() {
 
   useEffect(() => {
     if (suppressed) return undefined
-    if (seen('wf-audit') || dismissed('wf-audit-dismissed')) return undefined
+    const done = () => seen('wf-audit') || dismissed('wf-audit-dismissed') || dismissed('wf-lead-sent')
+    if (done()) return undefined
 
     const onLeave = (event) => {
-      if (event.clientY > 0 || seen('wf-audit') || dismissed('wf-audit-dismissed')) return
+      if (event.clientY > 0 || done()) return
       markSeen('wf-audit')
       setOpen(true)
     }

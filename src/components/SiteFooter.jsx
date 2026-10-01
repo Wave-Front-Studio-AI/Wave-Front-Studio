@@ -51,7 +51,7 @@ export default function SiteFooter() {
           </a>
           <p>{footerCopy.tagline}</p>
           <div className="footer-social">
-            <a href={contact.phoneAltHref} aria-label={`Call ${contact.phoneAlt}`}>
+            <a href={contact.phoneHref} aria-label={`Call ${contact.phone}`}>
               <PhoneIcon />
             </a>
             <a href={contact.instagram} target="_blank" rel="noreferrer noopener" aria-label="Wavefront Studio on Instagram">
@@ -88,6 +88,7 @@ export default function SiteFooter() {
             <span>{contact.address}</span>
             <a href={contact.emailHref}>{contact.email}</a>
             <a href={contact.phoneHref}>{contact.phone}</a>
+            <span>{contact.hours}</span>
           </div>
         </nav>
       </div>

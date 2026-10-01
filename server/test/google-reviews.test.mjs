@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { GOOGLE_LISTING_URL, fetchReviews, loadReviewsConfig, resetPlaceIdCache } from '../lib/googleReviews.mjs'
+import { GOOGLE_LISTING_URL, STUDIO_PLACE_ID, fetchReviews, loadReviewsConfig, resetPlaceIdCache } from '../lib/googleReviews.mjs'
 import handler from '../../api/reviews.js'
 
 const json = (body, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } })
@@ -65,6 +65,26 @@ test('a configured place id skips the name search', async () => {
   await fetchReviews({ apiKey: 'key', placeId: 'ChIJset', timeoutMs: 1000 }, fetchImpl)
   assert.equal(calls.length, 1)
   assert.match(calls[0].url, /\/places\/ChIJset\?/)
+})
+
+test('the studio place id is the default, so no billed search runs', () => {
+  assert.equal(loadReviewsConfig({ GOOGLE_PLACES_API_KEY: 'key' }).placeId, STUDIO_PLACE_ID)
+  assert.equal(loadReviewsConfig({ GOOGLE_PLACE_ID: 'ChIJother' }).placeId, 'ChIJother')
+})
+
+test('a retired place id falls back to finding the listing by name once', async () => {
+  resetPlaceIdCache()
+  const calls = []
+  const fetchImpl = async (url) => {
+    calls.push(url)
+    if (url.includes('/places/ChIJold')) return new Response('{"error":{"status":"NOT_FOUND"}}', { status: 404 })
+    if (url.endsWith('/places:searchText')) return json({ places: [{ id: 'ChIJnew', displayName: { text: 'Wavefront Studio LLC' } }] })
+    return json({ id: 'ChIJnew', displayName: { text: 'Wavefront Studio LLC' }, rating: 5, userRatingCount: 1, reviews: [] })
+  }
+  const result = await fetchReviews({ apiKey: 'key', placeId: 'ChIJold', timeoutMs: 1000 }, fetchImpl)
+  assert.equal(result.ok, true)
+  assert.equal(calls.length, 3)
+  assert.match(calls[2], /\/places\/ChIJnew\?/)
 })
 
 test('a search that does not find Wavefront fails rather than showing another business', async () => {

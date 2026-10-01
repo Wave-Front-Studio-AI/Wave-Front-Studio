@@ -34,15 +34,31 @@ export const organization = {
   },
   sameAs: [contact.instagram, contact.facebook, contact.googleProfile],
   hasMap: contact.maps,
-  // The studio works remotely for clients across the US (location pages say so).
-  areaServed: { '@type': 'Country', name: 'United States' },
+  // Based in Sarasota, working with clients anywhere (the service markup and
+  // llms.txt say the same).
+  areaServed: 'Worldwide',
+  // Shown on the contact page and in the footer (contact.hours in site.js).
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '17:00',
+    },
+  ],
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'sales',
     telephone: '+1-941-415-2595',
     email: contact.email,
-    areaServed: 'US',
+    areaServed: 'Worldwide',
     availableLanguage: 'English',
+    hoursAvailable: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '17:00',
+    },
   },
   knowsAbout: [
     'Website development',
@@ -165,7 +181,7 @@ export const homeSeo = {
 
 export const blogSeo = {
   title: 'Web Design, SEO & Marketing Blog | Wavefront Studio',
-  description: 'Practical writing on websites, SEO, marketing and automation for businesses that want the work to pay for itself.',
+  description: 'Practical writing on websites, SEO, marketing and automation for small businesses that sell by enquiry and want the work to pay for itself.',
 }
 
 // Search titles for posts whose on-page headline is longer than Google shows.
@@ -173,6 +189,17 @@ export const blogSeo = {
 export const postSeoTitles = {
   'what-does-a-lead-actually-cost-you': 'If You Can’t Say What a Lead Costs, You’re Gambling',
   'build-a-calculator-that-sells-for-you': 'Build a Calculator That Sells for You, Not “How Much Roughly?”',
+  'what-a-monthly-marketing-report-should-show': 'What a Monthly Marketing Report Should Actually Show',
+  'seo-company-that-guarantees-page-one': 'SEO Companies That Guarantee Page One: What They Leave Out',
+  'your-contact-form-is-losing-enquiries': 'Your Contact Form Is Probably Losing Enquiries',
+  'redesign-starts-with-your-enquiries': 'Start a Website Redesign With Your Last 20 Enquiries',
+  'who-owns-your-website': 'If You Can’t Log In to Your Domain, You Don’t Own Your Site',
+  'google-business-profile-does-more-than-your-website': 'Your Google Business Profile Is Doing More Than Your Website',
+  'nobody-waits-for-a-slow-website': 'Nobody Waits for a Slow Website, and Neither Does Google',
+  'do-you-need-a-mobile-app': 'You Probably Don’t Need an App, Except in These Four Cases',
+  'why-ai-follow-up-beats-working-harder': 'The Enquiries You Lose at 9pm, and Why Speed Beats Effort',
+  'seo-keeps-working-after-you-stop-paying': 'SEO: The Only Channel That Works After You Stop Paying',
+  'why-cheap-design-costs-more': 'Cheap Design Costs More: What Your Brand Says Before You Do',
 }
 
 export const locationsHubTitle = 'Web Design & SEO Service Areas | Wavefront Studio'

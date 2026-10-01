@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { CtaBand, EnquiryForm, SectionHeading } from '../components/shared.jsx'
+import { Breadcrumbs, CtaBand, EnquiryForm, SectionHeading } from '../components/shared.jsx'
 import { ServicePlans } from './ServicePage.jsx'
 import { services } from '../data/services.js'
 import { customWorks } from '../data/customWorks.js'
 import { siteOrigin } from '../data/site.js'
 import { breadcrumbs, byOrganization, pageGraph } from '../data/seo.js'
+import { sizeOf } from '../data/imageSizes.js'
 
 // The AI chatbot page ships no photography, so its entry visual lets a visitor
 // step through the assistant's own capability list instead of a stock image.
@@ -18,7 +19,7 @@ function CapabilityPanel({ items }) {
   return (
     <div className="live-panel">
       <div className="live-panel-bar">
-        <img src="/wave-logo.webp" alt="Wavefront Studio" />
+        <img src="/wave-logo.webp" alt="Wavefront Studio" {...sizeOf('/wave-logo.webp')} />
         <span>What the assistant handles</span>
       </div>
       <div className="live-panel-body">
@@ -122,9 +123,9 @@ function VisualizerShowcase({ showcase }) {
         <SectionHeading title={showcase.title} copy={showcase.copy} dark />
         <div className="compare-stage">
           <figure>
-            <img className="compare-base" src={showcase.before.image} alt={showcase.before.caption} loading="lazy" />
+            <img className="compare-base" src={showcase.before.image} alt={showcase.before.caption} loading="lazy" {...sizeOf(showcase.before.image)} />
             <span className="compare-overlay" style={{ '--reveal': `${revealed}%` }}>
-              <img src={showcase.after.image} alt={showcase.after.caption} loading="lazy" />
+              <img src={showcase.after.image} alt={showcase.after.caption} loading="lazy" {...sizeOf(showcase.after.image)} />
             </span>
             <span className="compare-divider" style={{ left: `${revealed}%` }} aria-hidden="true" />
             <span className="compare-tag is-before">{showcase.before.tag}</span>
@@ -252,6 +253,7 @@ export default function CustomWorkPage({ work }) {
   const url = `${siteOrigin}${canonical}`
   // Named by what the service is (work.nav), not the page headline, which is a
   // slogan such as "Let Your Customers See It Before They Buy It".
+  const trail = [['Home', '/'], ['Custom Works', '/custom-works/'], [work.nav, canonical]]
   const schema = pageGraph(
     {
       '@type': 'Service',
@@ -263,14 +265,14 @@ export default function CustomWorkPage({ work }) {
       areaServed: 'Worldwide',
       provider: byOrganization,
     },
-    breadcrumbs([['Home', '/'], ['Custom Works', '/custom-works/'], [work.nav, canonical]]),
+    breadcrumbs(trail),
   )
 
   const entryVisual = (() => {
     if (work.showcase) {
       return (
         <div className="service-media is-frame">
-          <img src={work.showcase.after.image} alt={work.showcase.after.caption} loading="eager" fetchPriority="high" />
+          <img src={work.showcase.after.image} alt={work.showcase.after.caption} loading="eager" fetchPriority="high" {...sizeOf(work.showcase.after.image)} />
           <span className="service-media-tag">{work.showcase.after.tag}</span>
         </div>
       )
@@ -278,7 +280,7 @@ export default function CustomWorkPage({ work }) {
     if (work.demo) {
       return (
         <div className="service-media is-frame">
-          <img src={work.demo.image} alt={work.demo.panelTitle} loading="eager" fetchPriority="high" />
+          <img src={work.demo.image} alt={work.demo.panelTitle} loading="eager" fetchPriority="high" {...sizeOf(work.demo.image)} />
           <span className="service-media-tag">{work.demo.panelTitle}</span>
         </div>
       )
@@ -293,10 +295,11 @@ export default function CustomWorkPage({ work }) {
           <div className="service-entry-intro">
             {entryVisual}
             <div>
+              <Breadcrumbs trail={trail} />
               <h1>{work.name}</h1>
               <p className="service-subhead">{work.intro}</p>
               <div className="hero-actions">
-                <a className="kinetic-button group" href="/contact/">
+                <a className="kinetic-button group" href="#service-form">
                   <span>{work.primaryCta}</span>
                   <span className="button-island">
                     <ArrowIcon className="size-4" />
@@ -308,10 +311,10 @@ export default function CustomWorkPage({ work }) {
               </div>
             </div>
           </div>
-          <div>
+          <div id="service-form">
             <EnquiryForm
               heading="Tell us what you need"
-              copy="A few lines about the business and the problem is enough. We reply within one to two working days."
+              copy="A few lines about the business and the problem is enough. We reply within two working days."
               subjectDefault={work.nav}
               source={work.slug}
             />

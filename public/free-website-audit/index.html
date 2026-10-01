@@ -294,7 +294,7 @@ section{padding:56px 0}
         <h2>Your audit is booked</h2>
         <p>A confirmation email is on its way. Here is what happens next:</p>
         <ol>
-          <li><b>Within one business day</b> – a two-minute call from our team to confirm which pages and services matter most to you.</li>
+          <li><b>Within two working days</b> – a two-minute call from our team to confirm which pages and services matter most to you.</li>
           <li><b>Within 48 hours</b> – your written report arrives by email.</li>
           <li><b>Then it's yours</b> – fix it yourself, pass it to your developer, or ask us to help. Any of the three is fine.</li>
         </ol>
@@ -483,7 +483,8 @@ section{padding:56px 0}
 <footer class="foot">
   <div class="wrap">
     <img src="/wave-logo.webp" alt="Wavefront Studio" width="83" height="26">
-    <div>Wavefront Studio LLC · Sarasota, Florida · <a href="mailto:info@wavefrontstudiollc.com">info@wavefrontstudiollc.com</a></div>
+    <div>Wavefront Studio LLC · 4363 Independence Ct, Sarasota, Florida · <a href="tel:+19414152595">+1 (941) 415 2595</a> · <a href="mailto:info@wavefrontstudiollc.com">info@wavefrontstudiollc.com</a></div>
+    <div><a href="/privacy-policy/">Privacy Policy</a> · <a href="/terms-of-use/">Terms of Use</a> · <a href="/do-not-sell/">Do Not Sell or Share My Personal Information</a></div>
   </div>
 </footer>
 
@@ -504,12 +505,22 @@ var FB_PIXEL_ID    = "1993858451301943";
 var PAGE_VERSION   = "Free Website Audit - v2";
 /* ============================== */
 
+/* The same opt-out rule as the rest of the site (index.html): a choice made on
+   /do-not-sell/, or Global Privacy Control with no "allow" on record, means
+   the pixel never loads. track() below is then a no-op. */
+var optedOut = (function(){
+  var stored = null;
+  try { stored = localStorage.getItem('wf-privacy-opt-out'); } catch(e) {}
+  return stored === '1' || (navigator.globalPrivacyControl === true && stored !== '0');
+})();
+if(!optedOut){
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
 n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
 (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', FB_PIXEL_ID); fbq('track','PageView');
+}
 function track(ev,d){ if(window.fbq){ try{ fbq('track',ev,d||{}); }catch(e){} } }
 
 /* ---- keep the ad attribution ---- */

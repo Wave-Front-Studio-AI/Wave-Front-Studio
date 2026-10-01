@@ -9,7 +9,7 @@ export const siteFaqs = [
   ],
   [
     'How long does it take to build a website?',
-    'It depends on the size and complexity of the project. A simple business website typically takes 2–4 weeks, while larger projects like e-commerce stores, multi-site ecosystems, or custom web applications can take 6–12 weeks. We’ll give you a clear timeline before we start.',
+    'It depends on the size of the site. A starter website (our Launch package) usually takes 1–2 weeks, a standard business site 3–5 weeks, and a larger site with more pages or an online store 6–8 weeks. Custom tools and integrations, such as calculators, visualisers or a multi-site setup, are timed separately once we know the scope. We’ll give you a clear timeline before we start.',
   ],
   [
     'Do you work with businesses outside the US?',
@@ -41,7 +41,7 @@ export const siteFaqs = [
   ],
   [
     'How do I get started?',
-    'Simply reach out to us through our contact page, give us a call at +1 (941) 415-0273, or email us at info@wavefrontstudiollc.com. We’ll schedule a free consultation to discuss your project, understand your goals, and recommend the best solution for your business, no commitment required.',
+    'Simply reach out to us through our contact page, give us a call at +1 (941) 415-2595, or email us at info@wavefrontstudiollc.com. We’ll schedule a free consultation to discuss your project, understand your goals, and recommend the best solution for your business, no commitment required.',
   ],
 ]
 

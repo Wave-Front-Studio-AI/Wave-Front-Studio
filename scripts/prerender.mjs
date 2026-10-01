@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto'
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
@@ -7,12 +8,84 @@ import { contact, siteOrigin } from '../src/data/site.js'
 import { posts } from '../src/data/generated/posts.js'
 import { blogSeo, postShareImage } from '../src/data/seo.js'
 
+// A post is never live before its date: a future date would show on the page,
+// in the feed and in the sitemap. blog-agent/publish-post.mjs holds such drafts
+// back; this catches one added by hand.
+const buildDate = process.env.BUILD_DATE || new Date().toISOString().slice(0, 10)
+const early = posts.filter((post) => post.date > buildDate)
+if (early.length) {
+  throw new Error(`Posts dated after the build date ${buildDate}: ${early.map((post) => `${post.slug} (${post.date})`).join(', ')}`)
+}
+
 const root = resolve(import.meta.dirname, '..')
 const dist = resolve(root, 'dist')
 const ssrEntry = pathToFileURL(resolve(root, 'dist-ssr/entry-server.js')).href
 
 const { render } = await import(ssrEntry)
-const template = await readFile(resolve(dist, 'index.html'), 'utf8')
+
+// Content Security Policy. It goes in a <meta> tag rather than a header so it
+// can name each inline script by its hash, worked out here from the HTML being
+// shipped: an edit to an inline script in index.html updates the policy with
+// it, instead of the script being silently blocked. Nothing else inline runs.
+// frame-ancestors cannot be set from a meta tag; it is a header in vercel.json.
+const inlineScriptHashes = (html) =>
+  [...html.matchAll(/<script(?![^>]*\bsrc=)([^>]*)>([\s\S]*?)<\/script>/g)]
+    .filter(([, attributes]) => !/application\/ld\+json/.test(attributes))
+    .map(([, , body]) => `'sha256-${createHash('sha256').update(body, 'utf8').digest('base64')}'`)
+
+function withCsp(html, policy) {
+  const directives = { ...policy, 'script-src': [...policy['script-src'], ...inlineScriptHashes(html)] }
+  const content = Object.entries(directives)
+    .map(([name, sources]) => [name, ...sources].join(' '))
+    .join('; ')
+  const tag = `<meta http-equiv="Content-Security-Policy" content="${content}" />`
+  // Straight after the charset, ahead of every script it governs.
+  const out = html.replace(/<meta charset="[^"]*"\s*\/?>/i, (charset) => `${charset}\n    ${tag}`)
+  if (out === html) throw new Error('CSP: no <meta charset> to place the policy after')
+  return out
+}
+
+// A lead endpoint on another host (VITE_LEAD_ENDPOINT) has to be allowed too.
+const leadOrigin = /^https:\/\//.test(process.env.VITE_LEAD_ENDPOINT || '') ? [new URL(process.env.VITE_LEAD_ENDPOINT).origin] : []
+
+// Google Analytics 4 (gtag.js) and the Meta Pixel are the only third parties;
+// the hosts are the ones Google and Meta document for their tags. Reviewer
+// photos come from Google. Everything else is this site.
+//
+// The pixel's own config (connect.facebook.net/signals/config/<pixel id>) also
+// sends events to two gateway hosts set up on the Meta side. If Meta moves
+// them, the console shows a connect-src violation naming the new host; the
+// standard /tr beacon keeps working meanwhile.
+const metaGateways = [
+  'https://od-18c216b54e2045bdbb2d2f70bc4834b0.ecs.us-east-2.on.aws',
+  'https://bded8a3c6ae-1-1053047382554.us-central1.run.app',
+]
+const sitePolicy = {
+  'default-src': ["'self'"],
+  'script-src': ["'self'", 'https://www.googletagmanager.com', 'https://connect.facebook.net'],
+  // React sets style attributes (custom properties for animation delays).
+  'style-src': ["'self'", "'unsafe-inline'"],
+  'img-src': [
+    "'self'", 'data:', 'blob:', 'https://lh3.googleusercontent.com', 'https://www.facebook.com',
+    'https://*.google-analytics.com', 'https://*.googletagmanager.com', 'https://*.g.doubleclick.net', 'https://*.google.com',
+  ],
+  'font-src': ["'self'"],
+  'connect-src': [
+    "'self'", ...leadOrigin, 'https://www.facebook.com', 'https://connect.facebook.net', ...metaGateways,
+    'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://*.googletagmanager.com',
+    'https://*.g.doubleclick.net', 'https://*.google.com',
+  ],
+  'media-src': ["'self'"],
+  // The pixel posts larger events through a hidden form into an iframe.
+  'frame-src': ["'self'", 'https://www.facebook.com', 'https://www.googletagmanager.com', 'https://td.doubleclick.net'],
+  'worker-src': ["'self'", 'blob:'],
+  'object-src': ["'none'"],
+  'base-uri': ["'self'"],
+  'form-action': ["'self'", 'https://www.facebook.com'],
+  'upgrade-insecure-requests': [],
+}
+
+const template = withCsp(await readFile(resolve(dist, 'index.html'), 'utf8'), sitePolicy)
 
 const escape = (value) =>
   String(value ?? '').replace(/[&<>'"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[ch])
@@ -93,14 +166,16 @@ for (const route of routes) {
   // The social tags and JSON-LD go straight after the canonical link, ahead of
   // the tracking scripts. Google stops reading <head> at the first element it
   // does not expect there, so anything important sits as early as possible.
+  // Replacement functions, not strings: page text containing $& or $' would
+  // otherwise be expanded by String.replace.
   const page = template
-    .replace(/<title>.*?<\/title>/s, `<title>${escape(title)}</title>`)
-    .replace(/<meta name="description" content=".*?"\s*\/>/s, `<meta name="description" content="${escape(description)}" />`)
+    .replace(/<title>.*?<\/title>/s, () => `<title>${escape(title)}</title>`)
+    .replace(/<meta name="description" content=".*?"\s*\/>/s, () => `<meta name="description" content="${escape(description)}" />`)
     .replace(
       /<link rel="canonical" href=".*?"\s*\/>/s,
-      `<link rel="canonical" href="${siteOrigin}${canonical}" />${buildHead({ ...seo, title, description, canonical })}`,
+      () => `<link rel="canonical" href="${siteOrigin}${canonical}" />${buildHead({ ...seo, title, description, canonical })}`,
     )
-    .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
+    .replace('<div id="root"></div>', () => `<div id="root">${html}</div>`)
 
   const target = route.path === '/' ? resolve(dist, 'index.html') : resolve(dist, `.${route.path}index.html`)
   await mkdir(dirname(target), { recursive: true })
@@ -114,10 +189,10 @@ const { html: notFoundHtml, seo: notFoundSeo } = await render('/__not-found__')
 await writeFile(
   resolve(dist, '404.html'),
   template
-    .replace(/<title>.*?<\/title>/s, `<title>${escape(notFoundSeo.title)}</title>`)
-    .replace(/<meta name="description" content=".*?"\s*\/>/s, `<meta name="description" content="${escape(notFoundSeo.description)}" />`)
+    .replace(/<title>.*?<\/title>/s, () => `<title>${escape(notFoundSeo.title)}</title>`)
+    .replace(/<meta name="description" content=".*?"\s*\/>/s, () => `<meta name="description" content="${escape(notFoundSeo.description)}" />`)
     .replace(/<link rel="canonical" href=".*?"\s*\/>/s, '<meta name="robots" content="noindex, follow" />')
-    .replace('<div id="root"></div>', `<div id="root">${notFoundHtml}</div>`),
+    .replace('<div id="root"></div>', () => `<div id="root">${notFoundHtml}</div>`),
 )
 
 // lastmod only where the date is real. Stamping every URL with the build date
@@ -131,9 +206,26 @@ ${pages
 `
 await writeFile(resolve(dist, 'sitemap.xml'), sitemap)
 
+// Search engines and AI search (Googlebot, Bingbot, OAI-SearchBot,
+// Claude-SearchBot, PerplexityBot...) may crawl everything, so the studio can
+// be found and cited. Crawlers that only gather AI training data may not: the
+// owner's decision, 2026-10-01, worth revisiting yearly. One group can name
+// several agents (RFC 9309); none of them falls back to the * group.
+const trainingCrawlers = ['GPTBot', 'ClaudeBot', 'Google-Extended', 'Applebot-Extended', 'CCBot', 'Meta-ExternalAgent', 'Bytespider', 'Amazonbot']
 await writeFile(
   resolve(dist, 'robots.txt'),
-  `User-agent: *\nAllow: /\n\nSitemap: ${siteOrigin}/sitemap.xml\n`,
+  [
+    '# Search engines and AI search tools: welcome.',
+    'User-agent: *',
+    'Allow: /',
+    '',
+    '# Crawlers that collect AI training data: no thanks.',
+    ...trainingCrawlers.map((agent) => `User-agent: ${agent}`),
+    'Disallow: /',
+    '',
+    `Sitemap: ${siteOrigin}/sitemap.xml`,
+    '',
+  ].join('\n'),
 )
 
 // RSS for the blog. The old WordPress /feed/ redirects here (vercel.json).
@@ -209,5 +301,26 @@ const llms = [
 await writeFile(resolve(dist, 'llms.txt'), llms)
 
 await rm(resolve(root, 'dist-ssr'), { recursive: true, force: true })
+
+// The Meta ads landing page is static HTML of its own (public/), with its own
+// font, images and lead destinations, so it gets its own policy.
+const adPage = resolve(dist, 'free-website-audit/index.html')
+await writeFile(
+  adPage,
+  withCsp(await readFile(adPage, 'utf8'), {
+    'default-src': ["'self'"],
+    'script-src': ["'self'", 'https://connect.facebook.net'],
+    'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+    'font-src': ["'self'", 'https://fonts.gstatic.com'],
+    'img-src': ["'self'", 'data:', 'https://cdn.shopify.com', 'https://www.facebook.com'],
+    // The Google Apps Script web app answers from script.googleusercontent.com.
+    'connect-src': ["'self'", ...leadOrigin, 'https://script.google.com', 'https://script.googleusercontent.com', 'https://www.facebook.com', 'https://connect.facebook.net', ...metaGateways],
+    'frame-src': ["'self'", 'https://www.facebook.com'],
+    'object-src': ["'none'"],
+    'base-uri': ["'self'"],
+    'form-action': ["'self'", 'https://www.facebook.com'],
+    'upgrade-insecure-requests': [],
+  }),
+)
 
 console.log(`Prerendered ${pages.length} pages + 404 + sitemap.xml, rss.xml, llms.txt`)

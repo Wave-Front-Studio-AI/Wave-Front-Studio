@@ -31,7 +31,12 @@ export default function App({ path }) {
   // jump waits two frames for the route's first paint.
   useEffect(() => {
     if (!window.location.hash) return undefined
-    const id = decodeURIComponent(window.location.hash.slice(1))
+    let id
+    try {
+      id = decodeURIComponent(window.location.hash.slice(1))
+    } catch {
+      return undefined // a malformed hash such as #% is ignored, not fatal
+    }
     let second
     const first = window.requestAnimationFrame(() => {
       second = window.requestAnimationFrame(() => {

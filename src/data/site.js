@@ -1,21 +1,25 @@
 // Nothing in this file is invented. Every claim is one the studio can back up:
-// the three client quotes are word for word, and project copy describes only
-// work that is live at the linked address.
+// client reviews come live from Google, word for word, and project copy
+// describes only work that is live at the linked address.
 
 // www is what actually serves: the apex 308-redirects here. Every absolute URL
 // the site declares about itself — canonical, og:url, JSON-LD, sitemap, robots —
 // is built from this, so it has to name the host that answers with a 200.
 export const siteOrigin = 'https://www.wavefrontstudiollc.com'
 
+// The byline on every blog post. First name only until the surname is
+// confirmed for publishing.
+export const blogAuthor = { name: 'Daniel', role: 'Wavefront Studio' }
+
 export const contact = {
   phone: '+1 (941) 415 2595',
   phoneHref: 'tel:+19414152595',
-  phoneAlt: '(941) 415-0273',
-  phoneAltHref: 'tel:+19414150273',
   supportPhone: '+1 (941) 415-2595',
   email: 'info@wavefrontstudiollc.com',
   emailHref: 'mailto:info@wavefrontstudiollc.com',
-  address: 'Sarasota, FL 34234, United States',
+  address: '4363 Independence Ct, Sarasota, FL 34234, United States',
+  // Kept in step with openingHoursSpecification in src/data/seo.js.
+  hours: 'Monday to Friday, 8am to 5pm Eastern',
   instagram: 'https://www.instagram.com/wavefrontstudio',
   facebook: 'https://www.facebook.com/p/Wavefront-Studio-61593264447650/',
   // The Google Business Profile, without the tracking parameters on the shared link.
@@ -40,28 +44,80 @@ export const customWorkLinks = [
   ['Custom Calculators', '/custom-calculators/'],
 ]
 
-export const resourceLinks = [
-  ['Lost Lead Calculator', '/lost-lead-calculator/'],
-  ['Build Your Package', '/package-builder/'],
-  ['Free Setup This Quarter', '/free-setup/'],
-]
-
-// Four top-level items. Portfolio and Contact Us sit under About, Custom Works
-// under Our Services, so the bar stays short and every destination is one hover
-// away. The 404 page flattens this list, so no href may appear twice.
+// The header follows realtimemarketing.com's layout: logo, five items, and a
+// "Speak to the studio" button, with a Contact / Call / Menu bar fixed to the
+// bottom on phones. The menus open in the style of the studio's sister site,
+// wavefrontstudio.ai: Services as a wide panel (the core services with a line
+// each, the custom work beside them, a panel through to the full list),
+// Resources and Who we are as cards. Each child is [label, href, one line].
+// The 404 page flattens `children` and `secondary.links`, so no href may
+// appear twice anywhere in this list.
 export const primaryNav = [
   {
-    label: 'About',
-    href: '/about/',
+    label: 'Services',
+    href: '/services/',
+    layout: 'mega',
+    title: 'Core services',
     children: [
-      ['Portfolio', '/portfolio/'],
-      ['Contact Us', '/contact/'],
+      ['Website development', '/web-development/', 'Fast sites built to turn visits into enquiries.'],
+      ['SEO', '/seo-service/', 'Get found on Google Search and Maps.'],
+      ['Lead capture systems', '/lead-capture/', 'Every enquiry reaches the right person while they are still keen.'],
+      ['Digital marketing', '/digital-marketing/', 'Ads, email and content tied to the enquiries they bring.'],
+      ['Social media', '/social-media-strategy/', 'Managed accounts and content that keep you in view.'],
+      ['Graphic design', '/graphic-design/', 'Logos, brand identities and print-ready files.'],
+      ['Mobile apps', '/mobile-app-development/', 'iOS and Android apps for your customers or your team.'],
+    ],
+    secondary: {
+      title: 'Custom work',
+      links: [
+        ['AI chatbots', '/ai-chatbot/'],
+        ['Live visualiser', '/live-visualizer/'],
+        ['Custom calculators', '/custom-calculators/'],
+        ['All custom work', '/custom-works/'],
+        ['Free website audit', '/free-audit/'],
+      ],
+    },
+    feature: { kicker: 'Everything we build', title: 'Find the service that fits the work.', label: 'See all services' },
+  },
+  {
+    label: 'Resources',
+    href: null,
+    layout: 'cards',
+    children: [
+      ['Build your package', '/package-builder/', 'Pick the services you need and see the cost as you go.'],
+      ['Lost lead calculator', '/lost-lead-calculator/', 'Work out what slow or missed replies cost you each month.'],
+      ['Free setup this quarter', '/free-setup/', 'Setup fees waived for five businesses this quarter.'],
+      ['FAQs', '/faqs/', 'Straight answers on timelines, platforms and support.'],
     ],
   },
-  { label: 'Our Services', href: '/services/', children: [...serviceLinks, ['Custom Works', '/custom-works/']] },
-  { label: 'Resources', href: null, children: resourceLinks },
-  { label: 'Blog', href: '/blog/' },
+  {
+    label: 'Who we are',
+    href: null,
+    layout: 'cards',
+    children: [
+      ['About us', '/about/', 'Four people in Sarasota who build sites that bring in work.'],
+      ['Portfolio', '/portfolio/', 'Live sites, tools and lead systems we have built.'],
+      ['Blog', '/blog/', 'Plain advice on websites, search and enquiries.'],
+    ],
+  },
+  { label: 'Contact', href: '/contact/' },
 ]
+
+// The phone menu is one flat list in large type; the last line is the audit.
+export const mobileNav = [
+  ['Services', '/services/'],
+  ['Custom work', '/custom-works/'],
+  ['Build your package', '/package-builder/'],
+  ['Portfolio', '/portfolio/'],
+  ['About us', '/about/'],
+  ['Blog', '/blog/'],
+  ['Lost lead calculator', '/lost-lead-calculator/'],
+  ['Contact us', '/contact/'],
+  ['Get a free site audit', '/free-audit/'],
+]
+
+// The button at the right of the header.
+export const navCta = { label: 'Speak to the studio', href: '/contact/' }
 
 export const footerNav = {
   popularServices: [
@@ -96,6 +152,8 @@ export const footerNav = {
     // The CPRA opt-out link. Its wording is set by the statute, so it is spelled
     // out in full rather than shortened to fit the row.
     ['Do Not Sell or Share My Personal Information', '/do-not-sell/'],
+    // The client app's public home page, which Google's OAuth review checks.
+    ['Client platform', '/platform/'],
   ],
 }
 
@@ -104,40 +162,24 @@ export const footerCopy = {
   copyright: 'Copyright © Wavefront Studio LLC. All rights reserved.',
 }
 
-export const testimonials = [
-  {
-    quote: 'Wavefront Studio built our entire website ecosystem from scratch - over 12 connected sites, all running smoothly. Their attention to detail and deep understanding of business was unlike any other agency we’ve worked with.',
-    name: 'Tony Dyke',
-    role: 'CEO',
-    company: 'CEO of ResinRock',
-    href: 'http://resinrock.com',
-    image: '/images/Tony-Dyke.webp',
-  },
-  {
-    quote: 'Our Google rankings completely transformed after working with Wavefront. We went from page five to page one in just a few months. The SEO strategy they built for us is still delivering results every single day.',
-    name: 'Sharon Diaz',
-    role: 'CEO',
-    company: 'CEO',
-    href: null,
-    // No photo on file. The previous image was a stock portrait, which put a
-    // stranger's face on a real client's words; initials stand in until Sharon
-    // supplies her own.
-    image: null,
-  },
-  {
-    quote: 'They built us an automated lead system that captures enquiries from multiple websites and assigns them to the nearest available installer instantly. It saves us hours every single day and our response time has never been faster.',
-    name: 'James Adkins',
-    role: 'COO',
-    company: 'COO',
-    href: null,
-    image: '/images/Screenshot-2026-04-03-at-12.11.26-AM.webp',
-  },
-]
-
+// Client reviews are the live Google ones (/api/reviews/); there are no
+// written testimonials of our own. Until they load, or if Google cannot be
+// reached, the sections point to the Google listing instead.
 export const testimonialsHeading = {
-  title: 'What clients say',
-  copy: 'Three clients, in their own words.',
+  title: 'What clients say on Google',
+  copy: 'Read what clients say about us, word for word, on our Google listing.',
 }
+
+// Reviewers the studio has chosen not to show (the team's own reviews),
+// matched by first name, on every page. Google's overall rating and review
+// count are shown as Google reports them.
+export const hiddenReviewers = ['Scott', 'Daniel', 'Tony', 'Carla']
+
+export function isHiddenReviewer(name = '') {
+  const first = name.trim().split(/\s+/)[0].toLowerCase()
+  return hiddenReviewers.some((hidden) => hidden.toLowerCase() === first)
+}
+
 
 // The Google Business Profile (its permanent Maps link). The live rating and
 // reviews come from /api/reviews/; this link works even when that is down.
@@ -156,36 +198,36 @@ export const clientLogos = [
 // Images are screenshots of the live sites, not stock photography.
 export const projects = [
   {
-    title: 'Twelve connected websites for ResinRock',
-    client: 'Tony Dyke',
+    title: 'Twelve connected websites for a surfacing manufacturer',
+    client: 'ResinRock, our sister company',
     date: '2 September 2025',
-    home: 'More than 12 sites for ResinRock, including product pages, material calculators, a site for the rubber division and campaign landing pages. Each one is built to load fast and rank.',
+    home: 'More than 12 sites for our sister company, a surfacing manufacturer, including product pages, material calculators, a site for the rubber division and campaign landing pages. Each one is built to load fast and rank.',
     portfolio: 'More than 12 websites that work together: product pages, material calculators, a separate site for the rubber division and landing pages for campaigns. Each one is built to load fast and to be found on Google.',
     href: 'http://resinrock.com',
     image: '/images/work/resinrock-site.webp',
-    alt: 'The ResinRock homepage, with its product menu and a video of a warehouse team loading marble chips',
+    alt: 'The manufacturer’s homepage, with its product menu and a video of a warehouse team loading marble chips',
   },
   {
-    title: 'Lead routing for the ResinRock installer network',
-    client: 'Resin Leads',
+    title: 'Lead routing for an installer network',
+    client: 'ResinRock, our sister company',
     date: '22 January 2026',
     home: 'Enquiries from several websites land in one system, which sends each one to the nearest available installer straight away, so nobody sorts leads by hand.',
     portfolio: 'Enquiries arrive from several websites. The system checks where each customer is and passes the lead to the nearest available installer within moments, so no one has to sort and forward them by hand.',
     href: 'http://resinrockleads.com',
     image: '/images/work/resinrockleads-site.webp',
-    alt: 'The Resin Rock Leads homepage, offering verified leads to professional installers',
+    alt: 'The lead network’s homepage, offering verified leads to professional installers',
   },
   {
-    title: 'Getting ResinRock onto the first page of Google',
-    client: 'Resin Rock',
+    title: 'From low visibility to the first page of search results',
+    client: 'ResinRock, our sister company',
     date: '11 October 2025',
-    home: 'Technical fixes, keyword research, on-page work and content structure that took ResinRock onto the first page of Google for its main industry searches.',
-    portfolio: 'Technical fixes, keyword research, on-page changes and a restructure of the content. ResinRock went from low visibility to the first page of Google for competitive industry searches.',
+    home: 'Technical fixes, keyword research, on-page work and content structure that took a manufacturer’s site onto the first page of Google for its main industry searches.',
+    portfolio: 'Technical fixes, keyword research, on-page changes and a restructure of the content. The site went from low visibility to the first page of Google for competitive industry searches.',
     href: 'https://resinrock.com/pages/resin-bound',
     // A search results page (Brave Search, September 2026) with resinrock.com
     // on page one. Swap for a Google results screenshot when one is taken.
     image: '/images/work/resinrock-search-results.webp',
-    alt: 'Search results for resin bound products, with resinrock.com listed on the first page between Amazon and AeroMarine',
+    alt: 'Brave Search results for resin bound products, with the client’s site listed on the first page between Amazon and AeroMarine',
   },
 ]
 

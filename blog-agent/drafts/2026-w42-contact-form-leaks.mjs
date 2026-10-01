@@ -2,7 +2,7 @@
 export default {
   slug: 'your-contact-form-is-losing-enquiries',
   title: 'Your Contact Form Is Probably Losing Enquiries You Never Hear About',
-  date: '2026-10-16',
+  date: '2026-10-01',
   excerpt: 'The people you lose at the form leave no trace. Five quiet ways a contact form fails, and a ten-minute test that shows whether yours is one of them.',
   image: '/images/blog/your-contact-form-is-losing-enquiries.webp',
   content: [

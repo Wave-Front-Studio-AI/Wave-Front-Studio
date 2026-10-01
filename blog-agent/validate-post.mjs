@@ -16,7 +16,7 @@ import { resolve, basename } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { posts as livePosts } from '../src/data/generated/posts.js'
 import { routes } from '../src/routes.js'
-import { testimonials, contact } from '../src/data/site.js'
+import { contact } from '../src/data/site.js'
 
 const root = resolve(import.meta.dirname, '..')
 const draftsDir = resolve(import.meta.dirname, 'drafts')
@@ -77,6 +77,10 @@ export async function validate(post, { existingSlugs, routePaths, source, alread
   }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) err(`date is not YYYY-MM-DD: ${date}`)
   if (Number.isNaN(Date.parse(`${date}T00:00:00`))) err(`date is not a real date: ${date}`)
+  // A published post must not claim a later date than the day it went live.
+  if (alreadyPublished && date > new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' })) {
+    err(`published post is dated in the future: ${date}`)
+  }
 
   // --- card image, used both as the /blog/ thumbnail and the banner on the post
   if (image !== `/images/blog/${slug}.webp`) {
@@ -142,21 +146,15 @@ export async function validate(post, { existingSlugs, routePaths, source, alread
     if (!routePaths.has(href) && href !== `/${slug}/`) err(`internal link does not resolve to a route: ${href}`)
   }
 
-  // --- quotes attributed to a person must be real testimonials
-  // lf-quote is also used for the studio's own pull quotes, which need no source.
+  // --- no client quotes in posts
+  // Client reviews are the live Google ones on the site, and Google's terms do
+  // not allow copying them into pages. lf-quote is still fine for the studio's
+  // own pull quotes, which carry no attribution or Wavefront Studio's.
   for (const block of content.match(/<blockquote class="lf-quote">[\s\S]*?<\/blockquote>/g) ?? []) {
-    const text = normalise(block)
     const attribution = normalise([...block.matchAll(/<em>([\s\S]*?)<\/em>/g)].at(-1)?.[1] ?? '')
       .replace(/^[-–—]\s*/, '')
     const selfAttributed = attribution === '' || /^wavefront studio( llc)?$/.test(attribution)
-    if (selfAttributed) continue
-
-    const match = testimonials.find((t) => text.includes(normalise(t.quote)))
-    if (!match) {
-      err(`lf-quote attributed to "${attribution}" matches no testimonial in src/data/site.js — client quotes may not be paraphrased or invented`)
-    } else if (!attribution.includes(match.name.toLowerCase())) {
-      err(`lf-quote text is ${match.name}'s but it is attributed to "${attribution}"`)
-    }
+    if (!selfAttributed) err(`lf-quote attributed to "${attribution}": client quotes are not used in posts; link to the Google reviews instead`)
   }
 
   // --- images are optional, but must exist and be described

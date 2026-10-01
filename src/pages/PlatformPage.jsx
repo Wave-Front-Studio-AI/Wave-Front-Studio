@@ -152,8 +152,8 @@ export default function PlatformPage() {
             </p>
 
             <p>
-              Full detail is in our <a href="https://wavefrontstudiollc.com/privacy-policy/">Privacy Policy</a> and{' '}
-              <a href="https://wavefrontstudiollc.com/terms-of-use/">Terms of Use</a>.
+              Full detail is in our <a href="/privacy-policy/">Privacy Policy</a> and{' '}
+              <a href="/terms-of-use/">Terms of Use</a>.
             </p>
 
             <h2>Getting access</h2>

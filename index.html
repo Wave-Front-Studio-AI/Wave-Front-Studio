@@ -185,11 +185,9 @@
     </script>
   </head>
   <body>
-    <!-- Meta Pixel fallback for visitors without JavaScript. It lives in <body>
-         because an <img> inside <head> makes Google stop reading the head at
-         that point, hiding the social tags and structured data after it. -->
-    <noscript><img height="1" width="1" style="display:none" alt=""
-      src="https://www.facebook.com/tr?id=1993858451301943&ev=PageView&noscript=1" /></noscript>
+    <!-- No Meta Pixel <noscript> fallback on purpose: without JavaScript the
+         page cannot read the visitor's opt-out or Global Privacy Control, so
+         the image would report the visit even for someone who opted out. -->
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

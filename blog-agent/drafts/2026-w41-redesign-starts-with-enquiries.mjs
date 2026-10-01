@@ -2,7 +2,7 @@
 export default {
   slug: 'redesign-starts-with-your-enquiries',
   title: 'A Website Redesign Should Start With Your Last 20 Enquiries, Not Your Logo',
-  date: '2026-10-09',
+  date: '2026-10-01',
   excerpt: 'Most redesigns begin with colours and layouts. The better starting point is the people who already contacted you: what they asked, and what nearly stopped them.',
   image: '/images/blog/redesign-starts-with-your-enquiries.webp',
   content: [

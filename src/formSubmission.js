@@ -5,10 +5,59 @@
 // same path to the lead service or set VITE_LEAD_ENDPOINT to its HTTPS URL.
 const LEAD_ENDPOINT = import.meta.env.VITE_LEAD_ENDPOINT || '/api/lead/'
 
+// Matches the server (server/lib/normalizeLead.mjs): http and https only.
 function normalizeWebsite(value) {
   const website = typeof value === 'string' ? value.trim() : ''
-  if (!website || /^[a-z][a-z\d+.-]*:\/\//i.test(website)) return website
-  return `https://${website}`
+  if (!website) return ''
+  const candidate = /^[a-z][a-z\d+.-]*:/i.test(website) ? website : `https://${website}`
+  try {
+    const url = new URL(candidate)
+    return url.protocol === 'http:' || url.protocol === 'https:' ? candidate : ''
+  } catch {
+    return ''
+  }
+}
+
+// Where the visitor came from: the ad's utm_ tags, or the site that linked
+// here. Kept for the visit, so an enquiry sent three pages later still says
+// which ad or search brought them. Same storage key and names as the ads
+// landing page (public/free-website-audit/), so a visit that starts there and
+// enquires here keeps its source.
+const ATTRIBUTION_KEY = 'wfs_utm'
+const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+
+export function rememberAttribution() {
+  try {
+    const store = JSON.parse(window.sessionStorage.getItem(ATTRIBUTION_KEY) || '{}')
+    const params = new URLSearchParams(window.location.search)
+    let changed = false
+    for (const key of UTM_KEYS) {
+      const value = params.get(key)
+      if (value) {
+        store[key] = value.slice(0, 120)
+        changed = true
+      }
+    }
+    if (!store.utm_source && document.referrer) {
+      const host = new URL(document.referrer).hostname
+      if (host && host !== window.location.hostname) {
+        store.utm_source = `referral:${host}`
+        changed = true
+      }
+    }
+    if (changed) window.sessionStorage.setItem(ATTRIBUTION_KEY, JSON.stringify(store))
+  } catch {
+    /* storage blocked or an odd referrer: the enquiry just arrives without a source */
+  }
+}
+
+function attribution() {
+  try {
+    const store = JSON.parse(window.sessionStorage.getItem(ATTRIBUTION_KEY) || '{}')
+    return Object.fromEntries(UTM_KEYS.filter((key) => typeof store[key] === 'string' && store[key]).map((key) => [key, store[key]]))
+  } catch {
+    return {}
+  }
 }
 
 async function deliverToApi(payload) {
@@ -51,6 +100,11 @@ export async function deliverLead(formElement, { subject, fields = [], source = 
     if (value) labelled[label] = value
   }
 
+  // The source rides along with the labelled answers, so it lands in the
+  // lead's notes the same way the ads landing page sends it.
+  const visit = attribution()
+  Object.assign(labelled, { utm_source: 'direct', ...visit })
+
   const stored = await deliverToApi({
     ...submission,
     source,
@@ -61,6 +115,13 @@ export async function deliverLead(formElement, { subject, fields = [], source = 
 
   if (stored) {
     formElement.reset()
+    // Someone who has just sent us their details should not then be asked for
+    // them again by the exit popup (src/components/SitePopups.jsx).
+    try {
+      window.localStorage.setItem('wf-lead-sent', '1')
+    } catch {
+      /* storage unavailable: the popup may show once, nothing else depends on it */
+    }
     return 'submitted'
   }
 

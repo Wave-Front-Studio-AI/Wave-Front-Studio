@@ -4,8 +4,8 @@ import { money } from './packageQuote.js'
 
 const COLORS = {
   ink: '#0d1b2a',
-  blue: '#4284cb',
-  cyan: '#36f0ee',
+  blue: '#3578c1',
+  cyan: '#2bb3c8',
   muted: '#5c6f80',
   paper: '#f5f9fb',
   line: '#dce7ed',

@@ -4,7 +4,7 @@
 // can never describe a service, page, price, or article that Wavefront Studio
 // does not publish on this site.
 
-import { clientLogos, contact, customWorkLinks, projects, serviceLinks, testimonials } from './data/site.js'
+import { clientLogos, contact, customWorkLinks, googleListingUrl, projects, serviceLinks } from './data/site.js'
 import { services } from './data/services.js'
 import { customWorks } from './data/customWorks.js'
 import { locations as allLocations, locationsHub } from './data/generated/locations.js'
@@ -83,7 +83,7 @@ function makeEntry({ id, title, url, kind, body, plain, linkLabel, keywords = []
   return { id, title, url, kind, body, linkLabel, plain: plain ?? body, weights, haystack: `${title} ${keywords.join(' ')} ${body}`.toLowerCase() }
 }
 
-const contactLine = `Call ${contact.phone}, email ${contact.email}, or use the contact form. Wavefront Studio LLC is in ${contact.address}.`
+const contactLine = `Call ${contact.phone}, email ${contact.email}, or use the contact form. Wavefront Studio LLC is in ${contact.address}, open ${contact.hours}.`
 
 const serviceNames = serviceLinks.map(([label]) => label).join(', ')
 const customWorkNames = customWorkLinks.map(([label]) => label).join(', ')
@@ -105,7 +105,7 @@ const companyEntries = [
   {
     id: 'company-about', title: 'About Wavefront Studio', url: '/about/', kind: 'company',
     keywords: ['about', 'who are you', 'story', 'team', 'experience', 'years', 'sarasota', 'resinrock', 'agency'],
-    body: 'Wavefront Studio is four people working from 4363 Independence Ct in Sarasota, Florida. For ResinRock, a resin-bound surfacing company, we built more than 12 connected websites, the material calculators on them, and the system that sends each enquiry to the nearest available installer. We also took their main site onto the first page of Google for its core industry searches. The person you talk to is one of the people doing the work, and we look after sites once they are live.',
+    body: 'Wavefront Studio is four people working from 4363 Independence Ct in Sarasota, Florida. For ResinRock, a resin-bound surfacing company in the same group as Wavefront, we built more than 12 connected websites, the material calculators on them, and the system that sends each enquiry to the nearest available installer. We also took their main site onto the first page of Google for its core industry searches. The person you talk to is one of the people doing the work, and we look after sites once they are live.',
   },
   {
     id: 'company-why', title: 'Why businesses choose Wavefront', url: '/', kind: 'company',
@@ -120,12 +120,12 @@ const companyEntries = [
   {
     id: 'company-portfolio', title: 'Our work and portfolio', url: '/portfolio/', kind: 'company',
     keywords: ['portfolio', 'work', 'examples', 'case study', 'case studies', 'projects', 'proof', 'results', 'clients', 'resinrock'],
-    body: `Every published project is live at its own address. Published projects: ${projects.map((project) => `${project.title} (${project.client})`).join('; ')}. Client logos shown on the site: ${clientLogos.map((logo) => logo.alt.replace(/ company logo$/, '')).join(', ')}.`,
+    body: `Every published project is live at its own address. Published projects: ${projects.map((project) => `${project.title} (${project.client})`).join('; ')}. Clients also include ${clientLogos.map((logo) => logo.alt.replace(/ company logo$/, '')).join(', ')}.`,
   },
   {
     id: 'company-testimonials', title: 'What clients say', url: '/', kind: 'company',
     keywords: ['testimonial', 'testimonials', 'reviews', 'feedback', 'references', 'happy clients'],
-    body: testimonials.map((item) => `${item.name}, ${item.company}: ${item.quote}`).join(' '),
+    body: `Client reviews of Wavefront Studio are on its Google listing, word for word: ${googleListingUrl}. The site shows a selection of them, taken live from Google.`,
   },
   {
     id: 'company-contact', title: 'Contact Wavefront Studio', url: '/contact/', kind: 'company',
@@ -287,7 +287,7 @@ const packageEntries = PACKAGE_SERVICES.map((service) => {
   const addons = (service.addons ?? []).map((addon) => `${addon.l} $${addon.p.toLocaleString('en-US')} ${addon.t === 'monthly' ? 'per month' : 'one-time'}`).join('; ')
   const delivery = (PACKAGE_DETAILS[service.id] ?? []).find((row) => /delivery|timeline/i.test(row[0]))
   const pageBundles = service.id === 'landing'
-    ? ` Launch, Grow, and Scale are priced per page: the tier price times the number of pages. Page counts offered: ${LANDING_PAGE_BUNDLES.map((bundle) => bundle.pages).join(', ')}. For example, Launch with 10 pages is $1,000 and Grow with 10 pages is $5,000, before bundle discounts. Custom supports unique builds with an entered project price and scope, and replaces the Launch, Grow, and Scale tiers. Per-page pricing is optional and adds to the project price when enabled.`
+    ? ` Launch, Grow, and Scale are priced per page: the tier price times the number of pages. Page counts offered: ${LANDING_PAGE_BUNDLES.map((bundle) => bundle.pages).join(', ')}. For example, Launch with 10 pages is $1,000 and Grow with 10 pages is $5,000, before bundle discounts. Custom is for unique builds: the studio prices it to the scope on a call, and it replaces the Launch, Grow, and Scale tiers.`
     : ''
   return makeEntry({
     id: `package-${service.id}`,
@@ -693,7 +693,7 @@ const INTENTS = [
       || /\b(about (you|yourselves|wavefront)|tell me about (you|wavefront))\b/i.test(text)
       || /^(who are you|about)\??$/i.test(text.trim()),
     reply: () => ({
-      text: 'Wavefront Studio LLC is a four-person web, SEO and AI studio in Sarasota, Florida. Our work includes more than 12 connected websites for ResinRock, the system that routes their enquiries to the nearest installer, and getting their main site onto the first page of Google.',
+      text: 'Wavefront Studio LLC is a four-person web, SEO and AI studio in Sarasota, Florida. Our work includes more than 12 connected websites for our sister company, a surfacing manufacturer, the system that routes their enquiries to the nearest installer, and getting their main site onto the first page of Google.',
       links: [
         { label: 'About Wavefront Studio', href: '/about/' },
         { label: 'Our work and portfolio', href: '/portfolio/' },

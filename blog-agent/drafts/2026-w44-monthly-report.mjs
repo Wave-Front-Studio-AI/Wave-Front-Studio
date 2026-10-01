@@ -2,7 +2,7 @@
 export default {
   slug: 'what-a-monthly-marketing-report-should-show',
   title: 'If Your Monthly Marketing Report Has No Enquiries in It, It Is Decoration',
-  date: '2026-10-30',
+  date: '2026-10-01',
   excerpt: 'Impressions, reach and rankings are easy to report and easy to inflate. A useful report answers a smaller set of questions about calls, enquiries and cost.',
   image: '/images/blog/what-a-monthly-marketing-report-should-show.webp',
   content: [

@@ -4,7 +4,7 @@ import { CtaBand } from '../components/shared.jsx'
 import { customWorks } from '../data/customWorks.js'
 import { services } from '../data/services.js'
 import { siteOrigin } from '../data/site.js'
-import { breadcrumbs, pageGraph, webPage } from '../data/seo.js'
+import { pageGraph, webPage } from '../data/seo.js'
 
 // Only real media: a frame from the studio's own video, or a screenshot of a
 // tool it built. Anything without one is listed as text.
@@ -15,7 +15,7 @@ const customWorkImages = {
   },
   'custom-calculators': {
     src: '/images/calc.webp',
-    alt: 'The ResinRock material calculator, showing a price breakdown for a patio project',
+    alt: 'A material calculator we built, showing a price breakdown for a patio project',
   },
 }
 
@@ -45,7 +45,7 @@ function HubRow({ item, kind }) {
   )
 }
 
-function HubPage({ canonical, crumb, title, intro, items, kind, seoTitle, seoDescription, cta }) {
+function HubPage({ canonical, title, intro, also, items, kind, seoTitle, seoDescription, cta }) {
   const schema = pageGraph(
     webPage({
       type: 'CollectionPage',
@@ -63,7 +63,6 @@ function HubPage({ canonical, crumb, title, intro, items, kind, seoTitle, seoDes
         })),
       },
     }),
-    breadcrumbs([['Home', '/'], [crumb, canonical]]),
   )
 
   return (
@@ -72,6 +71,11 @@ function HubPage({ canonical, crumb, title, intro, items, kind, seoTitle, seoDes
         <div className="page-frame hub-hero-copy">
           <h1>{title}</h1>
           <p>{intro}</p>
+          {also ? (
+            <a className="text-link on-dark hub-also" href={also[1]}>
+              {also[0]} <ArrowIcon />
+            </a>
+          ) : null}
         </div>
       </section>
 
@@ -94,12 +98,12 @@ export function ServicesHubPage() {
   return (
     <HubPage
       canonical="/services/"
-      crumb="Our Services"
       title="Web, search, design and marketing services"
       intro="Everything the studio offers, from websites and SEO to design, marketing, audits and lead capture. Start with one and add the others when you need them."
+      also={['Looking for a chatbot, visualiser or calculator? See custom work', '/custom-works/']}
       items={services}
       kind="service"
-      seoTitle="Digital Agency Services | Wavefront Studio"
+      seoTitle="Web Design, SEO & Marketing Services | Wavefront Studio"
       seoDescription="Explore Wavefront Studio services for web development, SEO, apps, social media, graphic design, digital marketing, website audits, and lead capture."
       cta={{
         title: 'Not sure which service you need?',
@@ -114,7 +118,6 @@ export function CustomWorksHubPage() {
   return (
     <HubPage
       canonical="/custom-works/"
-      crumb="Custom Works"
       title="Custom tools for the way you sell"
       intro="AI chatbots, live product visualisers and quote calculators, each built around your own products, prices and customer questions."
       items={customWorks}

@@ -1,7 +1,8 @@
-import { useEffect, useId, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { ArrowIcon, ChevronIcon } from './Icons.jsx'
-import { contact, googleListingUrl, offeringGroups, testimonials, testimonialsHeading } from '../data/site.js'
+import { contact, googleListingUrl, isHiddenReviewer, offeringGroups, testimonialsHeading } from '../data/site.js'
 import { deliverLead } from '../formSubmission.js'
+import { SMS_CONSENT_CURRENT, SMS_MARKETING_CONSENT_CURRENT } from '../data/smsConsent.js'
 
 /* ------------------------------------------------------------------ */
 /* Headings                                                            */
@@ -76,10 +77,10 @@ export function OfferingList({ items }) {
 /* Testimonials                                                        */
 /* ------------------------------------------------------------------ */
 
-const initials = (name) => name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase()
+export const initials = (name) => name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase()
 
 // Stars only ever show a rating Google reports, never a made-up one.
-function Stars({ rating }) {
+export function Stars({ rating }) {
   const lit = Math.round(rating || 0)
   return (
     <span className="stars" role="img" aria-label={`${rating} out of 5 stars`}>
@@ -93,18 +94,24 @@ function Stars({ rating }) {
 }
 
 // The live Google rating and reviews from /api/reviews/. Fetched in the
-// browser only; until it answers, or if it cannot, the section still links to
-// the Google listing.
-function useGoogleReviews() {
+// browser only, once per page however many components ask; until it answers,
+// or if it cannot, the sections still link to the Google listing.
+let reviewsRequest = null
+function loadGoogleReviews() {
+  reviewsRequest ||= fetch('/api/reviews/', { headers: { accept: 'application/json' } })
+    .then((response) => ((response.headers.get('content-type') || '').includes('json') ? response.json() : null))
+    .then((json) => (json?.ok ? { ...json, reviews: (json.reviews || []).filter((review) => !isHiddenReviewer(review.author)) } : null))
+    .catch(() => null)
+  return reviewsRequest
+}
+
+export function useGoogleReviews() {
   const [data, setData] = useState(null)
   useEffect(() => {
     let cancelled = false
-    fetch('/api/reviews/', { headers: { accept: 'application/json' } })
-      .then((response) => ((response.headers.get('content-type') || '').includes('json') ? response.json() : null))
-      .then((json) => {
-        if (!cancelled && json?.ok) setData(json)
-      })
-      .catch(() => {})
+    loadGoogleReviews().then((json) => {
+      if (!cancelled && json) setData(json)
+    })
     return () => {
       cancelled = true
     }
@@ -112,9 +119,8 @@ function useGoogleReviews() {
   return data
 }
 
-// Google reviews are the section. The prerendered page carries the three
-// client quotes, which stay only until the live reviews arrive (or for good,
-// if Google cannot be reached), so the section is never empty.
+// Google reviews are the section. Until they arrive (and in the prerendered
+// page, or for good if Google cannot be reached) it points to the listing.
 export function Testimonials() {
   const google = useGoogleReviews()
   const reviews = google?.reviews || []
@@ -124,7 +130,7 @@ export function Testimonials() {
   return (
     <section className="testimonials chapter" id="testimonials">
       <div className="page-frame">
-        <SectionHeading title={onGoogle ? 'What clients say on Google' : testimonialsHeading.title}>
+        <SectionHeading title={testimonialsHeading.title}>
           {google?.rating ? (
             <p className="google-rating">
               <strong>{google.rating.toFixed(1)}</strong>
@@ -185,35 +191,14 @@ export function Testimonials() {
               ))}
             </div>
             <p className="google-attribution">
-              Reviews from{' '}
+              A selection of reviews from{' '}
               <a href={listing} target="_blank" rel="noreferrer noopener">
                 Google Maps
               </a>
-              , shown as Google provides them.
+              , shown word for word.
             </p>
           </div>
-        ) : (
-          <div className="testimonial-grid">
-            {testimonials.map((item) => (
-              <figure className="testimonial-card" key={item.name}>
-                <blockquote>{item.quote}</blockquote>
-                <figcaption>
-                  {item.image ? (
-                    <img src={item.image} alt="" width="96" height="96" loading="lazy" />
-                  ) : (
-                    <span className="testimonial-initials" aria-hidden="true">
-                      {initials(item.name)}
-                    </span>
-                  )}
-                  <span>
-                    <strong>{item.name}</strong>
-                    <span>{item.role}</span>
-                  </span>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        )}
+        ) : null}
       </div>
     </section>
   )
@@ -251,7 +236,7 @@ export function CtaBand({ title, copy, label = 'Get a free consultation', href =
 /* FAQ accordion                                                       */
 /* ------------------------------------------------------------------ */
 
-export function FaqAccordion({ items, heading }) {
+export function FaqAccordion({ items, heading, children }) {
   const [open, setOpen] = useState(0)
   const baseId = useId()
 
@@ -261,6 +246,7 @@ export function FaqAccordion({ items, heading }) {
         <div className="faq-heading">
           <h2>{heading?.title || 'Common questions'}</h2>
           {heading?.copy ? <p>{heading.copy}</p> : null}
+          {children}
         </div>
         <div className="faq-list">
           {items.map(([question, answer], index) => {
@@ -292,18 +278,17 @@ export function FaqAccordion({ items, heading }) {
 /* Enquiry form                                                        */
 /* ------------------------------------------------------------------ */
 
-// Permission to text. Carriers need the person to tick this themselves, and
-// they check the wording against what the SMS Policy page promises, so every
-// form on the site shows exactly these words. The hidden field sends them with
-// the enquiry, so the record holds what the person actually agreed to.
-export const SMS_CONSENT_TEXT =
-  'Text me about my enquiry. I agree to receive texts from Wavefront Studio LLC at this number about my enquiry, quote and project, including appointment reminders, some sent automatically. Not a condition of buying anything. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help. See our SMS Policy (/sms-policy/) and Privacy Policy (/privacy-policy/).'
-
-// Marketing permission is its own box. The Campaign Registry rejects a
-// campaign whose opt-in bundles marketing consent with any other consent, so
-// someone can agree to hear about their own project without agreeing to offers.
-export const SMS_MARKETING_CONSENT_TEXT =
-  'Send me offers too. I agree to receive marketing texts from Wavefront Studio LLC at this number, such as promotions, webinar invitations and company news, some sent automatically. Not a condition of buying anything. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help.'
+// A spam trap. People never see or reach this field; bots that fill every
+// input do, and a filled value makes the server drop the submission quietly
+// (server/lib/processLead.mjs and api/lead.js check `_gotcha`).
+export function Honeypot() {
+  return (
+    <label className="honeypot" aria-hidden="true">
+      Leave this empty
+      <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" defaultValue="" />
+    </label>
+  )
+}
 
 export function SmsConsentField({ className = '' }) {
   return (
@@ -317,7 +302,9 @@ export function SmsConsentField({ className = '' }) {
           help. See our <a href="/sms-policy/">SMS Policy</a> and <a href="/privacy-policy/">Privacy Policy</a>.
         </span>
       </label>
-      <input type="hidden" name="sms_consent_text" value={SMS_CONSENT_TEXT} />
+      {/* The version id, not the words: the server records the wording it
+          holds for this id (src/data/smsConsent.js). */}
+      <input type="hidden" name="sms_consent_version" value={SMS_CONSENT_CURRENT} />
       <label className="sms-consent-label">
         <input type="checkbox" name="sms_marketing_consent" value="yes" />
         <span>
@@ -326,9 +313,31 @@ export function SmsConsentField({ className = '' }) {
           anything. Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help.
         </span>
       </label>
-      <input type="hidden" name="sms_marketing_consent_text" value={SMS_MARKETING_CONSENT_TEXT} />
+      <input type="hidden" name="sms_marketing_consent_version" value={SMS_MARKETING_CONSENT_CURRENT} />
     </div>
   )
+}
+
+// The visible half of a page's BreadcrumbList (src/data/seo.js breadcrumbs()):
+// the same trail, so the structured data only describes what is on the page.
+export function Breadcrumbs({ trail }) {
+  return (
+    <nav className="crumbs" aria-label="Breadcrumb">
+      <ol>
+        {trail.map(([name, path], index) => (
+          <li key={path}>
+            {index < trail.length - 1 ? <a href={path}>{name}</a> : <span aria-current="page">{name}</span>}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}
+
+// A plan card's "Request pricing" button jumps to the form on the same page.
+// This tells that form which plan was picked, so the enquiry arrives saying so.
+export function choosePlan(name) {
+  window.dispatchEvent(new CustomEvent('wf:plan', { detail: name }))
 }
 
 // Same five fields the live contact form collects. `subject` is prefilled from
@@ -343,11 +352,24 @@ export function EnquiryForm({
   // Drops the two optional boxes (company, message) where every extra field
   // costs sign-ups, such as the page the ads point to.
   essentialOnly = false,
-  submitLabel = 'Submit',
+  submitLabel = 'Send my enquiry',
 }) {
   const [status, setStatus] = useState('')
   const [phase, setPhase] = useState('idle')
   const [confirmationName, setConfirmationName] = useState('')
+  const [plan, setPlan] = useState('')
+  const form = useRef(null)
+  const subject = plan ? `${subjectDefault || 'Website'}: ${plan}` : subjectDefault
+
+  useEffect(() => {
+    const onPlan = (event) => {
+      setPlan(event.detail || '')
+      // After the jump to the form, start the visitor in the first box.
+      requestAnimationFrame(() => form.current?.querySelector('input[name="name"]')?.focus({ preventScroll: true }))
+    }
+    window.addEventListener('wf:plan', onPlan)
+    return () => window.removeEventListener('wf:plan', onPlan)
+  }, [])
 
   async function submit(event) {
     event.preventDefault()
@@ -357,7 +379,7 @@ export function EnquiryForm({
     setStatus('Sending your message…')
     try {
       await deliverLead(event.currentTarget, {
-        subject: subjectDefault ? `${subjectDefault} enquiry` : 'Website enquiry',
+        subject: subject ? `${subject} enquiry` : 'Website enquiry',
         source,
         fields: [
           ['Name', 'name'],
@@ -387,7 +409,7 @@ export function EnquiryForm({
           </svg>
         </span>
         <h3>Thank you{confirmationName ? `, ${confirmationName}` : ''}.</h3>
-        <p>Your message reached the studio. We will reply using the details you gave us, usually within one to two working days.</p>
+        <p>Your message reached the studio. We will reply using the details you gave us, usually within two working days.</p>
         <button
           className="text-link confirmation-reset"
           type="button"
@@ -403,12 +425,18 @@ export function EnquiryForm({
   }
 
   return (
-    <form className={`enquiry-form ${compact ? 'is-compact' : ''}`} onSubmit={submit}>
+    <form ref={form} className={`enquiry-form ${compact ? 'is-compact' : ''}`} onSubmit={submit}>
+      <Honeypot />
       {heading ? (
         <div className="enquiry-heading">
           <h2>{heading}</h2>
           {copy ? <p>{copy}</p> : null}
         </div>
+      ) : null}
+      {plan ? (
+        <p className="enquiry-plan enquiry-wide">
+          Asking about: <strong>{plan}</strong>
+        </p>
       ) : null}
       <label>
         <span>Name</span>
@@ -456,7 +484,7 @@ export function EnquiryForm({
       ) : null}
       {/* The page already knows what the enquiry is about, so the subject rides
           along hidden rather than being one more box to fill in. */}
-      <input name="subject" type="hidden" defaultValue={subjectDefault || 'Website enquiry'} />
+      <input name="subject" type="hidden" key={plan} defaultValue={subject || 'Website enquiry'} />
       {essentialOnly ? null : (
         <label className="enquiry-wide">
           <span>

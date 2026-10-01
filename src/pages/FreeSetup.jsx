@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { CtaBand, FaqAccordion, SectionHeading, SmsConsentField } from '../components/shared.jsx'
-import { contact, testimonials } from '../data/site.js'
+import { CtaBand, FaqAccordion, Honeypot, SectionHeading, SmsConsentField, useGoogleReviews } from '../components/shared.jsx'
+import { contact, googleListingUrl } from '../data/site.js'
 import { freeSetupFaqs as FAQ } from '../data/faqs.js'
 import { deliverLead } from '../formSubmission.js'
 
@@ -59,6 +59,47 @@ function quarterEnd(now) {
   return new Date(now.getFullYear(), endMonth, 0, 23, 59, 59, 999)
 }
 
+// Three of the live Google reviews (the team's own are already left out).
+// Until they load, or if Google cannot be reached, a link to the listing.
+function GoogleQuotes() {
+  const google = useGoogleReviews()
+  const reviews = (google?.reviews || []).slice(0, 3)
+  const listing = google?.mapsUrl || googleListingUrl
+  if (!reviews.length) {
+    return (
+      <a className="text-link on-dark" href={listing} target="_blank" rel="noreferrer noopener">
+        Read what clients say about us on Google <ArrowIcon />
+      </a>
+    )
+  }
+  return (
+    <>
+      <div className="offer-quotes">
+        {reviews.map((review) => (
+          <blockquote key={`${review.author}-${review.when}`}>
+            <p>{review.text}</p>
+            <footer>
+              <span>{review.author}, on Google</span>
+              {review.url ? (
+                <a href={review.url} target="_blank" rel="noreferrer noopener">
+                  Read in full
+                </a>
+              ) : null}
+            </footer>
+          </blockquote>
+        ))}
+      </div>
+      <p className="google-attribution">
+        A selection of reviews from{' '}
+        <a href={listing} target="_blank" rel="noreferrer noopener">
+          Google Maps
+        </a>
+        , shown word for word.
+      </p>
+    </>
+  )
+}
+
 function Countdown() {
   const [parts, setParts] = useState(null)
 
@@ -80,18 +121,20 @@ function Countdown() {
   const pad = (n) => String(n).padStart(2, '0')
 
   return (
-    <div className="offer-countdown">
+    // Held invisible (space kept, so nothing shifts) until the browser has
+    // worked out the time left; the prerendered page cannot know it.
+    <div className="offer-countdown" data-ready={parts ? 'true' : undefined}>
       <span className="offer-countdown-label">Offer closes in</span>
       <div>
-        <b>{parts ? parts.days : '—'}</b>
+        <b>{parts ? parts.days : '00'}</b>
         <small>Days</small>
       </div>
       <div>
-        <b>{parts ? pad(parts.hours) : '—'}</b>
+        <b>{parts ? pad(parts.hours) : '00'}</b>
         <small>Hrs</small>
       </div>
       <div>
-        <b>{parts ? pad(parts.minutes) : '—'}</b>
+        <b>{parts ? pad(parts.minutes) : '00'}</b>
         <small>Min</small>
       </div>
       <p className="sr-only" aria-live="polite">
@@ -130,7 +173,7 @@ function ClaimForm() {
           ['Company website', 'website'],
         ],
       })
-      setStatus('Thanks. We read every enquiry ourselves and will come back within one business day.')
+      setStatus('Thanks. We read every enquiry ourselves and will come back within two working days.')
     } catch {
       setStatus(`We could not send the form. Please email ${contact.email} or call ${contact.phone}.`)
     } finally {
@@ -140,8 +183,9 @@ function ClaimForm() {
 
   return (
     <form className="claim-form" onSubmit={submit} id="claim">
+      <Honeypot />
       <div className="claim-heading">
-        <h3>Claim one of the five places</h3>
+        <h3>Ask for one of the five places</h3>
         <p>
           Send us a line telling us which service you want and what you’re trying to fix. We read every enquiry ourselves. There is no
           queue and no sales team in between.
@@ -193,7 +237,7 @@ function ClaimForm() {
       <SmsConsentField />
 
       <button className="kinetic-button group" type="submit" disabled={sending}>
-        <span>{sending ? 'Sending…' : 'Claim a place'}</span>
+        <span>{sending ? 'Sending…' : 'Ask for a place'}</span>
         <span className="button-island">
           <ArrowIcon className="size-4" />
         </span>
@@ -205,7 +249,7 @@ function ClaimForm() {
       <p className="claim-note">
         Or call <a href={contact.phoneHref}>{contact.phone}</a> or email <a href={contact.emailHref}>{contact.email}</a>. A place is
         allocated when an agreement is signed, not when an enquiry is received, so an early conversation is worth more than an early
-        email. One business day. No spam, no list-selling. We hate it too.
+        email. We reply within two working days. No spam, no list-selling. We hate it too.
       </p>
     </form>
   )
@@ -235,7 +279,7 @@ export default function FreeSetup() {
             </p>
             <div className="hero-actions">
               <a className="kinetic-button group" href="#claim">
-                <span>Claim a place: tell us what you need</span>
+                <span>Ask for a place: tell us what you need</span>
                 <span className="button-island">
                   <ArrowIcon className="size-4" />
                 </span>
@@ -309,16 +353,7 @@ export default function FreeSetup() {
       <section className="chapter offer-proof">
         <div className="page-frame">
           <SectionHeading title="Why us specifically" dark />
-          <div className="offer-quotes">
-            {testimonials.map((item) => (
-              <blockquote key={item.name}>
-                <p>{item.quote}</p>
-                <footer>
-                  {item.name}, {item.role}
-                </footer>
-              </blockquote>
-            ))}
-          </div>
+          <GoogleQuotes />
         </div>
       </section>
 
@@ -327,7 +362,7 @@ export default function FreeSetup() {
           <div>
             <SectionHeading title="Tell us what you’re interested in" align="stack" />
             <p className="prose">
-              Get in touch and tell us which of the three you want. We’ll come back within one business day with whether a place is still
+              Get in touch and tell us which of the three you want. We’ll come back within two working days with whether a place is still
               open and what it would involve. No obligation, and we’ll tell you honestly if we’re not a fit.
             </p>
             {gone ? (
@@ -372,7 +407,7 @@ export default function FreeSetup() {
       <CtaBand
         title="Would rather just talk it through?"
         copy="Fifteen minutes on the phone. We’ll tell you which of the three would move the needle most for your business, and whether a place is still open this quarter."
-        label="Book a 15-minute call"
+        label={`Call ${contact.phone}`}
         href={contact.phoneHref}
         secondary={['See how it works', '/ai-chatbot/']}
       />

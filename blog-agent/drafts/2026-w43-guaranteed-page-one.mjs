@@ -2,7 +2,7 @@
 export default {
   slug: 'seo-company-that-guarantees-page-one',
   title: 'An SEO Company That Guarantees Page One Is Telling You What You Want to Hear',
-  date: '2026-10-23',
+  date: '2026-10-01',
   excerpt: 'Google says nobody can promise a number one ranking. Here is what an honest SEO proposal contains, and the questions that separate it from a sales pitch.',
   image: '/images/blog/seo-company-that-guarantees-page-one.webp',
   content: [
@@ -44,9 +44,7 @@ export default {
     '<li>What happens to the work if I stop paying?</li>',
     '</ol>',
     '<p>Pay attention to the last one. Work that improves your site and your content stays with you. Rented tactics, such as links bought from a network, can vanish the moment the contract ends.</p>',
-    '<blockquote class="lf-quote"><p>Our Google rankings completely transformed after working with Wavefront. We went from page five to page one in just a few months. The SEO strategy they built for us is still delivering results every single day.</p>',
-    '<p><em>(Sharon Diaz, CEO)</em></p></blockquote>',
-    '<p>That is one client describing one result. It is not a promise about yours, and it is worth reading that way.</p>',
+    '<p>Whoever you hire, us included, ask for results you can check for yourself: a live site, a search you can run today, a client you can call.</p>',
     '<h2>What to do this week</h2>',
     '<ol>',
     '<li>Write down the five searches a customer would type to find you, in their words rather than yours.</li>',

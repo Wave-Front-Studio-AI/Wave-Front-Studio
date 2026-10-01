@@ -4,7 +4,7 @@
 export default {
   slug: 'who-owns-your-website',
   title: 'If You Can’t Log In to Your Own Domain, You Don’t Own Your Website',
-  date: '2026-10-02',
+  date: '2026-10-01',
   excerpt: 'A website you cannot move, edit or take elsewhere is a rental. Here are the five things to check, and the questions to put to any agency before you sign.',
   image: '/images/blog/who-owns-your-website.webp',
   content: [

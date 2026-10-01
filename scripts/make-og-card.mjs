@@ -17,7 +17,7 @@ const HEIGHT = 630
 
 const ink = '#0d1b2a'
 const ink2 = '#143a5c'
-const cyan = '#36f0ee'
+const cyan = '#2bb3c8'
 
 const LOGO_WIDTH = 660
 const logo = await sharp(resolve(root, 'public/wave-logo-white.webp'))

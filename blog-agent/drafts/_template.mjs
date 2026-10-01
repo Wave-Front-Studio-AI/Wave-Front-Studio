@@ -56,12 +56,10 @@ export default {
     '<blockquote class="lf-callout"><p><strong>The bit people miss</strong></p>',
     '<p>The practical warning or caveat.</p></blockquote>',
 
-    // Optional: a client quote. It MUST be one of the three real testimonials in
-    // src/data/site.js, word for word, attributed to the right person. The
-    // validator refuses anything else. A quote attributed to Wavefront Studio
-    // itself is treated as a pull quote and needs no source.
-    // '<blockquote class="lf-quote"><p>Exact testimonial text.</p>',
-    // '<p><em>&#8212; Name, Role</em></p></blockquote>',
+    // Optional: a pull quote from the studio itself. Client quotes are not used
+    // (reviews live on Google), and the validator refuses any quote attributed
+    // to a person.
+    // '<blockquote class="lf-quote"><p>One line worth repeating.</p></blockquote>',
 
     '<h2>What to do this week</h2>',
     '<ol><li>A step somebody could actually take.</li></ol>',

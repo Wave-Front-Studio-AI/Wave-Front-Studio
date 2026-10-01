@@ -1,11 +1,44 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
+import { Honeypot, SmsConsentField } from '../components/shared.jsx'
 import { CATEGORIES, DETAILS, LANDING_PAGE_BUNDLES, OFFER, PAIRS, SERVICES } from '../data/generated/packages.js'
 import { contact } from '../data/site.js'
+import { deliverLead } from '../formSubmission.js'
 import { MAX_TIER_QTY, addonQty, calculateQuote, creditAmount, customQuoteItem, defaultOptionIndex, landingPageBundle, landingPagesPrice, money, selectedTiers, serviceUnits, tierPrice, tierQty } from '../packageQuote.js'
 
 const serviceById = Object.fromEntries(SERVICES.map((service) => [service.id, service]))
+
+// Staff open the page with ?staff=1 to add a client name, a credit and their own prices.
+// This only keeps those tools out of a visitor's way; it is not access control.
+const isStaffUrl = () => new URLSearchParams(window.location.search).get('staff') === '1'
+
+// Visitors can't price the Custom landing tier themselves, so it shows this instead of a price.
+const CUSTOM_PRICE_LABEL = 'Priced on a call'
+// The row label calculateQuote gives the Custom landing tier.
+const CUSTOM_LANDING_ROW = 'Landing Pages — Custom'
+
+const tierLabel = (tier, staff) => (tier.custom && !staff ? CUSTOM_PRICE_LABEL : tierPrice(tier))
+
+// A visitor's quote leaves out everything only staff can set: credits, custom items and custom landing prices.
+// The project name and details stay, so the studio still sees what the visitor described.
+function visitorQuote(state) {
+  const safe = { ...state }
+  delete safe.credit
+  delete safe.customItems
+  if (safe.landing?.custom) safe.landing = { ...safe.landing, custom: { name: safe.landing.custom.name, details: safe.landing.custom.details } }
+  const quote = calculateQuote(safe)
+  let customPriced = false
+  const rows = quote.rows.map((row) => {
+    if (!row.label.startsWith(CUSTOM_LANDING_ROW)) return row
+    customPriced = true
+    return { ...row, amount: CUSTOM_PRICE_LABEL }
+  })
+  return { ...quote, rows, customPriced }
+}
+
+// The lead API accepts up to 32 KB, so an unusually long quote is shortened rather than refused.
+const MAX_MESSAGE = 12000
 
 function fromLabel(service) {
   const minSetup = Math.min(...service.tiers.filter((tier) => !tier.custom).map((tier) => tier.s))
@@ -16,7 +49,7 @@ function fromLabel(service) {
   return money(minSetup)
 }
 
-function DetailsModal({ service, onClose, onSelect }) {
+function DetailsModal({ service, staff, onClose, onSelect }) {
   useEffect(() => {
     const onKey = (event) => event.key === 'Escape' && onClose()
     document.addEventListener('keydown', onKey)
@@ -45,7 +78,7 @@ function DetailsModal({ service, onClose, onSelect }) {
           {service.tiers.map((tier) => (
             <div key={tier.n}>
               <span>{tier.n}</span>
-              <strong>{tierPrice(tier)}{service.id === 'landing' && !tier.custom ? ' base' : ''}</strong>
+              <strong>{tierLabel(tier, staff)}{service.id === 'landing' && !tier.custom ? ' base' : ''}</strong>
             </div>
           ))}
         </div>
@@ -260,6 +293,16 @@ export default function BuildYourPackage() {
   const [pdfFile, setPdfFile] = useState(null)
   const [clientName, setClientName] = useState('')
   const [quoteNotes, setQuoteNotes] = useState('')
+  const [staff, setStaff] = useState(false)
+  // Sending the quote to the studio: sendPhase is 'idle', 'sending' or 'sent'.
+  const [sendOpen, setSendOpen] = useState(false)
+  const [sendPhase, setSendPhase] = useState('idle')
+  const [sendStatus, setSendStatus] = useState('')
+  const [sentName, setSentName] = useState('')
+  const sendNameRef = useRef(null)
+  const sentHeadingRef = useRef(null)
+  // Set by "Send another quote", so focus returns to the form it brings back.
+  const refocusSendRef = useRef(false)
   // null when closed, { id: null } for a new custom item, { id } to edit one.
   const [customEditor, setCustomEditor] = useState(null)
   const customIdRef = useRef(0)
@@ -291,7 +334,7 @@ export default function BuildYourPackage() {
     setPdfStatus('loading')
     try {
       const { renderQuotePdf } = await import('../quotePdf.js')
-      const { blob, filename } = await renderQuotePdf({ ...quote, clientName: clientName.trim(), notes: quoteNotes.trim() })
+      const { blob, filename } = await renderQuotePdf({ ...quote, clientName: staff ? clientName.trim() : '', notes: quoteNotes.trim() })
       const file = { url: URL.createObjectURL(blob), filename }
       const link = Object.assign(document.createElement('a'), { href: file.url, download: filename, rel: 'noopener' })
       document.body.append(link)
@@ -310,6 +353,11 @@ export default function BuildYourPackage() {
     const timer = window.setTimeout(() => setToast(''), 1900)
     return () => window.clearTimeout(timer)
   }, [toast])
+
+  // Read after hydration, so the prerendered HTML and the first render in the browser match.
+  useEffect(() => {
+    setStaff(isStaffUrl())
+  }, [])
 
   const optionIndex = (id, addonIndex) => {
     const addon = serviceById[id].addons[addonIndex]
@@ -384,11 +432,30 @@ export default function BuildYourPackage() {
     })
   }
 
-  const quote = useMemo(() => calculateQuote(state), [state])
+  const quote = useMemo(() => (staff ? calculateQuote(state) : visitorQuote(state)), [state, staff])
   // Services drive the bundle meter; a quote can also be custom items alone.
   const hasItems = quote.rows.length > 0
   const pendingPages = quote.pendingPageRate !== undefined
   const pendingNote = pendingPages ? `Plus ${money(quote.pendingPageRateAfter)} per page${quote.pct ? ` after the ${quote.pct}% bundle discount` : ''}. Page count and final total to be confirmed.` : ''
+  const customNote = quote.customPriced ? 'Your custom landing page is priced on a quick call, so it isn’t in these totals yet.' : ''
+
+  // Nothing left to send, so the form closes.
+  useEffect(() => {
+    if (!hasItems) setSendOpen(false)
+  }, [hasItems])
+
+  useEffect(() => {
+    if (sendOpen) sendNameRef.current?.focus()
+  }, [sendOpen])
+
+  // The thank-you replaces the form, so focus moves with it rather than dropping to the page.
+  useEffect(() => {
+    if (sendPhase === 'sent') sentHeadingRef.current?.focus()
+    else if (refocusSendRef.current) {
+      refocusSendRef.current = false
+      sendNameRef.current?.focus()
+    }
+  }, [sendPhase])
 
   // Loads the PDF code and branding as soon as there's a quote, so the download starts straight after the click
   // while the browser still counts it as the visitor's own. A failed load is retried on the click.
@@ -419,33 +486,70 @@ export default function BuildYourPackage() {
     return fallback || null
   }, [state, quote.count])
 
-  function emailQuote() {
-    if (quote.errors?.length) return
+  // The quote as plain text: the message the form sends, and the body of the email link.
+  function quoteText() {
+    const lines = quote.rows.map((row) => `${row.sub ? '  + ' : ''}${row.label} — ${row.amount}${row.description ? `\n${row.description}` : ''}`)
+    let text = `${staff && clientName.trim() ? `Prepared for: ${clientName.trim()}\n\n` : ''}${lines.join('\n')}\n\n---\n${pendingPages ? 'Fixed one-time fees' : 'One-time total'}: ${money(quote.oneAfter)}`
+    if (quote.pct > 0) text += ` (after ${quote.pct}% bundle discount, saving ${money(quote.bundleAmount)})`
+    if (quote.credit > 0) text += `\nCredit applied${quote.creditLabel ? ` — ${quote.creditLabel}` : ''}: -${money(quote.credit)}`
+    text += `\nMonthly: ${money(quote.monthly)}/mo`
+    if (pendingNote) text += `\n${pendingNote}`
+    if (customNote) text += `\n${customNote}`
+    if (quote.firstMonthsFree > 0) text += `\nFirst month free on monthly plans: ${money(quote.firstMonthsFree)} saved`
+    if (quoteNotes.trim()) text += `\n\nNotes:\n${quoteNotes.trim()}`
+    return text
+  }
+
+  function toggleSend() {
     if (!hasItems) {
-      setToast('Select a service or add a custom item first')
+      setToast(staff ? 'Select a service or add a custom item first' : 'Select a service first')
       return
     }
-    const lines = quote.rows.map((row) => `${row.sub ? '  + ' : ''}${row.label} — ${row.amount}${row.description ? `\n${row.description}` : ''}`)
-    let body = `Hi Wavefront Studio,\n\nI would like to lock in this package:${clientName.trim() ? `\nPrepared for: ${clientName.trim()}` : ''}\n\n${lines.join('\n')}\n\n---\n${pendingPages ? 'Fixed one-time fees' : 'One-time total'}: ${money(
-      quote.oneAfter,
-    )}`
-    if (quote.pct > 0) body += ` (after ${quote.pct}% bundle discount, saving ${money(quote.bundleAmount)})`
-    if (quote.credit > 0) body += `\nCredit applied${quote.creditLabel ? ` — ${quote.creditLabel}` : ''}: -${money(quote.credit)}`
-    body += `\nMonthly: ${money(quote.monthly)}/mo`
-    if (pendingNote) body += `\n${pendingNote}`
-    if (quote.firstMonthsFree > 0) body += `\nLimited-time: first month free (${money(quote.firstMonthsFree)} saved)`
-    if (quoteNotes.trim()) body += `\n\nNotes:\n${quoteNotes.trim()}`
-    body += '\n\nPlease hold this price for me. My details:\nName:\nPhone:\nWebsite:'
-    window.location.href = `mailto:${OFFER.contactEmail}?subject=${encodeURIComponent('My Wavefront Package Quote')}&body=${encodeURIComponent(body)}`
+    setSendOpen((open) => !open)
   }
+
+  async function sendQuote(event) {
+    event.preventDefault()
+    // A second click while the first is in flight would store the lead twice.
+    if (sendPhase === 'sending' || !hasItems || quote.errors?.length) return
+    const form = event.currentTarget
+    const submittedName = new FormData(form).get('name')
+    setSendPhase('sending')
+    setSendStatus('Sending your quote…')
+    try {
+      await deliverLead(form, {
+        subject: 'Package builder quote',
+        source: 'package-builder',
+        fields: [
+          ['Name', 'name'],
+          ['Phone', 'phone'],
+          ['Email', 'email'],
+          [pendingPages ? 'Fixed one-time fees' : 'One-time total', null, money(quote.oneAfter)],
+          ['Monthly', null, `${money(quote.monthly)}/mo`],
+        ],
+      })
+      setSentName(typeof submittedName === 'string' ? submittedName.trim() : '')
+      setSendStatus('')
+      setSendPhase('sent')
+    } catch {
+      setSendPhase('idle')
+      setSendStatus(`We could not send the form. Please email ${contact.email} or call ${contact.phone}.`)
+    }
+  }
+
+  const summary = hasItems ? quoteText() : ''
+  const message = summary.length > MAX_MESSAGE ? `${summary.slice(0, MAX_MESSAGE)}\n[Quote shortened to fit the form.]` : summary
+  const mailtoHref = `mailto:${OFFER.contactEmail}?subject=${encodeURIComponent('My Wavefront Package Quote')}&body=${encodeURIComponent(
+    `Hi Wavefront Studio,\n\nI would like to lock in this package:\n\n${summary}\n\nPlease hold this price for me. My details:\nName:\nPhone:\nWebsite:`,
+  )}`
 
   return (
     <Layout
       className="package-page"
       seo={{
-        title: 'Build Your Package | Wavefront Studio',
+        title: 'Build Your Package: Web, SEO & AI Pricing | Wavefront Studio',
         description:
-          'Tick the services you want and pick a tier, and your total updates instantly. The more you bundle, the more you save.',
+          'Pick the website, marketing and AI services you need, choose a tier for each and watch your total update. Save the quote as a PDF or send it to the studio.',
         canonical: '/package-builder/',
       }}
     >
@@ -547,9 +651,8 @@ export default function BuildYourPackage() {
                                 onClick={() => toggleTier(id, index)}
                                 aria-pressed={tiers.includes(index)}
                               >
-                                {index === 1 ? <span className="package-pop">Popular</span> : null}
                                 <strong>{tier.n}</strong>
-                                <b>{tierPrice(tier)}{id === 'landing' && !tier.custom ? ' base' : ''}</b>
+                                <b>{tierLabel(tier, staff)}{id === 'landing' && !tier.custom ? ' base' : ''}</b>
                                 <small>{tier.note}</small>
                               </button>
                             ))}
@@ -557,19 +660,23 @@ export default function BuildYourPackage() {
 
                           {id === 'landing' && customSelected ? (
                             <fieldset className="package-custom">
-                              <legend>Custom landing page quote</legend>
-                              <p>Set the price and scope for your unique build. Add per-page pricing if your project needs it.</p>
+                              <legend>{staff ? 'Custom landing page quote' : 'Your custom landing page'}</legend>
+                              <p>{staff ? 'Set the price and scope for your unique build. Add per-page pricing if your project needs it.' : 'Tell us what the page needs to do. We’ll price it with you on a quick call.'}</p>
                               <div className="package-custom-prices">
                                 <label htmlFor="custom-project-name">Project name (optional)
                                   <input id="custom-project-name" type="text" maxLength="80" placeholder="e.g. Product launch experience" value={entry.custom?.name ?? ''} onChange={(event) => setCustomField('name', event.target.value)} />
                                 </label>
+                                {/* Prices are set by staff only; a visitor's custom page is priced on a call. */}
+                                {staff ? <>
                                 <label htmlFor="custom-project-price">One-time project price ($)
                                   <input id="custom-project-price" type="number" min="0" max="1000000" step="1" inputMode="numeric" placeholder="Enter project price" value={entry.custom?.setup ?? ''} onChange={(event) => setCustomField('setup', event.target.value)} />
                                 </label>
                                 <label htmlFor="custom-monthly-price">Monthly price ($/mo, optional)
                                   <input id="custom-monthly-price" type="number" min="0" max="1000000" step="1" inputMode="numeric" placeholder="e.g. 99" value={entry.custom?.monthly ?? ''} onChange={(event) => setCustomField('monthly', event.target.value)} />
                                 </label>
+                                </> : null}
                               </div>
+                              {staff ? <>
                               <label className="package-custom-tbc" htmlFor="custom-per-page-enabled">
                                 <input id="custom-per-page-enabled" type="checkbox" checked={entry.custom?.perPageEnabled === true} onChange={(event) => setCustomField('perPageEnabled', event.target.checked)} />
                                 Add per-page pricing
@@ -588,10 +695,11 @@ export default function BuildYourPackage() {
                                 Page count to be confirmed
                               </label>
                               </> : null}
+                              </> : null}
                               <label htmlFor="custom-project-details">Project details for the quote
                                 <textarea id="custom-project-details" rows="5" maxLength="2000" placeholder="Describe the features, design, integrations, and deliverables included in this build." value={entry.custom?.details ?? ''} onChange={(event) => setCustomField('details', event.target.value)} />
                               </label>
-                              <p>Custom pricing replaces the Launch, Grow, and Scale tiers. All prices in USD. Leave the monthly price blank if there is no ongoing charge, and use $0 for the project price if you charge only per page or monthly.</p>
+                              {staff ? <p>Custom pricing replaces the Launch, Grow, and Scale tiers. All prices in USD. Leave the monthly price blank if there is no ongoing charge, and use $0 for the project price if you charge only per page or monthly.</p> : null}
                             </fieldset>
                           ) : null}
 
@@ -721,22 +829,26 @@ export default function BuildYourPackage() {
 
           <aside className="package-quote" id="quote">
             <h2>Your quote</h2>
-            <label className="package-client" htmlFor="quote-client">Prepared for <span>(optional)</span>
-              <input id="quote-client" type="text" maxLength="100" placeholder="Client or company name" value={clientName} onChange={(event) => setClientName(event.target.value)} />
-            </label>
+            {staff ? (
+              <label className="package-client" htmlFor="quote-client">Prepared for <span>(optional)</span>
+                <input id="quote-client" type="text" maxLength="100" placeholder="Client or company name" value={clientName} onChange={(event) => setClientName(event.target.value)} />
+              </label>
+            ) : null}
             <label className="package-client" htmlFor="quote-notes">Quote notes <span>(optional, shown on the PDF)</span>
               <textarea id="quote-notes" rows="3" maxLength="4000" placeholder="Timeline, payment terms, next steps, or anything else to explain." value={quoteNotes} onChange={(event) => setQuoteNotes(event.target.value)} />
             </label>
-            <label className="package-client" htmlFor="quote-credit">Credit ($) <span>(optional, comes off the one-time total)</span>
-              <input id="quote-credit" type="number" min="0" max="1000000" step="1" inputMode="numeric" placeholder="e.g. 500 already paid" value={state.credit?.amount ?? ''} onChange={(event) => setCreditField('amount', event.target.value)} />
-            </label>
-            {creditAmount(state.credit) > 0 ? (
+            {staff ? (
+              <label className="package-client" htmlFor="quote-credit">Credit ($) <span>(optional, comes off the one-time total)</span>
+                <input id="quote-credit" type="number" min="0" max="1000000" step="1" inputMode="numeric" placeholder="e.g. 500 already paid" value={state.credit?.amount ?? ''} onChange={(event) => setCreditField('amount', event.target.value)} />
+              </label>
+            ) : null}
+            {staff && creditAmount(state.credit) > 0 ? (
               <label className="package-client" htmlFor="quote-credit-label">What the credit is for <span>(optional)</span>
                 <input id="quote-credit-label" type="text" maxLength="80" placeholder="e.g. Phase 1 deposit" value={state.credit?.label ?? ''} onChange={(event) => setCreditField('label', event.target.value)} />
               </label>
             ) : null}
             {!hasItems ? (
-              <p className="package-empty">No services selected yet. Pick some on the left, or add a custom quote.</p>
+              <p className="package-empty">No services selected yet. Pick some on the left{staff ? ', or add a custom quote' : ''}.</p>
             ) : (
               <>
                 <div className="package-lines">
@@ -789,6 +901,7 @@ export default function BuildYourPackage() {
                     </b>
                   </div>
                   {pendingPages ? <p className="package-pending-note">{pendingNote}</p> : null}
+                  {customNote ? <p className="package-pending-note">{customNote}</p> : null}
                 </div>
               </>
             )}
@@ -819,28 +932,104 @@ export default function BuildYourPackage() {
               </p>
             ) : null}
 
-            <button className="kinetic-button light group package-email-button" type="button" onClick={emailQuote} disabled={Boolean(quote.errors?.length)} aria-describedby={quote.errors?.length ? 'custom-quote-errors' : undefined}>
-              <span>Email me this quote</span>
+            <button
+              className="kinetic-button light group package-send-button"
+              type="button"
+              onClick={toggleSend}
+              disabled={Boolean(quote.errors?.length)}
+              aria-expanded={sendOpen}
+              aria-controls="quote-send"
+              aria-describedby={quote.errors?.length ? 'custom-quote-errors' : undefined}
+            >
+              <span>Send this quote to the studio</span>
               <span className="button-island">
                 <ArrowIcon className="size-4" />
               </span>
             </button>
 
-            <button ref={customButtonRef} className="kinetic-button light group package-custom-button" type="button" onClick={() => setCustomEditor({ id: null })} aria-haspopup="dialog">
-              <span>Custom quote</span>
-              <span className="button-island">
-                <svg className="size-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                  <path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" />
-                </svg>
-              </span>
-            </button>
+            {/* Sends the quote through the same lead pipeline as the site's other forms, so it reaches the CRM
+                whether or not the visitor has a mail app. */}
+            <div className="package-send" id="quote-send" hidden={!sendOpen}>
+              {sendPhase === 'sent' ? (
+                <div className="package-send-done">
+                  <span className="confirmation-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="m6.5 12.5 3.4 3.4 7.6-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <h3 ref={sentHeadingRef} tabIndex={-1}>Thank you{sentName ? `, ${sentName}` : ''}.</h3>
+                  <p>Your quote reached the studio. We will reply using the details you gave us, usually within two working days.</p>
+                  <button
+                    className="text-link confirmation-reset"
+                    type="button"
+                    onClick={() => {
+                      refocusSendRef.current = true
+                      setSendPhase('idle')
+                      setSentName('')
+                    }}
+                  >
+                    Send another quote <ArrowIcon />
+                  </button>
+                </div>
+              ) : (
+                <form className="package-send-form" onSubmit={sendQuote}>
+                  <Honeypot />
+                  <p className="package-send-intro">Add your details and this quote goes straight to the studio. We’ll reply to confirm the price and next steps.</p>
+                  <label className="package-client" htmlFor="quote-send-name">Name
+                    <input ref={sendNameRef} id="quote-send-name" required name="name" type="text" autoComplete="name" placeholder="Your name" />
+                  </label>
+                  <label className="package-client" htmlFor="quote-send-email">Email
+                    <input id="quote-send-email" required name="email" type="email" autoComplete="email" placeholder="you@company.com" />
+                  </label>
+                  <label className="package-client" htmlFor="quote-send-phone">Phone
+                    <input
+                      id="quote-send-phone"
+                      required
+                      name="phone"
+                      type="tel"
+                      inputMode="tel"
+                      autoComplete="tel"
+                      pattern="(?:[^\d]*\d){7,}[^\d]*"
+                      title="Enter a phone number with at least 7 digits."
+                      placeholder="(941) 555-0123"
+                    />
+                  </label>
+                  <input name="subject" type="hidden" value="Package builder quote" />
+                  <input name="message" type="hidden" value={message} />
+                  <SmsConsentField />
+                  <button className="kinetic-button group" type="submit" disabled={sendPhase === 'sending'}>
+                    <span>{sendPhase === 'sending' ? 'Sending…' : 'Send my quote'}</span>
+                    <span className="button-island">
+                      <ArrowIcon className="size-4" />
+                    </span>
+                  </button>
+                  <p className="form-status" role="status" aria-live="polite">
+                    {sendStatus}
+                  </p>
+                  <p className="package-send-alt">
+                    Prefer your own email? <a href={mailtoHref}>Email the quote yourself</a>
+                  </p>
+                </form>
+              )}
+            </div>
+
+            {staff ? (
+              <button ref={customButtonRef} className="kinetic-button light group package-custom-button" type="button" onClick={() => setCustomEditor({ id: null })} aria-haspopup="dialog">
+                <span>Custom quote</span>
+                <span className="button-island">
+                  <svg className="size-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" />
+                  </svg>
+                </span>
+              </button>
+            ) : null}
 
             <p className="package-note">
               Estimates for standard scopes. Final quote confirmed on a quick call. Ad spend for paid campaigns billed separately.
             </p>
 
             <div className="package-savings">
-              <h3 className="package-panel-title">Your savings if you start now</h3>
+              <h3 className="package-panel-title">Your savings on this quote</h3>
               <div>
                 <span>Bundle discount</span>
                 <b>{money(quote.bundleAmount)}</b>
@@ -852,7 +1041,7 @@ export default function BuildYourPackage() {
                 </div>
               ) : null}
               <div className="is-total">
-                <span>Total limited-time savings</span>
+                <span>Total savings</span>
                 <b>{money(quote.bundleAmount + quote.firstMonthsFree)}</b>
               </div>
             </div>
@@ -869,8 +1058,9 @@ export default function BuildYourPackage() {
               <div className="package-upsell">
                 <p>
                   Pair it with <b>{suggestion.name}</b> to{' '}
-                  {nextTier ? `get ${nextTier.pct}% off your whole setup` : `keep your ${quote.pct}% bundle discount`}, plus your
-                  first month free.
+                  {nextTier ? `get ${nextTier.pct}% off your whole setup` : `keep your ${quote.pct}% bundle discount`}
+                  {/* The free first month is only on monthly charges, so it is only promised for a service that has one. */}
+                  {suggestion.billing === 'onetime' ? '' : ', plus your first month free'}.
                 </p>
                 <button
                   type="button"
@@ -894,8 +1084,7 @@ export default function BuildYourPackage() {
           <p>
             Pricing reflects 2026 Florida market rates for standard scopes and is a starting point; final quotes are customized. One-time
             builds are typically billed 50% to start and 50% on delivery. Monthly services have a 3-month minimum recommendation.
-            Limited-time savings apply to new agreements started before the countdown expires. Digital-marketing ad spend is billed
-            separately by the ad platform.
+            Digital-marketing ad spend is billed separately by the ad platform.
           </p>
         </div>
       </section>
@@ -903,6 +1092,7 @@ export default function BuildYourPackage() {
       {modal ? (
         <DetailsModal
           service={modal}
+          staff={staff}
           onClose={() => setModal(null)}
           onSelect={(tier) => {
             if (!state[modal.id]) setState((current) => ({ ...current, [modal.id]: { tiers: [tier], addons: [], opts: {} } }))
