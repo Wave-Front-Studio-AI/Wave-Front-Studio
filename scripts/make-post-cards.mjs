@@ -14,8 +14,9 @@
 // is the motif: a plain geometric figure standing for the subject. Adding a post
 // means adding one entry to MOTIFS below.
 
-import { mkdir, access } from 'node:fs/promises'
+import { mkdir, access, readdir } from 'node:fs/promises'
 import { resolve } from 'node:path'
+import { pathToFileURL } from 'node:url'
 import sharp from 'sharp'
 import { posts } from '../src/data/generated/posts.js'
 
@@ -151,6 +152,59 @@ const MOTIFS = {
     circle(C + 75, C, 26, { color: cyan, opacity: 0.95 }),
   ],
 
+  // A padlock: the account you hold the keys to.
+  'who-owns-your-website': () => [
+    rect(C - 100, C - 10, 200, 160, { r: 24, fill: false, sw: 12, opacity: 0.9 }),
+    stroke(`M ${C - 60} ${C - 10} V ${C - 70} a 60 60 0 0 1 120 0 V ${C - 10}`, { w: 14 }),
+    circle(C, C + 60, 18),
+    stroke(`M ${C} ${C + 70} V ${C + 105}`, { w: 12 }),
+  ],
+
+  // A short list of enquiries read down the page, one picked out.
+  'redesign-starts-with-your-enquiries': () => [
+    rect(C - 150, C - 140, 300, 56, { r: 12, color: brand, opacity: 0.3 }),
+    rect(C - 150, C - 60, 300, 56, { r: 12, opacity: 1 }),
+    rect(C - 150, C + 20, 300, 56, { r: 12, color: brand, opacity: 0.3 }),
+    rect(C - 150, C + 100, 300, 56, { r: 12, color: brand, opacity: 0.2 }),
+    stroke(`M ${C - 120} ${C - 32} H ${C + 20}`, { w: 10, color: ink, opacity: 0.9 }),
+  ],
+
+  // A form field with an arrow that stops short of the edge.
+  'your-contact-form-is-losing-enquiries': () => [
+    rect(C - 140, C - 120, 280, 70, { r: 14, fill: false, sw: 10, opacity: 0.6, color: brand }),
+    rect(C - 140, C - 30, 280, 70, { r: 14, fill: false, sw: 10, opacity: 0.6, color: brand }),
+    stroke(`M ${C - 140} ${C + 130} H ${C + 20}`, { w: 14, opacity: 0.4, color: brand }),
+    stroke(`M ${C + 40} ${C + 130} H ${C + 150} m -30 -30 l 30 30 l -30 30`, { w: 14 }),
+  ],
+
+  // A ladder of results with a promise sitting above the top rung.
+  'seo-company-that-guarantees-page-one': () => [
+    rect(C - 120, C + 100, 240, 36, { r: 10, color: brand, opacity: 0.3 }),
+    rect(C - 120, C + 40, 240, 36, { r: 10, color: brand, opacity: 0.45 }),
+    rect(C - 120, C - 20, 240, 36, { r: 10, color: brand, opacity: 0.6 }),
+    rect(C - 120, C - 80, 240, 36, { r: 10, opacity: 1 }),
+    circle(C, C - 135, 18, { fill: false, w: 8, opacity: 0.6 }),
+  ],
+
+  // Bars that climb, with one line above them marking what counts.
+  'what-a-monthly-marketing-report-should-show': () => [
+    rect(C - 130, C + 20, 50, 130, { r: 8, color: brand, opacity: 0.35 }),
+    rect(C - 55, C - 40, 50, 190, { r: 8, color: brand, opacity: 0.5 }),
+    rect(C + 20, C - 100, 50, 250, { r: 8, color: brand, opacity: 0.35 }),
+    rect(C + 95, C - 20, 50, 170, { r: 8, opacity: 1 }),
+    stroke(`M ${C - 140} ${C - 120} H ${C + 150}`, { w: 8, opacity: 0.5, color: brand }),
+  ],
+
+  // A speech bubble with a line under it ending in a stop mark.
+  'a-chatbot-that-guesses-is-worse-than-none': () => [
+    rect(C - 130, C - 120, 260, 160, { r: 30, fill: false, sw: 12, opacity: 0.9 }),
+    stroke(`M ${C - 60} ${C + 40} l -20 50 l 70 -50`, { w: 12, opacity: 0.9 }),
+    stroke(`M ${C - 70} ${C - 60} H ${C + 70}`, { w: 12, opacity: 0.4, color: brand }),
+    stroke(`M ${C - 70} ${C - 10} H ${C + 10}`, { w: 12, opacity: 0.4, color: brand }),
+    circle(C + 90, C + 100, 36, { fill: false, w: 12 }),
+    stroke(`M ${C + 70} ${C + 100} H ${C + 110}`, { w: 12 }),
+  ],
+
   // Layers that do not line up, then one that does.
   'why-cheap-design-costs-more': () => [
     rect(C - 130, C - 120, 200, 60, { r: 12, color: brand, opacity: 0.3 }),
@@ -180,7 +234,17 @@ let written = 0
 let skipped = 0
 const missing = []
 
-for (const post of posts) {
+// Drafts need their card before the validator will let them publish, and they
+// are not in posts.js yet, so read them from blog-agent/drafts as well.
+const draftsDir = resolve(root, 'blog-agent/drafts')
+const drafts = []
+for (const file of await readdir(draftsDir)) {
+  if (!file.endsWith('.mjs') || file.startsWith('_')) continue
+  drafts.push((await import(pathToFileURL(resolve(draftsDir, file)).href)).default)
+}
+const everyPost = [...posts, ...drafts.filter((d) => !posts.some((p) => p.slug === d.slug))]
+
+for (const post of everyPost) {
   const motif = MOTIFS[post.slug]
   if (!motif) { missing.push(post.slug); continue }
 
