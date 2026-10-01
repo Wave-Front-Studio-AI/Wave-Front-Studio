@@ -71,7 +71,9 @@ const SHOTS = [
   { pos: [0.6, 7.2, 12.2], look: [0, 1.9, 0] },
   { pos: [7.4, 3.4, 8.6], look: [0, 0.5, 0] },
   { pos: [-6.6, 0.9, 7.8], look: [0, -1, 0] },
-  { pos: [2.2, -2.9, 6.4], look: [0, -3.4, 0] },
+  // Raised 0.6 so the pile sits low in the frame: no empty band between it
+  // and the cards that follow the story.
+  { pos: [2.2, -2.3, 6.4], look: [0, -2.8, 0] },
 ]
 
 function seeded(seed) {

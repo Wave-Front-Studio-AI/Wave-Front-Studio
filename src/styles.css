@@ -432,8 +432,11 @@ p { margin: 0; text-wrap: pretty; }
 .funnel-story p { max-width: 46ch; margin-top: 8px; color: var(--text); line-height: 1.6; }
 .funnel-story .text-link { margin-top: 12px; color: var(--brand-deep); }
 
-.funnel-story.is-3d { height: calc(var(--steps) * 80vh + 20vh); }
-.funnel-sticky { position: sticky; top: 0; display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(32px, 4vw, 56px); align-items: center; height: 100vh; }
+/* The pinned block is only as tall as the drawing (--pin), held in the middle
+   of the screen while pinned. A full-height block left empty bands above and
+   below the funnel on tall screens. Each step keeps 60vh of scroll. */
+.funnel-story.is-3d { --pin: min(100vh, 740px); height: calc(var(--steps) * 60vh + var(--pin)); }
+.funnel-sticky { position: sticky; top: max(0px, calc((100vh - var(--pin)) / 2)); display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(32px, 4vw, 56px); align-items: center; height: var(--pin); }
 .funnel-steps { display: grid; }
 .funnel-step { grid-area: 1 / 1; opacity: 0; transform: translateY(14px); transition: opacity 400ms var(--ease-out), transform 500ms var(--ease-out); }
 .funnel-step.is-active { opacity: 1; transform: none; }
@@ -1001,6 +1004,11 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
 ::placeholder { color: #8796a3; }
 
 .form-status { min-height: 1.3em; margin: 0; color: var(--brand-deep); font-size: 0.875rem; line-height: 1.5; }
+/* While there is nothing to say, the status line is taken out of the form's
+   grid, so it adds no row or gap and the card is no deeper under the button
+   than above the heading. It stays in the page (not display: none), so screen
+   readers still hear "Sending…" and any error when they arrive. */
+.form-status:empty { position: absolute; min-height: 0; }
 .form-note { color: var(--muted); font-size: 0.8125rem; line-height: 1.55; }
 
 /* Permission to text. Small print, but the box has to be easy to hit and the
@@ -1112,6 +1120,22 @@ select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmln
    column on a phone rather than scroll. Wrapping it keeps every cell reachable. */
 .longform .lf-table-scroll { overflow-x: auto; margin: 32px 0; }
 .longform .lf-table-scroll table { min-width: 30rem; margin: 0; }
+/* The section's own padding already spaces the article from what comes
+   before it; a heading's top margin on top of that left a visibly bigger gap. */
+.longform > :first-child, .longform > .lf-article > :first-child { margin-top: 0; }
+/* Tables wider than a phone scroll sideways. A soft shadow shows at whichever
+   edge has more to see, so the table does not look cut off. The cover layers,
+   in the colour behind the table, scroll with the content and hide the
+   shadow at an end that has been reached. */
+.comparison-scroll { --scroll-cover: var(--white); }
+.longform .lf-table-scroll { --scroll-cover: var(--paper); }
+.comparison-scroll, .longform .lf-table-scroll {
+  background:
+    linear-gradient(to right, var(--scroll-cover) 30%, transparent) left center / 40px 100% no-repeat local,
+    linear-gradient(to left, var(--scroll-cover) 30%, transparent) right center / 40px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgba(13, 27, 42, 0.18), rgba(13, 27, 42, 0)) left center / 14px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgba(13, 27, 42, 0.18), rgba(13, 27, 42, 0)) right center / 14px 100% no-repeat scroll;
+}
 .longform aside { margin: 32px 0; padding: 22px 24px; border-radius: var(--r-md); background: var(--mist); font-size: 1rem; }
 
 /* Blog posts arrive wrapped in a single .lf-article element, so the flow rules

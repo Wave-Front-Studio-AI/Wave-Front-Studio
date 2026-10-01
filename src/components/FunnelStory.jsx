@@ -86,6 +86,16 @@ function StepCopy({ step, index }) {
   )
 }
 
+// Where the story is in its pinned stretch. The pinned block sits `top` px
+// from the top of the screen while pinned, so the stretch runs from the
+// story's top reaching that line until its bottom leaves the block.
+function pinMetrics(wrap) {
+  const box = wrap.getBoundingClientRect()
+  const sticky = wrap.firstElementChild
+  const top = parseFloat(getComputedStyle(sticky).top) || 0
+  return { box, top, span: box.height - sticky.offsetHeight }
+}
+
 const canUse3d = () => {
   if (typeof window === 'undefined') return false
   if (!window.matchMedia('(min-width: 960px)').matches) return false
@@ -125,9 +135,8 @@ export default function FunnelStory() {
     let visible = false
 
     const progress = () => {
-      const box = wrap.current.getBoundingClientRect()
-      const span = box.height - window.innerHeight
-      return span > 0 ? Math.min(1, Math.max(0, -box.top / span)) : 0
+      const { box, top, span } = pinMetrics(wrap.current)
+      return span > 0 ? Math.min(1, Math.max(0, (top - box.top) / span)) : 0
     }
     const onScroll = () => {
       if (!visible) return
@@ -181,9 +190,8 @@ export default function FunnelStory() {
   // that is not on screen yet, scroll to the middle of its stretch so it is.
   const showStep = (index) => {
     if (index === active || !wrap.current) return
-    const box = wrap.current.getBoundingClientRect()
-    const span = box.height - window.innerHeight
-    window.scrollTo({ top: window.scrollY + box.top + span * ((index + 0.5) / funnelSteps.length), behavior: 'instant' })
+    const { box, top, span } = pinMetrics(wrap.current)
+    window.scrollTo({ top: window.scrollY + box.top - top + span * ((index + 0.5) / funnelSteps.length), behavior: 'instant' })
   }
 
   if (mode === '3d') {
