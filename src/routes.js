@@ -38,6 +38,7 @@ const postSlugs = [
   'google-business-profile-does-more-than-your-website',
   'nobody-waits-for-a-slow-website',
   'who-owns-your-website',
+  'redesign-starts-with-your-enquiries',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
