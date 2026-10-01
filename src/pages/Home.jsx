@@ -120,7 +120,7 @@ export default function Home() {
               <article className={`work-card ${index === 0 ? 'is-featured' : ''}`} key={project.title}>
                 <a href={project.href} target="_blank" rel="noreferrer noopener">
                   <span className="work-media">
-                    <img src={project.image} alt={project.alt} loading="lazy" style={project.focus ? { '--focus': project.focus } : undefined} />
+                    <img src={project.image} alt={project.alt} width="1440" height="900" loading="lazy" style={project.focus ? { '--focus': project.focus } : undefined} />
                   </span>
                   <span className="work-body">
                     <h3>{project.title}</h3>

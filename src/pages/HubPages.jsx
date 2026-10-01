@@ -37,7 +37,7 @@ function HubRow({ item, kind }) {
         </span>
         {image ? (
           <span className="hub-row-media">
-            <img src={image.src} alt={image.alt} loading="lazy" />
+            <img src={image.src} alt={image.alt} width="1280" height="720" loading="lazy" />
           </span>
         ) : null}
       </a>

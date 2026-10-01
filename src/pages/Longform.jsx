@@ -8,6 +8,7 @@ import {
   breadcrumbs,
   byOrganization,
   pageGraph,
+  postSeoTitles,
   postShareImage,
   withBrand,
 } from '../data/seo.js'
@@ -128,7 +129,7 @@ export function BlogPost({ post }) {
     <Layout
       className="blog-post"
       seo={{
-        title: withBrand(post.title),
+        title: postSeoTitles[post.slug] ? withBrand(postSeoTitles[post.slug]) : withBrand(post.title),
         description: post.excerpt,
         canonical,
         schema,

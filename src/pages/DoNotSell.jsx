@@ -41,7 +41,7 @@ export default function DoNotSell() {
       seo={{
         title: 'Do Not Sell or Share My Personal Information | Wavefront Studio LLC',
         description:
-          'Opt out of the sale or sharing of your personal information for cross-context behavioral advertising on wavefrontstudiollc.com. We honor the Global Privacy Control signal.',
+          'Opt out of the sale or sharing of your personal information for cross-context behavioral advertising on our site. We honor the Global Privacy Control signal.',
         canonical: '/do-not-sell/',
       }}
     >

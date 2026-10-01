@@ -15,7 +15,7 @@ export default function DataDeletion() {
       seo={{
         title: 'Delete Your Data | Wavefront Studio LLC',
         description:
-          'How to delete your data from the Wavefront Studio platform and Resin Rock Pro, including data from a connected Facebook, Instagram or Meta Ads account. Three routes, no account required to ask.',
+          'How to delete your data from the Wavefront Studio platform and Resin Rock Pro, including a connected Facebook, Instagram or Meta Ads account. No account needed.',
         canonical: '/data-deletion/',
       }}
     >

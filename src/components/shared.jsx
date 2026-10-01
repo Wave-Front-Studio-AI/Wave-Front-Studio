@@ -406,7 +406,7 @@ export function EnquiryForm({
     <form className={`enquiry-form ${compact ? 'is-compact' : ''}`} onSubmit={submit}>
       {heading ? (
         <div className="enquiry-heading">
-          <h3>{heading}</h3>
+          <h2>{heading}</h2>
           {copy ? <p>{copy}</p> : null}
         </div>
       ) : null}

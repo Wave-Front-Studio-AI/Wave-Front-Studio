@@ -33,6 +33,17 @@ export const organization = {
     addressCountry: 'US',
   },
   sameAs: [contact.instagram],
+  hasMap: contact.maps,
+  // The studio works remotely for clients across the US (location pages say so).
+  areaServed: { '@type': 'Country', name: 'United States' },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'sales',
+    telephone: '+1-941-415-2595',
+    email: contact.email,
+    areaServed: 'US',
+    availableLanguage: 'English',
+  },
   knowsAbout: [
     'Website development',
     'Search engine optimization',
@@ -157,6 +168,13 @@ export const blogSeo = {
   description: 'Practical writing on websites, SEO, marketing and automation for businesses that want the work to pay for itself.',
 }
 
+// Search titles for posts whose on-page headline is longer than Google shows.
+// The headline stays as written; only the search result title is shorter.
+export const postSeoTitles = {
+  'what-does-a-lead-actually-cost-you': 'If You Can’t Say What a Lead Costs, You’re Gambling',
+  'build-a-calculator-that-sells-for-you': 'Build a Calculator That Sells for You, Not “How Much Roughly?”',
+}
+
 export const locationsHubTitle = 'Web Design & SEO Service Areas | Wavefront Studio'
 
 // 1200x630 JPEG copies of the post cards, written by scripts/prerender.mjs.
@@ -209,7 +227,7 @@ export const legalDescriptions = {
   'privacy-policy':
     'How Wavefront Studio LLC collects, uses, stores and protects the personal information you share through wavefrontstudiollc.com and our services.',
   'cookie-policy':
-    'What cookies are, which ones wavefrontstudiollc.com uses and why, and the choices you have about them.',
+    'What cookies are, which ones wavefrontstudiollc.com uses and why, and how to opt out or block them, including by Global Privacy Control.',
   'sms-policy':
     'How the Wavefront Studio LLC text messaging program works, what you agree to when you opt in, and how we handle your mobile number.',
 }

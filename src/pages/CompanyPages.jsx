@@ -107,7 +107,7 @@ export function PortfolioPage() {
       className="portfolio-page"
       seo={{
         title: 'Our Work & Portfolio | Wavefront Studio LLC',
-        description: 'Websites, lead routing and SEO work Wavefront Studio has built for clients, with links to the live sites.',
+        description: 'Websites, lead routing and SEO work Wavefront Studio has built for clients, from a ResinRock site network to first-page Google results, all live.',
         canonical: '/portfolio/',
       }}
     >
@@ -170,7 +170,7 @@ export function ContactPage() {
       className="contact-page"
       seo={{
         title: 'Contact Wavefront Studio | Free Consultation',
-        description: 'Call, email or message Wavefront Studio in Sarasota, Florida. We reply within one to two working days.',
+        description: 'Call, email or message Wavefront Studio at our Sarasota, Florida office about a website, SEO, app or lead system. We reply within one to two working days.',
         canonical: '/contact/',
       }}
     >
@@ -250,7 +250,7 @@ export function FaqsPage() {
       className="faqs-page"
       seo={{
         title: 'Frequently Asked Questions | Wavefront Studio LLC',
-        description: 'Answers to the questions clients usually ask Wavefront Studio before a project starts.',
+        description: 'Answers to the questions clients ask Wavefront Studio before a project starts: pricing, timelines, SEO results, ownership, support and how we work remotely.',
         canonical: '/faqs/',
         schema,
       }}

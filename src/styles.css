@@ -686,7 +686,7 @@ input[type='range']::-moz-range-thumb { width: 22px; height: 22px; border: 3px s
 }
 .claim-form, .audit-popup-form { grid-template-columns: 1fr; }
 .enquiry-heading, .claim-heading { grid-column: 1 / -1; display: grid; gap: 8px; }
-.enquiry-heading h3, .claim-heading h3 { font-size: clamp(1.25rem, 1.9vw, 1.55rem); }
+.enquiry-heading h2, .enquiry-heading h3, .claim-heading h3 { font-size: clamp(1.25rem, 1.9vw, 1.55rem); }
 .enquiry-heading p, .claim-heading p { color: var(--muted); font-size: 0.95rem; line-height: 1.55; }
 .enquiry-wide { grid-column: 1 / -1; }
 
