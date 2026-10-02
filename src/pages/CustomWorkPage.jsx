@@ -76,7 +76,9 @@ function ComparisonTable({ comparison }) {
       <div className="page-frame">
         <SectionHeading title={comparison.title} copy={comparison.copy} />
         <p className="comparison-hint">{comparison.swipeHint}</p>
-        <div className="comparison-scroll">
+        {/* Focusable so the table can be scrolled sideways from the keyboard;
+            it holds no links or buttons of its own to tab to. */}
+        <div className="comparison-scroll" tabIndex={0} role="region" aria-label={comparison.title}>
           <table className="comparison-table">
             <thead>
               <tr>
@@ -98,11 +100,21 @@ function ComparisonTable({ comparison }) {
                 {group.rows.map((row) => (
                   <tr key={`${group.name}-${row[0]}`}>
                     <th scope="row">{row[0]}</th>
-                    {row.slice(1).map((cell, index) => (
-                      <td key={index} className={cell === '✓' ? 'is-yes' : cell === '✗' ? 'is-no' : ''}>
-                        {cell}
-                      </td>
-                    ))}
+                    {row.slice(1).map((cell, index) => {
+                      const yes = cell === '✓'
+                      const no = cell === '✗'
+                      return (
+                        <td key={index} className={yes ? 'is-yes' : no ? 'is-no' : ''}>
+                          {/* Read aloud, a tick or a cross is ambiguous, so the meaning is spelled out. */}
+                          {yes || no ? (
+                            <>
+                              <span aria-hidden="true">{cell}</span>
+                              <span className="sr-only">{yes ? 'Included' : 'Not included'}</span>
+                            </>
+                          ) : cell}
+                        </td>
+                      )
+                    })}
                   </tr>
                 ))}
               </tbody>
@@ -237,7 +249,7 @@ function RelatedWork({ current }) {
         <SectionHeading title="Other things we build" />
         <div className="related-links">
           {siblings.map((item) => (
-            <a href={`/${item.slug}/`} key={item.slug}>
+            <a href={item.href || `/${item.slug}/`} key={item.slug}>
               {item.nav || item.name}
               <ArrowIcon />
             </a>

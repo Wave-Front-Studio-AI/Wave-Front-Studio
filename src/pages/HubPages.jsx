@@ -28,7 +28,7 @@ function HubRow({ item, kind }) {
   const image = hubImage(item, kind)
   return (
     <li className={`hub-row ${image ? 'has-media' : ''}`}>
-      <a href={`/${item.slug}/`}>
+      <a href={item.href || `/${item.slug}/`}>
         <span className="hub-row-copy">
           <h2>
             {item.nav || item.name} <ArrowIcon />
@@ -59,7 +59,7 @@ function HubPage({ canonical, title, intro, also, items, kind, seoTitle, seoDesc
           '@type': 'ListItem',
           position: index + 1,
           name: item.nav || item.name,
-          url: `${siteOrigin}/${item.slug}/`,
+          url: `${siteOrigin}${item.href || `/${item.slug}/`}`,
         })),
       },
     }),

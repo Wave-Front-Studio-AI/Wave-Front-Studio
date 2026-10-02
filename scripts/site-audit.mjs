@@ -1,13 +1,13 @@
 import { createHash } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
-import { routes } from '../src/routes.js'
+import { routes, staticPages } from '../src/routes.js'
 import { freeSetupFaqs, siteFaqs } from '../src/data/faqs.js'
 import { siteOrigin } from '../src/data/site.js'
 import { posts } from '../src/data/generated/posts.js'
 
 const dist = resolve(import.meta.dirname, '../dist')
-const routePaths = new Set(routes.map(({ path }) => path))
+const routePaths = new Set([...routes.map(({ path }) => path), ...staticPages])
 const failures = []
 // Length checks are advice, not rules: Google truncates rather than penalises.
 const warnings = []

@@ -5,7 +5,7 @@ import { isLive } from './data/schedule.js'
 // and article merely to decide which URL is active.
 const serviceSlugs = [
   'web-development', 'seo-service', 'mobile-app-development', 'social-media-strategy',
-  'graphic-design', 'digital-marketing', 'free-audit', 'lead-capture',
+  'graphic-design', 'digital-marketing', 'lead-capture',
 ]
 const customWorkSlugs = ['ai-chatbot', 'live-visualizer', 'custom-calculators']
 const locationSlugs = [
@@ -47,6 +47,10 @@ const postSlugs = [
 
 // One list of every URL the site answers on. The router and the prerenderer
 // both read it, so a new page can never exist in one and not the other.
+// Pages served as plain HTML from public/ rather than rendered by the app. They
+// are real URLs: internal links may point at them, and they are in the sitemap.
+export const staticPages = ['/free-website-audit/']
+
 export const routes = [
   { path: '/', kind: 'home' },
   { path: '/about/', kind: 'about' },

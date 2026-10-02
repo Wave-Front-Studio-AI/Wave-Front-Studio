@@ -7,7 +7,7 @@
 <link rel="icon" href="/favicon.webp" type="image/webp">
 <link rel="apple-touch-icon" href="/favicon.webp">
 <meta name="description" content="Find out why your website isn't bringing you customers. Free audit for the first 100 Florida businesses - written report in 48 hours, no charge, no contract.">
-<meta name="robots" content="noindex">
+<link rel="canonical" href="https://www.wavefrontstudiollc.com/free-website-audit/">
 <meta name="theme-color" content="#ffffff">
 <meta property="og:title" content="Find out why your website isn't bringing you customers">
 <meta property="og:description" content="Free website audit for Florida businesses. A real person checks your site and sends a written report in 48 hours. No charge, no contract.">
@@ -17,7 +17,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <style>
 :root{
-  --ink:#0F2A30; --text:#3C5257; --muted:#6F868B;
+  /* --muted was #6F868B: 3.9:1 on white and 3.6:1 on --sky, under the 4.5:1 small text needs */
+  --ink:#0F2A30; --text:#3C5257; --muted:#5E7378;
   --accent:#1F8199; --accent-dk:#17677A; --accent-lt:#E6F2F5;
   --sky:#F3F8FA; --line:#E1EAEC; --white:#fff;
   --bad:#C0392B; --mid:#B9770E; --ok:#1E8E5A;
@@ -33,7 +34,8 @@ h3{font-size:17px;letter-spacing:-.01em}
 p{max-width:640px}
 .wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 20px}
 @media(min-width:900px){.wrap{padding:0 32px}}
-.kicker{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+/* Small teal text uses the darker teal: --accent is 4.2:1 on --sky */
+.kicker{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dk);margin-bottom:12px}
 section{padding:56px 0}
 @media(min-width:900px){section{padding:88px 0}}
 .lead{font-size:17px;color:var(--text)}
@@ -85,7 +87,8 @@ section{padding:56px 0}
 @media(min-width:380px){.fields{grid-template-columns:1fr 1fr}.fields .full{grid-column:1/-1}}
 .f label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px}
 .f input{width:100%;height:48px;border:1px solid #C9D7DA;border-radius:6px;padding:0 14px;font:inherit;font-size:16px;color:var(--ink);background:#fff;outline:none;transition:border-color .15s,box-shadow .15s}
-.f input::placeholder{color:#9AACB0}
+/* Placeholders are hint text and need 4.5:1 too (#9AACB0 was 2.4:1) */
+.f input::placeholder{color:var(--muted);opacity:1}
 .f input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(31,129,153,.15)}
 .f.bad input{border-color:var(--bad)}
 .err{display:none;color:var(--bad);font-size:12.5px;margin-top:5px}
@@ -100,6 +103,7 @@ section{padding:56px 0}
 .done .ok{width:44px;height:44px;border-radius:50%;background:var(--accent-lt);color:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
 .done .ok svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .done h2{font-size:22px;margin-bottom:8px}
+.done h2:focus{outline:none} /* focused only so the confirmation is read out */
 .done p{font-size:15px;margin-bottom:12px}
 .done ol{padding-left:18px;font-size:15px;display:grid;gap:6px}
 .done ol b{color:var(--ink);font-weight:600}
@@ -124,6 +128,10 @@ section{padding:56px 0}
 .handle{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;transform:translateX(-50%);box-shadow:0 0 0 1px rgba(0,0,0,.12)}
 .handle::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.2);
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230F2A30' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M9 7l-5 5 5 5M15 7l5 5-5 5'/></svg>");background-size:20px;background-repeat:no-repeat;background-position:center}
+/* An invisible range input over the picture: keyboards and screen readers move
+   the divider with it, while the pointer still drags the picture as before */
+.ba-range{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;pointer-events:none}
+.ba:has(.ba-range:focus-visible){outline:2px solid var(--accent-dk);outline-offset:3px}
 .ba-note{font-size:14px;color:var(--muted);margin-top:12px}
 
 /* columns */
@@ -131,7 +139,7 @@ section{padding:56px 0}
 @media(min-width:700px){.cols{grid-template-columns:repeat(2,1fr);gap:28px}}
 @media(min-width:1000px){.cols.c3{grid-template-columns:repeat(3,1fr)}.cols.c4{grid-template-columns:repeat(4,1fr)}}
 .col{border-top:2px solid var(--line);padding-top:16px}
-.col .num{font-size:13px;font-weight:600;color:var(--accent);margin-bottom:10px;font-variant-numeric:tabular-nums}
+.col .num{font-size:13px;font-weight:600;color:var(--accent-dk);margin-bottom:10px;font-variant-numeric:tabular-nums}
 .col h3{margin-bottom:6px}
 .col p{font-size:15px}
 .col .found{margin-top:12px;font-size:13.5px;color:var(--muted);padding-left:10px;border-left:2px solid var(--line)}
@@ -220,9 +228,12 @@ section{padding:56px 0}
 @media(min-width:900px){.foot{padding-bottom:28px}}
 
 /* sticky mobile CTA */
-.sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid var(--line);backdrop-filter:blur(8px);transform:translateY(110%);transition:transform .25s}
-.sticky.show{transform:none}
+/* Hidden as well as moved off screen, so Tab never lands on the unseen button */
+.sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid var(--line);backdrop-filter:blur(8px);transform:translateY(110%);visibility:hidden;transition:transform .25s,visibility 0s .25s}
+.sticky.show{transform:none;visibility:visible;transition-delay:0s}
 @media(min-width:900px){.sticky{display:none}}
+/* Keeps a focused field from scrolling in behind the sticky button */
+@media(max-width:899px){html{scroll-padding-bottom:80px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
@@ -234,6 +245,9 @@ section{padding:56px 0}
     <div class="contact">Questions? <a href="mailto:info@wavefrontstudiollc.com">info@wavefrontstudiollc.com</a></div>
   </div>
 </header>
+
+<!-- One main landmark, so screen reader users can jump past the header -->
+<main>
 
 <!-- ================= HERO + FORM ================= -->
 <section class="hero" id="top">
@@ -291,7 +305,7 @@ section{padding:56px 0}
 
       <div class="done" id="donePane" aria-live="polite">
         <div class="ok"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg></div>
-        <h2>Your audit is booked</h2>
+        <h2 id="doneTitle" tabindex="-1">Your audit is booked</h2>
         <p>A confirmation email is on its way. Here is what happens next:</p>
         <ol>
           <li><b>Within two working days</b> – a two-minute call from our team to confirm which pages and services matter most to you.</li>
@@ -319,11 +333,12 @@ section{padding:56px 0}
     <p class="kicker">Same business, two websites</p>
     <h2>One of them gets the call.</h2>
     <p class="lead">Both sites sell the same service in the same town. The one on the right loads in under two seconds, says what it does and where, and puts the phone number where a thumb can reach it. Drag the handle to compare.</p>
-    <div class="ba" id="ba" aria-label="Before and after comparison">
+    <div class="ba" id="ba" role="group" aria-label="Before and after comparison">
       <img class="bef" src="https://cdn.shopify.com/s/files/1/0682/6495/2048/files/Wavefront_Before.webp?v=1789767461" alt="Website before" loading="lazy">
       <img class="aft" src="https://cdn.shopify.com/s/files/1/0682/6495/2048/files/Wavefront_After.webp?v=1789767460" alt="Website after" loading="lazy">
       <span class="tag l">Before</span><span class="tag r">After</span>
       <div class="handle" id="handle"></div>
+      <input class="ba-range" id="ba-range" type="range" min="3" max="97" step="1" value="50" aria-label="Move the divider between the before and after websites">
     </div>
     <p class="ba-note">Most sites lose the visitor in the first three seconds: slow loading, no obvious next step, a phone number buried at the bottom. The report tells you which of these is costing you most, so you fix that first instead of rebuilding everything.</p>
   </div>
@@ -480,6 +495,8 @@ section{padding:56px 0}
   </div>
 </section>
 
+</main>
+
 <footer class="foot">
   <div class="wrap">
     <img src="/wave-logo.webp" alt="Wavefront Studio" width="83" height="26">
@@ -550,12 +567,15 @@ document.getElementById('h-page').value     = location.href;
 
 /* ---- before / after ---- */
 (function(){
-  var ba=document.getElementById('ba'), aft=ba.querySelector('.aft'), h=document.getElementById('handle'), drag=false;
+  var ba=document.getElementById('ba'), aft=ba.querySelector('.aft'), h=document.getElementById('handle'), range=document.getElementById('ba-range'), drag=false;
   function set(x){
     var r=ba.getBoundingClientRect();
     var p=Math.max(3,Math.min(97,((x-r.left)/r.width)*100));
     aft.style.clipPath='inset(0 0 0 '+p+'%)'; h.style.left=p+'%';
+    range.value=Math.round(p);
   }
+  // Arrow keys (and a screen reader's swipe) move the divider through the range input.
+  range.addEventListener('input',function(){ aft.style.clipPath='inset(0 0 0 '+range.value+'%)'; h.style.left=range.value+'%'; });
   function down(e){ drag=true; set((e.touches?e.touches[0]:e).clientX); }
   function move(e){ if(drag) set((e.touches?e.touches[0]:e).clientX); }
   ba.addEventListener('mousedown',down); ba.addEventListener('touchstart',down,{passive:true});
@@ -605,8 +625,11 @@ document.getElementById('h-page').value     = location.href;
 var card=document.getElementById('form');
 var form=document.getElementById('leadForm'), btn=document.getElementById('submitBtn'), msg=document.getElementById('formMsg');
 var BTN_HTML=btn.innerHTML;
-function show(id,on){ var e=document.getElementById('e-'+id), f=document.getElementById('f-'+id+'-w');
-  if(e) e.classList.toggle('on',on); if(f) f.classList.toggle('bad',on); }
+function show(id,on){ var e=document.getElementById('e-'+id), f=document.getElementById('f-'+id+'-w'), i=document.getElementById('f-'+id);
+  if(e) e.classList.toggle('on',on); if(f) f.classList.toggle('bad',on);
+  // Tie the message to its field only while it shows, so a screen reader reads
+  // it with the field and announces the field as invalid.
+  if(i){ if(on){ i.setAttribute('aria-invalid','true'); i.setAttribute('aria-describedby','e-'+id); } else { i.removeAttribute('aria-invalid'); i.removeAttribute('aria-describedby'); } } }
 function normSite(v){ v=v.trim(); return !v?'':(/^https?:\/\//i.test(v)?v:'https://'+v); }
 
 form.addEventListener('submit', function(ev){
@@ -653,7 +676,8 @@ form.addEventListener('submit', function(ev){
     website_url:document.getElementById('hp').value
   };
 
-  function fail(t){ btn.disabled=false; btn.innerHTML=BTN_HTML; msg.textContent=t; msg.classList.add('on'); }
+  // Disabling the button dropped keyboard focus to the top of the page, so it goes back to the button.
+  function fail(t){ btn.disabled=false; btn.innerHTML=BTN_HTML; msg.textContent=t; msg.classList.add('on'); btn.focus(); }
   var FAIL_TEXT='That did not go through - your request has not reached us. Please try again, or email info@wavefrontstudiollc.com and we will pick it up from there.';
 
   function readJson(r){
@@ -694,6 +718,8 @@ form.addEventListener('submit', function(ev){
     var d=document.getElementById('donePane'); d.classList.add('on');
     document.getElementById('sticky').classList.remove('show');
     d.scrollIntoView({block:'center',behavior:'smooth'});
+    // The form (and the focused button) just disappeared, so focus moves to the confirmation.
+    document.getElementById('doneTitle').focus({preventScroll:true});
   });
 });
 

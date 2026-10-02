@@ -70,7 +70,7 @@ export default {
     // Required: the CTA. Point at the service page this post earns.
     '<div class="lf-cta"><h2>An offer that follows from the article</h2>',
     '<p>One or two sentences.</p>',
-    '<p><a href="/free-audit/">The main action</a> &#8212; what it involves.</p>',
+    '<p><a href="/free-website-audit/">The main action</a> &#8212; what it involves.</p>',
     '<p>We&#8217;re currently waiving setup fees for five businesses this quarter on AI chatbots, web development and SEO. ',
     '<a href="/free-setup/">See what&#8217;s included</a>, or call <a href="tel:+19414152595">+1 (941) 415-2595</a>.</p></div>',
 

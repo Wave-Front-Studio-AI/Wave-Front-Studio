@@ -68,7 +68,7 @@ export function LocationsPage() {
         title="Not sure how you rank in your city right now?"
         copy="We will audit your site for free and tell you what is actually holding it back, including if the answer is that you do not need a rebuild."
         label="Get a free audit"
-        href="/free-audit/"
+        href="/free-website-audit/"
       />
     </Layout>
   )

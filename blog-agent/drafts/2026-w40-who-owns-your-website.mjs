@@ -54,7 +54,7 @@ export default {
     '<p>Start with the domain lookup. It takes two minutes, and you will know straight away whether the rest of this article applies to you.</p>',
     '<div class="lf-cta"><h2>Not sure where your site stands?</h2>',
     '<p>We will look at how your site is set up and what is holding it back, and tell you what we would fix first.</p>',
-    '<p><a href="/free-audit/">Request the free website audit</a>: it covers technical health and search visibility as well as the pages themselves.</p>',
+    '<p><a href="/free-website-audit/">Request the free website audit</a>: it covers technical health and search visibility as well as the pages themselves.</p>',
     '<p>We&#8217;re currently waiving setup fees for five businesses this quarter on AI chatbots, web development and SEO. ',
     '<a href="/free-setup/">See what&#8217;s included</a>, or call <a href="tel:+19414152595">+1 (941) 415-2595</a>.</p></div>',
     '<aside class="lf-related"><h2>Related reading</h2><ul>',

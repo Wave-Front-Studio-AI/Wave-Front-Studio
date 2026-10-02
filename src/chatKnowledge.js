@@ -218,7 +218,7 @@ function serviceBody(service) {
 const serviceEntries = services.map((service) => makeEntry({
   id: `service-${service.slug}`,
   title: service.name,
-  url: `/${service.slug}/`,
+  url: service.href || `/${service.slug}/`,
   kind: 'service',
   keywords: [service.name, service.nav, service.subhead, SERVICE_ALIASES[service.slug] ?? ''],
   body: serviceBody(service),
@@ -748,7 +748,7 @@ const INTENTS = [
       text: `${getStartedAnswer} If you would rather start with something concrete, the free website audit costs nothing.`,
       links: [
         { label: 'Contact page', href: '/contact/' },
-        { label: 'Free website audit', href: '/free-audit/' },
+        { label: 'Free website audit', href: '/free-website-audit/' },
       ],
       chips: ['How much does it cost?', 'How long does it take?', 'Talk to a person'],
     }),

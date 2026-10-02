@@ -9,13 +9,46 @@
       "destination": "/package-builder/",
       "permanent": true
     },
-    { "source": "/feed/", "destination": "/rss.xml", "permanent": true },
-    { "source": "/blog/feed/", "destination": "/rss.xml", "permanent": true },
-    { "source": "/sitemap_index.xml", "destination": "/sitemap.xml", "permanent": true },
-    { "source": "/wp-sitemap.xml", "destination": "/sitemap.xml", "permanent": true },
-    { "source": "/page-sitemap.xml", "destination": "/sitemap.xml", "permanent": true },
-    { "source": "/post-sitemap.xml", "destination": "/sitemap.xml", "permanent": true },
-    { "source": "/home/", "destination": "/", "permanent": true }
+    {
+      "source": "/free-audit/",
+      "destination": "/free-website-audit/",
+      "permanent": true
+    },
+    {
+      "source": "/feed/",
+      "destination": "/rss.xml",
+      "permanent": true
+    },
+    {
+      "source": "/blog/feed/",
+      "destination": "/rss.xml",
+      "permanent": true
+    },
+    {
+      "source": "/sitemap_index.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/wp-sitemap.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/page-sitemap.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/post-sitemap.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/home/",
+      "destination": "/",
+      "permanent": true
+    }
   ],
   "headers": [
     {

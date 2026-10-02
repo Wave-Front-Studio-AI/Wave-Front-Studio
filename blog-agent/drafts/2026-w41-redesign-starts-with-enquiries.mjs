@@ -52,7 +52,7 @@ export default {
     '<p>Begin with the list. By the end of an hour you will either have a sharper brief or a good reason to leave the site alone.</p>',
     '<div class="lf-cta"><h2>Want a second pair of eyes on it?</h2>',
     '<p>We will look at your site the way a first-time visitor does, check the path from landing to enquiry, and tell you what we would change first.</p>',
-    '<p><a href="/free-audit/">Request the free website audit</a>: it covers mobile use, technical health, search visibility and the enquiry path.</p>',
+    '<p><a href="/free-website-audit/">Request the free website audit</a>: it covers mobile use, technical health, search visibility and the enquiry path.</p>',
     '<p>We&#8217;re currently waiving setup fees for five businesses this quarter on AI chatbots, web development and SEO. ',
     '<a href="/free-setup/">See what&#8217;s included</a>, or call <a href="tel:+19414152595">+1 (941) 415-2595</a>.</p></div>',
     '<aside class="lf-related"><h2>Related reading</h2><ul>',

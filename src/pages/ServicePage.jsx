@@ -71,6 +71,8 @@ function PlanCard({ plan }) {
         {plan.excluded.map((item) => (
           <li key={item} className="is-no">
             <span aria-hidden="true">✗</span>
+            {/* Only the cross and the grey text show it is missing, so screen readers are told. */}
+            <span className="sr-only">Not included: </span>
             {item}
           </li>
         ))}
@@ -111,7 +113,7 @@ function RelatedServices({ current }) {
         <SectionHeading title="Other things we build" />
         <div className="related-links">
           {siblings.map((item) => (
-            <a href={`/${item.slug}/`} key={item.slug}>
+            <a href={item.href || `/${item.slug}/`} key={item.slug}>
               {item.nav || item.name}
               <ArrowIcon />
             </a>

@@ -15,7 +15,7 @@ import { readdir, access } from 'node:fs/promises'
 import { resolve, basename } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { posts as livePosts } from '../src/data/generated/posts.js'
-import { routes } from '../src/routes.js'
+import { routes, staticPages } from '../src/routes.js'
 import { contact } from '../src/data/site.js'
 
 const root = resolve(import.meta.dirname, '..')
@@ -199,7 +199,7 @@ const args = process.argv.slice(2)
 const live = args.includes('--live')
 const files = args.filter((a) => !a.startsWith('--'))
 
-const routePaths = new Set(routes.map((r) => r.path))
+const routePaths = new Set([...routes.map((r) => r.path), ...staticPages])
 const publishedSlugs = new Set(livePosts.map((p) => p.slug))
 
 let targets = []

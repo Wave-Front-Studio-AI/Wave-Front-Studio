@@ -81,7 +81,8 @@ export default function DataDeletion() {
             </p>
 
             <h2>What gets deleted, and when</h2>
-            <div className="lf-table-scroll">
+            {/* Focusable so a phone-width table can be scrolled from the keyboard. */}
+            <div className="lf-table-scroll" tabIndex={0} role="region" aria-label="What gets deleted, and when">
               <table>
                 <thead>
                   <tr>

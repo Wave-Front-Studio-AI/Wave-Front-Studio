@@ -49,18 +49,41 @@ function Modal({ open, onClose, labelledBy, className = '', children }) {
     }
     document.addEventListener('keydown', onKey)
     document.body.classList.add('modal-open')
-    panel.current?.querySelector('button, input, a')?.focus()
     return () => {
       document.removeEventListener('keydown', onKey)
       document.body.classList.remove('modal-open')
     }
   }, [open, onClose])
 
+  // Focus moves into the dialog, and back to wherever the visitor was when it
+  // closes. Keyed on `open` alone, so a re-render never moves it.
+  useEffect(() => {
+    if (!open) return undefined
+    const opener = document.activeElement
+    panel.current?.querySelector('button, input, a')?.focus()
+    return () => opener?.focus?.()
+  }, [open])
+
+  // Keeps Tab inside the dialog: the page behind the scrim can't be seen.
+  function trapFocus(event) {
+    if (event.key !== 'Tab') return
+    const focusable = [...panel.current.querySelectorAll('a[href], button, input, select, textarea')].filter((element) => !element.disabled && element.tabIndex >= 0)
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault()
+      last.focus()
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault()
+      first.focus()
+    }
+  }
+
   if (!open) return null
 
   return (
     <div className="modal-scrim" role="presentation" onClick={(event) => event.target === event.currentTarget && onClose()}>
-      <div className={`modal-panel ${className}`} role="dialog" aria-modal="true" aria-labelledby={labelledBy} ref={panel}>
+      <div className={`modal-panel ${className}`} role="dialog" aria-modal="true" aria-labelledby={labelledBy} ref={panel} onKeyDown={trapFocus}>
         <button className="modal-close" type="button" onClick={onClose} aria-label="Close">
           <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="m5 5 10 10M15 5 5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -159,7 +182,8 @@ function AuditPopup({ open, onClose }) {
           <span>Yes, subscribe me to the Wavefront Studio newsletter for tips, updates, and offers.</span>
         </label>
         <SmsConsentField />
-        <button className="kinetic-button group" type="submit" disabled={sending}>
+        {/* aria-disabled, not disabled: a disabled button drops keyboard focus. */}
+        <button className="kinetic-button group" type="submit" aria-disabled={sending || undefined}>
           <span>{sending ? 'Sending…' : 'Get my free audit'}</span>
           <span className="button-island">
             <ArrowIcon className="size-4" />
@@ -178,7 +202,7 @@ function AuditPopup({ open, onClose }) {
 // reviewers check /data-deletion/, so no modal may cover either. The rest
 // already ask for the visitor's details, and a second form on top of the
 // first only gets in the way.
-const noPopupPaths = new Set(['/platform', '/data-deletion', '/contact', '/free-audit', '/free-setup', '/package-builder'])
+const noPopupPaths = new Set(['/platform', '/data-deletion', '/contact', '/free-website-audit', '/free-setup', '/package-builder'])
 
 export default function SitePopups() {
   const path = useCurrentPath()

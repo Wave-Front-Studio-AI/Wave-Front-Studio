@@ -130,9 +130,9 @@ after, in the CTA block, not woven through the argument.
 
 ## Links
 
-- Every internal link must resolve to a real route in `src/routes.js`. The
-  validator checks this.
-- The CTA points at the service page the post earns — `/free-audit/`,
+- Every internal link must resolve to a real route in `src/routes.js` (or one
+  of its `staticPages`). The validator checks this.
+- The CTA points at the service page the post earns — `/free-website-audit/`,
   `/seo-service/`, `/web-development/`, `/lead-capture/` and so on.
 - The standing offer wording is "waiving setup fees for five businesses this
   quarter on AI chatbots, web development and SEO", linking `/free-setup/`.

@@ -233,7 +233,8 @@ function ClaimForm() {
 
       <SmsConsentField />
 
-      <button className="kinetic-button group" type="submit" disabled={sending}>
+      {/* aria-disabled, not disabled: a disabled button drops keyboard focus. */}
+      <button className="kinetic-button group" type="submit" aria-disabled={sending || undefined}>
         <span>{sending ? 'Sending…' : 'Ask for a place'}</span>
         <span className="button-island">
           <ArrowIcon className="size-4" />

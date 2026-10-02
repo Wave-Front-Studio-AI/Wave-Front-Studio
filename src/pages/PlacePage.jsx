@@ -94,7 +94,7 @@ function OfferingGrid({ place }) {
           title={`What we build for ${place} businesses`}
           copy="A website is one piece of it. Pick what your business needs now and add the rest when you are ready."
         />
-        <OfferingList items={offerings} />
+        <OfferingList items={offerings} compact />
       </div>
     </section>
   )
@@ -205,7 +205,7 @@ function PlaceLayout({ slug, title, heading, mediaTag, place, description, conte
         title="Want a second opinion on your current site?"
         copy="We'll audit it for free and tell you what's holding it back, even if the answer is that you don't need a rebuild."
         label="Get a free audit"
-        href="/free-audit/"
+        href="/free-website-audit/"
       />
     </Layout>
   )

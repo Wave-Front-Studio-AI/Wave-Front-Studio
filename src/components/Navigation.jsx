@@ -76,6 +76,7 @@ export default function Navigation() {
   const [open, setOpen] = useState(false)
   const [menu, setMenu] = useState(null)
   const opener = useRef(null)
+  const returnFocus = useRef(false)
   const closeTimer = useRef(null)
   const path = useCurrentPath()
 
@@ -91,22 +92,26 @@ export default function Navigation() {
     setOpen((value) => !value)
   }
   const closeMenu = () => {
+    returnFocus.current = true
     setOpen(false)
-    opener.current?.focus()
   }
 
   useEffect(() => {
     document.body.classList.toggle('menu-open', open)
     if (!open) return () => document.body.classList.remove('menu-open')
-    // While the full-screen menu is up, the page behind it is out of reach for
-    // keyboards and screen readers, and focus starts on the first link.
-    const behind = [document.querySelector('main'), document.querySelector('.site-footer')].filter(Boolean)
+    // While the full-screen menu is up, everything it covers (the page, the
+    // header row and the skip link) is out of reach for keyboards and screen
+    // readers, and focus starts on the first link.
+    const behind = [...document.querySelectorAll('.skip-link, .site-nav, main, .site-footer')]
     behind.forEach((node) => node.setAttribute('inert', ''))
     const frame = requestAnimationFrame(() => document.querySelector('#mobile-menu nav a')?.focus())
     return () => {
       cancelAnimationFrame(frame)
       behind.forEach((node) => node.removeAttribute('inert'))
       document.body.classList.remove('menu-open')
+      // Only now can the header button take focus again (it was inert).
+      if (returnFocus.current) opener.current?.focus()
+      returnFocus.current = false
     }
   }, [open])
 
@@ -118,12 +123,12 @@ export default function Navigation() {
       if (menu) {
         // Closing unmounts the panel; if focus was inside it, put it back on
         // the menu's own link rather than losing it to the page.
-        document.activeElement?.closest?.('.nav-dropdown-item')?.querySelector(':scope > a')?.focus()
+        document.activeElement?.closest?.('.nav-dropdown-item')?.querySelector(':scope > a, :scope > button')?.focus()
         setMenu(null)
       }
       if (open) {
+        returnFocus.current = true
         setOpen(false)
-        opener.current?.focus()
       }
     }
     document.addEventListener('keydown', onKey)
@@ -154,6 +159,14 @@ export default function Navigation() {
             const isOpen = menu === item.label
             const links = [...item.children, ...(item.secondary?.links || [])]
             const childActive = links.some(([, href]) => isActive(href, path))
+            // The panel is not an ARIA menu, so no aria-haspopup, and it only
+            // exists while open, so aria-controls only points at it then.
+            const trigger = {
+              'aria-expanded': isOpen,
+              'aria-controls': isOpen ? menuId(item.label) : undefined,
+              className: isActive(item.href, path) || childActive ? 'is-current' : '',
+              onFocus: () => setMenu(item.label),
+            }
             return (
               <div
                 key={item.label}
@@ -166,19 +179,17 @@ export default function Navigation() {
                   setMenu(item.label)
                 }}
               >
-                <a
-                  href={item.href || '#'}
-                  aria-haspopup="true"
-                  aria-expanded={isOpen}
-                  aria-controls={menuId(item.label)}
-                  className={isActive(item.href, path) || childActive ? 'is-current' : ''}
-                  onFocus={() => setMenu(item.label)}
-                  onClick={(event) => {
-                    if (!item.href) event.preventDefault()
-                  }}
-                >
-                  {item.label} <ChevronIcon />
-                </a>
+                {item.href ? (
+                  <a href={item.href} {...trigger}>
+                    {item.label} <ChevronIcon />
+                  </a>
+                ) : (
+                  // Opens a panel and goes nowhere, so it is a button; Enter
+                  // or Space brings the panel back after Escape closed it.
+                  <button type="button" {...trigger} onClick={() => setMenu(item.label)}>
+                    {item.label} <ChevronIcon />
+                  </button>
+                )}
                 {isOpen ? (
                   <div
                     className={`nav-dropdown nav-dropdown-${item.layout}`}

@@ -3,7 +3,7 @@ import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import sharp from 'sharp'
-import { routes } from '../src/routes.js'
+import { routes, staticPages } from '../src/routes.js'
 import { contact, siteOrigin } from '../src/data/site.js'
 import { posts } from '../src/data/generated/posts.js'
 import { blogSeo, postShareImage } from '../src/data/seo.js'
@@ -199,7 +199,7 @@ await writeFile(
 // teaches Google to ignore the field, so pages without a known date leave it out.
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${pages
+${[...pages, ...staticPages.map((path) => ({ path }))]
   .map(({ path, modified }) => `  <url><loc>${siteOrigin}${path}</loc>${modified ? `<lastmod>${modified}</lastmod>` : ''}</url>`)
   .join('\n')}
 </urlset>

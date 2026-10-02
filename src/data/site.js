@@ -34,7 +34,7 @@ export const serviceLinks = [
   ['Social Media', '/social-media-strategy/'],
   ['Graphic Design', '/graphic-design/'],
   ['Digital Marketing', '/digital-marketing/'],
-  ['Free Website Audit', '/free-audit/'],
+  ['Free Website Audit', '/free-website-audit/'],
   ['Lead Capture', '/lead-capture/'],
 ]
 
@@ -74,7 +74,7 @@ export const primaryNav = [
         ['Live visualiser', '/live-visualizer/'],
         ['Custom calculators', '/custom-calculators/'],
         ['All custom work', '/custom-works/'],
-        ['Free website audit', '/free-audit/'],
+        ['Free website audit', '/free-website-audit/'],
       ],
     },
     feature: { kicker: 'Everything we build', title: 'Find the service that fits the work.', label: 'See all services' },
@@ -113,7 +113,7 @@ export const mobileNav = [
   ['Blog', '/blog/'],
   ['Lost lead calculator', '/lost-lead-calculator/'],
   ['Contact us', '/contact/'],
-  ['Get a free site audit', '/free-audit/'],
+  ['Get a free site audit', '/free-website-audit/'],
 ]
 
 // The button at the right of the header.
@@ -127,7 +127,7 @@ export const footerNav = {
     ['Digital Marketing', '/digital-marketing/'],
     ['Graphic Design', '/graphic-design/'],
     ['Search Engine Optimization', '/seo-service/'],
-    ['Free Website Audit', '/free-audit/'],
+    ['Free Website Audit', '/free-website-audit/'],
     ['Lead Capture Systems', '/lead-capture/'],
   ],
   quickLinks: [
@@ -253,5 +253,5 @@ export const offerings = [
   { name: 'Social media', group: 'found', href: '/social-media-strategy/', copy: 'Content calendars and managed accounts on Instagram, Facebook, LinkedIn and TikTok, with paid promotion where it earns its keep.' },
   { name: 'Graphic design', group: 'brand', href: '/graphic-design/', copy: 'Logos, brand identities, social graphics and print-ready files.' },
   { name: 'Mobile apps', group: 'brand', href: '/mobile-app-development/', copy: 'iOS and Android apps, from a first version for a startup to internal tools for your own team.' },
-  { name: 'Free website audit', group: 'start', href: '/free-audit/', copy: 'We check mobile usability, speed, technical SEO, search visibility and the enquiry path, then list the fixes worth doing first. The audit is yours to keep whether or not you hire us.' },
+  { name: 'Free website audit', group: 'start', href: '/free-website-audit/', copy: 'We check mobile usability, speed, technical SEO, search visibility and the enquiry path, then list the fixes worth doing first. The audit is yours to keep whether or not you hire us.' },
 ]

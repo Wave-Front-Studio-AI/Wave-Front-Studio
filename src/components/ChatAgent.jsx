@@ -82,6 +82,8 @@ export default function ChatAgent() {
   const inputRef = useRef(null)
   const logRef = useRef(null)
   const launcherRef = useRef(null)
+  const closeRef = useRef(null)
+  const doneRef = useRef(null)
   const chatTabRef = useRef(null)
   const formTabRef = useRef(null)
   const messagesRef = useRef(messages)
@@ -123,11 +125,19 @@ export default function ChatAgent() {
   }, [messages, chips, language, mounted])
 
   // Closing by any route returns focus to the launcher, so a keyboard visitor is
-  // put back where they were rather than at the top of the document.
+  // put back where they were rather than at the top of the document. It waits
+  // for the render: on a phone the launcher is hidden until the sheet closes.
+  const returnFocus = useRef(false)
   const close = useCallback(() => {
+    returnFocus.current = true
     setOpen(false)
-    launcherRef.current?.focus()
   }, [])
+
+  useEffect(() => {
+    if (open || !returnFocus.current) return
+    returnFocus.current = false
+    launcherRef.current?.focus()
+  }, [open])
 
   useEffect(() => {
     if (!open) return undefined
@@ -169,17 +179,37 @@ export default function ChatAgent() {
   }, [open])
 
   // Stop the page behind the sheet from scrolling while it is open. The class
-  // only locks scrolling inside the phone breakpoint.
+  // only locks scrolling inside the phone breakpoint, where the sheet covers
+  // the page, so there the page is also taken out of reach of the keyboard and
+  // screen readers, as it is for the menu.
   useEffect(() => {
     if (!open) return undefined
     document.body.classList.add('chat-open')
-    return () => document.body.classList.remove('chat-open')
+    const sheet = window.matchMedia('(max-width: 560px), (max-height: 480px) and (max-width: 900px)').matches
+    const behind = sheet ? [...document.querySelectorAll('.skip-link, .site-header, main, .site-footer')] : []
+    behind.forEach((node) => node.setAttribute('inert', ''))
+    return () => {
+      behind.forEach((node) => node.removeAttribute('inert'))
+      document.body.classList.remove('chat-open')
+    }
   }, [open])
 
   useEffect(() => {
     if (!open || view !== 'chat') return
     if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) inputRef.current?.focus()
   }, [open, view])
+
+  // Touch screens skip the input (it would pop up the keyboard), and on a
+  // phone the launcher hides behind the sheet, so focus goes to the close
+  // button rather than dropping to the top of the page.
+  useEffect(() => {
+    if (open && !window.matchMedia('(hover: hover) and (pointer: fine)').matches) closeRef.current?.focus()
+  }, [open])
+
+  // The thank-you replaces the form and its button, so focus moves to it.
+  useEffect(() => {
+    if (status === 'submitted') doneRef.current?.focus()
+  }, [status])
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -242,16 +272,21 @@ export default function ChatAgent() {
     selectTab(event.key === 'ArrowLeft' || event.key === 'Home' ? 'chat' : 'form', true)
   }, [selectTab])
 
-  const onChip = useCallback((chip) => {
+  // The chips are removed once one is used, taking focus with them, so a
+  // keyboard visitor is moved on to the form tab or the composer.
+  const onChip = useCallback((chip, viaKeyboard) => {
     if (HANDOFF_PHRASES.some((phrase) => chip.toLowerCase().includes(phrase))) {
-      setView('form')
+      selectTab('form', viaKeyboard)
       return
     }
     ask(chip)
-  }, [ask])
+    if (viaKeyboard) inputRef.current?.focus()
+  }, [ask, selectTab])
 
   async function submitRequest(event) {
     event.preventDefault()
+    // The button stays focusable while sending, so a second press is ignored here.
+    if (status === 'sending') return
     const form = event.currentTarget
     setStatus('sending')
     try {
@@ -280,7 +315,9 @@ export default function ChatAgent() {
   if (!mounted) return null
 
   return (
-    <div className={`chat-agent ${open ? 'is-open' : ''} ${keyboardOpen ? 'keyboard-open' : ''}`}>
+    // The assistant answers in the visitor's language, so screen readers are
+    // told which one to read it in.
+    <div className={`chat-agent ${open ? 'is-open' : ''} ${keyboardOpen ? 'keyboard-open' : ''}`} lang={language}>
       <button
         type="button"
         className="chat-launcher"
@@ -309,16 +346,17 @@ export default function ChatAgent() {
             <strong>{copy.title}</strong>
             <small>{ready ? copy.status : copy.loading}</small>
           </div>
-          <button type="button" className="chat-close" onClick={close} aria-label={copy.close}>
+          <button type="button" className="chat-close" ref={closeRef} onClick={close} aria-label={copy.close}>
             <CloseIcon />
           </button>
         </header>
 
+        {/* Only the chosen panel is rendered, so only its tab points at it. */}
         <div className="chat-tabs" role="tablist" aria-label={copy.title} onKeyDown={onTabKeyDown}>
-          <button id={`${panelId}-chat-tab`} ref={chatTabRef} type="button" role="tab" aria-controls={`${panelId}-chat-panel`} aria-selected={view === 'chat'} tabIndex={view === 'chat' ? 0 : -1} className={view === 'chat' ? 'is-active' : ''} onClick={() => selectTab('chat')}>
+          <button id={`${panelId}-chat-tab`} ref={chatTabRef} type="button" role="tab" aria-controls={view === 'chat' ? `${panelId}-chat-panel` : undefined} aria-selected={view === 'chat'} tabIndex={view === 'chat' ? 0 : -1} className={view === 'chat' ? 'is-active' : ''} onClick={() => selectTab('chat')}>
             {copy.tabChat}
           </button>
-          <button id={`${panelId}-form-tab`} ref={formTabRef} type="button" role="tab" aria-controls={`${panelId}-form-panel`} aria-selected={view === 'form'} tabIndex={view === 'form' ? 0 : -1} className={view === 'form' ? 'is-active' : ''} onClick={() => selectTab('form')}>
+          <button id={`${panelId}-form-tab`} ref={formTabRef} type="button" role="tab" aria-controls={view === 'form' ? `${panelId}-form-panel` : undefined} aria-selected={view === 'form'} tabIndex={view === 'form' ? 0 : -1} className={view === 'form' ? 'is-active' : ''} onClick={() => selectTab('form')}>
             {copy.tabForm}
           </button>
         </div>
@@ -353,7 +391,7 @@ export default function ChatAgent() {
             {chips.length ? (
               <div className="chat-chips">
                 {chips.map((chip) => (
-                  <button type="button" key={chip} onClick={() => onChip(chip)}>
+                  <button type="button" key={chip} onClick={(event) => onChip(chip, event.detail === 0)}>
                     {chip}
                   </button>
                 ))}
@@ -379,7 +417,9 @@ export default function ChatAgent() {
                 autoComplete="off"
                 maxLength={800}
               />
-              <button type="submit" disabled={!draft.trim() || thinking} aria-label={copy.send}>
+              {/* aria-disabled, not disabled: sending clears the draft, which
+                  would otherwise disable the focused button and drop focus. */}
+              <button type="submit" aria-disabled={!draft.trim() || thinking || undefined} aria-label={copy.send}>
                 <SendIcon />
               </button>
             </form>
@@ -388,7 +428,7 @@ export default function ChatAgent() {
           <div id={`${panelId}-form-panel`} className="chat-form-view" role="tabpanel" aria-labelledby={`${panelId}-form-tab`}>
             {status === 'submitted' ? (
               <div className="chat-form-done">
-                <strong>{copy.done}</strong>
+                <strong ref={doneRef} tabIndex={-1}>{copy.done}</strong>
                 <p>{copy.doneBody}</p>
                 <button
                   type="button"
@@ -448,7 +488,7 @@ export default function ChatAgent() {
                 <input type="hidden" name="page" value={typeof window === 'undefined' ? '' : window.location.pathname} />
                 <input type="hidden" name="language" value={language} />
                 <input type="hidden" name="transcript" value={transcriptOf(messages) || 'No chat before this request.'} />
-                <button className="kinetic-button group" type="submit" disabled={status === 'sending'}>
+                <button className="kinetic-button group" type="submit" aria-disabled={status === 'sending' || undefined}>
                   <span>{status === 'sending' ? copy.sending : copy.submit}</span>
                   <span className="button-island">
                     <ArrowIcon className="size-4" />

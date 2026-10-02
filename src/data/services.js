@@ -326,6 +326,9 @@ export const services = [
 
   {
     slug: 'free-audit',
+    // The audit is the standalone page the ads use (public/free-website-audit/);
+    // /free-audit/ redirects there (vercel.json). Hubs and the assistant link here.
+    href: '/free-website-audit/',
     nav: 'Free Website Audit',
     name: 'Free Website Performance Audit',
     subhead: 'See what your website is costing you',

@@ -50,6 +50,8 @@ function fromLabel(service) {
 }
 
 function DetailsModal({ service, staff, onClose, onSelect }) {
+  const panelRef = useRef(null)
+
   useEffect(() => {
     const onKey = (event) => event.key === 'Escape' && onClose()
     document.addEventListener('keydown', onKey)
@@ -60,11 +62,34 @@ function DetailsModal({ service, staff, onClose, onSelect }) {
     }
   }, [onClose])
 
+  // Focus moves into the dialog and back to the "i" button when it closes.
+  // Run once: onClose is a new function on every render of the builder.
+  useEffect(() => {
+    const opener = document.activeElement
+    panelRef.current?.querySelector('.modal-close')?.focus()
+    return () => opener?.focus?.()
+  }, [])
+
+  // Keeps Tab inside the dialog while it is open.
+  function trapFocus(event) {
+    if (event.key !== 'Tab') return
+    const focusable = [...panelRef.current.querySelectorAll('button, [tabindex="0"]')]
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault()
+      last.focus()
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault()
+      first.focus()
+    }
+  }
+
   const rows = DETAILS[service.id] || []
 
   return (
     <div className="modal-scrim" role="presentation" onClick={(event) => event.target === event.currentTarget && onClose()}>
-      <div className="modal-panel modal-package" role="dialog" aria-modal="true" aria-labelledby="pkg-modal-title">
+      <div className="modal-panel modal-package" role="dialog" aria-modal="true" aria-labelledby="pkg-modal-title" ref={panelRef} onKeyDown={trapFocus}>
         <button className="modal-close" type="button" onClick={onClose} aria-label="Close">
           <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="m5 5 10 10M15 5 5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -83,7 +108,9 @@ function DetailsModal({ service, staff, onClose, onSelect }) {
           ))}
         </div>
         {rows.length ? (
-          <div className="comparison-scroll">
+          // Focusable so the table can be scrolled sideways from the keyboard;
+          // it holds no links or buttons of its own to tab to.
+          <div className="comparison-scroll" tabIndex={0} role="region" aria-label={`What’s included in each ${service.name} tier`}>
             <table className="comparison-table">
               <thead>
                 <tr>
@@ -99,11 +126,21 @@ function DetailsModal({ service, staff, onClose, onSelect }) {
                 {rows.map((row) => (
                   <tr key={row[0]}>
                     <th scope="row">{row[0]}</th>
-                    {row.slice(1).map((cell, index) => (
-                      <td key={index} className={cell === '✓' ? 'is-yes' : cell === '—' || cell === '-' ? 'is-no' : ''}>
-                        {cell}
-                      </td>
-                    ))}
+                    {row.slice(1).map((cell, index) => {
+                      const yes = cell === '✓'
+                      const no = cell === '—' || cell === '-'
+                      return (
+                        <td key={index} className={yes ? 'is-yes' : no ? 'is-no' : ''}>
+                          {/* Read aloud, a tick or a dash says little or nothing, so the meaning is spelled out. */}
+                          {yes || no ? (
+                            <>
+                              <span aria-hidden="true">{cell}</span>
+                              <span className="sr-only">{yes ? 'Included' : 'Not included'}</span>
+                            </>
+                          ) : cell}
+                        </td>
+                      )
+                    })}
                   </tr>
                 ))}
               </tbody>
@@ -619,7 +656,9 @@ export default function BuildYourPackage() {
                       {/* The whole row toggles the service; the checkbox button stays the keyboard control. */}                      <div className="package-card-head" onClick={(event) => !event.target.closest('button') && toggleService(id)}>
                         <button className="package-check" type="button" onClick={() => toggleService(id)} aria-pressed={on}>
                           <span aria-hidden="true">✓</span>
-                          <span className="sr-only">{on ? `Remove ${service.name}` : `Add ${service.name}`}</span>
+                          {/* A fixed name, with aria-pressed giving the state: a name that also
+                              flipped would read "Remove ..., pressed". */}
+                          <span className="sr-only">{`Add ${service.name}`}</span>
                         </button>
                         <div className="package-card-text">
                           <h3>{service.name}</h3>
@@ -910,7 +949,10 @@ export default function BuildYourPackage() {
               className="kinetic-button group package-pdf-button"
               type="button"
               onClick={downloadPdf}
-              disabled={!hasItems || Boolean(quote.errors?.length) || pdfStatus === 'loading'}
+              disabled={!hasItems || Boolean(quote.errors?.length)}
+              // While it loads the button only reports itself unavailable: a
+              // disabled button drops the keyboard focus that just pressed it.
+              aria-disabled={pdfStatus === 'loading' || undefined}
               aria-busy={pdfStatus === 'loading'}
               aria-describedby={quote.errors?.length ? 'custom-quote-errors' : pdfStatus === 'error' ? 'quote-pdf-error' : undefined}
             >
@@ -997,7 +1039,8 @@ export default function BuildYourPackage() {
                   <input name="subject" type="hidden" value="Package builder quote" />
                   <input name="message" type="hidden" value={message} />
                   <SmsConsentField />
-                  <button className="kinetic-button group" type="submit" disabled={sendPhase === 'sending'}>
+                  {/* aria-disabled, not disabled: a disabled button drops keyboard focus. */}
+                  <button className="kinetic-button group" type="submit" aria-disabled={sendPhase === 'sending' || undefined}>
                     <span>{sendPhase === 'sending' ? 'Sending…' : 'Send my quote'}</span>
                     <span className="button-island">
                       <ArrowIcon className="size-4" />

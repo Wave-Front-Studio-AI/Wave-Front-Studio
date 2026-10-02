@@ -276,7 +276,7 @@ function Hero() {
             <ActionButton href="/contact/" tone="light" shine>
               Start a project
             </ActionButton>
-            <a className="text-link on-dark" href="/free-audit/">
+            <a className="text-link on-dark" href="/free-website-audit/">
               Or get a free site audit <ArrowIcon />
             </a>
           </div>

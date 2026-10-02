@@ -28,10 +28,13 @@ export function SectionHeading({ title, copy, as: Heading = 'h2', dark = false, 
 
 // Services grouped by the job they do for the customer, with the free audit
 // set apart as the starting point. Each service row is a whole-row link.
-export function OfferingList({ items }) {
+// `compact` lists the services by name only. The city pages use it: the
+// one-line descriptions are the same on every page, and each service has its
+// own page that says it better, so the city page stays about the city.
+export function OfferingList({ items, compact = false }) {
   const start = items.find((item) => item.group === 'start')
   return (
-    <div className="offering-groups">
+    <div className={`offering-groups ${compact ? 'is-compact' : ''}`}>
       {offeringGroups.map((group) => {
         const members = items.filter((item) => item.group === group.id)
         if (!members.length) return null
@@ -46,7 +49,7 @@ export function OfferingList({ items }) {
                 <li key={item.href}>
                   <a href={item.href}>
                     <strong>{item.name}</strong>
-                    <span>{item.copy}</span>
+                    {compact ? null : <span>{item.copy}</span>}
                     <ArrowIcon />
                   </a>
                 </li>
@@ -359,7 +362,21 @@ export function EnquiryForm({
   const [confirmationName, setConfirmationName] = useState('')
   const [plan, setPlan] = useState('')
   const form = useRef(null)
+  const thanks = useRef(null)
+  // Set by "Send another message", so focus returns to the form it brings back.
+  const refocusForm = useRef(false)
   const subject = plan ? `${subjectDefault || 'Website'}: ${plan}` : subjectDefault
+
+  // The thank-you replaces the form (and the button that had focus), so focus
+  // moves to it: otherwise it drops to the top of the page, and a status
+  // region that mounts with its text already in it is often not read out.
+  useEffect(() => {
+    if (phase === 'submitted') thanks.current?.focus()
+    else if (refocusForm.current) {
+      refocusForm.current = false
+      form.current?.querySelector('input[name="name"]')?.focus()
+    }
+  }, [phase])
 
   useEffect(() => {
     const onPlan = (event) => {
@@ -408,12 +425,13 @@ export function EnquiryForm({
             <path d="m6.5 12.5 3.4 3.4 7.6-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>
-        <h3>Thank you{confirmationName ? `, ${confirmationName}` : ''}.</h3>
+        <h3 ref={thanks} tabIndex={-1}>Thank you{confirmationName ? `, ${confirmationName}` : ''}.</h3>
         <p>Your message reached the studio. We will reply using the details you gave us, usually within two working days.</p>
         <button
           className="text-link confirmation-reset"
           type="button"
           onClick={() => {
+            refocusForm.current = true
             setPhase('idle')
             setConfirmationName('')
           }}
@@ -494,7 +512,8 @@ export function EnquiryForm({
         </label>
       )}
       <SmsConsentField className="enquiry-wide" />
-      <button className="kinetic-button group enquiry-wide" type="submit" disabled={phase === 'sending'}>
+      {/* aria-disabled, not disabled: a disabled button drops keyboard focus. */}
+      <button className="kinetic-button group enquiry-wide" type="submit" aria-disabled={phase === 'sending' || undefined}>
         <span>{phase === 'sending' ? 'Sending…' : submitLabel}</span>
         <span className="button-island">
           <ArrowIcon className="size-4" />
