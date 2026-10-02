@@ -287,6 +287,7 @@ export function createFunnelScene(canvas) {
   }
 
   let running = false
+  let paused = false
   let frame = 0
   let last = 0
   let clock = 0
@@ -320,7 +321,8 @@ export function createFunnelScene(canvas) {
     frame = requestAnimationFrame(loop)
     const dt = Math.min(0.05, last ? (now - last) / 1000 : 0)
     last = now
-    clock += dt
+    // Paused: the bills hold still, but the camera keeps following the scroll.
+    if (!paused) clock += dt
     draw()
   }
 
@@ -330,6 +332,10 @@ export function createFunnelScene(canvas) {
     last = 0
     if (on) frame = requestAnimationFrame(loop)
     else cancelAnimationFrame(frame)
+  }
+
+  function setPaused(on) {
+    paused = Boolean(on)
   }
 
   function dispose() {
@@ -351,5 +357,5 @@ export function createFunnelScene(canvas) {
   tiers[0].on = 1
   draw()
 
-  return { resize, setProgress, setActive, dispose }
+  return { resize, setProgress, setActive, setPaused, dispose }
 }

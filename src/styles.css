@@ -188,7 +188,11 @@ p { margin: 0; text-wrap: pretty; }
 .has-shine { isolation: isolate; }
 .button-shine { position: absolute; inset: 0; z-index: 2; padding: 2px; border-radius: inherit; overflow: hidden; pointer-events: none;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
-.button-shine > span { position: absolute; top: 50%; left: 50%; width: 260%; aspect-ratio: 1; background: conic-gradient(transparent 0 70%, rgba(43, 179, 200, 0.95) 85%, transparent); transform: translate(-50%, -50%); animation: shine-spin 3.2s linear infinite; }
+.button-shine > span { position: absolute; top: 50%; left: 50%; width: 260%; aspect-ratio: 1; background: conic-gradient(transparent 0 70%, rgba(43, 179, 200, 0.95) 85%, transparent); transform: translate(-50%, -50%); opacity: 0; }
+/* Twice round, about 4.8s, starting when the button comes into view, then
+   gone: nothing on the page moves on its own for more than five seconds. */
+.has-shine.is-shining .button-shine > span { animation: shine-spin 2.4s linear 2, shine-life 4.8s linear forwards; }
+@keyframes shine-life { 0% { opacity: 0; } 8%, 85% { opacity: 1; } 100% { opacity: 0; } }
 .kinetic-button.light .button-shine > span { background: conic-gradient(transparent 0 70%, rgba(13, 27, 42, 0.55) 85%, transparent); }
 @keyframes shine-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) {
@@ -457,6 +461,9 @@ p { margin: 0; text-wrap: pretty; }
 .funnel-progress { display: grid; grid-template-columns: repeat(var(--steps), minmax(0, 1fr)); gap: 6px; max-width: 420px; margin-top: 30px; }
 .funnel-progress span { height: 3px; border-radius: 2px; background: var(--line-strong); transition: background-color 300ms ease; }
 .funnel-progress span.is-done { background: var(--ink); }
+.funnel-pause { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; padding: 8px 14px 8px 10px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--white); color: var(--text); font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: border-color 160ms ease, color 160ms ease; }
+.funnel-pause svg { width: 16px; height: 16px; }
+.funnel-pause:hover { border-color: var(--ink); color: var(--ink); }
 .funnel-canvas { position: relative; height: min(82vh, 720px); }
 .funnel-canvas canvas { display: block; width: 100%; height: 100%; }
 .home-funnel { display: block; width: 100%; height: auto; }
@@ -516,7 +523,8 @@ p { margin: 0; text-wrap: pretty; }
 .route-wire { fill: none; stroke: rgba(255, 255, 255, 0.32); stroke-width: 2; stroke-dasharray: 6 6; }
 .route-hub { fill: var(--white); }
 .route-diagram .route-hub-label { fill: var(--ink); font-family: var(--display); font-size: 18px; font-weight: 600; }
-.route-dots { fill: var(--white); }
+.route-dots { fill: var(--white); transition: opacity 600ms ease; }
+.route-diagram.is-still .route-dots { opacity: 0; }
 
 /* Reviews and the studio video. */
 .home-reviews { background: var(--paper); }
@@ -555,7 +563,9 @@ p { margin: 0; text-wrap: pretty; }
 .video-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .video-play { position: absolute; inset: 0; display: grid; place-items: center; border: 0; background: rgba(13, 27, 42, 0.22); cursor: pointer; }
 .video-play > span { position: relative; display: grid; width: 84px; height: 84px; place-items: center; border-radius: 50%; color: var(--ink); background: var(--white); transition: transform 200ms var(--ease-out); }
-.video-play > span::before { position: absolute; inset: -10px; border: 2px solid var(--white); border-radius: 50%; content: ''; animation: play-ring 2.2s var(--ease-out) infinite; }
+.video-play > span::before { position: absolute; inset: -10px; border: 2px solid var(--white); border-radius: 50%; content: ''; }
+/* Two pulses (4.4s) once the video is on screen, not a loop. */
+.review-video:is(:not(.will-enter), .is-entered) .video-play > span::before { animation: play-ring 2.2s var(--ease-out) 2; }
 .video-play svg { width: 30px; height: 30px; margin-left: 4px; }
 .video-play:hover > span { transform: scale(1.06); }
 /* The figure clips the button's own outline, so the ring goes on the disc:

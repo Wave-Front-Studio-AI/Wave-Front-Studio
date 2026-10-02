@@ -90,9 +90,28 @@ function CountUp({ to, from = 0, prefix = '', suffix = '' }) {
 }
 
 // The site's pill button with an optional light that circles its edge.
+// Anything that moves on its own stops within five seconds (WCAG 2.2.2), so the
+// light goes round twice when the button first comes into view, then fades.
+function useShineOnce(enabled) {
+  const node = useRef(null)
+  const [on, setOn] = useState(false)
+  useEffect(() => {
+    if (!enabled || !node.current || !('IntersectionObserver' in window)) return undefined
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      observer.disconnect()
+      setOn(true)
+    })
+    observer.observe(node.current)
+    return () => observer.disconnect()
+  }, [enabled])
+  return [node, on]
+}
+
 function ActionButton({ href, children, tone = '', shine = false, className = '' }) {
+  const [node, shining] = useShineOnce(shine)
   return (
-    <a className={`kinetic-button group ${tone} ${shine ? 'has-shine' : ''} ${className}`.trim()} href={href}>
+    <a ref={node} className={`kinetic-button group ${tone} ${shine ? 'has-shine' : ''} ${shining ? 'is-shining' : ''} ${className}`.trim()} href={href}>
       {shine ? (
         <span className="button-shine" aria-hidden="true">
           <span />
@@ -395,14 +414,27 @@ function ServiceTiles() {
 
 function RouteDiagram() {
   const svg = useRef(null)
-  // The dots loop forever, so they only run while the diagram is on screen.
+  // The dots run for a few seconds once the diagram is on screen, then stop and
+  // fade (WCAG 2.2.2: nothing moves on its own for more than five seconds).
   useEffect(() => {
     const el = svg.current
     if (!el?.pauseAnimations || !('IntersectionObserver' in window)) return undefined
     el.pauseAnimations()
-    const observer = new IntersectionObserver(([entry]) => (entry.isIntersecting && !reduceMotion() ? el.unpauseAnimations() : el.pauseAnimations()))
+    let timer = 0
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting || reduceMotion()) return
+      observer.disconnect()
+      el.unpauseAnimations()
+      timer = window.setTimeout(() => {
+        el.pauseAnimations()
+        el.classList.add('is-still')
+      }, 4500)
+    })
     observer.observe(el)
-    return () => observer.disconnect()
+    return () => {
+      observer.disconnect()
+      window.clearTimeout(timer)
+    }
   }, [])
 
   const rows = [80, 210, 340]

@@ -117,6 +117,11 @@ const canUse3d = () => {
 export default function FunnelStory() {
   const [mode, setMode] = useState('flat')
   const [active, setActive] = useState(0)
+  // The bills fall for as long as the funnel is on screen, so there is a way to
+  // stop them (WCAG 2.2.2). The camera still follows the visitor's scrolling.
+  const [paused, setPaused] = useState(false)
+  const pausedRef = useRef(false)
+  const sceneRef = useRef(null)
   const wrap = useRef(null)
   const canvas = useRef(null)
 
@@ -158,6 +163,8 @@ export default function FunnelStory() {
         .then(({ createFunnelScene }) => {
           if (cancelled) return
           scene = createFunnelScene(canvas.current)
+          sceneRef.current = scene
+          scene.setPaused(pausedRef.current)
           canvas.current.addEventListener('webglcontextlost', onLost)
           scene.setProgress(progress())
           scene.setActive(visible)
@@ -183,8 +190,16 @@ export default function FunnelStory() {
       window.removeEventListener('resize', onResize)
       node.removeEventListener('webglcontextlost', onLost)
       scene?.dispose()
+      sceneRef.current = null
     }
   }, [mode])
+
+  const togglePause = () => {
+    const next = !pausedRef.current
+    pausedRef.current = next
+    setPaused(next)
+    sceneRef.current?.setPaused(next)
+  }
 
   // Every step stays in the tab order. When a keyboard user tabs into a step
   // that is not on screen yet, scroll to the middle of its stretch so it is.
@@ -211,6 +226,14 @@ export default function FunnelStory() {
                 <span key={step.label} className={index <= active ? 'is-done' : ''} />
               ))}
             </div>
+            <button type="button" className="funnel-pause" onClick={togglePause}>
+              {paused ? (
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+              ) : (
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" /></svg>
+              )}
+              {paused ? 'Play the animation' : 'Pause the animation'}
+            </button>
           </div>
           <div className="funnel-canvas">
             <canvas ref={canvas} aria-hidden="true" />
