@@ -6,6 +6,7 @@ import { services } from '../data/services.js'
 import { customWorks } from '../data/customWorks.js'
 import { siteOrigin } from '../data/site.js'
 import { breadcrumbs, byOrganization, pageGraph } from '../data/seo.js'
+import VideoTranscript from '../components/VideoTranscript.jsx'
 import { sizeOf } from '../data/imageSizes.js'
 
 // The studio's own promo videos. Pages without one show no hero media at all
@@ -43,6 +44,7 @@ export function ServiceHeroMedia({ hero, autoPlay = true }) {
       aria-label={hero.alt}
     >
       <source src={hero.video} type="video/mp4" />
+      {hero.captions ? <track kind="captions" src={hero.captions} srcLang="en" label="English" /> : null}
     </video>
   )
 }
@@ -195,8 +197,11 @@ export default function ServicePage({ service }) {
           <div className="page-frame service-entry-grid">
             <div className="service-entry-intro">
               {service.hero.video ? (
-                <div className="service-media">
-                  <ServiceHeroMedia hero={service.hero} />
+                <div className="service-video">
+                  <div className="service-media">
+                    <ServiceHeroMedia hero={service.hero} />
+                  </div>
+                  <VideoTranscript video={service.hero.video} />
                 </div>
               ) : null}
               <div>

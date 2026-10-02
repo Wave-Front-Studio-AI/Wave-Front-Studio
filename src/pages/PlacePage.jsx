@@ -2,6 +2,7 @@ import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { Breadcrumbs, CtaBand, EnquiryForm, FaqAccordion, OfferingList, SectionHeading, Testimonials } from '../components/shared.jsx'
 import { ServiceHeroMedia } from './ServicePage.jsx'
+import VideoTranscript from '../components/VideoTranscript.jsx'
 import { locations } from '../data/generated/locations.js'
 import { services } from '../data/services.js'
 import { statePages } from '../data/states.js'
@@ -147,9 +148,12 @@ function PlaceLayout({ slug, title, heading, mediaTag, place, description, conte
       <section className="service-entry chapter">
         <div className="page-frame service-entry-grid">
           <div className="service-entry-intro">
-            <div className="service-media">
-              <ServiceHeroMedia hero={placeHero} />
-              <span className="service-media-tag">{mediaTag}</span>
+            <div className="service-video">
+              <div className="service-media">
+                <ServiceHeroMedia hero={placeHero} />
+                <span className="service-media-tag">{mediaTag}</span>
+              </div>
+              <VideoTranscript video={placeHero.video} />
             </div>
             <div>
               <Breadcrumbs trail={trail} />

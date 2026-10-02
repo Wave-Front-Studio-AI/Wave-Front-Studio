@@ -575,6 +575,12 @@ p { margin: 0; text-wrap: pretty; }
 @keyframes play-ring { from { opacity: 0.8; transform: scale(0.85); } to { opacity: 0; transform: scale(1.35); } }
 .review-video figcaption { position: absolute; bottom: 14px; left: 16px; padding: 4px 12px; border-radius: 999px; color: var(--white); background: rgba(13, 27, 42, 0.72); font-size: 0.8125rem; pointer-events: none; }
 .home-reviews .google-attribution { margin-top: 18px; text-align: center; }
+.review-video-col { display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; }
+/* The text version of a video: closed by default, one line under the player. */
+.video-transcript { color: var(--text); font-size: 0.9rem; line-height: 1.6; }
+.video-transcript summary { width: fit-content; color: var(--brand-deep); font-weight: 600; cursor: pointer; }
+.video-transcript summary:hover { color: var(--ink); }
+.video-transcript p { max-width: 62ch; margin-top: 8px; }
 
 /* Process: five steps whose rules draw across in turn. */
 .home-process { color: rgba(255, 255, 255, 0.86); background: var(--ink); }
@@ -760,6 +766,7 @@ p { margin: 0; text-wrap: pretty; }
 .service-entry { padding-top: clamp(40px, 5vw, 72px); }
 .service-entry-grid { display: grid; grid-template-columns: minmax(0, 1.06fr) minmax(340px, 0.82fr); gap: clamp(32px, 4.6vw, 72px); align-items: start; }
 .service-entry-intro { display: grid; gap: 30px; }
+.service-video { display: grid; gap: 10px; }
 .service-media { position: relative; overflow: hidden; border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--ink); }
 .service-media img, .service-media video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--ink); }
 .service-media video { border: 0; }

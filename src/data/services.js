@@ -12,6 +12,8 @@ export const services = [
     hero: {
       alt: 'Wavefront Studio video about website development',
       video: '/videos/web-development-ad.mp4',
+      // Transcribed with Whisper (small.en), checked and punctuated by hand.
+      captions: '/videos/web-development-ad.vtt',
       poster: '/videos/web-development-poster.webp',
     },
     approach: {
@@ -62,6 +64,8 @@ export const services = [
     hero: {
       alt: 'Wavefront Studio video about showing up on Google',
       video: '/videos/seo-google-presence-ad.mp4',
+      // Transcribed with Whisper (small.en), checked and punctuated by hand.
+      captions: '/videos/seo-google-presence-ad.vtt',
       poster: '/videos/seo-google-presence-poster.webp',
     },
     approach: {
@@ -337,6 +341,8 @@ export const services = [
     hero: {
       alt: 'Wavefront Studio video about the free website audit',
       video: '/videos/free-audit-ad.mp4',
+      // Transcribed with Whisper (small.en), checked and punctuated by hand.
+      captions: '/videos/free-audit-ad.vtt',
       poster: '/videos/free-audit-poster.webp',
     },
     primaryCta: { label: 'Get my free audit', href: '#service-form' },
@@ -405,6 +411,8 @@ export const services = [
     hero: {
       alt: 'Wavefront Studio video about lead capture',
       video: '/videos/lead-capture-ad.mp4',
+      // Transcribed with Whisper (small.en), checked and punctuated by hand.
+      captions: '/videos/lead-capture-ad.vtt',
       poster: '/videos/lead-capture-poster.webp',
     },
     primaryCta: { label: 'Plan my lead system', href: '#service-form' },

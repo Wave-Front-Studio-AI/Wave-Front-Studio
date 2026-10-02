@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
+import VideoTranscript from '../components/VideoTranscript.jsx'
 import FunnelStory from '../components/FunnelStory.jsx'
 import { FaqAccordion, Stars, initials, useGoogleReviews } from '../components/shared.jsx'
 import { contact, googleListingUrl, offerings } from '../data/site.js'
@@ -626,24 +627,28 @@ function Reviews() {
             )}
           </div>
 
-          <figure className={`review-video ${playing ? 'is-playing' : ''}`} data-enter="right">
-            <video ref={video} controls={playing} playsInline preload="none" width="1280" height="720" aria-label="Wavefront Studio explains how we build websites">
-              <source src="/videos/web-development-ad.mp4" type="video/mp4" />
-            </video>
-            {/* A poster attribute downloads with the page even when the video
-                does not; a lazy image waits until the section is near. */}
-            {playing ? null : <img className="video-poster" src="/videos/web-development-poster.webp" alt="" width="1280" height="720" loading="lazy" decoding="async" />}
-            {playing ? null : (
-              <button type="button" className="video-play" onClick={play} aria-label="Play the video: how Wavefront builds websites">
-                <span>
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </span>
-              </button>
-            )}
-            {playing ? null : <figcaption>How we build websites</figcaption>}
-          </figure>
+          <div className="review-video-col">
+            <figure className={`review-video ${playing ? 'is-playing' : ''}`} data-enter="right">
+              <video ref={video} controls={playing} playsInline preload="none" width="1280" height="720" aria-label="Wavefront Studio explains how we build websites">
+                <source src="/videos/web-development-ad.mp4" type="video/mp4" />
+                <track kind="captions" src="/videos/web-development-ad.vtt" srcLang="en" label="English" />
+              </video>
+              {/* A poster attribute downloads with the page even when the video
+                  does not; a lazy image waits until the section is near. */}
+              {playing ? null : <img className="video-poster" src="/videos/web-development-poster.webp" alt="" width="1280" height="720" loading="lazy" decoding="async" />}
+              {playing ? null : (
+                <button type="button" className="video-play" onClick={play} aria-label="Play the video: how Wavefront builds websites">
+                  <span>
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                </button>
+              )}
+              {playing ? null : <figcaption>How we build websites</figcaption>}
+            </figure>
+            <VideoTranscript video="/videos/web-development-ad.mp4" />
+          </div>
         </div>
 
         <p className="google-attribution">
