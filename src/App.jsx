@@ -10,6 +10,7 @@ const ContactPage = lazy(() => import('./pages/CompanyPages.jsx').then((module) 
 const FaqsPage = lazy(() => import('./pages/CompanyPages.jsx').then((module) => ({ default: module.FaqsPage })))
 const PortfolioPage = lazy(() => import('./pages/CompanyPages.jsx').then((module) => ({ default: module.PortfolioPage })))
 const LostLeadCalculator = lazy(() => import('./pages/LostLeadCalculator.jsx'))
+const LostLeadAnalysis = lazy(() => import('./pages/LostLeadAnalysis.jsx'))
 const FreeSetup = lazy(() => import('./pages/FreeSetup.jsx'))
 const BuildYourPackage = lazy(() => import('./pages/BuildYourPackage.jsx'))
 const ServicesHubPage = lazy(() => import('./pages/HubPages.jsx').then((module) => ({ default: module.ServicesHubPage })))
@@ -78,6 +79,8 @@ function renderRoute(route) {
       return <LongformRoute kind={route.kind} />
     case 'calculator':
       return <LostLeadCalculator />
+    case 'lost-leads':
+      return <LostLeadAnalysis />
     case 'free-setup':
       return <FreeSetup />
     case 'packages':

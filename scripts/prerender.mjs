@@ -173,14 +173,18 @@ for (const route of routes) {
     .replace(/<meta name="description" content=".*?"\s*\/>/s, () => `<meta name="description" content="${escape(description)}" />`)
     .replace(
       /<link rel="canonical" href=".*?"\s*\/>/s,
-      () => `<link rel="canonical" href="${siteOrigin}${canonical}" />${buildHead({ ...seo, title, description, canonical })}`,
+      // A noindex route (routes.js) is a page for people who were sent a link,
+      // not one to be found: robots says so, and it stays out of the sitemap.
+      () => route.noindex
+        ? `<meta name="robots" content="noindex, follow" />${buildHead({ ...seo, title, description, canonical })}`
+        : `<link rel="canonical" href="${siteOrigin}${canonical}" />${buildHead({ ...seo, title, description, canonical })}`,
     )
     .replace('<div id="root"></div>', () => `<div id="root">${html}</div>`)
 
   const target = route.path === '/' ? resolve(dist, 'index.html') : resolve(dist, `.${route.path}index.html`)
   await mkdir(dirname(target), { recursive: true })
   await writeFile(target, page)
-  pages.push({ path: route.path, kind: route.kind, title, description, modified: seo.modified })
+  pages.push({ path: route.path, kind: route.kind, title, description, modified: seo.modified, noindex: !!route.noindex })
 }
 
 // A 404 fallback that still ships the app shell, so a static host can serve it
@@ -199,7 +203,7 @@ await writeFile(
 // teaches Google to ignore the field, so pages without a known date leave it out.
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${[...pages, ...staticPages.map((path) => ({ path }))]
+${[...pages.filter((page) => !page.noindex), ...staticPages.map((path) => ({ path }))]
   .map(({ path, modified }) => `  <url><loc>${siteOrigin}${path}</loc>${modified ? `<lastmod>${modified}</lastmod>` : ''}</url>`)
   .join('\n')}
 </urlset>
