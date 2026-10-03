@@ -54,7 +54,12 @@ for (const route of routes) {
   else if (titles.has(title)) failures.push(`${route.path}: duplicate title also used by ${titles.get(title)}`)
   else titles.set(title, route.path)
   if (!description) failures.push(`${route.path}: missing description`)
-  if (canonical !== `${siteOrigin}${route.path}`) failures.push(`${route.path}: canonical is ${canonical || 'missing'}`)
+  // A noindex route (routes.js) is reached by a link someone was given, not by
+  // search: it carries robots noindex instead of a canonical.
+  if (route.noindex) {
+    if (!/<meta name="robots" content="noindex, follow"\s*\/>/i.test(head)) failures.push(`${route.path}: noindex route without robots noindex`)
+    if (canonical) failures.push(`${route.path}: noindex route also has a canonical`)
+  } else if (canonical !== `${siteOrigin}${route.path}`) failures.push(`${route.path}: canonical is ${canonical || 'missing'}`)
   if (h1Count !== 1) failures.push(`${route.path}: expected one h1, found ${h1Count}`)
   if (plainText(body).length < 300) failures.push(`${route.path}: body is only ${plainText(body).length} characters`)
   if (/class="[^"]*chat-agent/.test(html)) failures.push(`${route.path}: chat markup was prerendered`)
@@ -136,8 +141,10 @@ assertPublishedOrder('/free-setup/', freeSetupHtml, freeSetupFaqs)
 
 // The generated files crawlers and feed readers ask for.
 const sitemap = await readFile(resolve(dist, 'sitemap.xml'), 'utf8')
-for (const { path } of routes) {
-  if (!sitemap.includes(`<loc>${siteOrigin}${path}</loc>`)) failures.push(`sitemap.xml: missing ${path}`)
+for (const { path, noindex } of routes) {
+  const listed = sitemap.includes(`<loc>${siteOrigin}${path}</loc>`)
+  if (noindex && listed) failures.push(`sitemap.xml: lists noindex ${path}`)
+  if (!noindex && !listed) failures.push(`sitemap.xml: missing ${path}`)
 }
 const rss = await readFile(resolve(dist, 'rss.xml'), 'utf8')
 for (const post of posts) {

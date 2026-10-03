@@ -59,6 +59,9 @@ export const routes = [
   { path: '/faqs/', kind: 'faqs' },
   { path: '/blog/', kind: 'blog' },
   { path: '/lost-lead-calculator/', kind: 'calculator' },
+  // The trade show QR codes' page (the app's Lost Lead Analysis). Out of search
+  // and the sitemap: /lost-lead-calculator/ is the page for that.
+  { path: '/lost-leads/', kind: 'lost-leads', noindex: true },
   { path: '/free-setup/', kind: 'free-setup' },
   { path: '/package-builder/', kind: 'packages' },
   { path: '/locations/', kind: 'locations' },
