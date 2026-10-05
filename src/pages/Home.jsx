@@ -318,7 +318,7 @@ function Intro() {
             One small team handles all three, so nothing falls between suppliers, and you can see what each piece cost and what it brought in.
           </p>
           <ActionButton href="/package-builder/" shine>
-            See prices in the package builder
+            See prices in the package builder.
           </ActionButton>
         </div>
         <ul className="proof-row">
