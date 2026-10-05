@@ -45,7 +45,7 @@ function useEntrances(root) {
 
 // Counts from `from` to `to` once it scrolls into view. The server renders the
 // final figure, so crawlers, no-JS visitors and reduced-motion users read the
-// real number; the count only runs for a counter that starts below the fold.
+// real number; the count only runs for a counter that starts below the fold
 function CountUp({ to, from = 0, prefix = '', suffix = '' }) {
   const node = useRef(null)
   const [value, setValue] = useState(to)
