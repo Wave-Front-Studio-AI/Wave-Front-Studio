@@ -205,6 +205,33 @@ const MOTIFS = {
     stroke(`M ${C + 70} ${C + 100} H ${C + 110}`, { w: 12 }),
   ],
 
+  // A magnifier over three stacked answer lines, one of them lit: is the
+  // business named or not.
+  'check-whether-chatgpt-or-google-ai-names-your-business': () => [
+    stroke(`M ${C - 140} ${C - 110} H ${C + 20}`, { w: 12, opacity: 0.3, color: brand }),
+    stroke(`M ${C - 140} ${C - 50} H ${C - 20}`, { w: 14, opacity: 1 }),
+    stroke(`M ${C - 140} ${C + 10} H ${C + 40}`, { w: 12, opacity: 0.3, color: brand }),
+    circle(C + 50, C + 40, 70, { fill: false, w: 14, opacity: 0.9 }),
+    stroke(`M ${C + 100} ${C + 90} L ${C + 150} ${C + 140}`, { w: 16 }),
+  ],
+
+  // A gate with two doors: one open, one shut.
+  'which-ai-bots-to-allow-in-robots-txt': () => [
+    stroke(`M ${C - 150} ${C + 130} V ${C - 110} H ${C + 150} V ${C + 130}`, { w: 12, opacity: 0.5, color: brand }),
+    stroke(`M ${C - 90} ${C + 130} V ${C - 40} H ${C - 10} V ${C + 130}`, { w: 14, opacity: 1 }),
+    rect(C + 30, C - 40, 80, 170, { r: 10, fill: false, sw: 12, opacity: 0.45, color: brand }),
+    stroke(`M ${C + 50} ${C + 10} L ${C + 90} ${C + 80} M ${C + 90} ${C + 10} L ${C + 50} ${C + 80}`, { w: 12, opacity: 0.45, color: brand }),
+  ],
+
+  // A short document with a small label tag: the file, and how light it is.
+  'do-you-need-an-llms-txt-file': () => [
+    rect(C - 100, C - 130, 200, 260, { r: 16, fill: false, sw: 12, opacity: 0.9 }),
+    stroke(`M ${C - 60} ${C - 70} H ${C + 20}`, { w: 14, opacity: 1 }),
+    stroke(`M ${C - 60} ${C - 20} H ${C + 60}`, { w: 12, opacity: 0.35, color: brand }),
+    stroke(`M ${C - 60} ${C + 30} H ${C + 40}`, { w: 12, opacity: 0.35, color: brand }),
+    stroke(`M ${C - 60} ${C + 80} H ${C + 60}`, { w: 12, opacity: 0.35, color: brand }),
+  ],
+
   // Layers that do not line up, then one that does.
   'why-cheap-design-costs-more': () => [
     rect(C - 130, C - 120, 200, 60, { r: 12, color: brand, opacity: 0.3 }),
