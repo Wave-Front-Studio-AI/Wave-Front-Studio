@@ -19,7 +19,7 @@ export const organization = {
   name: 'Wavefront Studio LLC',
   legalName: 'Wavefront Studio LLC',
   alternateName: 'Wavefront Studio',
-  description: 'Wavefront Studio LLC is a four-person web, SEO and AI studio at 4363 Independence Ct, Sarasota, Florida, serving clients worldwide.',
+  description: 'Wavefront Studio LLC is a 25-person web, SEO and AI studio at 4363 Independence Ct, Sarasota, Florida, serving clients worldwide.',
   url: absoluteUrl('/'),
   logo: { '@type': 'ImageObject', url: absoluteUrl('/wave-logo.webp') },
   image: absoluteUrl('/og-card.png'),
@@ -193,7 +193,7 @@ export const LOCAL_PLACES = new Set([
 export const homeSeo = {
   title: 'Web Design & SEO Agency in Sarasota, FL | Wavefront Studio LLC',
   description:
-    'Wavefront Studio LLC is a four-person web design, SEO and AI studio in Sarasota, Florida. Websites, local SEO, AI chatbots and quote tools. Free website audit.',
+    'Wavefront Studio LLC is a 25-person web design, SEO and AI studio in Sarasota, Florida. Websites, local SEO, AI chatbots and quote tools. Free website audit.',
 }
 
 export const blogSeo = {
@@ -249,11 +249,11 @@ export const postShareImage = (post) => (post.image ? `/images/blog/og/${post.sl
 // A slug that is not listed keeps the description from locations.js.
 export const locationDescriptions = {
   'web-design-phoenix-az':
-    'Websites, SEO and lead systems for businesses across the Valley, from a four-person studio in Sarasota, Florida, that works with Arizona clients remotely.',
+    'Websites, SEO and lead systems for businesses across the Valley, from a 25-person studio in Sarasota, Florida, that works with Arizona clients remotely.',
   'web-design-jacksonville-fl':
     "Websites, SEO and lead systems for Jacksonville businesses. We're in Sarasota, about 240 miles south, and we're upfront that we work with you remotely.",
   'web-design-denver-co':
-    "Wavefront Studio builds websites, SEO and lead systems for Denver-area businesses. We're a four-person studio in Sarasota, Florida, working with you remotely.",
+    "Wavefront Studio builds websites, SEO and lead systems for Denver-area businesses. We're a 25-person studio in Sarasota, Florida, working with you remotely.",
   'web-design-charlotte-nc':
     "Websites, SEO and lead systems for businesses across the Charlotte region. We're a small studio in Sarasota, Florida, and we work with you remotely.",
   'web-design-sarasota-fl':
@@ -275,7 +275,7 @@ export const locationDescriptions = {
   'web-design-st-petersburg-fl':
     "Websites, SEO and lead systems for St. Petersburg businesses in the EDGE District, Grand Central and Downtown. We're in Sarasota, under an hour away.",
   'web-design-raleigh-nc':
-    'Websites, SEO and lead systems for businesses in Raleigh, Cary and the rest of Wake County, from a four-person studio in Sarasota, Florida, working remotely.',
+    'Websites, SEO and lead systems for businesses in Raleigh, Cary and the rest of Wake County, from a 25-person studio in Sarasota, Florida, working remotely.',
 }
 
 // The scraped legal pages carried their first heading as a description

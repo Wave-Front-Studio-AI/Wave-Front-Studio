@@ -100,18 +100,18 @@ const companyEntries = [
   {
     id: 'company-overview', title: 'What Wavefront Studio does', url: '/', kind: 'company',
     keywords: ['wavefront', 'agency', 'overview', 'what do you do', 'what do you build', 'company', 'services', 'digital agency', 'full service'],
-    body: 'Wavefront Studio is a four-person web, SEO and AI studio in Sarasota, Florida. We build websites, local SEO, AI chatbots and quote calculators for businesses that need their site to bring in enquiries. The published services are ' + serviceNames + '. The custom works are ' + customWorkNames + '.',
-    plain: 'Wavefront Studio is a four-person studio in Sarasota, Florida. We build websites, mobile apps and custom web tools, run SEO, digital marketing and social media, design brands, and build AI chatbots, live visualizers and custom calculators.',
+    body: 'Wavefront Studio is a 25-person web, SEO and AI studio in Sarasota, Florida. We build websites, local SEO, AI chatbots and quote calculators for businesses that need their site to bring in enquiries. The published services are ' + serviceNames + '. The custom works are ' + customWorkNames + '.',
+    plain: 'Wavefront Studio is a 25-person studio in Sarasota, Florida. We build websites, mobile apps and custom web tools, run SEO, digital marketing and social media, design brands, and build AI chatbots, live visualizers and custom calculators.',
   },
   {
     id: 'company-about', title: 'About Wavefront Studio', url: '/about/', kind: 'company',
     keywords: ['about', 'who are you', 'story', 'team', 'experience', 'years', 'sarasota', 'resinrock', 'agency'],
-    body: 'Wavefront Studio is four people working from 4363 Independence Ct in Sarasota, Florida. For ResinRock, a resin-bound surfacing company in the same group as Wavefront, we built more than 12 connected websites, the material calculators on them, and the system that sends each enquiry to the nearest available installer. We also took their main site onto the first page of Google for its core industry searches. The person you talk to is one of the people doing the work, and we look after sites once they are live.',
+    body: 'Wavefront Studio is 25 people working from 4363 Independence Ct in Sarasota, Florida. For ResinRock, a resin-bound surfacing company in the same group as Wavefront, we built more than 12 connected websites, the material calculators on them, and the system that sends each enquiry to the nearest available installer. We also took their main site onto the first page of Google for its core industry searches. The person you talk to is one of the people doing the work, and we look after sites once they are live.',
   },
   {
     id: 'company-why', title: 'Why businesses choose Wavefront', url: '/', kind: 'company',
     keywords: ['why you', 'why choose', 'trust', 'different', 'better', 'support', 'expertise'],
-    body: 'Design, development, SEO and AI tools come from the same four people, so nothing gets lost between agencies. We build the tools that turn visits into enquiries, like AI chatbots, live visualisers, quote calculators and lead routing. After launch we stay on for updates, fixes and SEO, and you can call the studio directly.',
+    body: 'Design, development, SEO and AI tools come from the same 25 people, so nothing gets lost between agencies. We build the tools that turn visits into enquiries, like AI chatbots, live visualisers, quote calculators and lead routing. After launch we stay on for updates, fixes and SEO, and you can call the studio directly.',
   },
   {
     id: 'company-process', title: 'How working with us works', url: '/', kind: 'company',
@@ -706,7 +706,7 @@ const INTENTS = [
       || /\b(about (you|yourselves|wavefront)|tell me about (you|wavefront))\b/i.test(text)
       || /^(who are you|about)\??$/i.test(text.trim()),
     reply: () => ({
-      text: 'Wavefront Studio LLC is a four-person web, SEO and AI studio in Sarasota, Florida. Our work includes more than 12 connected websites for our sister company, a surfacing manufacturer, the system that routes their enquiries to the nearest installer, and getting their main site onto the first page of Google.',
+      text: 'Wavefront Studio LLC is a 25-person web, SEO and AI studio in Sarasota, Florida. Our work includes more than 12 connected websites for our sister company, a surfacing manufacturer, the system that routes their enquiries to the nearest installer, and getting their main site onto the first page of Google.',
       links: [
         { label: 'About Wavefront Studio', href: '/about/' },
         { label: 'Our work and portfolio', href: '/portfolio/' },

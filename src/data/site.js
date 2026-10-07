@@ -95,7 +95,7 @@ export const primaryNav = [
     href: null,
     layout: 'cards',
     children: [
-      ['About us', '/about/', 'Four people in Sarasota who build sites that bring in work.'],
+      ['About us', '/about/', '25 people in Sarasota who build sites that bring in work.'],
       ['Portfolio', '/portfolio/', 'Live sites, tools and lead systems we have built.'],
       ['Blog', '/blog/', 'Plain advice on websites, search and enquiries.'],
     ],
@@ -158,7 +158,7 @@ export const footerNav = {
 }
 
 export const footerCopy = {
-  tagline: 'A four-person web, SEO and AI studio in Sarasota, Florida, building sites and tools that bring in enquiries.',
+  tagline: 'A 25-person web, SEO and AI studio in Sarasota, Florida, building sites and tools that bring in enquiries.',
   copyright: 'Copyright © Wavefront Studio LLC. All rights reserved.',
 }
 

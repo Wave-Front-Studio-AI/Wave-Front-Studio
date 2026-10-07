@@ -89,7 +89,7 @@ export const websiteCostGuide = {
   content: `<div class="lf-article">
 <p class="lf-standfirst"><strong>A price range with no source is hard to act on. We would rather show you our own price list, say what it covers, and be plain about what we cannot tell you.</strong></p>
 
-<p>We are a four-person studio at 4363 Independence Ct in Sarasota. This page is for owners in Sarasota, Lakewood Ranch and the surrounding area who are comparing quotes, and for anyone else who wants to see how we price. Every figure below is one we publish on our <a href="/package-builder/">package builder</a>, which calculates a total as you tick options. The page is built from the same data, so the two cannot disagree.</p>
+<p>We are a 25-person studio at 4363 Independence Ct in Sarasota. This page is for owners in Sarasota, Lakewood Ranch and the surrounding area who are comparing quotes, and for anyone else who wants to see how we price. Every figure below is one we publish on our <a href="/package-builder/">package builder</a>, which calculates a total as you tick options. The page is built from the same data, so the two cannot disagree.</p>
 
 <p>What you will not find here is a Sarasota average, a &#8220;typical range&#8221; or a market statistic. We have not found a source for one that we could cite and date, and a number we cannot source is a guess. Where the honest answer is &#8220;it depends&#8221;, we say what it depends on.</p>
 

@@ -119,7 +119,7 @@ of the rules above, and only in these ways:
 - An uppercase display line in the hero, inside the single H1, followed by
   the sentence-case keyword line.
 - Counters, but only for figures with a named source next to them (12+
-  sites for one client, page five to page one, four people). The server
+  sites for one client, page five to page one, 25 people). The server
   renders the final number.
 - Blocks sliding in from their side (`data-enter` in `Home.jsx`), a light
   circling the main buttons (`.button-shine`), one pulse on the process
@@ -163,7 +163,7 @@ page, not only the blog. The short version:
   padding, "seamless", "cutting-edge", "unlock", "elevate", "growth engine",
   "world-class", "transform".
 - No invented proof: no client counts, years, percentages, awards or team size
-  beyond "four people in Sarasota". Client quotes are word for word.
+  beyond "25 people in Sarasota". Client quotes are word for word.
 
 ## Checks
 

@@ -17,13 +17,13 @@ export function AboutPage() {
       seo={{
         title: 'About Wavefront Studio, a Web and SEO Studio in Sarasota',
         description:
-          'Wavefront Studio is a four-person web, SEO and AI studio in Sarasota, Florida, building websites and tools for local and remote clients.',
+          'Wavefront Studio is a 25-person web, SEO and AI studio in Sarasota, Florida, building websites and tools for local and remote clients.',
         canonical: '/about/',
       }}
     >
       <section className="page-hero">
         <div className="page-frame">
-          <h1>A four-person web studio in Sarasota</h1>
+          <h1>A 25-person web studio in Sarasota</h1>
           <p>We build websites, SEO, AI chatbots and custom tools for businesses that need their site to bring in work.</p>
         </div>
       </section>
@@ -34,7 +34,7 @@ export function AboutPage() {
             <h2>What we have built</h2>
             <div className="prose">
               <p>
-                Wavefront Studio LLC is a four-person web, SEO and AI studio at 4363 Independence Ct, Sarasota, Florida.
+                Wavefront Studio LLC is a 25-person web, SEO and AI studio at 4363 Independence Ct, Sarasota, Florida.
               </p>
               <p>
                 For ResinRock, a resin-bound surfacing company in the same group as Wavefront, we built more than 12 connected websites, the material calculators on
@@ -67,7 +67,7 @@ export function AboutPage() {
             </div>
             <div>
               <dt>Team</dt>
-              <dd>Four people</dd>
+              <dd>25 people</dd>
             </div>
             <div>
               <dt>Email</dt>
@@ -189,7 +189,7 @@ export function ContactPage() {
         <div className="page-frame contact-grid">
           <div className="contact-details">
             <SectionHeading title="Studio details" align="stack" />
-            <p className="contact-lede">Skip the form if you prefer. Any of these reaches the same four people.</p>
+            <p className="contact-lede">Skip the form if you prefer. Any of these reaches the same 25 people.</p>
             <ul className="contact-list">
               <li>
                 <span>Address</span>

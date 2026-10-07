@@ -131,11 +131,11 @@ function ActionButton({ href, children, tone = '', shine = false, className = ''
 /* ------------------------------------------------------------------ */
 
 // Each figure names its source next to it: the twelve-site project on the
-// portfolio page, the live Google rating and the four-person studio.
+// portfolio page, the live Google rating and the 25-person studio.
 const proof = [
   { count: { to: 12, suffix: '+' }, what: 'connected websites, built and run as one network', source: 'See the project', sourceHref: '/portfolio/' },
   { google: true, what: 'Google rating' },
-  { count: { to: 4 }, what: 'people in Sarasota, and they do the work', source: 'The whole studio' },
+  { count: { to: 25 }, what: 'people in Sarasota, and they do the work', source: 'The whole studio' },
 ]
 
 // The rating as Google reports it. Its space is held while it loads, so the
@@ -161,7 +161,7 @@ function GoogleProof() {
 }
 
 const advantages = [
-  ['You talk to the people building it', 'There are four of us. No account manager relaying notes to a developer you never meet.'],
+  ['You talk to the people building it', 'There are 25 of us. No account manager relaying notes to a developer you never meet.'],
   ['Every enquiry is traced', 'Forms, calls and chat feed one place, so you can see which page produced which lead.'],
   ['Speed to lead, built in', 'Lead routing alerts the right person straight away, so enquiries do not sit waiting.'],
   ['Prices you can see first', 'Most of what we build is priced in the package builder, before you speak to anyone.'],
@@ -228,7 +228,7 @@ const nearby = [
 const homeFaqs = [
   [
     'Will a small studio give my business proper attention?',
-    'Yes. There are four of us, working from Independence Court in Sarasota. The person on your first call is one of the people who builds your project, and the same people look after it once it is live.',
+    'Yes. There are 25 of us, working from Independence Court in Sarasota. The person on your first call is one of the people who builds your project, and the same people look after it once it is live.',
   ],
   pickFaq('What platforms do you build websites on?'),
   pickFaq('How long does it take to build a website?'),
@@ -289,7 +289,7 @@ function Hero() {
             <span className="hero-sub">Web design, SEO and AI tools for Sarasota businesses</span>
           </h1>
           <p>
-            Wavefront Studio LLC is a four-person web, SEO and AI studio at 4363 Independence Ct, Sarasota, Florida. We build websites, local SEO,
+            Wavefront Studio LLC is a 25-person web, SEO and AI studio at 4363 Independence Ct, Sarasota, Florida. We build websites, local SEO,
             AI chatbots and quote calculators for businesses across Sarasota, Manatee and Tampa Bay, and judge every site by the enquiries it brings in.
           </p>
           <div className="hero-actions">

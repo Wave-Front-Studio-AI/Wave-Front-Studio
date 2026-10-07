@@ -33,7 +33,7 @@ export const aiSearchGuide = {
 
 <p>It is a Tuesday evening and a homeowner has a leaking pipe. They do not open a search page. They ask an assistant on their phone: &#8220;Who is a good emergency plumber near me?&#8221; Three businesses come back, each with a sentence of explanation. They ring the first.</p>
 
-<p>If you run a local business, you will want to know whether you were one of the three. You will also be offered a great deal of advice on the subject, much of it confident and little of it sourced. We are a four-person studio in Sarasota that does <a href="/seo-service/">SEO work</a>, so we have a stake in this, and we would rather tell you plainly where the knowledge runs out.</p>
+<p>If you run a local business, you will want to know whether you were one of the three. You will also be offered a great deal of advice on the subject, much of it confident and little of it sourced. We are a 25-person studio in Sarasota that does <a href="/seo-service/">SEO work</a>, so we have a stake in this, and we would rather tell you plainly where the knowledge runs out.</p>
 
 <p>Every statement about a company&#8217;s crawlers or features comes from that company&#8217;s own documentation, which we read on 7 October 2026.</p>
 
