@@ -3,10 +3,10 @@
 export const liveVisualizer = {
   slug: 'live-visualizer',
   nav: 'Live Visualizer',
-  name: 'Let your customers see it before they buy it',
-  metaTitle: 'Live Product Visualizer Tool | Wavefront Studio LLC',
-  metaDescription: 'Let customers upload a photo of their own home or space and preview your products, materials and colors on it in real time. Custom built for your range.',
-  intro: 'Our visualiser lets customers upload a photo of their own home, driveway or room and preview your products, materials and colours on it straight away.',
+  name: 'A product visualiser that lets customers see it before they buy it',
+  metaTitle: 'Product Visualiser for Manufacturers | Wavefront Studio LLC',
+  metaDescription: 'A custom product visualiser for manufacturers: customers upload a photo of their space and see your products and colours on it in real time, then order.',
+  intro: 'Our product visualiser is built for manufacturers and suppliers. Customers upload a photo of their own home, driveway or room and see your products, materials and colours on it straight away, before they order.',
   primaryCta: 'Get your visualiser built',
   steps: {
     title: 'Three steps, from photo to preview',
@@ -49,6 +49,25 @@ export const liveVisualizer = {
       { title: 'E-commerce', copy: 'Any product where seeing it in context drives the purchase, from apparel to home accessories.' },
     ],
   },
+  guide: {
+    title: 'What a custom product visualiser involves',
+    copy: 'The practical questions manufacturers ask before commissioning one, answered plainly.',
+    items: [
+      { title: 'What it is', copy: 'A tool on your own website that shows a customer’s photo with your product applied to it. It is built for your range, brand and way of selling. It is not a template or a plugin, and it is not a separate app to download.' },
+      { title: 'What your customer sees', copy: 'They upload a photo from their phone, choose a product, colour, texture or finish from your catalogue, and watch the photo update as they switch options. A before and after view puts their space beside the same space with your product on it.' },
+      { title: 'What we need from you', copy: 'Your catalogue: the products, colours, textures, materials and finishes you actually sell, with the images or samples that show each one. We use your real range so what customers preview is what you can supply, and we keep it in step as the range changes.' },
+      { title: 'How enquiries and orders reach you', copy: 'When someone likes what they see, they can request a quote or place an order from the preview screen. A quote request goes to your team, and where it suits your business we can connect it to the lead-routing approach we built for our sister company, ResinRock, which sends enquiries from several sites to the nearest installer.' },
+      { title: 'How long it takes', copy: 'Websites follow set build times, but a visualiser is a custom tool, so it is timed separately once we know the scope. We give you a clear timeline before we start, and we reply to every enquiry within two working days.' },
+      { title: 'Is it right for you?', copy: 'If your customers need to see how a product looks in their own space before they buy, this tool is built for you. It suits resin and flooring, construction and building, paint and coatings, interior design, landscaping, windows and doors, furniture and decor, and e-commerce products where seeing it in context drives the purchase.' },
+    ],
+  },
+  faqs: [
+    ['Is there a tool that lets customers see their custom design changes in real time before ordering?', 'Yes. A custom product visualiser does exactly that. The customer uploads a photo of their own space, chooses a product, colour or finish, and the preview updates straight away. They can then request a quote or order from the same screen.'],
+    ['Does a customer need to download an app?', 'No. Customers upload a photo from their phone and use the visualiser on your website, on desktop, tablet or mobile.'],
+    ['Where do the products and colours come from?', 'From your real catalogue. Every colour, texture, material and finish you sell can be previewed, and it stays in sync as your range changes.'],
+    ['How long does a product visualiser take to build?', 'Custom tools are timed separately from websites, once we know the scope. We give you a clear timeline before we start.'],
+    ['Is it a template or a plugin?', 'No. Each visualiser is built around your brand, your products and how you already work, without templates or plugins.'],
+  ],
   cta: {
     title: 'Give your customers the confidence to buy',
     copy: 'Let’s build a visualiser for your business, tailored to your products, your brand and the way your customers shop.',
@@ -58,10 +77,10 @@ export const liveVisualizer = {
 export const customCalculators = {
   slug: 'custom-calculators',
   nav: 'Custom Calculators',
-  name: 'We build calculators that sell for you',
-  metaTitle: 'Custom Web Calculators with Ordering System | Wavefront Studio',
-  metaDescription: 'Custom web calculators for instant quotes, material estimates and pricing, with a built-in ordering system that turns visitors into customers.',
-  intro: 'We build web calculators for instant quoting, material estimation and pricing, each with an ordering system built in, so visitors can go straight from a quote to a purchase.',
+  name: 'A custom calculator for your website that sells for you',
+  metaTitle: 'Custom Calculator for Your Website | Wavefront Studio',
+  metaDescription: 'A custom calculator for your website: instant quotes, material estimates and pricing built around your products, with ordering built in.',
+  intro: 'We develop custom calculators for your website: a pricing calculator, a quote tool or a material estimator, each built around your own products and pricing, with ordering built in so a visitor can go from a quote to a purchase.',
   primaryCta: 'Get your calculator built',
   steps: {
     title: 'Four steps, from input to order',
@@ -130,6 +149,25 @@ export const customCalculators = {
       { title: 'Any custom business', copy: 'If your business runs on numbers, we can build a calculator that works for you.' },
     ],
   },
+  guide: {
+    title: 'What a custom website calculator involves',
+    copy: 'The practical questions businesses ask before commissioning one, answered plainly.',
+    items: [
+      { title: 'What it is', copy: 'A calculator on your own website that works out a price, a quantity or an estimate from the details a customer enters. It is built from scratch around your products and pricing rules, so it may be a pricing calculator, a quote tool or a material estimator. It is not a template or a plugin.' },
+      { title: 'What your customer sees', copy: 'They choose a project type and enter measurements, then see the result update as they change inputs. They get an itemised price breakdown they can email, export as a PDF or save for later, and then add to cart or send to your sales team.' },
+      { title: 'What we need from you', copy: 'Your products, your pricing and the rules behind them: coverage, wastage, rounding, add-ons, and imperial or metric units if you serve both. Where it helps, the calculator connects to your live product pricing and inventory, so prices update automatically.' },
+      { title: 'How orders and enquiries reach you', copy: 'The customer can add the calculated materials to cart and order from the calculator, or send a quote request to your sales team with one click. We built this approach for our sister company, ResinRock, whose material calculators price the job and add everything to the cart.' },
+      { title: 'How long it takes', copy: 'A calculator is a custom tool, so it is timed separately from a website once we know the scope. We give you a clear timeline before we start, and we reply to every enquiry within two working days.' },
+      { title: 'Is it right for you?', copy: 'If your customers need to work out quantities, estimate costs or get an instant quote, we build the tool for it. That covers construction and building, resin and flooring, paint and coatings, landscaping and fencing, e-commerce and wholesale, HVAC and plumbing, solar and energy, and any business that runs on numbers.' },
+    ],
+  },
+  faqs: [
+    ['Can you build a custom calculator for my website?', 'Yes. We build custom calculators for pricing, instant quotes and material estimates, designed from scratch around your exact products, pricing rules and brand.'],
+    ['Can a calculator take orders as well as give a price?', 'Yes. Customers can add the calculated materials to cart and place an order from the calculator, or send a quote request to your sales team with one click.'],
+    ['Can the calculator use my live prices?', 'Yes. It can connect to your real product pricing and inventory, so prices update automatically and optional add-ons are suggested based on the calculation.'],
+    ['How long does a custom calculator take to build?', 'Custom tools are timed separately from websites, once we know the scope. We give you a clear timeline before we start.'],
+    ['Can customers keep or share the result?', 'Yes. They can export the full calculation as a PDF, email it to themselves or save it for later, so it is easy to pass on to whoever makes the decision.'],
+  ],
   cta: {
     title: 'Let’s build a calculator that sells while you sleep',
     copy: 'Tell us about your products and pricing. We’ll design a calculator that gives your customers instant answers and drives orders directly from your website.',

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { Breadcrumbs, CtaBand, EnquiryForm, SectionHeading } from '../components/shared.jsx'
+import { Breadcrumbs, CtaBand, EnquiryForm, FaqAccordion, SectionHeading } from '../components/shared.jsx'
 import { ServicePlans } from './ServicePage.jsx'
 import { services } from '../data/services.js'
 import { customWorks } from '../data/customWorks.js'
@@ -278,6 +278,18 @@ export default function CustomWorkPage({ work }) {
       provider: byOrganization,
     },
     breadcrumbs(trail),
+    work.faqs
+      ? {
+          '@type': 'FAQPage',
+          '@id': `${url}#faq`,
+          url,
+          mainEntity: work.faqs.map(([name, text]) => ({
+            '@type': 'Question',
+            name,
+            acceptedAnswer: { '@type': 'Answer', text },
+          })),
+        }
+      : null,
   )
 
   const entryVisual = (() => {
@@ -353,6 +365,15 @@ export default function CustomWorkPage({ work }) {
         </div>
       </section>
 
+      {work.guide ? (
+        <section className="service-capabilities chapter">
+          <div className="page-frame">
+            <SectionHeading title={work.guide.title} copy={work.guide.copy} />
+            <PointList items={work.guide.items} columns={3} />
+          </div>
+        </section>
+      ) : null}
+
       {work.plans ? <ServicePlans plans={work.plans} /> : null}
       {work.comparison ? <ComparisonTable comparison={work.comparison} /> : null}
 
@@ -379,6 +400,13 @@ export default function CustomWorkPage({ work }) {
             <PointList items={work.audience.items} columns={4} />
           </div>
         </section>
+      ) : null}
+
+      {work.faqs ? (
+        <FaqAccordion
+          items={work.faqs}
+          heading={{ title: `Questions about ${work.nav.toLowerCase()}`, copy: 'Worth settling before you decide what to do next.' }}
+        />
       ) : null}
 
       <RelatedWork current={work.slug} />
