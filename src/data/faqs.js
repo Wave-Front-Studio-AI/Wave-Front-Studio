@@ -67,3 +67,15 @@ export const freeSetupFaqs = [
     'Yes. Everything here is delivered remotely, and we already run multi-site ecosystems for clients across several regions.',
   ],
 ]
+
+// The terms printed on /free-setup/. Kept here so other pages that mention the
+// offer (the website cost guide) quote the same sentences.
+export const freeSetupTerms = [
+  'Free setup applies to AI Chatbot & Business Automation, Web Development and Website SEO only.',
+  'The waived amount is the one-off setup/onboarding fee. Monthly subscription and project fees still apply and are quoted separately in writing.',
+  '5 places per calendar quarter in total, across all three services combined, not 5 per service.',
+  'A place is allocated when an agreement is signed, not when an enquiry is received.',
+  'We may decline an enquiry where we do not believe we are the right fit. We will tell you why.',
+  'The offer closes when the quarter’s places are taken or the quarter ends, whichever comes first.',
+  'Wavefront Studio LLC reserves the right to amend or withdraw this offer for future quarters.',
+]

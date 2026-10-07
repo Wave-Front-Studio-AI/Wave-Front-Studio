@@ -17,6 +17,7 @@ export const organization = {
   '@type': 'ProfessionalService',
   '@id': ORGANIZATION_ID,
   name: 'Wavefront Studio LLC',
+  legalName: 'Wavefront Studio LLC',
   alternateName: 'Wavefront Studio',
   description: 'Wavefront Studio LLC is a four-person web, SEO and AI studio at 4363 Independence Ct, Sarasota, Florida, serving clients worldwide.',
   url: absoluteUrl('/'),
@@ -223,6 +224,14 @@ export const aiSearchGuideSeo = {
   title: 'AI Search for Local Businesses: What to Fix First',
   description:
     'What Google, OpenAI, Anthropic and Perplexity say about how AI finds local businesses, what nobody outside them knows, and four steps to take first.',
+}
+
+// The website cost guide (src/data/websiteCostGuide.js has the copy). The title
+// is Sarasota-first because that is how the Search Console queries phrase it.
+export const websiteCostGuideSeo = {
+  title: 'What a Small Business Website Costs in Sarasota (2026)',
+  description:
+    'Published website prices and build times for Sarasota and Lakewood Ranch businesses, what changes the price, what is left out, and how to compare quotes.',
 }
 
 export const locationsHubTitle = 'Web Design & SEO Service Areas | Wavefront Studio'

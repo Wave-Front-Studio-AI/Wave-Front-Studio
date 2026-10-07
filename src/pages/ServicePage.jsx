@@ -301,6 +301,13 @@ export default function ServicePage({ service }) {
               {service.deliver.paragraphs.map((paragraph) => (
                 <p key={paragraph.slice(0, 40)}>{paragraph}</p>
               ))}
+              {service.deliver.link ? (
+                <p>
+                  <a className="text-link on-dark" href={service.deliver.link[1]}>
+                    {service.deliver.link[0]} <ArrowIcon />
+                  </a>
+                </p>
+              ) : null}
             </div>
             <SupportCallout />
           </div>

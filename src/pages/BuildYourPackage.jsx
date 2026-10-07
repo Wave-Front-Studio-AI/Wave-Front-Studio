@@ -1129,6 +1129,9 @@ export default function BuildYourPackage() {
             builds are typically billed 50% to start and 50% on delivery. Monthly services have a 3-month minimum recommendation.
             Digital-marketing ad spend is billed separately by the ad platform.
           </p>
+          <p>
+            Want to know what the website tiers include and what changes a quote? Read <a href="/website-design-cost/">what a small business website costs</a>.
+          </p>
         </div>
       </section>
 

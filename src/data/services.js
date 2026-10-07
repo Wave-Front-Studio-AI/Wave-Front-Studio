@@ -44,6 +44,7 @@ export const services = [
         'Every site we build has to work, with a structure suited for search, contact forms and calls-to-action placed where people actually click, and pages that load quickly on a phone. However someone arrives, from Google, social media or an ad, the site should be ready to turn them into an enquiry.',
         'We don’t disappear after launch. That covers maintenance, security updates, performance monitoring, content updates and new features as you need them. Adding a product line, expanding into a new market, or wanting a calculator or chatbot bolted on? We build those in as your site grows.',
       ],
+      link: ['See what a small business website costs in Sarasota', '/website-design-cost/'],
       image: '/images/calc.webp',
       alt: 'A material calculator showing a price breakdown for a patio project',
       caption: 'A material calculator we built for our sister company, a surfacing manufacturer. It prices the job and adds everything to the cart.',
@@ -91,6 +92,7 @@ export const services = [
         'Technical SEO is where a lot of agencies cut corners. We don’t: we go through your site’s structure, fix crawl errors, improve page speed, clean up broken links and make sure Google can index every page that matters. A good-looking website is wasted if search engines can’t find it.',
         'SEO isn’t a one-off project. We provide monthly reporting, keyword tracking, content recommendations and ongoing optimisation so rankings keep moving in the right direction. We took our sister company, a surfacing manufacturer, from low visibility to Google’s first page for competitive industry terms, working the same way: steady, monthly effort rather than a single push.',
       ],
+      link: ['See our published SEO prices and what they include', '/website-design-cost/#seo'],
     },
     extra: {
       title: 'Getting named in AI answers',

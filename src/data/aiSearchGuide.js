@@ -20,6 +20,14 @@ export const aiSearchGuide = {
   published: '2026-10-07',
   modified: '2026-10-07',
   checked: '7 October 2026',
+  metaLabel: 'Sources checked 7 October 2026',
+  keywords: ['ai search', 'chatgpt', 'google ai overviews', 'ai mode', 'perplexity', 'claude', 'robots.txt', 'llms.txt', 'ai answers', 'guide'],
+  linkLabel: 'Read the guide',
+  cta: {
+    title: 'Want this done for your business?',
+    copy: 'Tell us what you sell and where, and we will tell you what we would fix first.',
+    label: 'Start Your Project',
+  },
   content: `<div class="lf-article">
 <p class="lf-standfirst"><strong>A customer asks a chatbot for a business like yours and gets three names. Whether you are one of them depends on things only partly visible from outside. This page separates what the companies have said in writing from what people guess, then puts the useful work in order.</strong></p>
 

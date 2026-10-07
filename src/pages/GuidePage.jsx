@@ -1,19 +1,21 @@
 import Layout from '../components/Layout.jsx'
 import { Breadcrumbs, CtaBand } from '../components/shared.jsx'
 import { Prose } from './Longform.jsx'
-import { aiSearchGuide as guide } from '../data/aiSearchGuide.js'
-import { absoluteUrl, aiSearchGuideSeo, breadcrumbs, byOrganization, pageGraph, webPage } from '../data/seo.js'
+import { guides } from '../data/guides.js'
+import { absoluteUrl, breadcrumbs, byOrganization, pageGraph, webPage } from '../data/seo.js'
 
-// The AI search pillar. It reuses the article layout and the .longform styles
-// so it reads like the guides it links to, but it is a page, not a post: its
-// own route kind, its own copy file, and no blog byline or card image.
-export default function GuidePage() {
+// The guide pages (src/data/guides.js): the AI search pillar and the website
+// cost guide. They reuse the article layout and the .longform styles
+// so they read like the posts they link to, but they are pages, not posts: their
+// own route kind, their own copy files, and no blog byline or card image.
+export default function GuidePage({ slug }) {
+  const { guide, seo: guideSeo } = guides[slug]
   const trail = [['Home', '/'], [guide.title, guide.path]]
   const schema = pageGraph(
     webPage({
       path: guide.path,
       name: guide.title,
-      description: aiSearchGuideSeo.description,
+      description: guideSeo.description,
       datePublished: guide.published,
       dateModified: guide.modified,
       publisher: byOrganization,
@@ -26,7 +28,7 @@ export default function GuidePage() {
     <Layout
       className="blog-post guide-page"
       seo={{
-        ...aiSearchGuideSeo,
+        ...guideSeo,
         canonical: guide.path,
         schema,
         modified: guide.modified,
@@ -36,9 +38,7 @@ export default function GuidePage() {
         <div className="page-frame">
           <Breadcrumbs trail={trail} />
           <p className="article-meta">
-            <span>
-              Sources checked {guide.checked}
-            </span>
+            <span>{guide.metaLabel}</span>
             <span>Wavefront Studio</span>
           </p>
           <h1>{guide.title}</h1>
@@ -53,9 +53,10 @@ export default function GuidePage() {
       </article>
 
       <CtaBand
-        title="Want this done for your business?"
-        copy="Tell us what you sell and where, and we will tell you what we would fix first."
-        label="Start Your Project"
+        title={guide.cta.title}
+        copy={guide.cta.copy}
+        label={guide.cta.label}
+        secondary={guide.cta.secondary}
       />
     </Layout>
   )

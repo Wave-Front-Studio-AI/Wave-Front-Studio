@@ -3,7 +3,7 @@ import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { CtaBand, FaqAccordion, Honeypot, SectionHeading, SmsConsentField, useGoogleReviews } from '../components/shared.jsx'
 import { contact, googleListingUrl } from '../data/site.js'
-import { freeSetupFaqs as FAQ } from '../data/faqs.js'
+import { freeSetupFaqs as FAQ, freeSetupTerms as TERMS } from '../data/faqs.js'
 import { deliverLead } from '../formSubmission.js'
 
 
@@ -35,16 +35,6 @@ const OTHER_SERVICES = [
   ['Digital Marketing', '/digital-marketing/'],
   ['Live Visualizer', '/live-visualizer/'],
   ['Custom Calculators', '/custom-calculators/'],
-]
-
-const TERMS = [
-  'Free setup applies to AI Chatbot & Business Automation, Web Development and Website SEO only.',
-  'The waived amount is the one-off setup/onboarding fee. Monthly subscription and project fees still apply and are quoted separately in writing.',
-  '5 places per calendar quarter in total, across all three services combined, not 5 per service.',
-  'A place is allocated when an agreement is signed, not when an enquiry is received.',
-  'We may decline an enquiry where we do not believe we are the right fit. We will tell you why.',
-  'The offer closes when the quarter’s places are taken or the quarter ends, whichever comes first.',
-  'Wavefront Studio LLC reserves the right to amend or withdraw this offer for future quarters.',
 ]
 
 const CHOICES = ['AI Chatbot & Automation', 'Web Development', 'Website SEO']

@@ -54,8 +54,10 @@ export const staticPages = ['/free-website-audit/']
 
 export const routes = [
   { path: '/', kind: 'home' },
-  // The AI search pillar: a guide page, not a blog post (src/data/aiSearchGuide.js).
+  // Guide pages, not blog posts (src/data/guides.js). First, the AI search pillar.
   { path: '/ai-search-visibility/', kind: 'guide', slug: 'ai-search-visibility' },
+  // The cost guide, built from the package builder's own data (src/data/websiteCostGuide.js).
+  { path: '/website-design-cost/', kind: 'guide', slug: 'website-design-cost' },
   { path: '/about/', kind: 'about' },
   { path: '/portfolio/', kind: 'portfolio' },
   { path: '/contact/', kind: 'contact' },

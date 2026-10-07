@@ -108,7 +108,7 @@ function renderRoute(route) {
     case 'legal':
       return <LongformRoute kind={route.kind} slug={route.slug} />
     case 'guide':
-      return <GuidePage />
+      return <GuidePage slug={route.slug} />
     case 'post':
       return <LongformRoute kind={route.kind} slug={route.slug} />
     default:

@@ -293,6 +293,7 @@ const llms = [
   '## Guides',
   '',
   entry('/ai-search-visibility/', 'AI search for local businesses'),
+  entry('/website-design-cost/', 'What a small business website costs in Sarasota'),
   '',
   '## Blog',
   '',

@@ -11,7 +11,7 @@ import { locations as allLocations, locationsHub } from './data/generated/locati
 import { isLive } from './data/schedule.js'
 import { legalPages } from './data/generated/legal.js'
 import { posts } from './data/generated/posts.js'
-import { aiSearchGuide } from './data/aiSearchGuide.js'
+import { guides } from './data/guides.js'
 import { LANDING_PAGE_BUNDLES, OFFER, SERVICES as PACKAGE_SERVICES, DETAILS as PACKAGE_DETAILS } from './data/generated/packages.js'
 import { freeSetupFaqs, siteFaqs } from './data/faqs.js'
 import { CHIPS, strings } from './chatLocale.js'
@@ -339,16 +339,16 @@ const postEntries = posts.map((post) => makeEntry({
   linkLabel: 'Read the article',
 }))
 
-const guideEntries = [makeEntry({
-  id: 'guide-ai-search-visibility',
-  title: aiSearchGuide.title,
-  url: aiSearchGuide.path,
+const guideEntries = Object.values(guides).map(({ guide }) => makeEntry({
+  id: `guide-${guide.slug}`,
+  title: guide.title,
+  url: guide.path,
   kind: 'article',
-  keywords: ['ai search', 'chatgpt', 'google ai overviews', 'ai mode', 'perplexity', 'claude', 'robots.txt', 'llms.txt', 'ai answers', 'guide'],
-  body: `${aiSearchGuide.excerpt} ${clip(plainText(aiSearchGuide.content), 900)}`,
-  plain: aiSearchGuide.excerpt,
-  linkLabel: 'Read the guide',
-})]
+  keywords: guide.keywords,
+  body: `${guide.excerpt} ${clip(plainText(guide.content), 900)}`,
+  plain: guide.excerpt,
+  linkLabel: guide.linkLabel,
+}))
 
 const legalEntries = legalPages.map((page) => makeEntry({
   id: `legal-${page.slug}`,
@@ -785,6 +785,13 @@ function formatResults(results) {
     links.push({ label: result.title, href: result.url })
   }
 
+  // An article answers the question but is not where a visitor can act on it.
+  // Beside it, offer the service page the same words also reached.
+  if (best.kind === 'article' && links.length < 3) {
+    const service = rest.find((result) => ['service', 'custom'].includes(result.kind) && !seen.has(result.url))
+    if (service) links.push({ label: service.linkLabel ?? service.title, href: service.url })
+  }
+
   return {
     text: best.kind === 'company' || best.kind === 'faq' ? spoken : `${best.title}: ${spoken}`,
     links,
@@ -829,6 +836,9 @@ function localize(answer, language) {
 }
 
 // Answers a visitor question from published site content only.
+// A question about what we do ("Do you...", "Can you...", "we need...").
+const SERVICE_QUESTION = /^\s*(?:do|can|could|will|would)\s+you\b|\b(?:we|i)\s+(?:need|want)\b/i
+
 export function answerQuestion(query, previousLanguage = 'en') {
   const detected = detectLanguage(query)
   // A one-word English follow-up should not flip a Spanish conversation back.
@@ -860,6 +870,15 @@ export function answerQuestion(query, previousLanguage = 'en') {
     const at = results.findIndex((result) => result.kind === 'location')
     if (at > 0) results.unshift(...results.splice(at, 1))
     if (at >= 0) return localize(formatResults(results), language)
+  }
+
+  // "Do you improve Google Business Profiles?" asks about the service. A blog
+  // post on the same subject can edge it out on wording, so when the question
+  // is phrased as one about what we do and a service page scores close behind
+  // the article, the service page goes first.
+  if (results[0]?.kind === 'article' && SERVICE_QUESTION.test(englishText)) {
+    const at = results.findIndex((result) => ['service', 'custom'].includes(result.kind) && result.score >= results[0].score * 0.8)
+    if (at > 0) results.unshift(...results.splice(at, 1))
   }
 
   // A strong content match beats a loosely-triggered intent, but the handoff,
