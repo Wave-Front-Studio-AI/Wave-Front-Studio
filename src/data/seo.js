@@ -164,6 +164,22 @@ export function locationSeoTitle(title) {
 // The on-page heading for a place page: the full range, in plain words.
 export const placeHeadline = (title) => title.replace(/^Web Design (?:&|and) SEO /, 'Websites, SEO, Marketing & AI ')
 
+// Search Console (Sep to Oct 2026) showed these four pages sitting on page two
+// or three for the wording below, so each gets its own title and heading in the
+// words people type. A slug that is not listed keeps the generic pair above.
+export const locationSeoTitles = {
+  'web-design-lakewood-ranch-fl': 'Web Design & SEO Company in Lakewood Ranch, FL',
+  'web-design-englewood-fl': 'Englewood, FL Web Design and SEO | Wavefront Studio',
+  'web-design-sarasota-fl': 'Web Design & Website Development in Sarasota, FL',
+  'web-design-north-port-fl': 'Web Design & SEO in North Port and Wellen Park, FL',
+}
+export const locationHeadlines = {
+  'web-design-lakewood-ranch-fl': 'Website Designers and SEO Company in Lakewood Ranch, Florida',
+  'web-design-englewood-fl': 'Web Designers in Englewood, Florida: Websites, SEO and Marketing',
+  'web-design-sarasota-fl': 'Sarasota Web Design and Website Development for Small Business',
+  'web-design-north-port-fl': 'Website Design and SEO for North Port and Wellen Park, Florida',
+}
+
 // Places within about an hour of the studio, where we can meet in person. Every
 // other place page says plainly that the work happens remotely.
 export const LOCAL_PLACES = new Set([
@@ -232,21 +248,21 @@ export const locationDescriptions = {
   'web-design-charlotte-nc':
     "Websites, SEO and lead systems for businesses across the Charlotte region. We're a small studio in Sarasota, Florida, and we work with you remotely.",
   'web-design-sarasota-fl':
-    'Wavefront Studio, at 4363 Independence Ct, builds websites, runs SEO and paid ads, and makes AI chatbots and quote calculators for Sarasota businesses.',
+    'Web design and website development for Sarasota small businesses, plus SEO, AI chatbots and quote calculators. Our studio is at 4363 Independence Ct.',
   'web-design-lakewood-ranch-fl':
-    "Websites, SEO and marketing for Lakewood Ranch businesses on Main Street, at Waterside Place and in the CORE business park. We're 15 minutes away in Sarasota.",
+    "Website design, SEO and marketing for Lakewood Ranch businesses on Main Street, at Waterside Place and in the CORE park. We're 15 minutes away in Sarasota.",
   'web-design-bradenton-fl':
     "Websites, SEO campaigns and lead systems for businesses in Bradenton and across Manatee County. We're 20 minutes down the Tamiami Trail in Sarasota.",
   'web-design-venice-fl':
     "Websites, SEO and lead systems for businesses on Venice Island, along Jacaranda and on the US 41 Bypass. We're 25 minutes north in Sarasota.",
   'web-design-north-port-fl':
-    "Websites, SEO and lead systems for North Port businesses along US 41, Sumter Boulevard and Toledo Blade. We're 40 minutes north in Sarasota.",
+    "Website design, SEO and webmaster services for North Port and Wellen Park businesses. We're 40 minutes north in Sarasota and can meet in person.",
   'web-design-palmetto-fl':
     "Websites, SEO and lead systems for Palmetto businesses on 10th Avenue West and along US 41 and US 301. We're half an hour south in Sarasota.",
   'web-design-osprey-nokomis-fl':
     "Websites, SEO and lead systems for Osprey and Nokomis businesses along US 41, Albee Road and the Laurel Road corridor. We're 15 minutes north in Sarasota.",
   'web-design-englewood-fl':
-    "Websites, SEO and lead systems for Englewood businesses on West Dearborn Street, along SR 776 and out on Manasota Key. We're 50 minutes north in Sarasota.",
+    "Web design, SEO and lead systems for Englewood businesses on West Dearborn Street, along SR 776 and on Manasota Key. We're 50 minutes north in Sarasota.",
   'web-design-st-petersburg-fl':
     "Websites, SEO and lead systems for St. Petersburg businesses in the EDGE District, Grand Central and Downtown. We're in Sarasota, under an hour away.",
   'web-design-raleigh-nc':

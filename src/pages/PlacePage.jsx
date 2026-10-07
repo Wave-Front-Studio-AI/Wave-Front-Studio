@@ -14,7 +14,9 @@ import {
   breadcrumbs,
   byOrganization,
   locationDescriptions,
+  locationHeadlines,
   locationSeoTitle,
+  locationSeoTitles,
   pageGraph,
   placeFromTitle,
   placeHeadline,
@@ -143,7 +145,7 @@ function PlaceLayout({ slug, title, heading, mediaTag, place, description, conte
   return (
     <Layout
       className="service-page place-page"
-      seo={{ title: locationSeoTitle(title), description, canonical, schema, modified: publishDates[slug] }}
+      seo={{ title: locationSeoTitles[slug] || locationSeoTitle(title), description, canonical, schema, modified: publishDates[slug] }}
     >
       <section className="service-entry chapter">
         <div className="page-frame service-entry-grid">
@@ -239,7 +241,7 @@ export function LocationPage({ location }) {
     <PlaceLayout
       slug={location.slug}
       title={location.title}
-      heading={placeHeadline(location.title)}
+      heading={locationHeadlines[location.slug] || placeHeadline(location.title)}
       mediaTag={local ? 'Within our driving range' : `Serving ${place} remotely`}
       place={place}
       description={locationDescriptions[location.slug] || location.description}
