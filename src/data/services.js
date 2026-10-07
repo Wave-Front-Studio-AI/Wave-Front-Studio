@@ -58,9 +58,9 @@ export const services = [
     slug: 'seo-service',
     nav: 'Website SEO',
     name: 'Search Engine Optimisation',
-    subhead: 'Rank higher and get found on Google',
-    metaTitle: 'SEO Services – Rank Higher on Google | Wavefront Studio',
-    metaDescription: 'SEO for businesses that want to be found on Google: keyword research, technical audits, on-page fixes, link building and local search.',
+    subhead: 'Get found on Google and in AI answers',
+    metaTitle: 'SEO Services for Google and AI Search | Wavefront Studio',
+    metaDescription: 'SEO to help you be found on Google and named in AI answers: keyword research, technical audits, on-page fixes, schema, links and local search.',
     hero: {
       alt: 'Wavefront Studio video about showing up on Google',
       video: '/videos/seo-google-presence-ad.mp4',
@@ -69,9 +69,9 @@ export const services = [
       poster: '/videos/seo-google-presence-poster.webp',
     },
     approach: {
-      title: 'How we get you to page one',
+      title: 'How we work on your search visibility',
       paragraphs: [
-        'We build a complete SEO strategy to get your business onto the first page of Google and keep it there. That covers keyword research, competitor analysis, technical audits, on-page optimisation and link building, all aimed at organic traffic that turns into paying customers.',
+        'We build an SEO strategy to make your business easier to find on Google. That covers keyword research, competitor analysis, technical audits, on-page optimisation and link building, all aimed at organic traffic that turns into paying customers. Nobody controls Google, so we don’t promise a position or a date. We do the work that earns visibility and report what moved.',
         'We look at what your target audience actually searches for, find the gaps in your current rankings, and build a step-by-step plan to close them. A local business chasing Google Maps visibility and a national brand competing for high-volume keywords need different strategies, so we build each one around your specific market.',
       ],
     },
@@ -90,6 +90,20 @@ export const services = [
       paragraphs: [
         'Technical SEO is where a lot of agencies cut corners. We don’t: we go through your site’s structure, fix crawl errors, improve page speed, clean up broken links and make sure Google can index every page that matters. A good-looking website is wasted if search engines can’t find it.',
         'SEO isn’t a one-off project. We provide monthly reporting, keyword tracking, content recommendations and ongoing optimisation so rankings keep moving in the right direction. We took our sister company, a surfacing manufacturer, from low visibility to Google’s first page for competitive industry terms, working the same way: steady, monthly effort rather than a single push.',
+      ],
+    },
+    extra: {
+      title: 'Getting named in AI answers',
+      paragraphs: [
+        'More people now ask ChatGPT, Gemini, Perplexity and Google’s AI answers who to call, not only search for it. These tools draw on much of the same material as search: your website, your Google Business Profile and what other sites say about you. We can’t control what an AI assistant says or promise that it will name you, so the work is making sure you are easy to find, read and describe accurately.',
+        'We check that search and AI-search crawlers can reach your site and aren’t blocked by robots.txt or your host, give each service and location its own clear page, add schema markup so the facts about your business are machine-readable, and tidy your Google Business Profile and third-party listings so they all say the same thing. To see whether it is changing anything, we ask a fixed set of prompts about your services and area each month and record which businesses are named. It is a measurement, not a guarantee.',
+      ],
+      features: [
+        'Crawler access check for search and AI-search bots',
+        'Clear service and location pages',
+        'Schema markup for your business, services and reviews',
+        'Google Business Profile and third-party listings kept consistent',
+        'Monthly check with a fixed set of prompts, recorded over time',
       ],
     },
     plans: {
@@ -141,7 +155,7 @@ export const services = [
           name: 'Monthly SEO',
           billing: 'Monthly',
           popular: true,
-          copy: 'For businesses that want to hold a first-page ranking on Google. We manage content, backlinks, technical health and performance every month.',
+          copy: 'For businesses that want steady, ongoing work on their Google visibility. We manage content, backlinks, technical health and performance every month.',
           bestFor: 'Businesses ready to invest in long-term growth and compete seriously on Google search results.',
           included: [
             'Everything in SEO audit & fix',
@@ -161,7 +175,7 @@ export const services = [
     },
     cta: {
       title: 'Your customers are searching. Make sure they find you.',
-      copy: 'SEO keeps paying off long after you stop actively promoting a page. Let’s get your business ranking on page one, where the clicks are.',
+      copy: 'SEO keeps paying off long after you stop actively promoting a page. Let’s look at where your business shows up today and what would help it show up more often.',
     },
   },
 

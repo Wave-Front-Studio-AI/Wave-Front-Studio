@@ -189,7 +189,7 @@ const hubEntries = [
 // The words a visitor uses for a service, keyed to the page that answers them.
 const SERVICE_ALIASES = {
   'web-development': 'website web design build a website new website redesign rebuild wordpress shopify woocommerce ecommerce online store landing page cms responsive multi-site',
-  'seo-service': 'seo search engine optimisation optimization google ranking rankings first page keywords backlinks local seo google business profile organic traffic found on google',
+  'seo-service': 'seo search engine optimisation optimization google ranking rankings first page keywords backlinks local seo google business profile organic traffic found on google ai answers chatgpt perplexity ai search schema crawler',
   'mobile-app-development': 'app apps mobile app ios android iphone application mvp startup app build',
   'social-media-strategy': 'social media instagram facebook linkedin tiktok posts content calendar followers engagement community management',
   'graphic-design': 'graphic design logo branding brand identity visual identity print flyers social graphics packaging creative',
