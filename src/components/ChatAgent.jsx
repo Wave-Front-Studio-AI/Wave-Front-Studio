@@ -33,7 +33,15 @@ const HELP_TOPICS = [
 
 let knowledgePromise = null
 function loadKnowledge() {
-  knowledgePromise ??= import('../chatKnowledge.js')
+  // A failed fetch (a tab opened before a deploy asks for a file that no longer
+  // exists) must not be remembered, or every later attempt reuses the failure.
+  knowledgePromise ??= import('../chatKnowledge.js').then((module) => {
+    if (!module?.answerQuestion) throw new Error('Site knowledge did not load')
+    return module
+  }).catch((error) => {
+    knowledgePromise = null
+    throw error
+  })
   return knowledgePromise
 }
 
@@ -77,6 +85,7 @@ export default function ChatAgent() {
   const [keyboardOpen, setKeyboardOpen] = useState(false)
   const [status, setStatus] = useState('idle')
   const [ready, setReady] = useState(false)
+  const [loadFailed, setLoadFailed] = useState(false)
 
   const panelId = useId()
   const inputRef = useRef(null)
@@ -108,7 +117,10 @@ export default function ChatAgent() {
   // the visitor opens the panel, not on every page load.
   useEffect(() => {
     if (!open) return
-    loadKnowledge().then(() => setReady(true))
+    loadKnowledge().then(() => {
+      setReady(true)
+      setLoadFailed(false)
+    }).catch(() => setLoadFailed(true))
   }, [open])
 
   useEffect(() => {
@@ -344,7 +356,7 @@ export default function ChatAgent() {
           </span>
           <div>
             <strong>{copy.title}</strong>
-            <small>{ready ? copy.status : copy.loading}</small>
+            <small>{ready ? copy.status : loadFailed ? copy.loadFailed : copy.loading}</small>
           </div>
           <button type="button" className="chat-close" ref={closeRef} onClick={close} aria-label={copy.close}>
             <CloseIcon />
