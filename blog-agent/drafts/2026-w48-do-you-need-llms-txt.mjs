@@ -2,7 +2,7 @@
 export default {
   slug: 'do-you-need-an-llms-txt-file',
   title: 'Do You Need an llms.txt File? Probably Not, but It Is Cheap',
-  date: '2026-10-22',
+  date: '2026-10-21',
   excerpt: 'No major AI search engine has confirmed it reads llms.txt, and Google says you need no special files. Here is what the file is, and when it is worth an hour.',
   image: '/images/blog/do-you-need-an-llms-txt-file.webp',
   content: [
@@ -23,7 +23,7 @@ export default {
     '</tbody></table></figure>',
     '<p>Read the middle row carefully. It says we know of no confirmation. It does not say the engines have denied it, and companies change what they do without announcing it. If that matters to your decision, check their current documentation rather than trusting this paragraph, or us.</p>',
     '<blockquote class="lf-callout"><p><strong>Our position</strong></p>',
-    '<p>This site has an llms.txt file, because it took little time and does no harm. We have no evidence that it has brought us a single mention in an AI answer, and we will not tell you it will bring you one.</p></blockquote>',
+    '<p>This site has an llms.txt file, because it took little time and does no harm. We will not tell you it will bring you a mention in an AI answer.</p></blockquote>',
     '<h2>When it is worth an hour</h2>',
     '<ul>',
     '<li><strong>Your site is already clear.</strong> If your services, area and contact details are easy to find, a summary file costs little and may help a tool that does read it.</li>',
@@ -52,7 +52,7 @@ export default {
     '</ol>',
     '<h2>What not to expect</h2>',
     '<p>Do not expect a jump in mentions, citations or recommendations from adding the file. If one arrives, you will not be able to prove the file caused it. Treat it as housekeeping, like a tidy contact page.</p>',
-    '<p>The useful question is not whether you have the file. It is whether a person, or a tool, could read your site and describe your business correctly. That is worth checking, and you can do it today with the prompt test in our guide to checking whether ChatGPT or Google AI names your business.</p>',
+    '<p>The useful question is not whether you have the file. It is whether a person, or a tool, could read your site and describe your business correctly. That is worth checking, and you can do it today with the prompt test in our guide to <a href="/check-whether-chatgpt-or-google-ai-names-your-business/">checking whether ChatGPT or Google AI names your business</a>.</p>',
     '<div class="lf-cta"><h2>Want to know what would actually help?</h2>',
     '<p>We will look at how your site reads to search tools and tell you what we would change first, including the small things we would skip. We reply within two working days.</p>',
     '<p><a href="/seo-service/">See how our SEO work runs</a>, or start with the <a href="/free-website-audit/">free website audit</a>.</p>',

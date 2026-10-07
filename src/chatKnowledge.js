@@ -11,6 +11,7 @@ import { locations as allLocations, locationsHub } from './data/generated/locati
 import { isLive } from './data/schedule.js'
 import { legalPages } from './data/generated/legal.js'
 import { posts } from './data/generated/posts.js'
+import { aiSearchGuide } from './data/aiSearchGuide.js'
 import { LANDING_PAGE_BUNDLES, OFFER, SERVICES as PACKAGE_SERVICES, DETAILS as PACKAGE_DETAILS } from './data/generated/packages.js'
 import { freeSetupFaqs, siteFaqs } from './data/faqs.js'
 import { CHIPS, strings } from './chatLocale.js'
@@ -338,6 +339,17 @@ const postEntries = posts.map((post) => makeEntry({
   linkLabel: 'Read the article',
 }))
 
+const guideEntries = [makeEntry({
+  id: 'guide-ai-search-visibility',
+  title: aiSearchGuide.title,
+  url: aiSearchGuide.path,
+  kind: 'article',
+  keywords: ['ai search', 'chatgpt', 'google ai overviews', 'ai mode', 'perplexity', 'claude', 'robots.txt', 'llms.txt', 'ai answers', 'guide'],
+  body: `${aiSearchGuide.excerpt} ${clip(plainText(aiSearchGuide.content), 900)}`,
+  plain: aiSearchGuide.excerpt,
+  linkLabel: 'Read the guide',
+})]
+
 const legalEntries = legalPages.map((page) => makeEntry({
   id: `legal-${page.slug}`,
   title: page.title,
@@ -373,6 +385,7 @@ export const knowledgeEntries = [
   ...faqEntries,
   ...locationEntries,
   ...postEntries,
+  ...guideEntries,
   ...legalEntries,
 ]
 

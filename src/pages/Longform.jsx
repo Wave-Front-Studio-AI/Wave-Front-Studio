@@ -19,7 +19,7 @@ const formatDate = (iso) =>
 
 // The article body arrives as pre-cleaned HTML from the content pipeline, so it
 // is inserted directly and styled by the .longform rules.
-function Prose({ html }) {
+export function Prose({ html }) {
   return <div className="longform" dangerouslySetInnerHTML={{ __html: html }} />
 }
 

@@ -18,7 +18,7 @@ export const organization = {
   '@id': ORGANIZATION_ID,
   name: 'Wavefront Studio LLC',
   alternateName: 'Wavefront Studio',
-  description: 'Wavefront Studio LLC is a full-service digital agency based in Sarasota, Florida and serving clients worldwide.',
+  description: 'Wavefront Studio LLC is a four-person web, SEO and AI studio at 4363 Independence Ct, Sarasota, Florida, serving clients worldwide.',
   url: absoluteUrl('/'),
   logo: { '@type': 'ImageObject', url: absoluteUrl('/wave-logo.webp') },
   image: absoluteUrl('/og-card.png'),
@@ -174,9 +174,9 @@ export const LOCAL_PLACES = new Set([
 ])
 
 export const homeSeo = {
-  title: 'Web Design & SEO Agency in Sarasota, FL | Wavefront Studio',
+  title: 'Web Design & SEO Agency in Sarasota, FL | Wavefront Studio LLC',
   description:
-    'Sarasota web design and SEO agency building fast websites, local SEO, AI chatbots and quote tools that bring in work. Get a free website audit today.',
+    'Wavefront Studio LLC is a four-person web design, SEO and AI studio in Sarasota, Florida. Websites, local SEO, AI chatbots and quote tools. Free website audit.',
 }
 
 export const blogSeo = {
@@ -200,6 +200,13 @@ export const postSeoTitles = {
   'why-ai-follow-up-beats-working-harder': 'The Enquiries You Lose at 9pm, and Why Speed Beats Effort',
   'seo-keeps-working-after-you-stop-paying': 'SEO: The Only Channel That Works After You Stop Paying',
   'why-cheap-design-costs-more': 'Cheap Design Costs More: What Your Brand Says Before You Do',
+}
+
+// The AI search pillar page (src/data/aiSearchGuide.js has the copy).
+export const aiSearchGuideSeo = {
+  title: 'AI Search for Local Businesses: What to Fix First',
+  description:
+    'What Google, OpenAI, Anthropic and Perplexity say about how AI finds local businesses, what nobody outside them knows, and four steps to take first.',
 }
 
 export const locationsHubTitle = 'Web Design & SEO Service Areas | Wavefront Studio'

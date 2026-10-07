@@ -19,7 +19,7 @@ import { resolve, basename } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { validate } from './validate-post.mjs'
 import { posts } from '../src/data/generated/posts.js'
-import { routes } from '../src/routes.js'
+import { routes, staticPages } from '../src/routes.js'
 
 const root = resolve(import.meta.dirname, '..')
 const POSTS_FILE = resolve(root, 'src/data/generated/posts.js')
@@ -51,7 +51,7 @@ for (const f of list) {
 
 /* ---------------------------------------------------------------- validate */
 const publishedSlugs = new Set(posts.map((p) => p.slug))
-const routePaths = new Set(routes.map((r) => r.path))
+const routePaths = new Set([...routes.map((r) => r.path), ...staticPages])
 
 // A post goes out on its date, not before: a future date on a live page reads
 // as wrong to readers and to Google. Drafts dated later are held, not refused,

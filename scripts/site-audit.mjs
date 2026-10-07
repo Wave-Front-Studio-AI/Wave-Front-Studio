@@ -153,7 +153,7 @@ for (const post of posts) {
 const llms = await readFile(resolve(dist, 'llms.txt'), 'utf8')
 if (/https?:\/\/wavefrontstudiollc\.com/.test(llms)) failures.push('llms.txt: links to the bare domain, which only redirects')
 for (const { path, kind } of routes) {
-  if (['service', 'custom-work', 'location', 'state', 'post'].includes(kind) && !llms.includes(`(${siteOrigin}${path})`)) {
+  if (['service', 'custom-work', 'location', 'state', 'post', 'guide'].includes(kind) && !llms.includes(`(${siteOrigin}${path})`)) {
     failures.push(`llms.txt: missing ${path}`)
   }
 }

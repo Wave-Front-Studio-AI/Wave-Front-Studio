@@ -34,6 +34,9 @@ export function AboutPage() {
             <h2>What we have built</h2>
             <div className="prose">
               <p>
+                Wavefront Studio LLC is a four-person web, SEO and AI studio at 4363 Independence Ct, Sarasota, Florida.
+              </p>
+              <p>
                 For ResinRock, a resin-bound surfacing company in the same group as Wavefront, we built more than 12 connected websites, the material calculators on
                 them, and the system that sends each enquiry to the nearest available installer. We also took their main site onto the
                 first page of Google for its core industry searches.

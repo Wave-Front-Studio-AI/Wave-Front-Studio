@@ -289,8 +289,8 @@ function Hero() {
             <span className="hero-sub">Web design, SEO and AI tools for Sarasota businesses</span>
           </h1>
           <p>
-            Wavefront Studio is four people in Sarasota, Florida. We build websites, local SEO, AI chatbots and quote calculators for
-            businesses across Sarasota, Manatee and Tampa Bay, and judge every site by the enquiries it brings in.
+            Wavefront Studio LLC is a four-person web, SEO and AI studio at 4363 Independence Ct, Sarasota, Florida. We build websites, local SEO,
+            AI chatbots and quote calculators for businesses across Sarasota, Manatee and Tampa Bay, and judge every site by the enquiries it brings in.
           </p>
           <div className="hero-actions">
             <ActionButton href="/contact/" tone="light" shine>

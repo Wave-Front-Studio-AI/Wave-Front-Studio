@@ -43,6 +43,7 @@ const postSlugs = [
   'seo-company-that-guarantees-page-one',
   'what-a-monthly-marketing-report-should-show',
   'a-chatbot-that-guesses-is-worse-than-none',
+  'check-whether-chatgpt-or-google-ai-names-your-business',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
@@ -53,6 +54,8 @@ export const staticPages = ['/free-website-audit/']
 
 export const routes = [
   { path: '/', kind: 'home' },
+  // The AI search pillar: a guide page, not a blog post (src/data/aiSearchGuide.js).
+  { path: '/ai-search-visibility/', kind: 'guide', slug: 'ai-search-visibility' },
   { path: '/about/', kind: 'about' },
   { path: '/portfolio/', kind: 'portfolio' },
   { path: '/contact/', kind: 'contact' },

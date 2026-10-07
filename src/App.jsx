@@ -18,6 +18,7 @@ const CustomWorksHubPage = lazy(() => import('./pages/HubPages.jsx').then((modul
 const ServiceRoute = lazy(() => import('./pages/ServiceRoute.jsx'))
 const CustomWorkRoute = lazy(() => import('./pages/CustomWorkRoute.jsx'))
 const LongformRoute = lazy(() => import('./pages/LongformRoute.jsx'))
+const GuidePage = lazy(() => import('./pages/GuidePage.jsx'))
 const PlatformPage = lazy(() => import('./pages/PlatformPage.jsx'))
 const DoNotSell = lazy(() => import('./pages/DoNotSell.jsx'))
 const DataDeletion = lazy(() => import('./pages/DataDeletion.jsx'))
@@ -106,6 +107,8 @@ function renderRoute(route) {
       return <LongformRoute kind={route.kind} slug={route.slug} />
     case 'legal':
       return <LongformRoute kind={route.kind} slug={route.slug} />
+    case 'guide':
+      return <GuidePage />
     case 'post':
       return <LongformRoute kind={route.kind} slug={route.slug} />
     default:

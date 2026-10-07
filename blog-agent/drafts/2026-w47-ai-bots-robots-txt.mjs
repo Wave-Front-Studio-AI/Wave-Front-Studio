@@ -2,7 +2,7 @@
 export default {
   slug: 'which-ai-bots-to-allow-in-robots-txt',
   title: 'Which AI Bots to Allow in robots.txt, and Which to Block',
-  date: '2026-10-15',
+  date: '2026-10-14',
   excerpt: 'AI companies run separate crawlers for training and for search. Blocking the training ones does not remove you from AI search. Here is how to tell them apart.',
   image: '/images/blog/which-ai-bots-to-allow-in-robots-txt.webp',
   content: [

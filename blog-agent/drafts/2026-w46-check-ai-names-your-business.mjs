@@ -2,7 +2,7 @@
 export default {
   slug: 'check-whether-chatgpt-or-google-ai-names-your-business',
   title: 'How to Check Whether ChatGPT or Google AI Names Your Business',
-  date: '2026-10-08',
+  date: '2026-10-07',
   excerpt: 'A repeatable test you can run in an afternoon: the same questions, several runs on each engine, and a simple record of who is cited, mentioned or recommended.',
   image: '/images/blog/check-whether-chatgpt-or-google-ai-names-your-business.webp',
   content: [
@@ -51,7 +51,7 @@ export default {
     '</ol>',
     '<h2>What not to expect</h2>',
     '<p>Do not expect a fix to appear in the next run. These tools update on their own schedules, and changes to your site may take weeks to be noticed, if at all. Nobody can promise you a place in an AI answer.</p>',
-    '<p>What you can do is make your business easy to understand and easy to verify: clear pages, consistent details, honest reviews. That helps in ordinary search too, which is why it is worth doing whatever the AI tools turn out to do. It is the same groundwork as any good <a href="/seo-service/">SEO work</a>.</p>',
+    '<p>What you can do is make your business easy to understand and easy to verify: clear pages, consistent details, honest reviews. That helps in ordinary search too, which is why it is worth doing whatever the AI tools turn out to do. It is the same groundwork as any good <a href="/seo-service/">SEO work</a>. For the wider picture, read our <a href="/ai-search-visibility/">guide to AI search for local businesses</a>.</p>',
     '<div class="lf-cta"><h2>Want help reading your results?</h2>',
     '<p>Send us your sheet and we will tell you what we would fix first on your site, and what we would leave alone. We reply within two working days.</p>',
     '<p><a href="/seo-service/">See how our SEO work runs</a>, or start with the <a href="/free-website-audit/">free website audit</a>.</p>',

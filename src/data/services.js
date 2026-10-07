@@ -98,6 +98,7 @@ export const services = [
         'More people now ask ChatGPT, Gemini, Perplexity and Google’s AI answers who to call, not only search for it. These tools draw on much of the same material as search: your website, your Google Business Profile and what other sites say about you. We can’t control what an AI assistant says or promise that it will name you, so the work is making sure you are easy to find, read and describe accurately.',
         'We check that search and AI-search crawlers can reach your site and aren’t blocked by robots.txt or your host, give each service and location its own clear page, add schema markup so the facts about your business are machine-readable, and tidy your Google Business Profile and third-party listings so they all say the same thing. To see whether it is changing anything, we ask a fixed set of prompts about your services and area each month and record which businesses are named. It is a measurement, not a guarantee.',
       ],
+      link: ['Read our guide to AI search for local businesses', '/ai-search-visibility/'],
       features: [
         'Crawler access check for search and AI-search bots',
         'Clear service and location pages',

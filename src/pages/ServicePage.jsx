@@ -275,6 +275,13 @@ export default function ServicePage({ service }) {
                 {service.extra.paragraphs.map((paragraph) => (
                   <p key={paragraph.slice(0, 40)}>{paragraph}</p>
                 ))}
+                {service.extra.link ? (
+                  <p>
+                    <a className="text-link" href={service.extra.link[1]}>
+                      {service.extra.link[0]} <ArrowIcon />
+                    </a>
+                  </p>
+                ) : null}
               </div>
               <ul className="tick-list">
                 {service.extra.features.map((item) => (
