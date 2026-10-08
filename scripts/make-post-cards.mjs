@@ -55,6 +55,23 @@ const rect = (x, y, w, h, { r = 10, color = cyan, opacity = 1, fill = true, sw =
     : `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="none" stroke="${color}" stroke-opacity="${opacity}" stroke-width="${sw}"/>`
 
 const MOTIFS = {
+  // One page splitting into separate pages, one per service.
+  'one-page-per-service': () => [
+    rect(C - 150, C - 130, 140, 260, { r: 14, opacity: 0.25, color: brand, fill: false, sw: 8 }),
+    stroke(`M ${C - 20} ${C} H ${C + 40}`, { w: 10 }),
+    rect(C + 50, C - 150, 120, 80, { r: 12, fill: false, sw: 10 }),
+    rect(C + 50, C - 40, 120, 80, { r: 12, fill: false, sw: 10 }),
+    rect(C + 50, C + 70, 120, 80, { r: 12, fill: false, sw: 10 }),
+  ],
+
+  // A chart with a magnifier over its rising line.
+  'search-console-in-fifteen-minutes': () => [
+    stroke(`M ${C - 160} ${C + 120} V ${C - 120} M ${C - 160} ${C + 120} H ${C + 150}`, { w: 10, opacity: 0.3, color: brand }),
+    stroke(`M ${C - 130} ${C + 70} l 70 -50 l 60 30 l 90 -110`, { w: 14 }),
+    circle(C + 60, C + 20, 55, { fill: false, w: 12, color: brand, opacity: 1 }),
+    stroke(`M ${C + 100} ${C + 60} l 50 50`, { w: 14, color: brand, opacity: 1 }),
+  ],
+
   // A map pin over concentric rings: the local search radius.
   'google-business-profile-does-more-than-your-website': () => [
     circle(C, C + 40, 150, { fill: false, opacity: 0.18, w: 6, color: brand }),
