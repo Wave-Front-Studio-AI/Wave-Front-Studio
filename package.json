@@ -18,6 +18,7 @@
     "blog:check": "node blog-agent/validate-post.mjs",
     "blog:audit": "node blog-agent/validate-post.mjs --live",
     "blog:publish": "node blog-agent/publish-post.mjs",
+    "blog:admin": "node blog-agent/admin/server.mjs",
     "cards": "node scripts/make-post-cards.mjs"
   },
   "dependencies": {

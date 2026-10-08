@@ -258,6 +258,16 @@ const MOTIFS = {
   ],
 }
 
+// Extra motifs for drafts live in blog-agent/drafts/_motifs/*.mjs, each exporting
+// a function that takes the drawing helpers and returns { slug: () => [shapes] }.
+// Keeps batches of new posts from all editing this file at once.
+const motifsDir = resolve(import.meta.dirname, '../blog-agent/drafts/_motifs')
+for (const file of await readdir(motifsDir).catch(() => [])) {
+  if (!file.endsWith('.mjs')) continue
+  const factory = (await import(pathToFileURL(resolve(motifsDir, file)).href)).default
+  Object.assign(MOTIFS, factory({ stroke, circle, rect, C, ink, ink2, brand, cyan }))
+}
+
 // Shared scaffolding: a flat ink ground and the off-canvas rotated square. No
 // gradient and no glow, per DESIGN.md.
 const card = (motif) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH * RENDER_SCALE}" height="${HEIGHT * RENDER_SCALE}" viewBox="0 0 ${WIDTH} ${HEIGHT}">

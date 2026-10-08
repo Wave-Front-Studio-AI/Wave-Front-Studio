@@ -1,0 +1,71 @@
+// Draft. Not yet published. Scheduled for 2026-11-11.
+// Sources fetched 2026-10-08:
+//  - W3C WCAG 2.2: https://www.w3.org/TR/WCAG22/
+//    (1.1.1 Non-text Content A; 1.4.3 Contrast Minimum AA, 4.5:1 and 3:1 for large text = 18pt or 14pt bold;
+//     1.4.11 Non-text Contrast AA 3:1; 2.4.4 Link Purpose In Context A; 2.4.7 Focus Visible AA;
+//     2.4.11 Focus Not Obscured Minimum AA; 3.3.2 Labels or Instructions A)
+//  - W3C WAI, Images tutorial decision tree: https://www.w3.org/WAI/tutorials/images/decision-tree/
+//  - MDN, the label element: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/label
+//  - MDN, the a element (link text): https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a
+// Legal-adjacent: the post describes what the standard says, states it is not legal advice, and makes no claim about any law.
+export default {
+  slug: 'five-accessibility-fixes',
+  title: 'Five Accessibility Fixes Most Small Business Websites Still Need',
+  date: '2026-11-11',
+  excerpt: 'Alt text, colour contrast, form labels, keyboard focus and link wording: five checks you can run yourself, with the WCAG 2.2 criteria behind each.',
+  image: '/images/blog/five-accessibility-fixes.webp',
+  content: [
+    `<div class="lf-article">`,
+    `<p class="lf-standfirst"><strong>Most accessibility problems on small business sites are not exotic. They are five ordinary habits, each of which makes the site harder to use for someone, and each of which you can check this afternoon.</strong></p>`,
+    `<p>Picture a customer who cannot use a mouse because of a hand injury. She lands on your site, presses the Tab key to move through it, and cannot tell where she is: the focus has vanished. She reaches the contact form, and the fields have no visible names. She gives up. You never learn she was there.</p>`,
+    `<p>The standard that describes these problems is the Web Content Accessibility Guidelines, version 2.2, published by the W3C. It sorts its requirements into levels A, AA and AAA. The five fixes below are all at A or AA.</p>`,
+    `<blockquote class="lf-callout"><p><strong>This is not legal advice</strong></p>`,
+    `<p>We are describing what the W3C standard says, not what the law requires of your business. Whether any legal duty applies depends on where you operate and what you do, so ask a qualified adviser if that is your question. The standard itself is at w3.org/TR/WCAG22.</p></blockquote>`,
+    `<h2>The five fixes at a glance</h2>`,
+    `<figure><table><thead><tr><th>Fix</th><th>WCAG 2.2 criterion</th><th>Level</th></tr></thead>`,
+    `<tbody>`,
+    `<tr><td><strong>Alt text on images</strong></td><td>1.1.1 Non-text Content</td><td>A</td></tr>`,
+    `<tr><td><strong>Readable colour contrast</strong></td><td>1.4.3 Contrast (Minimum)</td><td>AA</td></tr>`,
+    `<tr><td><strong>Labels on form fields</strong></td><td>3.3.2 Labels or Instructions</td><td>A</td></tr>`,
+    `<tr><td><strong>Visible keyboard focus</strong></td><td>2.4.7 Focus Visible</td><td>AA</td></tr>`,
+    `<tr><td><strong>Links that make sense alone</strong></td><td>2.4.4 Link Purpose (In Context)</td><td>A</td></tr>`,
+    `</tbody></table></figure>`,
+    `<h2>1. Give images the right alt text</h2>`,
+    `<p>WCAG 1.1.1 asks that non-text content has a text alternative serving the equivalent purpose. The W3C's image guidance sorts the cases simply. An informative photograph gets a short description. A purely decorative image gets an empty <code>alt=""</code>, so a screen reader skips it. An image that is a link or button, such as your logo linking home, gets text describing what it does.</p>`,
+    `<p><strong>Check:</strong> view your key pages and ask of each image what it says that the nearby text does not. <strong>Avoid:</strong> file names like "IMG_2041", and stuffing the alt text with search phrases.</p>`,
+    `<h2>2. Make the text readable against its background</h2>`,
+    `<p>WCAG 1.4.3 sets a contrast ratio of at least 4.5 to 1 for normal text, and 3 to 1 for large text, which it defines as 18 point or 14 point bold. Criterion 1.4.11 asks for 3 to 1 on user interface parts such as input borders and buttons.</p>`,
+    `<p>Light grey text on white and white text over a busy photograph are the usual culprits. <strong>Check:</strong> run your main text and button colours through any colour contrast checker.</p>`,
+    `<h2>3. Label every form field</h2>`,
+    `<p>WCAG 3.3.2 says labels or instructions are provided when content requires user input. In HTML, a <code>label</code> element tied to its input with matching <code>for</code> and <code>id</code> values lets a screen reader announce the field's name. MDN adds that tapping the label also focuses the input, which enlarges the target.</p>`,
+    `<p>A placeholder alone is a weak label, because it disappears once someone types. <strong>Check:</strong> click the field name. If the cursor does not land in the box, the label is not connected.</p>`,
+    `<h2>4. Show where the keyboard is</h2>`,
+    `<p>Put the mouse aside and press Tab repeatedly. WCAG 2.4.7 requires that keyboard focus be visible, so you should always see which link or button is selected. Version 2.2 adds 2.4.11, which says the focused item must not be entirely hidden behind author-created content. A sticky header or cookie banner covering it is the classic case.</p>`,
+    `<p>Many designs remove the focus outline because it looks untidy. <strong>Check:</strong> tab through your menu, the contact form and the submit button, and make sure you can follow your own path.</p>`,
+    `<h2>5. Write links that explain themselves</h2>`,
+    `<p>WCAG 2.4.4 asks that a link's purpose can be determined from its text, or from the text with its surrounding context. MDN gives the plain example: a list of links all reading "here" or "read more" is meaningless when a screen reader lists them out of context, and the better wording is also shorter.</p>`,
+    `<p><strong>Check:</strong> read only the link text on a page. Could you tell where each goes? Replace "Click here" with "Download the price guide" or "See our roofing services".</p>`,
+    `<h2>What to do this week</h2>`,
+    `<ol>`,
+    `<li>Run the Tab test on your homepage and contact page.</li>`,
+    `<li>Check the contrast of your main text, buttons and form borders.</li>`,
+    `<li>List every image without a sensible alt attribute, starting with the logo and any button images.</li>`,
+    `<li>Click each form field name to confirm it is connected.</li>`,
+    `<li>Rewrite any link that says "here" or "more".</li>`,
+    `</ol>`,
+    `<h2>What not to expect</h2>`,
+    `<p>These five do not make a site accessible or compliant. WCAG 2.2 contains many more criteria, and some, such as how a screen reader copes with a complex menu, need testing with assistive technology. Treat this list as a sensible first pass, not a certificate.</p>`,
+    `<p>It will not stop a complaint or protect you from a claim, either, and we are not in a position to say it would. What it does is remove several common barriers, and most of them also help people on small screens and in bright sunlight.</p>`,
+    `<div class="lf-cta"><h2>Want these checked across your whole site?</h2>`,
+    `<p>We can look at the pages that matter most and list what needs fixing, in plain language.</p>`,
+    `<p><a href="/free-website-audit/">Request the free website audit</a>, or see how we build sites in <a href="/web-development/">web design and development</a>.</p>`,
+    `<p>We&#8217;re currently waiving setup fees for five businesses this quarter on AI chatbots, web development and SEO. `,
+    `<a href="/free-setup/">See what&#8217;s included</a>, or call <a href="tel:+19414152595">+1 (941) 415-2595</a>.</p></div>`,
+    `<aside class="lf-related"><h2>Related reading</h2><ul>`,
+    `<li><a href="/your-contact-form-is-losing-enquiries/">Your Contact Form Is Probably Losing Enquiries You Never Hear About</a></li>`,
+    `<li><a href="/website-making-or-costing-you-money/">Your Website Is Either Making You Money or Costing You Money</a></li>`,
+    `<li><a href="/redesign-starts-with-your-enquiries/">A Website Redesign Should Start With Your Last 20 Enquiries, Not Your Logo</a></li>`,
+    `</ul></aside>`,
+    `</div>`,
+  ].join(''),
+}

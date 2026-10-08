@@ -1,0 +1,331 @@
+{
+ "A": [
+  {
+   "date": "2026-10-12",
+   "cluster": "W",
+   "slug": "homepage-first-screen",
+   "topic": "What a local business homepage needs in its first screen",
+   "angle": "Visitor decides fast; what to show: service, place, proof, one action. No stats."
+  },
+  {
+   "date": "2026-10-23",
+   "cluster": "W",
+   "slug": "about-page-is-not-about-you",
+   "topic": "The About page: written around the customer’s worry",
+   "angle": "Why people read About pages before hiring; what to include: who, where, how you work, real people. No invented history."
+  },
+  {
+   "date": "2026-11-02",
+   "cluster": "W",
+   "slug": "test-your-site-on-a-phone",
+   "topic": "Test your website on a phone in ten minutes",
+   "angle": "Practical checklist: tap targets, text size, forms, click-to-call, speed on mobile data. Cite Google/Apple/WCAG primary docs only where stated."
+  },
+  {
+   "date": "2026-11-11",
+   "cluster": "W",
+   "slug": "five-accessibility-fixes",
+   "topic": "Five accessibility fixes most small business sites need",
+   "angle": "Alt text, colour contrast, form labels, keyboard focus, link text. Cite WCAG 2.2 text (w3.org) for criteria; not legal advice."
+  },
+  {
+   "date": "2026-11-18",
+   "cluster": "W",
+   "slug": "heavy-images-slow-your-site",
+   "topic": "Large images are the usual reason a site is slow",
+   "angle": "Image dimensions, formats (WebP/AVIF), lazy loading. Cite web.dev/MDN."
+  },
+  {
+   "date": "2026-11-25",
+   "cluster": "W",
+   "slug": "wordpress-builder-or-custom",
+   "topic": "WordPress, a site builder or custom code: how to choose",
+   "angle": "Honest trade-offs by need; ownership, cost of change, maintenance. No pricing claims, no stats."
+  }
+ ],
+ "B": [
+  {
+   "date": "2026-12-03",
+   "cluster": "W",
+   "slug": "how-long-a-website-takes",
+   "topic": "How long a new website actually takes, and what slows it down",
+   "angle": "Use only owner-approved package timings: Launch 1-2 weeks, Grow 3-5, Scale 6-8; custom tools timed separately. The slowdown is usually content and approvals."
+  },
+  {
+   "date": "2026-12-09",
+   "cluster": "W",
+   "slug": "business-email-on-your-own-domain",
+   "topic": "Why your business email should use your own domain",
+   "angle": "name@yourbusiness.com vs free addresses; trust, ownership, SPF/DKIM/DMARC in plain terms. Cite Google/Microsoft sender docs."
+  },
+  {
+   "date": "2026-12-16",
+   "cluster": "W",
+   "slug": "not-secure-warning",
+   "topic": "What the “Not secure” warning means and how to fix it",
+   "angle": "HTTPS, certificates, mixed content. Cite web.dev / Chrome docs."
+  },
+  {
+   "date": "2026-12-23",
+   "cluster": "W",
+   "slug": "website-maintenance-basics",
+   "topic": "What happens to a website nobody maintains",
+   "angle": "Updates, backups, expired domains/certs, broken forms; a monthly 20-minute check. No stats."
+  },
+  {
+   "date": "2027-01-04",
+   "cluster": "W",
+   "slug": "broken-links-and-404-pages",
+   "topic": "Broken links and 404 pages: find them and fix them",
+   "angle": "How to find (Search Console, a crawler), 301 redirects, a useful 404 page. Cite Google Search Central."
+  }
+ ],
+ "C": [
+  {
+   "date": "2026-10-19",
+   "cluster": "L",
+   "slug": "how-to-ask-for-google-reviews",
+   "topic": "How to ask for Google reviews without breaking Google’s rules",
+   "angle": "Cite Google’s review policy (no incentives, no gating). Share link, timing, script wording."
+  },
+  {
+   "date": "2026-10-30",
+   "cluster": "L",
+   "slug": "reply-to-a-bad-review",
+   "topic": "How to reply to a bad Google review",
+   "angle": "Structure of a reply, what not to do, when to flag. Cite Google Business Profile help."
+  },
+  {
+   "date": "2026-11-13",
+   "cluster": "L",
+   "slug": "service-area-business-profile",
+   "topic": "Service-area businesses on Google: hiding your address and choosing areas",
+   "angle": "Cite Google Business Profile guidelines on service-area businesses."
+  },
+  {
+   "date": "2026-11-23",
+   "cluster": "L",
+   "slug": "profile-photos-that-help",
+   "topic": "Photos on your Google Business Profile: what to add and what to skip",
+   "angle": "Cite Google’s photo guidelines. Real work photos, no stock."
+  },
+  {
+   "date": "2026-12-07",
+   "cluster": "L",
+   "slug": "name-address-phone-consistency",
+   "topic": "Name, address and phone: why consistency matters and how to audit it",
+   "angle": "Citations, directories, how to audit with a spreadsheet. Avoid unsourced ranking claims."
+  },
+  {
+   "date": "2026-12-18",
+   "cluster": "L",
+   "slug": "free-keyword-research-for-local-business",
+   "topic": "Find what customers search for without paying for a tool",
+   "angle": "Google autocomplete, Search Console queries, People also ask, customer questions. Cite Google docs."
+  },
+  {
+   "date": "2026-12-30",
+   "cluster": "L",
+   "slug": "how-many-town-pages-is-too-many",
+   "topic": "How many town pages is too many?",
+   "angle": "Doorway pages vs useful location pages; cite Google’s spam policies (doorway abuse, scaled content). Rule of thumb: only where you genuinely work and have something specific to say."
+  }
+ ],
+ "D": [
+  {
+   "date": "2026-10-22",
+   "cluster": "S",
+   "slug": "title-tags-and-meta-descriptions",
+   "topic": "Title tags and meta descriptions: write them for the person searching",
+   "angle": "Cite Google Search Central title link and snippet docs. Examples are generic, not client data."
+  },
+  {
+   "date": "2026-11-06",
+   "cluster": "S",
+   "slug": "internal-links-for-small-sites",
+   "topic": "Internal links: the cheapest SEO fix on most small sites",
+   "angle": "Descriptive anchors, linking service pages, orphan pages. Cite Google link best practices."
+  },
+  {
+   "date": "2026-11-16",
+   "cluster": "S",
+   "slug": "schema-markup-what-it-does",
+   "topic": "Schema markup: what it does and what it does not do",
+   "angle": "LocalBusiness/Organization; not a ranking switch; FAQ rich results retired (verify date on Google docs). Cite Google structured data docs."
+  },
+  {
+   "date": "2026-12-02",
+   "cluster": "S",
+   "slug": "is-a-business-blog-worth-it",
+   "topic": "Is a business blog worth it?",
+   "angle": "Honest: when yes, when no, what makes a post useful. Cite Google helpful content guidance. This blog is evidence only in a hedged sense; no stats."
+  },
+  {
+   "date": "2026-12-14",
+   "cluster": "S",
+   "slug": "redesign-without-losing-rankings",
+   "topic": "Redesign a website without losing your search rankings",
+   "angle": "URL mapping, 301 redirects, keeping content, checking Search Console. Cite Google site move docs."
+  },
+  {
+   "date": "2026-12-28",
+   "cluster": "S",
+   "slug": "why-a-page-is-not-on-google",
+   "topic": "Why a new page is not showing on Google, and what to check",
+   "angle": "Indexing, noindex, robots.txt, sitemaps, quality, time. Cite Search Console Page indexing docs; do not promise timing."
+  }
+ ],
+ "E": [
+  {
+   "date": "2026-10-16",
+   "cluster": "A",
+   "slug": "answer-leads-within-minutes",
+   "topic": "Answering a lead in minutes: what to automate and what to keep human",
+   "angle": "Speed matters; do NOT cite a stat unless fetched from a primary study with date; otherwise reason from first principles."
+  },
+  {
+   "date": "2026-10-29",
+   "cluster": "A",
+   "slug": "what-a-chatbot-should-never-say",
+   "topic": "What your chatbot should never say",
+   "angle": "Prices not authorised, legal/medical promises, made-up availability; escalation to a human. Reasoning-based."
+  },
+  {
+   "date": "2026-11-09",
+   "cluster": "A",
+   "slug": "contact-form-fields",
+   "topic": "How many fields should a contact form have?",
+   "angle": "Ask only what you need to respond; phone vs email; spam protection; autocomplete tokens (WCAG 1.3.5)."
+  },
+  {
+   "date": "2026-11-20",
+   "cluster": "A",
+   "slug": "missed-call-text-back",
+   "topic": "Missed-call text-back: how it works and the consent rules",
+   "angle": "Explain; SMS consent (TCPA basics, cite FCC/CTIA primary docs), not legal advice; STOP handling."
+  },
+  {
+   "date": "2026-11-30",
+   "cluster": "A",
+   "slug": "quote-request-questions",
+   "topic": "The questions a quote request form should ask",
+   "angle": "Per trade-type examples (generic): photos, address, timeline, budget range optional."
+  },
+  {
+   "date": "2026-12-11",
+   "cluster": "A",
+   "slug": "a-spreadsheet-is-a-fine-crm",
+   "topic": "A spreadsheet is a fine CRM until it isn’t",
+   "angle": "Columns to track, when to move to a CRM, follow-up dates. No stats."
+  },
+  {
+   "date": "2026-12-21",
+   "cluster": "A",
+   "slug": "click-to-call-buttons",
+   "topic": "Click-to-call: put your phone number where thumbs can reach it",
+   "angle": "tel: links, sticky bar, hours, tracking calls. Cite MDN for tel links."
+  },
+  {
+   "date": "2026-12-31",
+   "cluster": "A",
+   "slug": "booking-link-or-contact-form",
+   "topic": "Booking link or contact form: which fits your business?",
+   "angle": "Trade-offs: scheduling tools, qualifying, no-shows. No vendor pricing."
+  }
+ ],
+ "F": [
+  {
+   "date": "2026-10-15",
+   "cluster": "M",
+   "slug": "brand-is-more-than-a-logo",
+   "topic": "A brand is more than a logo: what to settle first",
+   "angle": "Name, promise, voice, look; order of work. No stats."
+  },
+  {
+   "date": "2026-10-26",
+   "cluster": "M",
+   "slug": "colours-and-fonts-guide",
+   "topic": "Pick two colours and two fonts and stick to them",
+   "angle": "Practical brand basics, contrast, a one-page style sheet."
+  },
+  {
+   "date": "2026-11-05",
+   "cluster": "M",
+   "slug": "pick-one-social-platform",
+   "topic": "Pick one social platform and do it properly",
+   "angle": "How to choose by customer, not trend; weekly routine. No stats."
+  },
+  {
+   "date": "2026-11-12",
+   "cluster": "M",
+   "slug": "start-an-email-list",
+   "topic": "Start an email list before you think you need one",
+   "angle": "Consent, a simple monthly email, what to send; cite CAN-SPAM (FTC) primary basics, not legal advice."
+  },
+  {
+   "date": "2026-11-19",
+   "cluster": "M",
+   "slug": "google-ads-or-seo",
+   "topic": "Google Ads or SEO: how to choose",
+   "angle": "Speed vs durability, budget logic, when to do both. No stats, no price claims."
+  },
+  {
+   "date": "2026-11-27",
+   "cluster": "M",
+   "slug": "red-flags-in-an-agency-contract",
+   "topic": "Red flags in a marketing agency contract",
+   "angle": "Ownership, lock-in, minimum terms, reporting, access to accounts; ties to who-owns-your-website. Not legal advice."
+  }
+ ],
+ "G": [
+  {
+   "date": "2026-12-04",
+   "cluster": "M",
+   "slug": "landing-page-one-goal",
+   "topic": "A landing page should have one goal",
+   "angle": "Ad-to-page match, one action, remove nav; no conversion stats."
+  },
+  {
+   "date": "2026-12-10",
+   "cluster": "M",
+   "slug": "three-numbers-in-analytics",
+   "topic": "Three numbers worth checking in Google Analytics",
+   "angle": "GA4 basics: key events, source/medium, landing pages; cite Google Analytics Help for definitions."
+  },
+  {
+   "date": "2026-12-17",
+   "cluster": "M",
+   "slug": "year-end-website-checklist",
+   "topic": "A year-end website checklist",
+   "angle": "Copyright year, hours, holiday notices, review sweep, backups, domain renewal dates. Publishes late Dec."
+  },
+  {
+   "date": "2026-12-24",
+   "cluster": "M",
+   "slug": "a-marketing-budget-without-a-percentage",
+   "topic": "Setting a marketing budget without borrowing a percentage",
+   "angle": "Work backwards from customer value and capacity; do not cite % rules."
+  },
+  {
+   "date": "2027-01-06",
+   "cluster": "M",
+   "slug": "questions-to-ask-a-web-agency",
+   "topic": "Questions to ask before you hire a web agency",
+   "angle": "Ownership, timeline, who does the work, support, exit; honest about Wavefront being an agency (25 people, Sarasota)."
+  },
+  {
+   "date": "2027-01-07",
+   "cluster": "M",
+   "slug": "utm-links-for-small-business",
+   "topic": "UTM links: how to know which campaign brought the call",
+   "angle": "Cite Google Analytics campaign URL builder docs. Naming convention."
+  },
+  {
+   "date": "2027-01-08",
+   "cluster": "M",
+   "slug": "plan-your-marketing-year-in-january",
+   "topic": "Plan your marketing year in one hour in January",
+   "angle": "Simple planning template; last-year enquiries; one goal per quarter. Publishes early Jan."
+  }
+ ]
+}

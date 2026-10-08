@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Blog admin</title>
+<style>
+:root {
+  --ink: #0d1b2a; --text: #2c3e4e; --muted: #56697a; --brand: #3578c1; --brand-deep: #2f6aa8;
+  --cyan: #2bb3c8; --cyan-deep: #0b7286; --paper: #f5f9fb; --white: #fff; --mist: #e7f1f7;
+  --line: rgba(13,27,42,.12); --line-strong: rgba(13,27,42,.22);
+  --ok: #1b6b3a; --warn: #8a5a00; --bad: #a5271f;
+  --r-sm: 8px; --r-md: 12px;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 5rem; }
+body { margin: 0; background: var(--paper); color: var(--text); font: 1rem/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+h1, h2, h3 { color: var(--ink); letter-spacing: -.02em; margin: 0; font-weight: 600; line-height: 1.25; }
+h1 { font-size: 1.25rem; } h2 { font-size: 1.125rem; } h3 { font-size: 1rem; }
+button, input, select { font: inherit; }
+:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+
+.bar { position: sticky; top: 0; z-index: 2; background: var(--ink); color: #fff; padding: .75rem 1rem; display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: center; }
+.bar h1 { color: #fff; }
+.bar .git { font-size: .875rem; color: rgba(255,255,255,.88); margin-left: auto; }
+.bar .git strong { color: #fff; }
+
+main { display: grid; grid-template-columns: minmax(18rem, 24rem) 1fr; gap: 1rem; padding: 1rem; max-width: 90rem; margin: 0 auto; }
+@media (max-width: 52rem) { main { grid-template-columns: 1fr; } }
+
+.panel { background: var(--white); border: 1px solid var(--line); border-radius: var(--r-md); }
+.list { list-style: none; margin: 0; padding: 0; }
+.list li + li { border-top: 1px solid var(--line); }
+.item { width: 100%; text-align: left; background: none; border: 0; padding: .75rem 1rem; min-height: 44px; cursor: pointer; display: grid; gap: .25rem; color: inherit; }
+.item:hover { background: var(--mist); }
+.item[aria-current="true"] { background: var(--mist); box-shadow: inset 4px 0 0 var(--brand); }
+.item .t { color: var(--ink); font-weight: 600; }
+.item .m { font-size: .875rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.chip { display: inline-block; font-size: .875rem; font-weight: 600; padding: 0 .625rem; border-radius: 999px; border: 1px solid currentColor; line-height: 1.5rem; width: fit-content; }
+.chip.published { color: var(--muted); } .chip.scheduled { color: var(--brand-deep); }
+.chip.ready { color: var(--ok); } .chip.failing { color: var(--bad); }
+
+.detail { padding: 1.25rem; display: grid; gap: 1.25rem; align-content: start; }
+.head { display: grid; grid-template-columns: 9rem 1fr; gap: 1rem; align-items: start; }
+.head img { width: 100%; border-radius: var(--r-sm); border: 1px solid var(--line); display: block; }
+@media (max-width: 36rem) { .head { grid-template-columns: 1fr; } }
+.facts { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; font-size: .875rem; color: var(--muted); font-variant-numeric: tabular-nums; margin-top: .5rem; }
+.excerpt { margin: .5rem 0 0; }
+
+.issues { margin: 0; padding-left: 1.25rem; }
+.issues.err li { color: var(--bad); } .issues.warn li { color: var(--warn); }
+
+details.preview summary { cursor: pointer; font-weight: 600; color: var(--ink); min-height: 44px; display: flex; align-items: center; }
+iframe { width: 100%; height: 32rem; border: 1px solid var(--line); border-radius: var(--r-sm); background: #fff; }
+
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.step { padding: 1rem 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: 2rem 1fr; gap: .25rem 1rem; }
+.step .n { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.step p { margin: .125rem 0 .75rem; color: var(--muted); font-size: .9375rem; }
+.row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+label.check { display: flex; gap: .5rem; align-items: flex-start; font-size: .9375rem; min-height: 44px; align-items: center; }
+input[type=checkbox] { width: 1.25rem; height: 1.25rem; accent-color: var(--brand-deep); }
+input[type=text] { width: min(100%, 36rem); min-height: 44px; padding: 0 .75rem; border: 1px solid var(--line-strong); border-radius: var(--r-sm); background: #fff; color: var(--ink); }
+
+.btn { min-height: 44px; padding: 0 1.25rem; border-radius: 999px; border: 1px solid var(--ink); background: var(--ink); color: #fff; font-weight: 600; cursor: pointer; }
+.btn:hover:not(:disabled) { background: var(--brand-deep); border-color: var(--brand-deep); }
+.btn.quiet { background: #fff; color: var(--ink); }
+.btn.quiet:hover:not(:disabled) { background: var(--mist); color: var(--ink); border-color: var(--ink); }
+.btn.danger { background: var(--bad); border-color: var(--bad); }
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+.why { font-size: .875rem; color: var(--muted); }
+
+.log { background: var(--ink); color: rgba(255,255,255,.92); border-radius: var(--r-sm); padding: .75rem 1rem; font: .8125rem/1.5 ui-monospace, Menlo, monospace; white-space: pre-wrap; max-height: 18rem; overflow: auto; margin: 0; }
+.log:empty { display: none; }
+.status { min-height: 1.5rem; font-weight: 600; color: var(--ink); }
+.status.bad { color: var(--bad); } .status.good { color: var(--ok); }
+.empty { padding: 2rem 1rem; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="bar">
+  <h1>Blog admin</h1>
+  <p class="git" id="git" aria-live="polite">Loading…</p>
+</header>
+
+<main>
+  <section class="panel" aria-labelledby="listh">
+    <h2 id="listh" style="padding:1rem 1rem .5rem">Posts</h2>
+    <ul class="list" id="list"></ul>
+  </section>
+  <section class="panel detail" id="detail" aria-live="polite"><p class="empty">Pick a post.</p></section>
+</main>
+
+<script>
+const token = location.hash.slice(1)
+const $ = (id) => document.getElementById(id)
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+const LABEL = { published: 'Published', scheduled: 'Scheduled', ready: 'Ready to publish', failing: 'Fails checks' }
+let state = null, selected = null, busy = false, lastLog = '', lastStatus = null
+
+async function api(name, body = {}) {
+  const res = await fetch('/api/' + name, { method: 'POST', headers: { 'content-type': 'application/json', 'x-admin-token': token }, body: JSON.stringify(body) })
+  const data = await res.json()
+  if (!res.ok) throw new Error(data.error || res.statusText)
+  return data
+}
+
+async function load() {
+  try {
+    state = await api('state')
+    if (state.error) throw new Error(state.error)
+  } catch (e) {
+    $('git').textContent = ''
+    $('detail').innerHTML = `<p class="status bad">${esc(e.message)}</p><p class="why">Open the link printed in the terminal, including the part after #.</p>`
+    return
+  }
+  const g = state.git
+  $('git').innerHTML = `Branch <strong>${esc(g.branch)}</strong> · ${g.changes.length} uncommitted file${g.changes.length === 1 ? '' : 's'} · ${g.ahead ?? '?'} commit${g.ahead === 1 ? '' : 's'} not pushed`
+  if (!selected || !state.drafts.some((d) => d.file === selected)) {
+    selected = (state.drafts.find((d) => d.status === 'ready') || state.drafts.find((d) => d.status === 'scheduled') || state.drafts[0])?.file
+  }
+  renderList(); renderDetail()
+}
+
+function renderList() {
+  $('list').innerHTML = state.drafts.map((d) => `
+    <li><button class="item" data-file="${esc(d.file)}" aria-current="${d.file === selected}">
+      <span class="t">${esc(d.title)}</span>
+      <span class="m">${esc(d.date)} · ${d.words} words</span>
+      <span class="chip ${d.status}">${LABEL[d.status]}</span>
+    </button></li>`).join('')
+  document.querySelectorAll('.item').forEach((b) => b.addEventListener('click', () => { selected = b.dataset.file; lastLog = ''; lastStatus = null; renderList(); renderDetail() }))
+}
+
+function previewDoc(d) {
+  return `<!doctype html><meta charset="utf-8"><style>
+  body{font:17px/1.65 Georgia,serif;color:#2c3e4e;max-width:42rem;margin:1.5rem auto;padding:0 1rem}
+  h2{font:600 1.4rem system-ui;color:#0d1b2a;margin:2rem 0 .5rem} h3{font:600 1.1rem system-ui;color:#0d1b2a}
+  .lf-standfirst{font-size:1.2rem} table{border-collapse:collapse;width:100%;font:15px system-ui} td,th{border:1px solid #d5dee5;padding:.5rem;text-align:left}
+  .lf-callout{border-left:4px solid #3578c1;background:#e7f1f7;margin:1.5rem 0;padding:.5rem 1rem} .lf-callout p{margin:.4rem 0}
+  .lf-cta{background:#0d1b2a;color:#fff;padding:1rem 1.25rem;border-radius:12px;margin:2rem 0} .lf-cta h2{color:#fff;margin-top:0} .lf-cta a{color:#fff}
+  .lf-related{border-top:1px solid #d5dee5;margin-top:2rem} a{color:#2f6aa8}
+  </style><h1 style="font:600 1.8rem system-ui;color:#0d1b2a">${esc(d.title)}</h1>${d.content}`
+}
+
+function renderDetail() {
+  const d = state.drafts.find((x) => x.file === selected)
+  if (!d) { $('detail').innerHTML = '<p class="empty">No drafts found.</p>'; return }
+  const g = state.git
+  const canPublish = (d.status === 'ready' || d.status === 'scheduled') && !busy
+  const early = d.status === 'scheduled'
+  const hasChanges = g.changes.length > 0
+  $('detail').innerHTML = `
+    <div class="head">
+      <img src="/img/${esc(d.slug)}.webp" alt="" onerror="this.style.display='none'">
+      <div>
+        <h2>${esc(d.title)}</h2>
+        <div class="facts"><span class="chip ${d.status}">${LABEL[d.status]}</span><span>Date ${esc(d.date)}</span><span>${d.words} words</span><span>/${esc(d.slug)}/</span></div>
+        <p class="excerpt">${esc(d.excerpt)}</p>
+      </div>
+    </div>
+    ${d.errors.length ? `<div><h3>Must fix before publishing</h3><ul class="issues err">${d.errors.map((e) => `<li>${esc(e)}</li>`).join('')}</ul></div>` : ''}
+    ${d.warnings.length ? `<div><h3>Read before publishing</h3><ul class="issues warn">${d.warnings.map((e) => `<li>${esc(e)}</li>`).join('')}</ul></div>` : ''}
+    <details class="preview"><summary>Preview the text</summary><iframe sandbox="" title="Preview of ${esc(d.title)}" srcdoc="${esc(previewDoc(d))}"></iframe>
+      <p class="why">A plain preview of the content. The real page, with the site's own styling, is visible after step 1 by running the site locally.</p></details>
+
+    <ol class="steps">
+      <li class="step"><span class="n">1</span><div>
+        <h3>Publish into the site files</h3>
+        <p>Adds the post to <code>posts.js</code> and <code>routes.js</code>. Nothing goes live yet.</p>
+        <div class="row">
+          ${early ? `<label class="check"><input type="checkbox" id="early"> Publish early: set the date to ${esc(state.today)}</label>` : ''}
+          <button class="btn" id="publish" ${canPublish ? '' : 'disabled'}>Publish to site files</button>
+        </div>
+        ${canPublish ? (early ? `<p class="why">Dated ${esc(d.date)}, so it is held unless you tick the box.</p>` : '') : `<p class="why">${d.status === 'published' ? 'Already published.' : d.status === 'failing' ? 'Fix the errors above first.' : 'Working…'}</p>`}
+      </div></li>
+      <li class="step"><span class="n">2</span><div>
+        <h3>Check and build</h3>
+        <p>Runs the linter and the full build, which also renders every page. Takes a minute or two.</p>
+        <button class="btn quiet" id="check" ${busy ? 'disabled' : ''}>Check and build</button>
+      </div></li>
+      <li class="step"><span class="n">3</span><div>
+        <h3>Commit</h3>
+        <p>Saves the published post, its draft and its card image to git on this computer.</p>
+        <div class="row">
+          <label class="why" for="msg" style="min-width:100%">Commit message</label>
+          <input type="text" id="msg" maxlength="200" value="${esc('Publish: ' + d.title)}">
+          <button class="btn quiet" id="commit" ${busy || !hasChanges ? 'disabled' : ''}>Commit</button>
+        </div>
+        ${hasChanges ? '' : '<p class="why">Nothing to commit.</p>'}
+      </div></li>
+      <li class="step"><span class="n">4</span><div>
+        <h3>Push, which deploys the live site</h3>
+        <p>Pushing <code>main</code> makes Vercel rebuild wavefrontstudiollc.com with this post on it.</p>
+        <div class="row">
+          <label class="check"><input type="checkbox" id="confirmPush"> I want to deploy the live site</label>
+          <button class="btn danger" id="push" disabled>Push to main</button>
+        </div>
+        <p class="why">${hasChanges ? 'Commit your changes first.' : g.ahead ? `${g.ahead} commit${g.ahead === 1 ? '' : 's'} waiting to be pushed.` : 'Nothing waiting to be pushed.'}</p>
+      </div></li>
+    </ol>
+    <p class="status ${lastStatus || ''}" role="status">${esc(window.__msg || '')}</p>
+    <pre class="log" tabindex="0" aria-label="Output">${esc(lastLog)}</pre>`
+
+  const act = async (name, body, label) => {
+    busy = true; window.__msg = label + '…'; lastStatus = null; renderDetail()
+    try {
+      const r = await api(name, body)
+      lastLog = r.out || ''; window.__msg = r.ok === false ? 'Failed. Read the output below.' : 'Done.'; lastStatus = r.ok === false ? 'bad' : 'good'
+    } catch (e) { lastLog = ''; window.__msg = e.message; lastStatus = 'bad' }
+    busy = false; await load()
+  }
+  $('publish')?.addEventListener('click', () => act('publish', { file: d.file, publishNow: !!$('early')?.checked }, 'Publishing'))
+  $('check')?.addEventListener('click', () => act('check', {}, 'Checking and building'))
+  $('commit')?.addEventListener('click', () => act('commit', { message: $('msg').value }, 'Committing'))
+  const pushable = !busy && !hasChanges && g.ahead > 0 && g.branch === 'main'
+  $('confirmPush').disabled = !pushable
+  $('confirmPush').addEventListener('change', () => { $('push').disabled = !($('confirmPush').checked && pushable) })
+  $('push').addEventListener('click', () => act('push', {}, 'Pushing'))
+}
+load()
+</script>
+</body>
+</html>

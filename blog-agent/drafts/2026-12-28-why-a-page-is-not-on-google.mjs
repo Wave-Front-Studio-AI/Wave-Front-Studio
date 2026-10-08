@@ -1,0 +1,68 @@
+// Draft. Not yet published. Scheduled for 2026-12-28.
+// Sources fetched and checked 2026-10-08:
+//  - https://support.google.com/webmasters/answer/7440203 (Page indexing report: Discovered/Crawled currently not indexed, blocked by robots.txt, excluded by noindex, 404, redirect errors; URL Inspection can request indexing)
+//  - https://support.google.com/webmasters/answer/9012289 (URL Inspection: URL is on Google or not, last crawl, canonical, robots/noindex status; live test; request indexing; "typically a day or so, but can take much longer")
+//  - https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl (requesting does not guarantee inclusion; few days to few weeks; repeat requests do not speed it up)
+//  - https://developers.google.com/search/docs/crawling-indexing/block-indexing (noindex tag/header; robots.txt block stops Google seeing noindex)
+//  - https://developers.google.com/search/docs/crawling-indexing/robots/intro (robots.txt not a mechanism for keeping a page out of Google)
+//  - https://developers.google.com/search/docs/fundamentals/seo-starter-guide and .../sitemaps/overview (Google finds pages through links; sitemaps optional and no guarantee)
+// Timing: Google's pages disagree in tone ("a day or so" vs "days to weeks"), so the post gives no promise and quotes both.
+export default {
+  slug: 'why-a-page-is-not-on-google',
+  title: 'Why Your New Page Is Not on Google: Five Checks, in the Right Order',
+  date: '2026-12-28',
+  excerpt: 'A page missing from search has a short list of possible causes. Here is how to check each one with free tools, and what to do when the answer is simply wait.',
+  image: '/images/blog/why-a-page-is-not-on-google.webp',
+  content: [
+    '<div class="lf-article">',
+    '<p class="lf-standfirst"><strong>If a new page is missing from Google, do not start by rewriting it. Find out whether Google has seen it, and if it has, what it decided.</strong></p>',
+    '<p>You publish a page about a service you have just added. You search for its title, and it is not there. You search again with different words. Nothing. It is easy to assume the page is poor or the site is penalised, and to start changing things at random.</p>',
+    '<p>There is a better way. Google gives site owners a tool that says what it knows about each page, and the answers fall into a short list. Work through them in this order, because each rules out the next.</p>',
+    '<h2>Check one: ask Google, do not guess</h2>',
+    '<p>Open Google Search Console, paste the page address into the URL Inspection box at the top, and read the verdict. Google describes the result as either &#8220;URL is on Google&#8221; or &#8220;URL is not on Google&#8221;, along with when it last crawled the page and whether anything is stopping it. Everything below depends on what this says.</p>',
+    '<p>One caution from Google itself: even a page that is on Google is not guaranteed to appear for a given search. Being indexed is a necessary step, not a promise of traffic.</p>',
+    '<h2>Check two: is something telling Google to stay away?</h2>',
+    '<p>This is the most common self-inflicted cause, and the easiest to fix.</p>',
+    '<h3>A noindex instruction</h3>',
+    '<p>A noindex tag in the page code, or in the way the server responds, tells Google not to list the page. It is often switched on while a site is being built and forgotten when it goes live. Search Console reports it as &#8220;excluded by noindex tag&#8221;.</p>',
+    '<h3>A robots.txt block</h3>',
+    '<p>The robots.txt file tells Google which parts of a site it may visit. Google says it is not a way to hide a page from search, and that a page it blocks can still be listed by address if other sites link to it. It also means Google cannot see a noindex tag on a page it is not allowed to open, so the two settings can hide each other.</p>',
+    '<h2>Check three: can Google find the page at all?</h2>',
+    '<p>Google says it mostly finds pages by following links from pages it already knows. A page nothing links to, or one that is reachable only from a menu that does not use ordinary links, can sit undiscovered. Add a link from a page you know is indexed, such as the homepage or the relevant service page.</p>',
+    '<p>A sitemap can also help. Google says it does not guarantee a page will be crawled or indexed, and that a small, well-linked site may not need one, so treat it as a second route and not the only one.</p>',
+    '<h2>Check four: what status does it report?</h2>',
+    '<figure><table><thead><tr><th>Search Console says</th><th>Meaning, in Google&#8217;s terms</th><th>What you can do</th></tr></thead>',
+    '<tbody>',
+    '<tr><td><strong>Discovered, currently not indexed</strong></td><td>Google knows the address but has not crawled it yet</td><td>Link to it from more places, and wait</td></tr>',
+    '<tr><td><strong>Crawled, currently not indexed</strong></td><td>Google visited and chose not to list it</td><td>Look hard at the page, see below</td></tr>',
+    '<tr><td><strong>Excluded by noindex tag</strong></td><td>A noindex instruction was found</td><td>Remove it, then request indexing</td></tr>',
+    '<tr><td><strong>Blocked by robots.txt</strong></td><td>The file stopped Google visiting</td><td>Change the rule if the block was not intended</td></tr>',
+    '<tr><td><strong>Not found (404)</strong></td><td>The address returns no page</td><td>Fix the address or the redirect</td></tr>',
+    '</tbody></table></figure>',
+    '<blockquote class="lf-callout"><p><strong>&#8220;Crawled, currently not indexed&#8221; is the uncomfortable one</strong></p>',
+    '<p>It means Google looked and passed. The reasons are Google&#8217;s to give, and it does not list them page by page. Ask honestly whether your page says anything the site does not already say better elsewhere. A near copy of another page, or a thin page with a few lines of text, is the kind of thing worth ruling out, because no technical fix will change it.</p></blockquote>',
+    '<h2>Check five: have you given it time?</h2>',
+    '<p>Google&#8217;s guidance says indexing can take from a few days to a few weeks, and its inspection tool says a requested page is typically handled in about a day but sometimes takes much longer. After you have fixed a problem, use Request indexing once. Google says that submitting the same address again does not make it faster, and that requesting does not guarantee inclusion.</p>',
+    '<h2>What to do this week</h2>',
+    '<ol>',
+    '<li>Inspect the page in Search Console and note the exact status.</li>',
+    '<li>Check for a noindex tag and a robots.txt block. If your site was recently rebuilt, ask the developer directly.</li>',
+    '<li>Link to the page from your homepage or a related service page.</li>',
+    '<li>Request indexing once, then leave it alone for two weeks.</li>',
+    '<li>If the status is still &#8220;Crawled, currently not indexed&#8221;, make the page more useful before you do anything else.</li>',
+    '</ol>',
+    '<h2>What not to expect</h2>',
+    '<p>We cannot tell you how long your page will take, and neither can anyone outside Google. A page can pass every check and still wait. If you pay someone to speed it up, ask exactly what they will change and why it should matter.</p>',
+    '<div class="lf-cta"><h2>Have a page that will not show up?</h2>',
+    '<p>Send us the address. We will check how Google sees it and tell you what we find, including when the answer is that nothing is wrong yet.</p>',
+    '<p><a href="/free-website-audit/">Request the free website audit</a>: it covers the site and how it shows up in search. Or see how we approach <a href="/seo-service/">search engine optimisation</a>.</p>',
+    '<p>We&#8217;re currently waiving setup fees for five businesses this quarter on AI chatbots, web development and SEO. ',
+    '<a href="/free-setup/">See what&#8217;s included</a>, or call <a href="tel:+19414152595">+1 (941) 415-2595</a>.</p></div>',
+    '<aside class="lf-related"><h2>Related reading</h2><ul>',
+    '<li><a href="/seo-keeps-working-after-you-stop-paying/">SEO Is the Only Channel That Keeps Working After You Stop Paying</a></li>',
+    '<li><a href="/seo-company-that-guarantees-page-one/">An SEO Company That Guarantees Page One Is Telling You What You Want to Hear</a></li>',
+    '<li><a href="/check-whether-chatgpt-or-google-ai-names-your-business/">How to Check Whether ChatGPT or Google AI Names Your Business</a></li>',
+    '</ul></aside>',
+    '</div>',
+  ].join(''),
+}

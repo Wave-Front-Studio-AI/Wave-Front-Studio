@@ -36,6 +36,17 @@ idempotent, so a slug already published is skipped rather than duplicated. Add
 Posts are prepended, because `BlogIndex` renders the array in order with no sort,
 so newest belongs first.
 
+## Admin panel
+
+```bash
+npm run blog:admin
+```
+
+Prints a link to open in your browser. It runs on this computer only. From there:
+pick a post, publish it into the site files (or tick "publish early" for a
+scheduled one), check and build, commit, then push, which deploys. Each start makes
+a new random token, so the link stops working when you stop the server.
+
 ## Checking what is already live
 
 ```bash
