@@ -45,6 +45,7 @@ const postSlugs = [
   'a-chatbot-that-guesses-is-worse-than-none',
   'check-whether-chatgpt-or-google-ai-names-your-business',
   'homepage-first-screen',
+  'which-ai-bots-to-allow-in-robots-txt',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
