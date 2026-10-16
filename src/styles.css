@@ -798,6 +798,7 @@ p { margin: 0; text-wrap: pretty; }
 .service-single { display: grid; }
 .service-single > div { max-width: 72ch; }
 .service-approach-media, .service-deliver-media { margin: 0; }
+.service-approach-stack { display: grid; gap: 28px; align-content: start; }
 /* Screenshots show at their own proportions: cropping a UI hides the parts
    that prove it is real. */
 .service-approach-media img, .service-deliver-media img { display: block; width: 100%; height: auto; border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--ink); }
