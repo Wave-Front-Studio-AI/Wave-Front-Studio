@@ -222,6 +222,8 @@ await writeFile(
     '# Search engines and AI search tools: welcome.',
     'User-agent: *',
     'Allow: /',
+    '# Unlisted demo builds shown to prospects, not part of the site.',
+    'Disallow: /demos/',
     '',
     '# Crawlers that collect AI training data: no thanks.',
     ...trainingCrawlers.map((agent) => `User-agent: ${agent}`),

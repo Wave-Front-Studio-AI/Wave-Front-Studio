@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SS Salon &amp; Co. | Nails, Hair &amp; Barbering in Sarasota, FL</title>
+<meta name="description" content="SS Salon & Co. is a family-friendly Sarasota salon for nails, hair and barbering. Rated 4.7 on Google. Request an appointment with your specialist.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#151515">
+<link rel="preload" href="fonts/Marcellus.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/HankenGrotesk.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"NailSalon","name":"SS Salon & Co.","telephone":"+1-813-340-9360","email":"ss.salonco@gmail.com","url":"https://sssalonco.com","address":{"@type":"PostalAddress","streetAddress":"1424 Dr Martin Luther King Jr Way, Unit 106","addressLocality":"Sarasota","addressRegion":"FL","postalCode":"34234","addressCountry":"US"},"sameAs":["https://www.instagram.com/ss_salonco/","https://www.facebook.com/SS.SalonCo/"]}
+</script>
+<style>
+/*FONTS*/@font-face{font-family:"Marcellus";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/Marcellus.woff2) format("woff2")}
+@font-face{font-family:"Hanken Grotesk";font-weight:400 800;font-style:normal;font-display:swap;src:url(fonts/HankenGrotesk.woff2) format("woff2")}
+/* Palette: Cobalt and Black (black #151515, cobalt #2455E8, soft white #F8F7F4, silver grey). Photography does the rest.
+   Layout: the familiar salon-site shape (full-bleed photo hero, one dominant Book now, photo service tiles), dressed in their brand. */
+:root{
+  --paper:#F8F7F4; --stone:#E9EAEC; --silver:#BEC1C7; --ink:#151515; --ink-soft:#55575C; --cobalt:#2455E8; --cobalt-deep:#1B43BD; --white:#FFFFFF;
+  --on-dark:#F8F7F4; --on-dark-soft:#C9CCD2; --on-cobalt-soft:#E4EAFB;
+  --display:"Marcellus","Trajan Pro","Palatino Linotype",Palatino,Georgia,serif;
+  --body:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --gutter:clamp(18px,5vw,64px); --max:1280px; --r:4px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.65 var(--body);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;line-height:1;letter-spacing:-.005em;text-wrap:balance}
+p{margin:0;text-wrap:pretty}
+.wrap{width:100%;max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
+.skip{position:absolute;left:-999px;top:8px;background:#fff;color:#000;padding:10px 16px;z-index:100}
+.skip:focus{left:8px}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:3px}
+.dark :focus-visible,.cobalt :focus-visible,.hero :focus-visible,.dock :focus-visible{outline-color:#fff}
+.dark{background:var(--ink);color:var(--on-dark)}
+.cobalt{background:var(--cobalt);color:#fff;--on-dark-soft:var(--on-cobalt-soft)}
+
+/* buttons: Book now is the loud one */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;background:var(--cobalt);color:#fff;text-decoration:none;font-weight:800;font-size:1rem;letter-spacing:.02em;border:1.5px solid var(--cobalt);border-radius:var(--r);cursor:pointer;transition:background-color .2s,color .2s,border-color .2s}
+.btn:hover{background:var(--cobalt-deep);border-color:var(--cobalt-deep)}
+.btn.quiet{background:transparent;color:inherit;border-color:currentColor}
+.btn.quiet:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.dark .btn.quiet:hover,.cobalt .btn.quiet:hover,.hero .btn.quiet:hover{background:#fff;color:var(--ink);border-color:#fff}
+.cobalt .btn{background:#fff;color:var(--cobalt-deep);border-color:#fff}
+.cobalt .btn:hover{background:var(--paper)}
+.cobalt .btn.quiet{background:transparent;color:var(--on-dark);border-color:var(--on-dark)}
+.cobalt .btn.quiet:hover{background:var(--on-dark);color:var(--cobalt-deep)}
+.dark .btn:hover{background:#1B43BD;border-color:#1B43BD}
+
+/* header */
+.bar{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid rgba(21,21,21,.14)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;min-height:68px;gap:16px}
+.logo{font-family:var(--display);font-size:1.35rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+nav{display:flex;gap:24px;align-items:center}
+nav a{text-decoration:none;font-size:.95rem;padding:10px 0}
+nav a:not(.btn):hover{color:var(--cobalt)}
+nav .tel{font-weight:600}
+nav .btn{min-height:44px;padding:0 22px}
+
+/* hero: three full-bleed photos under one headline */
+.hero{position:relative;display:grid;grid-template-columns:repeat(3,1fr);min-height:min(84vh,800px);background:var(--ink);color:#fff;isolation:isolate}
+.hero .ph{position:relative;overflow:hidden}
+.hero .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero .ph2,.hero .ph3{background:var(--ink) center/cover no-repeat}
+@media (min-width:901px){.hero .ph2{background-image:url(img/p4.webp)}.hero .ph3{background-image:url(img/p3.webp)}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(12,12,14,.42),rgba(12,12,14,.66));z-index:1}
+.hero .over{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 var(--gutter)}
+.hero h1{font-size:clamp(2.7rem,8.2vw,7.4rem);text-transform:uppercase;letter-spacing:.015em;line-height:.98;text-shadow:0 2px 24px rgba(0,0,0,.35)}
+.hero .lead{margin-top:20px;font-size:clamp(1.05rem,1.6vw,1.3rem);max-width:36ch;color:#fff}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:30px}
+.hero .btn.quiet{color:#fff}
+
+/* benefits strip */
+.strip{background:var(--silver);border-bottom:1px solid rgba(21,21,21,.14)}
+.strip ul{list-style:none;margin:0;padding:18px var(--gutter);display:flex;flex-wrap:wrap;gap:8px 44px;justify-content:center;max-width:var(--max);margin-inline:auto}
+.strip li{font-weight:800;font-size:.86rem;letter-spacing:.09em;text-transform:uppercase}
+
+section{padding:clamp(64px,9vw,120px) 0}
+h2{font-size:clamp(2rem,4.6vw,3.6rem)}
+.head{text-align:center;max-width:720px;margin:0 auto clamp(32px,5vw,56px)}
+.head p{margin-top:14px;color:var(--ink-soft);font-size:1.1rem}
+.dark .head p,.cobalt .head p{color:var(--on-dark-soft)}
+
+/* service tiles */
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,1.8vw,24px)}
+.tile{position:relative;display:block;aspect-ratio:4/5;overflow:hidden;border-radius:var(--r);text-decoration:none;color:#fff;background:var(--ink)}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.tile:hover img{transform:scale(1.03)}
+.tile .cap{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;padding:56px 22px 20px;background:linear-gradient(transparent,rgba(12,12,14,.82))}
+.tile h3{font-size:clamp(1.8rem,3vw,2.5rem)}
+.tile .who{font-size:.95rem;color:#E9ECF2;margin-top:4px}
+.tile .go{font-size:1.5rem;line-height:1}
+.tile.type .go{color:#7B9BFA}
+.tile.type{background:var(--ink);display:flex;flex-direction:column;justify-content:flex-end}
+.tile.type .cap{position:static;background:none;padding:22px}
+.tile.type .big{padding:22px;font-family:var(--display);font-size:clamp(1.3rem,2.2vw,1.8rem);line-height:1.25;color:var(--on-dark-soft);margin-bottom:auto}
+
+/* book band */
+.bandcta{padding:clamp(48px,7vw,88px) 0}
+.bandcta .wrap{display:flex;flex-wrap:wrap;gap:20px 40px;align-items:center;justify-content:space-between}
+.bandcta h2{font-size:clamp(1.9rem,4vw,3rem);max-width:18ch}
+
+/* work */
+/* work: two slowly scrolling rows, opposite directions */
+.head .ctl{margin-top:18px;min-height:44px;padding:0 20px}
+.reel{display:grid;gap:clamp(12px,1.6vw,20px);overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+.row{overflow:hidden}
+.track{display:flex;width:max-content;animation:slideL 70s linear infinite}
+.row.rev .track{animation-name:slideR;animation-duration:80s}
+.grp{display:flex;align-items:flex-end;gap:clamp(12px,1.6vw,20px);padding-right:clamp(12px,1.6vw,20px)}
+.grp figure{margin:0;flex:none}
+.grp img{height:clamp(190px,24vw,320px);width:auto;border-radius:var(--r);background:#26272b}
+.grp figcaption{margin-top:6px;font-size:.88rem;color:var(--on-dark-soft)}
+.reel.offscreen .track,.reel.paused .track,.row:hover .track,.row:focus-within .track{animation-play-state:paused}
+@keyframes slideL{to{transform:translateX(-50%)}}
+@keyframes slideR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.work .more{padding-top:0}
+.more{margin-top:clamp(24px,4vw,44px);display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+
+/* reviews on soft grey-white: a rating, one featured review with its photo, three specialist cards, three short quotes */
+.reviews{background:var(--stone);color:var(--ink)}
+.rhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px 40px;margin-bottom:clamp(28px,4vw,52px)}
+.score{display:flex;align-items:center;gap:18px}
+.score strong{font-family:var(--display);font-weight:400;font-size:clamp(3.6rem,7vw,5.6rem);line-height:.85}
+.score .meta{margin-top:6px;color:var(--ink-soft);font-size:.98rem}
+.stars{display:inline-flex;gap:2px;vertical-align:middle;color:var(--cobalt)}
+.stars svg{width:16px;height:16px;fill:currentColor}
+.stars.big svg{width:24px;height:24px}
+.feat{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,5vw,72px);align-items:center;margin-bottom:clamp(28px,4vw,56px)}
+.feat .fp{margin:0}
+.feat .fp img{width:100%;aspect-ratio:1/1.05;object-fit:cover;border-radius:var(--r)}
+.feat .fp figcaption{margin-top:7px;font-size:.88rem;color:var(--ink-soft)}
+.fq{margin:0}
+.fq blockquote{margin:18px 0 22px;font-family:var(--display);font-size:clamp(1.7rem,3.4vw,2.8rem);line-height:1.2}
+.who3 b{display:block;font-size:1.05rem}
+.who3 span,.who2{color:var(--ink-soft);font-size:.95rem}
+.rcards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,1.8vw,24px)}
+.rc{margin:0;background:var(--white);color:var(--ink);border-radius:var(--r);padding:clamp(20px,2.4vw,30px);display:flex;flex-direction:column;gap:14px}
+.rc blockquote{margin:0;font-size:1.05rem;line-height:1.55}
+.rc figcaption{margin-top:auto;font-size:.95rem;color:var(--ink-soft)}
+.rc figcaption b{display:block;color:var(--ink)}
+.rc .tag{align-self:flex-start;background:var(--stone);color:var(--cobalt-deep);font-weight:800;font-size:.76rem;letter-spacing:.07em;text-transform:uppercase;padding:5px 10px;border-radius:2px}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3.5vw,56px);margin-top:clamp(32px,4.5vw,56px);padding-top:clamp(24px,3vw,36px);border-top:1px solid rgba(21,21,21,.2)}
+.mini figure{margin:0}
+.mini blockquote{margin:12px 0 10px;font-size:1.05rem;line-height:1.55}
+.score .meta a{text-underline-offset:4px}
+.score .meta a:hover{color:var(--cobalt)}
+.rmore{margin-top:clamp(28px,4vw,44px);display:flex;flex-wrap:wrap;gap:12px}
+.rate{margin-top:20px;color:var(--ink-soft);font-size:.95rem}
+
+/* booking */
+.book .grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:28px clamp(24px,6vw,96px)}
+.book .grid>div:first-child p{margin-top:16px;color:var(--ink-soft);max-width:30ch}
+#bk{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.f{display:flex;flex-direction:column;gap:6px}
+.full{grid-column:1/-1}
+label{font-weight:600;font-size:.92rem}
+input,select,textarea{font:inherit;font-size:1rem;color:var(--ink);background:var(--white);border:1.5px solid rgba(21,21,21,.4);border-radius:var(--r);min-height:50px;padding:12px 14px;width:100%}
+input::placeholder,textarea::placeholder{color:#6b6e75}
+textarea{resize:vertical}
+select{-webkit-appearance:none;appearance:none;padding-right:46px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%23151515' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 6l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;background-size:16px 16px}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--cobalt);outline-offset:1px}
+
+/* visit */
+.phone{display:inline-block;font-family:var(--display);font-size:clamp(2.6rem,8vw,6.5rem);text-decoration:none;line-height:1;letter-spacing:-.02em}
+.phone:hover{color:#9DB4F7}
+.vis .cols{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:28px clamp(24px,6vw,96px);margin-top:clamp(24px,4vw,48px);align-items:start}
+address{font-style:normal;font-size:1.2rem;line-height:1.6}
+address a{text-underline-offset:4px;text-decoration-color:#8FA9F5;text-decoration-thickness:1.5px}
+.vis p{color:var(--on-dark-soft)}
+.vis .more{margin-top:24px;justify-content:flex-start}
+
+footer{padding:26px 0;font-size:.95rem;color:var(--on-dark-soft);background:var(--ink);border-top:1px solid rgba(248,247,244,.18)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 32px;justify-content:space-between;align-items:center}
+footer nav{gap:22px}
+footer a{padding:8px 0;display:inline-block}
+footer a:hover{color:#fff}
+
+/* mobile book dock */
+.dock{display:none}
+
+@media (max-width:900px){
+  nav a:not(.btn){display:none}
+  .hero{grid-template-columns:1fr;min-height:min(78vh,640px)}
+  .hero .ph:nth-child(n+2){display:none}
+  .tiles{grid-template-columns:1fr 1fr}
+  .tile.type{grid-column:1/-1;aspect-ratio:auto;min-height:220px}
+  .feat{grid-template-columns:1fr}
+  .feat .fp{max-width:420px}
+  .rcards,.mini{grid-template-columns:1fr}
+  .rmore .btn{flex:1 1 100%}
+  .book .grid,.vis .cols{grid-template-columns:1fr}
+  .dock{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px max(14px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));background:var(--paper);border-top:1px solid rgba(21,21,21,.18)}
+  .dock .btn{min-height:48px;padding:0 12px}
+  body{padding-bottom:72px}
+  .bar nav .btn{display:none}
+}
+@media (max-width:560px){
+  .tiles{grid-template-columns:1fr}
+  #bk{grid-template-columns:1fr}
+  .hero .cta .btn,.more .btn,#bk .btn,.bandcta .btn{flex:1 1 100%;width:100%}
+}
+@media (prefers-reduced-motion:reduce){.track{animation:none}.row{overflow-x:auto;scroll-snap-type:x proximity}.grp[aria-hidden]{display:none}.grp figure{scroll-snap-align:start}.ctl{display:none}.reel{-webkit-mask-image:none;mask-image:none}html{scroll-behavior:auto}.btn,.tile img{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="star" viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z"/></symbol></svg>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#top">SS Salon &amp; Co.</a>
+    <nav aria-label="Primary">
+      <a href="#services">Services</a>
+      <a href="#work">Our work</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#visit">Visit</a>
+      <a class="tel" href="tel:+18133409360">(813) 340-9360</a>
+      <a class="btn" href="#book">Book now</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div id="top" class="hero">
+  <div class="ph"><img src="img/p8.webp" width="640" height="640" alt="" fetchpriority="high" decoding="async"></div>
+  <div class="ph ph2" aria-hidden="true"></div>
+  <div class="ph ph3" aria-hidden="true"></div>
+  <div class="over">
+    <h1>Nails. Hair. Barbering.</h1>
+    <p class="lead">A family-friendly shop on MLK Way in Sarasota. Book your specialist by name.</p>
+    <div class="cta">
+      <a class="btn" href="#book">Book now</a>
+      <a class="btn quiet" href="#work">See our work</a>
+    </div>
+  </div>
+</div>
+
+<div class="strip">
+  <ul>
+    <li>Your specialist, by name</li>
+    <li>Nails, hair &amp; barbering in one shop</li>
+    <li>Request online in a minute</li>
+  </ul>
+</div>
+
+<section id="services">
+  <div class="wrap">
+    <div class="head">
+      <h2>Every kind of care, in one place.</h2>
+      <p>Each specialist takes their own appointments and sets their own pricing.</p>
+    </div>
+    <div class="tiles">
+      <a class="tile" href="#book"><img src="img/p1.webp" width="618" height="640" loading="lazy" decoding="async" alt="Sculpted pink gel nails by Sherri"><div class="cap"><div><h3>Nails</h3><div class="who">Sherri and Lulu</div></div><span class="go" aria-hidden="true">→</span></div></a>
+      <a class="tile" href="#book"><img src="img/h1.webp" width="414" height="414" loading="lazy" decoding="async" alt="Loc style with a side part, by Tiara"><div class="cap"><div><h3>Hair</h3><div class="who">Tiara</div></div><span class="go" aria-hidden="true">→</span></div></a>
+      <a class="tile" href="#book"><img src="img/b8.webp" width="640" height="1138" loading="lazy" decoding="async" alt="Fade with twists on top, finished by Reddz" style="object-position:center 25%"><div class="cap"><div><h3>Barbering</h3><div class="who">Reddz Da Barber</div></div><span class="go" aria-hidden="true">→</span></div></a>
+    </div>
+  </div>
+</section>
+
+<section id="work" class="dark">
+  <div class="wrap">
+    <div class="head">
+      <h2>Recent work</h2>
+      <p>Straight from our feed.</p>
+      <button class="btn quiet ctl" id="pause" type="button" aria-pressed="false">Pause</button>
+    </div>
+  </div>
+  <div class="reel" id="reel" role="region" aria-label="Photos of recent work, scrolling">
+    <div class="row"><div class="track"><div class="grp"><figure><img src="img/p9.webp" width="616" height="640" alt="Black and white abstract french tip nails" loading="lazy" decoding="async"><figcaption>Nails by Sherri</figcaption></figure><figure><img src="img/p2.webp" width="640" height="640" alt="Turquoise framed french pedicure" loading="lazy" decoding="async"><figcaption>Nails by Sherri</figcaption></figure><figure><img src="img/p11.webp" width="640" height="480" alt="Purple ombre nails with flowers and silver glitter" loading="lazy" decoding="async"><figcaption>Creations by Lulu</figcaption></figure><figure><img src="img/p3.webp" width="640" height="640" alt="Violet cat-eye stiletto nails" loading="lazy" decoding="async"><figcaption>Nails by Sherri</figcaption></figure><figure><img src="img/p8.webp" width="640" height="640" alt="Hot pink french tips with white floral detail" loading="lazy" decoding="async"><figcaption>Nails by Sherri</figcaption></figure><figure><img src="img/p10.webp" width="572" height="640" alt="Glitter-flake jelly stiletto nails in green, pink and blue" loading="lazy" decoding="async"><figcaption>Nails by Sherri</figcaption></figure><figure><img src="img/p1.webp" width="618" height="640" alt="Sculpted pink gel nails" loading="lazy" decoding="async"><figcaption>Nails by Sherri</figcaption></figure></div><div class="grp" aria-hidden="true"><figure><img src="img/p9.webp" width="616" height="640" alt="" loading="lazy" decoding="async"><figcaption>Nails by Sherri</figcaption></figure><figure><img src="img/p2.webp" width="640" height="640" alt="" loading="lazy" decoding="async"><figcaption>Nails by Sherri</figcaption></figure><figure><img src="img/p11.webp" width="640" height="480" alt="" loading="lazy" decoding="async"><figcaption>Creations by Lulu</figcaption></figure><figure><img src="img/p3.webp" width="640" height="640" alt="" loading="lazy" decoding="async"><figcaption>Nails by Sherri</figcaption></figure><figure><img src="img/p8.webp" width="640" height="640" alt="" loading="lazy" decoding="async"><figcaption>Nails by Sherri</figcaption></figure><figure><img src="img/p10.webp" width="572" height="640" alt="" loading="lazy" decoding="async"><figcaption>Nails by Sherri</figcaption></figure><figure><img src="img/p1.webp" width="618" height="640" alt="" loading="lazy" decoding="async"><figcaption>Nails by Sherri</figcaption></figure></div></div></div>
+    <div class="row rev"><div class="track"><div class="grp"><figure><img src="img/h2.webp" width="414" height="414" alt="Loc style pinned up in a diamond pattern" loading="lazy" decoding="async"><figcaption>Hair by Tiara</figcaption></figure><figure><img src="img/b2.webp" width="800" height="451" alt="Hair design cut into a fade, side view" loading="lazy" decoding="async"><figcaption>Barbering by Reddz</figcaption></figure><figure><img src="img/p4.webp" width="512" height="640" alt="Freshly styled locs from behind" loading="lazy" decoding="async"><figcaption>Hair by Tiara</figcaption></figure><figure><img src="img/b4.webp" width="800" height="451" alt="Star pattern cut into the back of a fade" loading="lazy" decoding="async"><figcaption>Barbering by Reddz</figcaption></figure><figure><img src="img/h1.webp" width="414" height="414" alt="Loc style with a side part" loading="lazy" decoding="async"><figcaption>Hair by Tiara</figcaption></figure><figure><img src="img/b3.webp" width="800" height="451" alt="Line design cut into a fade, side view" loading="lazy" decoding="async"><figcaption>Barbering by Reddz</figcaption></figure><figure><img src="img/b8.webp" width="640" height="1138" alt="Fade with twists on top" loading="lazy" decoding="async"><figcaption>Barbering by Reddz</figcaption></figure></div><div class="grp" aria-hidden="true"><figure><img src="img/h2.webp" width="414" height="414" alt="" loading="lazy" decoding="async"><figcaption>Hair by Tiara</figcaption></figure><figure><img src="img/b2.webp" width="800" height="451" alt="" loading="lazy" decoding="async"><figcaption>Barbering by Reddz</figcaption></figure><figure><img src="img/p4.webp" width="512" height="640" alt="" loading="lazy" decoding="async"><figcaption>Hair by Tiara</figcaption></figure><figure><img src="img/b4.webp" width="800" height="451" alt="" loading="lazy" decoding="async"><figcaption>Barbering by Reddz</figcaption></figure><figure><img src="img/h1.webp" width="414" height="414" alt="" loading="lazy" decoding="async"><figcaption>Hair by Tiara</figcaption></figure><figure><img src="img/b3.webp" width="800" height="451" alt="" loading="lazy" decoding="async"><figcaption>Barbering by Reddz</figcaption></figure><figure><img src="img/b8.webp" width="640" height="1138" alt="" loading="lazy" decoding="async"><figcaption>Barbering by Reddz</figcaption></figure></div></div></div>
+  </div>
+  <div class="wrap">
+    <div class="more">
+      <a class="btn" href="https://www.instagram.com/ss_salonco/" rel="noopener">@ss_salonco on Instagram</a>
+      <a class="btn quiet" href="https://www.facebook.com/SS.SalonCo/" rel="noopener">Facebook</a>
+    </div>
+  </div>
+</section>
+
+<section id="reviews" class="reviews">
+  <div class="wrap">
+    <div class="rhead">
+      <h2>What clients say</h2>
+      <div class="score"><strong>4.7</strong><div><span class="stars big" role="img" aria-label="Rated 4.7 out of 5"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span><div class="meta"><a href="https://www.google.com/maps/place/SS+Salon+%26+Company/@27.3594284,-82.5417022,17z/data=!4m8!3m7!1s0x88c33ff2e13d42e3:0x9359e089b65e4354!8m2!3d27.3594284!4d-82.5417022!9m1!1b1!16s%2Fg%2F11bzr_dny3" rel="noopener">68 Google reviews</a></div></div></div>
+    </div>
+
+    <div class="feat">
+      <figure class="fp"><img src="img/p1.webp" width="618" height="640" loading="lazy" decoding="async" alt="Sculpted pink gel nails by Sherri"><figcaption>Nails by Sherri</figcaption></figure>
+      <figure class="fq">
+        <span class="stars" role="img" aria-label="5 stars"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span>
+        <blockquote>Nails by Sherri is Simply Devine! The quality, innovation and artistry I’ve Discovered by Sherri is UNSURPASSED!!!</blockquote>
+        <figcaption class="who3"><b>marcia page</b><span>Google review, about Sherri</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="rcards">
+      <figure class="rc"><span class="tag">Hair · Tiara</span><span class="stars" role="img" aria-label="5 stars"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span><blockquote>Very spacious, clean and professional. I went to have my locs washed and retwisted. Tiara did a very thorough job. I’m happy with the results and will definitely make that my regular spot to get my hair done.</blockquote><figcaption><b>Osa Atoe</b>Google review</figcaption></figure>
+      <figure class="rc"><span class="tag">Barbering · Reddz</span><span class="stars" role="img" aria-label="5 stars"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span><blockquote>Red the Barber is amazing. His work is as precise as a doctor he has a gift with the clippers. I highly recommend him no matter your style he will enhance it.</blockquote><figcaption><b>Thomas Tolbert</b>Google review</figcaption></figure>
+      <figure class="rc"><span class="tag">Nails · Lulu</span><span class="stars" role="img" aria-label="5 stars"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span><blockquote>Phenomenal establishment, Lulu is by far the BEST nail tech around!</blockquote><figcaption><b>Jay Spencer</b>Google review</figcaption></figure>
+    </div>
+
+    <div class="mini">
+      <figure><span class="stars" role="img" aria-label="5 stars"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span><blockquote>This place is AMAZING! Sheree ALWAYS has my nails looking great and my daughter’s hair looks BEAUTIFUL every time she comes out of there!</blockquote><figcaption class="who2">Lisa Keith</figcaption></figure>
+      <figure><span class="stars" role="img" aria-label="5 stars"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span><blockquote>Such an amazing salon and this is a rarity In Sarasota. Full service whether it is hair or nails, loft style look.</blockquote><figcaption class="who2">Ave Mason</figcaption></figure>
+      <figure><span class="stars" role="img" aria-label="5 stars"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span><blockquote>Best salon in the state of Florida.</blockquote><figcaption class="who2">Jayne Lee</figcaption></figure>
+    </div>
+    <div class="rmore">
+      <a class="btn" href="https://www.google.com/maps/place/SS+Salon+%26+Company/@27.3594284,-82.5417022,17z/data=!4m8!3m7!1s0x88c33ff2e13d42e3:0x9359e089b65e4354!8m2!3d27.3594284!4d-82.5417022!9m1!1b1!16s%2Fg%2F11bzr_dny3" rel="noopener">Read all 68 reviews on Google</a>
+      <a class="btn quiet" href="https://www.facebook.com/SS.SalonCo/reviews" rel="noopener">See Facebook reviews</a>
+    </div>
+    <p class="rate">Five-star Google reviews, quoted as written. 96% of 716 Facebook reviewers also recommend the salon.</p>
+  </div>
+</section>
+
+<section class="bandcta dark" aria-label="Book an appointment">
+  <div class="wrap">
+    <h2>Ready for your next look?</h2>
+    <a class="btn" href="#book">Book now</a>
+  </div>
+</section>
+
+<section id="book" class="book">
+  <div class="wrap grid">
+    <div>
+      <h2>Request an appointment</h2>
+      <p>Tell us who you want to see and when. This opens an email to the salon with your details filled in, and your specialist replies to confirm. Nothing is booked until they do.</p>
+    </div>
+    <form id="bk" action="mailto:ss.salonco@gmail.com" method="post" enctype="text/plain">
+      <div class="f"><label for="n">Your name</label><input id="n" name="Name" autocomplete="name" required></div>
+      <div class="f"><label for="p">Phone</label><input id="p" name="Phone" type="tel" autocomplete="tel" inputmode="tel" required></div>
+      <div class="f"><label for="w">Who would you like to see?</label>
+        <select id="w" name="Specialist">
+          <option>Not sure yet</option>
+          <option>Sherri (nails)</option>
+          <option>Lulu (nails)</option>
+          <option>Tiara (hair)</option>
+          <option>Reddz (barbering)</option>
+        </select></div>
+      <div class="f"><label for="d">Preferred day and time</label><input id="d" name="Preferred time" placeholder="Saturday morning"></div>
+      <div class="f full"><label for="m">What are you looking for?</label><textarea id="m" name="Details" rows="4" placeholder="Full set, locs retwist, fade"></textarea></div>
+      <div class="full"><button class="btn" type="submit">Send request</button></div>
+    </form>
+  </div>
+</section>
+
+<section id="visit" class="dark vis">
+  <div class="wrap">
+    <div class="head" style="text-align:left;margin-left:0"><h2>Find us</h2></div>
+    <a class="phone" href="tel:+18133409360">(813) 340-9360</a>
+    <div class="cols">
+      <address>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=SS+Salon+%26+Company+1424+Dr+Martin+Luther+King+Jr+Way+Unit+106+Sarasota+FL" rel="noopener">1424 Dr Martin Luther King Jr Way, Unit 106<br>Sarasota, FL</a><br>
+        <a href="mailto:ss.salonco@gmail.com">ss.salonco@gmail.com</a>
+      </address>
+      <div>
+        <p>Call or text, or reach your stylist, nail specialist or barber directly. A tip from a client: we face MLK Way, next to the Domino’s, with parking in front, on the side and in back.</p>
+        <div class="more">
+          <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=SS+Salon+%26+Company+1424+Dr+Martin+Luther+King+Jr+Way+Unit+106+Sarasota+FL" rel="noopener">Get directions</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr">2026</span> SS Salon &amp; Co. · Sarasota, FL</span>
+    <nav aria-label="Social">
+      <a href="https://www.instagram.com/ss_salonco/" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/SS.SalonCo/" rel="noopener">Facebook</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="dock" aria-label="Quick actions">
+  <a class="btn quiet" href="tel:+18133409360">Call</a>
+  <a class="btn" href="#book">Book now</a>
+</div>
+
+<script>
+(function(){
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  var reel=document.getElementById('reel'),pb=document.getElementById('pause');
+  if(reel&&'IntersectionObserver' in window){
+    var warm=new IntersectionObserver(function(es){if(es[0].isIntersecting){reel.querySelectorAll('img[loading=lazy]').forEach(function(i){i.loading='eager'});warm.disconnect()}},{rootMargin:'900px 0px'});warm.observe(reel);
+    new IntersectionObserver(function(es){reel.classList.toggle('offscreen',!es[0].isIntersecting)}).observe(reel);
+  }
+  if(pb&&reel){pb.addEventListener('click',function(){var p=reel.classList.toggle('paused');pb.textContent=p?'Play':'Pause';pb.setAttribute('aria-pressed',p?'true':'false')})}
+  var f=document.getElementById('bk');
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var g=function(id){return f.elements[id].value.trim()};
+    var body='Name: '+g('n')+'\nPhone: '+g('p')+'\nSpecialist: '+g('w')+'\nPreferred time: '+g('d')+'\n\n'+g('m');
+    location.href='mailto:ss.salonco@gmail.com?subject='+encodeURIComponent('Appointment request from '+g('n'))+'&body='+encodeURIComponent(body);
+  });
+})();
+</script>
+</body>
+</html>
