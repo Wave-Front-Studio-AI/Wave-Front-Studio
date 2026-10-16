@@ -1,8 +1,47 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { ArrowIcon, ChevronIcon } from './Icons.jsx'
-import { contact, googleListingUrl, isHiddenReviewer, offeringGroups, testimonialsHeading } from '../data/site.js'
+import { sizeOf } from '../data/imageSizes.js'
+import { contact, demoSites, googleListingUrl, isHiddenReviewer, offeringGroups, testimonialsHeading } from '../data/site.js'
 import { deliverLead } from '../formSubmission.js'
 import { SMS_CONSENT_CURRENT, SMS_MARKETING_CONSENT_CURRENT } from '../data/smsConsent.js'
+
+/* ------------------------------------------------------------------ */
+/* Demo sites                                                          */
+/* ------------------------------------------------------------------ */
+
+// A grid of the demo sites (site.js, demoSites). Every card says it is a demo
+// concept, because none is a client's live site. `animate` adds the home page's
+// scroll-in attribute.
+export function DemoSites({ title, copy, className = '', animate = false }) {
+  const enter = animate ? { 'data-enter': 'up' } : {}
+  return (
+    <section className={`demo-sites chapter ${className}`} id="demo-sites">
+      <div className="page-frame">
+        <div className="home-center-head" {...enter}>
+          <h2>{title}</h2>
+          {copy ? <p>{copy}</p> : null}
+        </div>
+        <ul className="demo-grid">
+          {demoSites.map((demo) => (
+            <li key={demo.slug} {...enter}>
+              <a className="demo-card" href={demo.href} target="_blank">
+                <img src={demo.image} alt={demo.alt} loading="lazy" decoding="async" {...sizeOf(demo.image)} />
+                <span className="demo-card-body">
+                  <span className="demo-kind">{demo.kind} · demo concept</span>
+                  <strong>{demo.business}</strong>
+                  <span className="demo-what">{demo.what}</span>
+                  <span className="text-link">
+                    View the demo <ArrowIcon />
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
 
 /* ------------------------------------------------------------------ */
 /* Headings                                                            */

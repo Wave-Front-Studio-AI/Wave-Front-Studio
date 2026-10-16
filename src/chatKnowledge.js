@@ -4,7 +4,7 @@
 // can never describe a service, page, price, or article that Wavefront Studio
 // does not publish on this site.
 
-import { clientLogos, contact, customWorkLinks, googleListingUrl, projects, serviceLinks } from './data/site.js'
+import { clientLogos, contact, customWorkLinks, demoSites, googleListingUrl, projects, serviceLinks } from './data/site.js'
 import { services } from './data/services.js'
 import { customWorks } from './data/customWorks.js'
 import { locations as allLocations, locationsHub } from './data/generated/locations.js'
@@ -121,7 +121,7 @@ const companyEntries = [
   {
     id: 'company-portfolio', title: 'Our work and portfolio', url: '/portfolio/', kind: 'company',
     keywords: ['portfolio', 'work', 'examples', 'case study', 'case studies', 'projects', 'proof', 'results', 'clients', 'resinrock'],
-    body: `Client projects are live at their own addresses; the SS Salon site is a demo concept we built to show our work, not a client's live site. Published projects: ${projects.map((project) => `${project.title} (${project.client})`).join('; ')}. Clients also include ${clientLogos.map((logo) => logo.alt.replace(/ company logo$/, '')).join(', ')}.`,
+    body: `Client projects are live at their own addresses. We have also built demo sites, which are concepts and not clients' live sites (their forms send nothing): ${demoSites.map((demo) => `${demo.business} (${demo.kind.toLowerCase()})`).join('; ')}. Published client projects: ${projects.map((project) => `${project.title} (${project.client})`).join('; ')}. Clients also include ${clientLogos.map((logo) => logo.alt.replace(/ company logo$/, '')).join(', ')}.`,
   },
   {
     id: 'company-testimonials', title: 'What clients say', url: '/', kind: 'company',

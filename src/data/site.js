@@ -1,6 +1,6 @@
 // Nothing in this file is invented. Every claim is one the studio can back up:
 // client reviews come live from Google, word for word, and project copy
-// describes only work that is live at the linked address, except entries marked as a demo concept.
+// describes only work that is live at the linked address. Demo sites live in demoSites and are always labelled as concepts.
 
 // www is what actually serves: the apex 308-redirects here. Every absolute URL
 // the site declares about itself — canonical, og:url, JSON-LD, sitemap, robots —
@@ -198,28 +198,6 @@ export const clientLogos = [
 // Images are screenshots of the live sites, not stock photography.
 export const projects = [
   {
-    title: 'A demo website for a paving and landscaping company',
-    client: 'Father & Son Pavers & Landscaping, a demo concept (not a live site)',
-    date: '16 October 2026',
-    home: 'A demo site we designed for a family-run paving and landscaping company: project gallery, reviews and a three-step estimate request.',
-    portfolio: 'A demo we designed for a family-run paving and landscaping company in Sarasota, to show what a trades site can be. One fast page with a project gallery, Google reviews and a three-step estimate request. It is a concept for display and not the company’s live website, and its form sends nothing.',
-    href: '/demos/father-and-son-pavers/',
-    linkLabel: 'View the demo',
-    image: '/images/work/father-and-son-pavers-demo.webp',
-    alt: 'A paving company demo homepage with the headline Pavers and landscaping, laid right. beside a photo of a curved paver driveway',
-  },
-  {
-    title: 'A demo website for a Sarasota salon',
-    client: 'SS Salon & Co., a demo concept (not a live site)',
-    date: '16 October 2026',
-    home: 'A demo site we designed for a nail, hair and barbering salon: one fast page, specialist booking and a scrolling photo gallery.',
-    portfolio: 'A demo we designed for a family-run nail, hair and barbering salon, to show what a small-business site can be. One fast page with booking by specialist, a photo gallery and the salon’s Google rating. It is a concept for display and not the salon’s live website.',
-    href: '/demos/ss-salon/',
-    linkLabel: 'View the demo',
-    image: '/images/work/ss-salon-demo.webp',
-    alt: 'A salon demo homepage with the headline Nails. Hair. Barbering. over three photos of nail art and a haircut',
-  },
-  {
     title: 'Twelve connected websites for a surfacing manufacturer',
     client: 'ResinRock, our sister company',
     date: '2 September 2025',
@@ -277,3 +255,52 @@ export const offerings = [
   { name: 'Mobile apps', group: 'brand', href: '/mobile-app-development/', copy: 'iOS and Android apps, from a first version for a startup to internal tools for your own team.' },
   { name: 'Free website audit', group: 'start', href: '/free-website-audit/', copy: 'We check mobile usability, speed, technical SEO, search visibility and the enquiry path, then list the fixes worth doing first. The audit is yours to keep whether or not you hire us.' },
 ]
+
+// Demo sites we designed and built to show what a small-business site can be.
+// They are concepts, not client work: none is a live business site, and their
+// forms send nothing. Each is a static page in public/demos/<slug>/, hidden
+// from search (noindex, robots.txt). Screenshots are of the demos themselves.
+export const demoSites = [
+  {
+    slug: 'garden-of-joy',
+    business: 'Garden of Joy',
+    kind: 'Restaurant',
+    what: 'A menu with photos, reviews, live open hours and a request-a-table form.',
+    alt: 'A restaurant demo homepage with a headline quote beside photos of dumplings, cheese bread and lamb chops',
+  },
+  {
+    slug: 'father-and-son-pavers',
+    business: 'Father & Son Pavers & Landscaping',
+    kind: 'Paving and landscaping',
+    what: 'A project gallery, Google reviews and a three-step estimate request.',
+    alt: 'A paving company demo homepage with the headline Pavers and landscaping, laid right. beside a photo of a curved paver driveway',
+  },
+  {
+    slug: 'abs-auto',
+    business: 'Ab’s Auto Inc.',
+    kind: 'Auto repair',
+    what: 'A phone-first page with live open and closed hours and a describe-your-problem form.',
+    alt: 'An auto repair demo homepage with the headline Car trouble? Call Ab’s Auto. above a shop hours panel',
+  },
+  {
+    slug: 'brunetti-dental',
+    business: 'Dr. Patricia Brunetti, DDS',
+    kind: 'Dental practice',
+    what: 'Office hours, patient reviews and an appointment request that asks only for a name and number.',
+    alt: 'A dental practice demo homepage with the headline Gentle dentistry for Sarasota families beside the dentist’s portrait and office hours',
+  },
+  {
+    slug: 'carla-louise',
+    business: 'Carla Louise, Family First Realty',
+    kind: 'Real estate agent',
+    what: 'A personal-brand page for a realtor, with an enquiry form that starts with buying, selling or just asking.',
+    alt: 'A realtor demo homepage with the headline Putting your family first. beside an arched portrait',
+  },
+  {
+    slug: 'ss-salon',
+    business: 'SS Salon & Co.',
+    kind: 'Nail, hair and barber salon',
+    what: 'One fast page with booking by specialist, a photo gallery and the salon’s Google rating.',
+    alt: 'A salon demo homepage with the headline Nails. Hair. Barbering. over three photos of nail art and a haircut',
+  },
+].map((demo) => ({ ...demo, href: `/demos/${demo.slug}/`, image: `/images/work/${demo.slug}-demo.webp` }))

@@ -3,7 +3,7 @@ import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import VideoTranscript from '../components/VideoTranscript.jsx'
 import FunnelStory from '../components/FunnelStory.jsx'
-import { FaqAccordion, Stars, initials, useGoogleReviews } from '../components/shared.jsx'
+import { DemoSites, FaqAccordion, Stars, initials, useGoogleReviews } from '../components/shared.jsx'
 import { contact, googleListingUrl, offerings } from '../data/site.js'
 import { siteFaqs } from '../data/faqs.js'
 import { byOrganization, homeSeo, pageGraph, webPage } from '../data/seo.js'
@@ -736,6 +736,11 @@ export default function Home() {
         <Intro />
         <Advantage />
         <ServiceTiles />
+        <DemoSites
+          animate
+          title="What we can build for a business like yours"
+          copy="Six demo sites we designed for a restaurant, a paving company, a garage, a dental practice, a realtor and a salon. They are concepts, not client sites. Open any one and try it."
+        />
         <Routing />
         <Reviews />
         <Process />

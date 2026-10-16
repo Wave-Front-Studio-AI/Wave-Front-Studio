@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { Breadcrumbs, CtaBand, EnquiryForm, FaqAccordion, SectionHeading, SupportCallout, Testimonials, choosePlan } from '../components/shared.jsx'
+import { Breadcrumbs, CtaBand, DemoSites, EnquiryForm, FaqAccordion, SectionHeading, SupportCallout, Testimonials, choosePlan } from '../components/shared.jsx'
 import { services } from '../data/services.js'
 import { customWorks } from '../data/customWorks.js'
 import { siteOrigin } from '../data/site.js'
@@ -239,26 +239,21 @@ export default function ServicePage({ service }) {
             </div>
           </div>
           {service.approach.image ? (
-            <div className="service-approach-stack">
-              <figure className="service-approach-media">
-                <img src={service.approach.image.image} alt={service.approach.image.alt} loading="lazy" {...sizeOf(service.approach.image.image)} />
-                {service.approach.image.caption ? <figcaption>{service.approach.image.caption}</figcaption> : null}
-              </figure>
-              {(service.approach.demos || []).map((demo) => (
-                <figure key={demo.href} className="service-approach-media">
-                  <a href={demo.href} target="_blank">
-                    <img src={demo.image} alt={demo.alt} loading="lazy" {...sizeOf(demo.image)} />
-                  </a>
-                  <figcaption>
-                    {demo.caption}{' '}
-                    <a className="text-link" href={demo.href} target="_blank">{demo.linkLabel}</a>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+            <figure className="service-approach-media">
+              <img src={service.approach.image.image} alt={service.approach.image.alt} loading="lazy" {...sizeOf(service.approach.image.image)} />
+              {service.approach.image.caption ? <figcaption>{service.approach.image.caption}</figcaption> : null}
+            </figure>
           ) : null}
         </div>
       </section>
+
+      {service.slug === 'web-development' ? (
+        <DemoSites
+          className="is-light"
+          title="Demo sites we have built"
+          copy="Six small-business sites we designed to show the range, from a restaurant to a dental practice. They are demos, not client sites, and none of their forms send anything."
+        />
+      ) : null}
 
       <section className="service-capabilities chapter">
         <div className="page-frame">

@@ -12,6 +12,10 @@ const sizes = {
   '/images/work/resinrock-search-results.webp': [1200, 754],
   '/images/work/ss-salon-demo.webp': [1440, 900],
   '/images/work/father-and-son-pavers-demo.webp': [1440, 900],
+  '/images/work/abs-auto-demo.webp': [1440, 900],
+  '/images/work/brunetti-dental-demo.webp': [1440, 900],
+  '/images/work/carla-louise-demo.webp': [1440, 900],
+  '/images/work/garden-of-joy-demo.webp': [1440, 900],
   '/wave-logo.webp': [480, 150],
 }
 

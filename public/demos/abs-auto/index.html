@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ab's Auto Inc. | Auto repair in Sarasota, FL</title>
+<meta name="description" content="Independent auto repair at 2025 Princeton St in Sarasota: oil changes, A/C, engine diagnostics and general repairs. Rated 4.8 on Google. Call (941) 735-7399.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ecebe8">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" as="image" type="image/webp" href="img/logo-520.webp">
+<link rel="preload" as="font" type="font/woff2" href="fonts/Archivo.woff2" crossorigin>
+<style>
+@font-face{font-family:"Archivo";src:url(fonts/Archivo.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-style:normal;font-display:swap}
+:root{
+  --paper:#ecebe8;--card:#f6f5f3;--sand:#dedcd7;--line:#c6c3bc;--field:#8a867f;
+  --ink:#1f1f1f;--muted:#55575b;
+  --brick:#c9262b;--brick-d:#a61e23;--on-brick:#ffffff;--on-brick-2:#c9ccce;
+  --max:1120px;--gut:20px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:16px;scroll-padding-bottom:80px}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.6 "Archivo",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-stretch:100%;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+h1,h2,h3,p,ul,dl,dd,figure,blockquote{margin:0}
+ul{padding:0;list-style:none}
+.wrap{width:100%;max-width:calc(var(--max) + var(--gut)*2);margin:0 auto;padding:0 var(--gut)}
+:focus-visible{outline:3px solid var(--brick);outline-offset:3px}
+.reviews :focus-visible{outline-color:#fff}
+.on-brick :focus-visible{outline-color:#fff}
+.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:var(--paper);padding:10px 14px;z-index:20}
+.skip:focus{top:12px}
+
+h1,h2{font-weight:800;font-stretch:78%;letter-spacing:-.005em;line-height:1;text-wrap:balance}
+h1{font-size:clamp(2.5rem,7vw,4.25rem)}
+h2{font-size:clamp(1.9rem,4.4vw,2.6rem)}
+.lede{font-size:1.1875rem;color:var(--muted);max-width:34em}
+.small{font-size:.9375rem;color:var(--muted)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:52px;padding:0 26px;border:2px solid var(--brick);background:var(--brick);color:#fff;font:700 1.0625rem/1 "Archivo",sans-serif;text-decoration:none;border-radius:4px;cursor:pointer;transition:transform .12s ease-out}
+.btn:hover{background:var(--brick-d);border-color:var(--brick-d)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--brick-d);border-color:var(--brick-d)}
+.btn.ghost:hover{background:var(--sand);border-color:var(--brick-d)}
+.ico{width:1.15em;height:1.15em;flex:none}
+
+/* header */
+.top{border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-stretch:78%;font-size:1.6rem;line-height:1}
+.brand img{height:26px;width:auto}
+.top-call{font-weight:700;font-size:1.0625rem;text-decoration:none;font-variant-numeric:tabular-nums;padding:10px 0}
+.top-call:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* hero */
+.hero{padding:40px 0 56px}
+.hero .grid{display:grid;gap:36px}
+.hero h1{margin-bottom:18px;transform:skewX(-7deg);transform-origin:left bottom}
+.phone{display:inline-block;margin-bottom:22px;font-weight:800;font-stretch:80%;font-size:clamp(2.4rem,10.5vw,3.9rem);line-height:1;color:var(--brick);text-decoration:none;font-variant-numeric:tabular-nums;transform:skewX(-7deg);transform-origin:left bottom}
+.phone:hover{color:var(--brick-d);text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:3px}
+.hero .lede{margin-bottom:26px}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.facts{margin-top:26px;display:grid;gap:4px;font-size:.9375rem;color:var(--muted)}
+
+.sign{background:var(--ink);color:var(--on-brick);padding:26px 24px 22px;border-radius:4px}
+.sign h2{font-size:1.5rem;margin-bottom:4px}
+.sign .now{font-weight:700;margin-bottom:14px;color:var(--on-brick)}
+.hours{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.hours th,.hours td{padding:9px 10px;text-align:left;font-weight:400;border-top:1px solid #4a4a4a}
+.hours th{font-weight:600}
+.hours td{text-align:right}
+.hours tr.today{background:var(--brick)}
+.hours tr.today th,.hours tr.today td{font-weight:800}
+.sign .note{margin-top:12px;font-size:.875rem;color:var(--on-brick-2)}
+
+/* sections */
+section{padding:60px 0}
+.head{margin-bottom:28px;max-width:34em}
+.head h2{margin-bottom:10px}
+.rule{display:block;height:1px;background:var(--ink);transform-origin:left center;margin-bottom:28px}
+.js .rule{transform:scaleX(0);transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.js .rule.in{transform:none}
+
+.reviews{--cut:18px;background:var(--ink);color:#f1f1f1;padding:calc(48px + var(--cut)) 0;clip-path:polygon(0 var(--cut),100% 0,100% calc(100% - var(--cut)),0 100%)}
+.reviews h2{color:#fff}
+.reviews .sum{margin:8px 0 26px;color:#c9ccce;max-width:40em}
+.reviews .sum strong{color:#fff}
+.feature{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid #444}
+.feature blockquote{font-size:1.125rem;line-height:1.5;font-weight:500;font-stretch:95%;max-width:60em}
+cite{display:block;margin-top:8px;font-style:normal;font-size:.875rem;color:var(--muted)}
+cite b{color:var(--ink);font-weight:700}
+.reviews cite{color:#c9ccce}
+.reviews cite b{color:#fff}
+.quotes li{padding:14px 0;border-bottom:1px solid #444;break-inside:avoid}
+.quotes li:last-child{border-bottom:0}
+.quotes blockquote{font-size:.9375rem;line-height:1.5}
+.quotes cite{margin-top:5px}
+
+.svc-grid{display:grid;gap:36px}
+.svc li{padding:20px 0;border-top:1px solid var(--line)}
+.svc li:last-child{border-bottom:1px solid var(--line)}
+.svc h3{font-size:1.5rem;font-weight:800;font-stretch:78%;line-height:1.1;margin-bottom:4px}
+.svc p{color:var(--muted);max-width:34em}
+.photos{display:grid;gap:20px}
+.photo img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:4px;background:var(--sand)}
+.strip{margin-top:44px}
+.strip img{width:100%;aspect-ratio:1200/480;object-fit:cover;border-radius:4px;background:var(--sand)}
+
+.visit{background:var(--sand)}
+.vgrid{display:grid;gap:36px}
+address{font-style:normal;font-size:1.375rem;line-height:1.35;font-weight:600;font-stretch:90%;margin-bottom:6px}
+.vcol .btn{margin-top:18px}
+.vcol .small{margin-top:12px;max-width:30em}
+.know h3{font-weight:800;font-stretch:78%;font-size:1.375rem;margin-bottom:12px}
+.know ul{display:grid;gap:10px}
+.know li{padding-left:22px;position:relative}
+.know li::before{content:"";position:absolute;left:0;top:.75em;width:10px;height:2px;background:var(--brick)}
+
+.fgrid{display:grid;gap:32px}
+form{display:grid;gap:18px}
+.row{display:grid;gap:18px}
+label{display:block;font-weight:600;font-size:.9375rem;margin-bottom:6px}
+input,textarea{width:100%;font:400 1rem/1.4 "Archivo",sans-serif;color:var(--ink);background:#fff;border:2px solid var(--field);border-radius:4px;padding:12px 14px;min-height:50px}
+textarea{min-height:130px;resize:vertical}
+input:focus-visible,textarea:focus-visible{outline:3px solid var(--brick);outline-offset:1px;border-color:var(--brick)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.msg{min-height:1.5em;font-weight:600}
+.msg.err{color:var(--brick-d)}
+.done{padding:22px;border:2px solid var(--brick);border-radius:4px;background:var(--card)}
+.done h3{font-weight:800;font-stretch:78%;font-size:1.75rem;margin-bottom:6px}
+
+footer{padding:32px 0 110px;font-size:.9375rem;color:var(--muted)}
+footer .wrap{display:grid;gap:8px}
+
+.bar-m{position:fixed;left:0;right:0;bottom:0;z-index:10;display:grid;grid-template-columns:1.4fr 1fr;gap:10px;padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom));background:var(--paper);border-top:1px solid var(--line)}
+.bar-m .btn{min-height:50px;padding:0 12px}
+
+@media (min-width:640px){.row.two{grid-template-columns:1fr 1fr}}
+@media (min-width:900px){
+  :root{--gut:32px}
+  .hero{padding:72px 0 88px}
+  .hero .grid{grid-template-columns:1.2fr .8fr;gap:72px;align-items:start}
+  section{padding:84px 0}
+  .reviews{--cut:44px;padding:calc(60px + var(--cut)) 0}
+  .quotes{columns:2;column-gap:40px}
+  .svc-grid{grid-template-columns:1.15fr .85fr;gap:64px;align-items:start}
+  .vgrid{grid-template-columns:1fr 1fr;gap:80px}
+  .fgrid{grid-template-columns:.8fr 1.2fr;gap:80px}
+  .bar-m{display:none}
+  footer{padding-bottom:48px}
+}
+@media (min-width:640px){.brand img{height:34px}}
+@media (max-width:379px){.top-call{display:none}}
+@media (prefers-reduced-motion:reduce){
+  .js .rule{transform:none;transition:none}
+  .btn{transition:none}
+  .btn:active{transform:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="Ab's Auto Inc., home"><img src="img/logo-520.webp" width="520" height="67" alt="Ab's Auto Inc."></a>
+    <a class="top-call" href="tel:+19417357399">(941) 735-7399</a>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero">
+  <div class="wrap grid">
+    <div>
+      <h1>Car trouble? Call Ab's Auto.</h1>
+      <a class="phone" href="tel:+19417357399">(941) 735-7399</a>
+      <p class="lede">Independent auto repair in the Merchants Pointe shopping center on Princeton Street, Sarasota. Oil changes, A/C, engine diagnostics and general repairs.</p>
+      <div class="cta">
+        <a class="btn" href="#estimate">Describe your problem</a>
+        <a class="btn ghost" href="#visit">Find the shop</a>
+      </div>
+      <p class="facts"><span>Rated 4.8 on Google from 34 reviews</span><span>Appointments recommended</span><span>Credit and debit cards accepted</span></p>
+    </div>
+    <aside class="sign on-brick" aria-labelledby="hrs-h">
+      <h2 id="hrs-h">Shop hours</h2>
+      <p class="now" id="now" role="status">Mon to Thu 8 AM to 4 PM, Fri 8 AM to 2 PM</p>
+      <table class="hours" id="hours">
+        <tbody>
+          <tr data-d="1"><th scope="row">Monday</th><td>8 AM to 4 PM</td></tr>
+          <tr data-d="2"><th scope="row">Tuesday</th><td>8 AM to 4 PM</td></tr>
+          <tr data-d="3"><th scope="row">Wednesday</th><td>8 AM to 4 PM</td></tr>
+          <tr data-d="4"><th scope="row">Thursday</th><td>8 AM to 4 PM</td></tr>
+          <tr data-d="5"><th scope="row">Friday</th><td>8 AM to 2 PM</td></tr>
+          <tr data-d="6"><th scope="row">Saturday</th><td>Closed</td></tr>
+          <tr data-d="0"><th scope="row">Sunday</th><td>Closed</td></tr>
+        </tbody>
+      </table>
+      <p class="note">Hours are from Google. Call to confirm before a long drive.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="reviews" id="reviews" aria-labelledby="rev-h">
+  <div class="wrap">
+    <h2 id="rev-h">What customers say</h2>
+    <p class="sum"><strong>4.8 out of 5 on Google, from 34 reviews:</strong> 30 five-star, 2 four-star, 1 three-star, 1 one-star. The quotes below are five-star reviews, shown as written.</p>
+    <figure class="feature">
+      <blockquote>"Adrian is one of the best mechanics I know. He might be a small self run business, but he can take on alot of work and has a HUGE heart. Between him and his staff going above and beyond, they go out of their way for many instances, just to find specific parts for my car's needs. Where other mechanics would just order new parts and charge a fortune, Adrian works with what you can afford financially and the only mechanic I can trust not to screw me over. With a heart of gold and head filled with knowledge, I know my car and life is in good hands with this top notch mechanic."</blockquote>
+      <figcaption><cite><b>Amelia Forte</b>, 5 stars on Google</cite></figcaption>
+    </figure>
+    <ul class="quotes">
+      <li><blockquote>"AB fixed my 2001 Toyota Avalon when everyone else told me to get a new car..AB is the best...highly recommend..."</blockquote><cite><b>Gayle</b>, 5 stars on Google</cite></li>
+      <li><blockquote>"If you want "a friend in the business " then AB is your mechanic. Over the last few years he's worked on several of my vehicles including a 1993 300zx which every other mechanic wanted way too much to work on. Needless to say AB was about 1/2 the price. Knowledgeable, honest and does great work. My mom even takes her car to AB now."</blockquote><cite><b>scott kenney</b>, 5 stars on Google</cite></li>
+      <li><blockquote>"I have been a client of Adrian for years and He never failed to make us HAppy with thier awesome service with our Car, He made us sure that when we leave in His shop we perfectly safe with our newly fixed car. Thank you so much Adrian you and your crew are always the best Thank you once again. Keep up the good work with a heart God Bless from my Family.❤️"</blockquote><cite><b>Eda P</b>, 5 stars on Google</cite></li>
+      <li><blockquote>"Great mechanic and owner! Looking for an honest mechanic with fair prices who will work with you? Look no further!"</blockquote><cite><b>Goddess TRiNiTy</b>, 5 stars on Google</cite></li>
+      <li><blockquote>"AB is so honest, knows his stuff, and reasonable!! And he’s a cool guy. Really know his older cars!"</blockquote><cite><b>Diane Hopen</b>, 5 stars on Google</cite></li>
+      <li><blockquote>"Adrienne, the owner, is a great mechanic, honest and straight forward. If they were all like him, it would be a better world."</blockquote><cite><b>Mike Reffuge</b>, 5 stars on Google</cite></li>
+      <li><blockquote>"AB is honest and a great mechanic.  We have used his shop for years"</blockquote><cite><b>michele weissinger</b>, 5 stars on Google</cite></li>
+      <li><blockquote>"AB is legit. He takes good care of my family. Pretty cool guy, too."</blockquote><cite><b>Gian</b>, 5 stars on Google</cite></li>
+      <li><blockquote>"AB is by far the best mechanic I have ever met.  No attitude at all and a seriously great guy."</blockquote><cite><b>Lucky Dog</b>, 5 stars on Google</cite></li>
+    </ul>
+  </div>
+</section>
+
+<section id="services" aria-labelledby="svc-h">
+  <div class="wrap">
+    <span class="rule" aria-hidden="true"></span>
+    <div class="svc-grid">
+      <div>
+        <div class="head">
+          <h2 id="svc-h">What the shop handles</h2>
+          <p class="lede">Taken from the shop's public listings. If your problem is not here, call and ask.</p>
+        </div>
+        <ul class="svc">
+          <li><h3>Oil changes</h3><p>Routine oil service, done on site.</p></li>
+          <li><h3>Engine diagnostics</h3><p>Finding out what is causing the problem.</p></li>
+          <li><h3>Air conditioning</h3><p>A/C repair, which matters in a Florida summer.</p></li>
+          <li><h3>General repairs and maintenance</h3><p>The everyday work that keeps a car on the road.</p></li>
+          <li><h3>Older vehicles</h3><p>Customers say he knows older cars well, from a 1993 300ZX to a 2001 Avalon.</p></li>
+        </ul>
+        <p class="small" style="margin-top:18px">Prices are not listed here because they depend on the car and the job. Call or send the details for an estimate.</p>
+      </div>
+      <div class="photos">
+        <figure class="photo">
+          <!-- PLACEHOLDER PHOTOS (3, Unsplash stock, not the shop; replace with real photos before launch): hood-*.webp by Tim Mossholder (oil being poured into an engine), vintage-*.webp (car restoration garage), garage-*.webp (workshop interior). -->
+          <img src="img/hood-800.webp" srcset="img/hood-480.webp 480w, /img/hood-800.webp 800w" sizes="(min-width: 900px) 440px, calc(100vw - 40px)" width="800" height="553" alt="A mechanic's hands pouring oil into a car engine bay" loading="lazy" decoding="async">
+        </figure>
+        <figure class="photo">
+          <img src="img/vintage-800.webp" srcset="img/vintage-480.webp 480w, /img/vintage-800.webp 800w" sizes="(min-width: 900px) 440px, calc(100vw - 40px)" width="800" height="534" alt="An old car body on stands in a garage" loading="lazy" decoding="async">
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="visit" id="visit" aria-labelledby="visit-h">
+  <div class="wrap">
+    <div class="head"><h2 id="visit-h">Find the shop</h2></div>
+    <div class="vgrid">
+      <div class="vcol">
+        <address>Ab's Auto Inc.<br>2025 Princeton St<br>Sarasota, FL 34237</address>
+        <p class="small">In the Merchants Pointe Shopping Center.</p>
+        <a class="btn" href="https://www.google.com/maps/dir/?api=1&amp;destination=2025+Princeton+St%2C+Sarasota%2C+FL+34237" rel="noopener">Get directions</a>
+        <p class="small">Opens Google Maps. Or call <a href="tel:+19417357399">(941) 735-7399</a>.</p>
+      </div>
+      <div class="know">
+        <h3>Before you come in</h3>
+        <ul>
+          <li>Appointments are recommended, so call first.</li>
+          <li>The shop takes credit and debit cards.</li>
+          <li>The entrance and parking lot are wheelchair accessible.</li>
+        </ul>
+      </div>
+    </div>
+    <figure class="strip">
+      <img src="img/garage-1200.webp" srcset="img/garage-640.webp 640w, /img/garage-1200.webp 1200w" sizes="(min-width: 1184px) 1056px, calc(100vw - 40px)" width="1200" height="480" alt="Inside a busy garage with a car on a lift and tools on the wall" loading="lazy" decoding="async">
+    </figure>
+  </div>
+</section>
+
+<section id="estimate" aria-labelledby="est-h">
+  <div class="wrap fgrid">
+    <div>
+      <h2 id="est-h">Describe the problem</h2>
+      <p class="lede" style="margin-top:12px">Tell the shop about your car and what it is doing, and leave a number to reach you. For anything urgent, just call.</p>
+      <p class="small" style="margin-top:14px">Only your name and a phone number are required.</p>
+    </div>
+    <div>
+      <form id="form" novalidate>
+        <div class="row two">
+          <div><label for="f-name">Your name</label><input id="f-name" name="name" autocomplete="name" required maxlength="120"></div>
+          <div><label for="f-phone">Phone number</label><input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="40"></div>
+        </div>
+        <div><label for="f-veh">Year, make and model</label><input id="f-veh" name="vehicle" placeholder="For example: 2001 Toyota Avalon" maxlength="120"></div>
+        <div><label for="f-det">What is it doing?</label><textarea id="f-det" name="details" maxlength="2000"></textarea></div>
+        <div class="hp" aria-hidden="true"><label for="f-web">Leave this empty</label><input id="f-web" name="website" tabindex="-1" autocomplete="off"></div>
+        <div><button class="btn" type="submit" id="send">Send to the shop</button></div>
+        <p class="msg" id="msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong style="color:var(--ink)">Ab's Auto Inc.</strong> · 2025 Princeton St, Sarasota, FL 34237 · <a href="tel:+19417357399">(941) 735-7399</a></p>
+    <p>Reviews and ratings are from Google and shown as written.</p>
+  </div>
+</footer>
+
+<div class="bar-m">
+  <a class="btn" href="tel:+19417357399"><svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8Z"/></svg>Call now</a>
+  <a class="btn ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=2025+Princeton+St%2C+Sarasota%2C+FL+34237" rel="noopener">Directions</a>
+</div>
+
+<script>
+(function(){
+  var d=document,root=d.documentElement;
+  root.classList.add('js');
+
+  /* open / closed, in the shop's time zone (Eastern) */
+  var H={1:[8,16],2:[8,16],3:[8,16],4:[8,16],5:[8,14]};
+  function fmt(h){var s=h>=12?'PM':'AM';h=h%12||12;return h+' '+s}
+  function now(){
+    try{
+      var p=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'numeric',minute:'numeric',hour12:false}).formatToParts(new Date());
+      var o={};p.forEach(function(x){o[x.type]=x.value});
+      var wd={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6}[o.weekday];
+      return {d:wd,m:(+o.hour%24)*60+(+o.minute)};
+    }catch(e){return null}
+  }
+  var n=now();
+  if(n){
+    var rows=d.querySelectorAll('#hours tr');
+    for(var i=0;i<rows.length;i++){if(+rows[i].getAttribute('data-d')===n.d){rows[i].className='today';rows[i].setAttribute('aria-current','date')}}
+    var t=d.getElementById('now'),h=H[n.d];
+    if(h&&n.m>=h[0]*60&&n.m<h[1]*60){t.textContent='Open now, until '+fmt(h[1])}
+    else{
+      var nd=n.d,nxt=null,add=0;
+      if(h&&n.m<h[0]*60){nxt=h;add=0}
+      else{for(var k=1;k<=7;k++){var x=(n.d+k)%7;if(H[x]){nxt=H[x];nd=x;add=k;break}}}
+      var names=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      t.textContent='Closed now, opens '+(add===0?'today':add===1?'tomorrow':names[nd])+' at '+fmt(nxt[0]);
+    }
+  }
+
+  /* hairlines draw in once as they scroll into view */
+  var items=d.querySelectorAll('.rule');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.2});
+    for(var j=0;j<items.length;j++)io.observe(items[j]);
+  }else{for(var j2=0;j2<items.length;j2++)items[j2].classList.add('in')}
+
+  /* estimate form */
+  var f=d.getElementById('form'),msg=d.getElementById('msg'),btn=d.getElementById('send');
+  var PHONE='<a href="tel:+19417357399">(941) 735-7399</a>';
+  function fail(text){msg.className='msg err';msg.innerHTML=text}
+  f.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var name=f.name.value.trim(),phone=f.phone.value.trim();
+    if(!name){fail('Please add your name.');f.name.focus();return}
+    if(phone.replace(/\D/g,'').length<7){fail('Please add a phone number the shop can call back.');f.phone.focus();return}
+    msg.className='msg';msg.textContent='Sending...';btn.disabled=true;
+    var body={name:name,phone:phone,vehicle:f.vehicle.value,details:f.details.value,website:f.website.value};
+    /* Demo copy on the Wavefront site: nothing is sent, so a test request never reaches the real business. */
+    Promise.resolve({ok:true,json:function(){return Promise.resolve({ok:true})}})
+      .then(function(r){return {ok:true}})
+      .then(function(res){
+        btn.disabled=false;
+        if(res.ok){
+          f.innerHTML='<div class="done" tabindex="-1" id="done"><h3>Demo only: nothing was sent.</h3><p>This is a demo site built by Wavefront Studio, so the request went nowhere. To reach the real shop, call '+PHONE+'.</p></div>';
+          var dn=d.getElementById('done');if(dn)dn.focus();
+        }else fail('That did not go through. Please call the shop at '+PHONE+' instead.');
+      })
+      .catch(function(){btn.disabled=false;fail('That did not go through. Please call the shop at '+PHONE+' instead.')});
+  });
+})();
+</script>
+</body>
+</html>

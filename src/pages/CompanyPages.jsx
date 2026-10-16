@@ -1,6 +1,6 @@
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { CtaBand, EnquiryForm, FaqAccordion, OfferingList, SectionHeading, SupportCallout, Testimonials } from '../components/shared.jsx'
+import { CtaBand, DemoSites, EnquiryForm, FaqAccordion, OfferingList, SectionHeading, SupportCallout, Testimonials } from '../components/shared.jsx'
 import { contact, offerings, projects, siteOrigin } from '../data/site.js'
 import { siteFaqs as faqItems } from '../data/faqs.js'
 import { pageGraph } from '../data/seo.js'
@@ -118,7 +118,7 @@ export function PortfolioPage() {
       <section className="page-hero">
         <div className="page-frame">
           <h1>Work we have built for clients</h1>
-          <p>Follow each link to see the work. Every client project is live. The salon and paving sites are demos we built to show what we can do.</p>
+          <p>Every client project below is live. Follow the link to see it working. Further down are demo sites we built to show the range.</p>
         </div>
       </section>
 
@@ -143,8 +143,8 @@ export function PortfolioPage() {
                       <dd>{project.date}</dd>
                     </div>
                   </dl>
-                  <a className="text-link" href={project.href} target="_blank" rel={project.linkLabel ? undefined : 'noreferrer noopener'}>
-                    {project.linkLabel || 'Visit the site'} <ArrowIcon />
+                  <a className="text-link" href={project.href} target="_blank" rel="noreferrer noopener">
+                    Visit the site <ArrowIcon />
                   </a>
                 </div>
               </article>
@@ -152,6 +152,11 @@ export function PortfolioPage() {
           </div>
         </div>
       </section>
+
+      <DemoSites
+        title="Demo sites we have built"
+        copy="Concepts for a restaurant, a paving company, a garage, a dental practice, a realtor and a salon. They are demos, not client sites, and none of their forms send anything."
+      />
 
       <Testimonials />
 
