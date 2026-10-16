@@ -47,6 +47,7 @@ const postSlugs = [
   'homepage-first-screen',
   'which-ai-bots-to-allow-in-robots-txt',
   'brand-is-more-than-a-logo',
+  'answer-leads-within-minutes',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
