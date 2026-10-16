@@ -1,6 +1,6 @@
 // Nothing in this file is invented. Every claim is one the studio can back up:
 // client reviews come live from Google, word for word, and project copy
-// describes only work that is live at the linked address.
+// describes only work that is live at the linked address, except entries marked as a demo concept.
 
 // www is what actually serves: the apex 308-redirects here. Every absolute URL
 // the site declares about itself — canonical, og:url, JSON-LD, sitemap, robots —
@@ -197,6 +197,17 @@ export const clientLogos = [
 
 // Images are screenshots of the live sites, not stock photography.
 export const projects = [
+  {
+    title: 'A demo website for a Sarasota salon',
+    client: 'SS Salon & Co., a demo concept (not a live site)',
+    date: '16 October 2026',
+    home: 'A demo site we designed for a nail, hair and barbering salon: one fast page, specialist booking and a scrolling photo gallery.',
+    portfolio: 'A demo we designed for a family-run nail, hair and barbering salon, to show what a small-business site can be. One fast page with booking by specialist, a photo gallery and the salon’s Google rating. It is a concept for display and not the salon’s live website.',
+    href: '/demos/ss-salon/',
+    linkLabel: 'View the demo',
+    image: '/images/work/ss-salon-demo.webp',
+    alt: 'A salon demo homepage with the headline Nails. Hair. Barbering. over three photos of nail art and a haircut',
+  },
   {
     title: 'Twelve connected websites for a surfacing manufacturer',
     client: 'ResinRock, our sister company',

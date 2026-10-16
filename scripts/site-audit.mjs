@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
@@ -103,6 +104,8 @@ for (const route of routes) {
     const target = href.split(/[?#]/)[0] || route.path
     if (/\.[a-z\d]{2,5}$/i.test(target)) continue
     const normalized = target.endsWith('/') ? target : `${target}/`
+    // Unlisted demo builds live in public/demos/ and are not routes.
+    if (normalized.startsWith('/demos/') && existsSync(resolve(dist, normalized.slice(1), 'index.html'))) continue
     if (!routePaths.has(normalized)) failures.push(`${route.path}: dead internal link ${href}`)
   }
 }

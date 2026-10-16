@@ -118,7 +118,7 @@ export function PortfolioPage() {
       <section className="page-hero">
         <div className="page-frame">
           <h1>Work we have built for clients</h1>
-          <p>Every project below is live. Follow the link to see it working.</p>
+          <p>Follow each link to see the work. Every client project is live. The salon site is a demo we built to show what we can do.</p>
         </div>
       </section>
 
@@ -143,8 +143,8 @@ export function PortfolioPage() {
                       <dd>{project.date}</dd>
                     </div>
                   </dl>
-                  <a className="text-link" href={project.href} target="_blank" rel="noreferrer noopener">
-                    Visit the site <ArrowIcon />
+                  <a className="text-link" href={project.href} target="_blank" rel={project.linkLabel ? undefined : 'noreferrer noopener'}>
+                    {project.linkLabel || 'Visit the site'} <ArrowIcon />
                   </a>
                 </div>
               </article>

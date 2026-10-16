@@ -121,7 +121,7 @@ const companyEntries = [
   {
     id: 'company-portfolio', title: 'Our work and portfolio', url: '/portfolio/', kind: 'company',
     keywords: ['portfolio', 'work', 'examples', 'case study', 'case studies', 'projects', 'proof', 'results', 'clients', 'resinrock'],
-    body: `Every published project is live at its own address. Published projects: ${projects.map((project) => `${project.title} (${project.client})`).join('; ')}. Clients also include ${clientLogos.map((logo) => logo.alt.replace(/ company logo$/, '')).join(', ')}.`,
+    body: `Client projects are live at their own addresses; the SS Salon site is a demo concept we built to show our work, not a client's live site. Published projects: ${projects.map((project) => `${project.title} (${project.client})`).join('; ')}. Clients also include ${clientLogos.map((logo) => logo.alt.replace(/ company logo$/, '')).join(', ')}.`,
   },
   {
     id: 'company-testimonials', title: 'What clients say', url: '/', kind: 'company',
