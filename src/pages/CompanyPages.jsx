@@ -118,7 +118,7 @@ export function PortfolioPage() {
       <section className="page-hero">
         <div className="page-frame">
           <h1>Work we have built for clients</h1>
-          <p>Follow each link to see the work. Every client project is live. The salon site is a demo we built to show what we can do.</p>
+          <p>Follow each link to see the work. Every client project is live. The salon and paving sites are demos we built to show what we can do.</p>
         </div>
       </section>
 

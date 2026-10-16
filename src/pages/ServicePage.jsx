@@ -244,17 +244,17 @@ export default function ServicePage({ service }) {
                 <img src={service.approach.image.image} alt={service.approach.image.alt} loading="lazy" {...sizeOf(service.approach.image.image)} />
                 {service.approach.image.caption ? <figcaption>{service.approach.image.caption}</figcaption> : null}
               </figure>
-              {service.approach.demo ? (
-                <figure className="service-approach-media">
-                  <a href={service.approach.demo.href} target="_blank">
-                    <img src={service.approach.demo.image} alt={service.approach.demo.alt} loading="lazy" {...sizeOf(service.approach.demo.image)} />
+              {(service.approach.demos || []).map((demo) => (
+                <figure key={demo.href} className="service-approach-media">
+                  <a href={demo.href} target="_blank">
+                    <img src={demo.image} alt={demo.alt} loading="lazy" {...sizeOf(demo.image)} />
                   </a>
                   <figcaption>
-                    {service.approach.demo.caption}{' '}
-                    <a className="text-link" href={service.approach.demo.href} target="_blank">{service.approach.demo.linkLabel}</a>
+                    {demo.caption}{' '}
+                    <a className="text-link" href={demo.href} target="_blank">{demo.linkLabel}</a>
                   </figcaption>
                 </figure>
-              ) : null}
+              ))}
             </div>
           ) : null}
         </div>

@@ -11,6 +11,7 @@ const sizes = {
   '/images/work/resinrockleads-site.webp': [1440, 900],
   '/images/work/resinrock-search-results.webp': [1200, 754],
   '/images/work/ss-salon-demo.webp': [1440, 900],
+  '/images/work/father-and-son-pavers-demo.webp': [1440, 900],
   '/wave-logo.webp': [480, 150],
 }
 

@@ -198,6 +198,17 @@ export const clientLogos = [
 // Images are screenshots of the live sites, not stock photography.
 export const projects = [
   {
+    title: 'A demo website for a paving and landscaping company',
+    client: 'Father & Son Pavers & Landscaping, a demo concept (not a live site)',
+    date: '16 October 2026',
+    home: 'A demo site we designed for a family-run paving and landscaping company: project gallery, reviews and a three-step estimate request.',
+    portfolio: 'A demo we designed for a family-run paving and landscaping company in Sarasota, to show what a trades site can be. One fast page with a project gallery, Google reviews and a three-step estimate request. It is a concept for display and not the company’s live website, and its form sends nothing.',
+    href: '/demos/father-and-son-pavers/',
+    linkLabel: 'View the demo',
+    image: '/images/work/father-and-son-pavers-demo.webp',
+    alt: 'A paving company demo homepage with the headline Pavers and landscaping, laid right. beside a photo of a curved paver driveway',
+  },
+  {
     title: 'A demo website for a Sarasota salon',
     client: 'SS Salon & Co., a demo concept (not a live site)',
     date: '16 October 2026',

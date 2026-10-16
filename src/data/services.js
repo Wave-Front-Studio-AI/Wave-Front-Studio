@@ -28,13 +28,22 @@ export const services = [
         caption: 'The main site in a network of 12+ connected sites we built for our sister company.',
       },
       // A demo concept, linked as such so nobody takes it for a client's live site.
-      demo: {
-        image: '/images/work/ss-salon-demo.webp',
-        alt: 'A salon demo homepage with the headline Nails. Hair. Barbering. over three photos of nail art and a haircut',
-        caption: 'A demo site we designed for a Sarasota salon: one fast page with booking by specialist. A concept, not a live site.',
-        href: '/demos/ss-salon/',
-        linkLabel: 'View the demo',
-      },
+      demos: [
+        {
+          image: '/images/work/ss-salon-demo.webp',
+          alt: 'A salon demo homepage with the headline Nails. Hair. Barbering. over three photos of nail art and a haircut',
+          caption: 'A demo site we designed for a Sarasota salon: one fast page with booking by specialist. A concept, not a live site.',
+          href: '/demos/ss-salon/',
+          linkLabel: 'View the demo',
+        },
+        {
+          image: '/images/work/father-and-son-pavers-demo.webp',
+          alt: 'A paving company demo homepage with the headline Pavers and landscaping, laid right. beside a photo of a curved paver driveway',
+          caption: 'A demo site we designed for a Sarasota paving company: project gallery and a three-step estimate request. A concept, not a live site.',
+          href: '/demos/father-and-son-pavers/',
+          linkLabel: 'View the demo',
+        },
+      ],
     },
     features: [
       'Fully custom responsive design for all devices',
