@@ -771,6 +771,19 @@ details p {
   outline-offset: 3px;
 }
 
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.fine a {
+  color: var(--teal-800);
+  text-underline-offset: 3px;
+}
+
 .hp {
   position: absolute;
   left: -9999px;
