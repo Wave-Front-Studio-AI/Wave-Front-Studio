@@ -6,157 +6,159 @@
 <title>Ab's Auto Inc. | Auto repair in Sarasota, FL</title>
 <meta name="description" content="Independent auto repair at 2025 Princeton St in Sarasota: oil changes, A/C, engine diagnostics and general repairs. Rated 4.8 on Google. Call (941) 735-7399.">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#ecebe8">
+<meta name="theme-color" content="#1f1f1f">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preload" as="image" type="image/webp" href="img/logo-520.webp">
 <link rel="preload" as="font" type="font/woff2" href="fonts/Archivo.woff2" crossorigin>
 <style>
 @font-face{font-family:"Archivo";src:url(fonts/Archivo.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-style:normal;font-display:swap}
+/* Direction, informed by reference auto shops (Electrified Garage, Good Vibes Garage, Cathedral Automotive, Les Schwab):
+   a plain promise with the phone number as the biggest graphic, no photo needed to open, symptom-first service rows,
+   hours visible in the header and the hero, a call bar on phones. Colour is the logo's: near-black, stone, one red. */
 :root{
   --paper:#ecebe8;--card:#f6f5f3;--sand:#dedcd7;--line:#c6c3bc;--field:#8a867f;
   --ink:#1f1f1f;--muted:#55575b;
-  --brick:#c9262b;--brick-d:#a61e23;--on-brick:#ffffff;--on-brick-2:#c9ccce;
-  --max:1120px;--gut:20px;
+  --brick:#c9262b;--brick-d:#a61e23;--brick-lit:#f2555a;--on-brick:#ffffff;
+  --on-dark:#f1f1f1;--on-dark-2:#c9ccce;--dark-line:#444;
+  --max:1160px;--gut:20px;--r:4px;
+  --ease:cubic-bezier(.16,1,.3,1);
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:16px;scroll-padding-bottom:80px}
-body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.6 "Archivo",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-stretch:100%;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.6 "Archivo",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-stretch:100%;-webkit-font-smoothing:antialiased;overflow-x:clip}
 img{display:block;max-width:100%;height:auto}
 a{color:inherit}
 h1,h2,h3,p,ul,dl,dd,figure,blockquote{margin:0}
 ul{padding:0;list-style:none}
+::selection{background:var(--brick);color:#fff}
 .wrap{width:100%;max-width:calc(var(--max) + var(--gut)*2);margin:0 auto;padding:0 var(--gut)}
 :focus-visible{outline:3px solid var(--brick);outline-offset:3px}
-.reviews :focus-visible{outline-color:#fff}
-.on-brick :focus-visible{outline-color:#fff}
-.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:var(--paper);padding:10px 14px;z-index:20}
+.dark :focus-visible{outline-color:#fff}
+.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:var(--paper);padding:10px 14px;z-index:200}
 .skip:focus{top:12px}
 
 h1,h2{font-weight:800;font-stretch:78%;letter-spacing:-.005em;line-height:1;text-wrap:balance}
-h1{font-size:clamp(2.5rem,7vw,4.25rem)}
-h2{font-size:clamp(1.9rem,4.4vw,2.6rem)}
+h2{font-size:clamp(2.1rem,5vw,3.4rem)}
 .lede{font-size:1.1875rem;color:var(--muted);max-width:34em}
 .small{font-size:.9375rem;color:var(--muted)}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:52px;padding:0 26px;border:2px solid var(--brick);background:var(--brick);color:#fff;font:700 1.0625rem/1 "Archivo",sans-serif;text-decoration:none;border-radius:4px;cursor:pointer;transition:transform .12s ease-out}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:54px;padding:0 28px;border:2px solid var(--brick);background:var(--brick);color:#fff;font:700 1.0625rem/1 "Archivo",sans-serif;text-decoration:none;border-radius:var(--r);cursor:pointer;white-space:nowrap;transition:background-color .2s,border-color .2s,color .2s,transform .12s var(--ease)}
 .btn:hover{background:var(--brick-d);border-color:var(--brick-d)}
 .btn:active{transform:translateY(1px)}
 .btn.ghost{background:transparent;color:var(--brick-d);border-color:var(--brick-d)}
-.btn.ghost:hover{background:var(--sand);border-color:var(--brick-d)}
+.btn.ghost:hover{background:var(--sand)}
+.dark .btn.ghost{color:#fff;border-color:rgba(255,255,255,.7)}
+.dark .btn.ghost:hover{background:#fff;color:var(--ink);border-color:#fff}
 .ico{width:1.15em;height:1.15em;flex:none}
 
-/* header */
-.top{border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-stretch:78%;font-size:1.6rem;line-height:1}
-.brand img{height:26px;width:auto}
-.top-call{font-weight:700;font-size:1.0625rem;text-decoration:none;font-variant-numeric:tabular-nums;padding:10px 0}
-.top-call:hover{text-decoration:underline;text-underline-offset:3px}
+/* header: the logo on stone, hours and phone always in view */
+.top{background:var(--paper);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.brand{display:block;line-height:0}
+.brand img{height:28px;width:auto}
+.top .right{display:flex;align-items:center;gap:10px 22px}
+.open{font-weight:700;font-size:.9375rem;font-stretch:90%;padding:6px 12px;border:2px solid var(--ink);border-radius:var(--r);white-space:nowrap}
+.top-call{font-weight:800;font-stretch:80%;font-size:1.5rem;text-decoration:none;font-variant-numeric:tabular-nums;padding:8px 0;line-height:1;white-space:nowrap}
+@media (max-width:479px){.top-call{font-size:1.25rem}}
+.top-call:hover{color:var(--brick-d)}
+@media (min-width:640px){.brand img{height:36px}}
+@media (max-width:759px){.open{display:none}}
+@media (max-width:379px){.top-call{display:none}}
 
-/* hero */
-.hero{padding:40px 0 56px}
-.hero .grid{display:grid;gap:36px}
-.hero h1{margin-bottom:18px;transform:skewX(-7deg);transform-origin:left bottom}
-.phone{display:inline-block;margin-bottom:22px;font-weight:800;font-stretch:80%;font-size:clamp(2.4rem,10.5vw,3.9rem);line-height:1;color:var(--brick);text-decoration:none;font-variant-numeric:tabular-nums;transform:skewX(-7deg);transform-origin:left bottom}
-.phone:hover{color:var(--brick-d);text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:3px}
-.hero .lede{margin-bottom:26px}
+/* hero: near-black, no photo needed */
+.hero{--cut:30px;background:var(--ink);color:#fff;padding:clamp(40px,6vw,76px) 0 calc(clamp(48px,7vw,92px) + var(--cut));clip-path:polygon(0 0,100% 0,100% calc(100% - var(--cut)),0 100%)}
+.hero .grid{display:grid;gap:44px;align-items:center}
+.hero h1{font-size:clamp(3rem,9.4vw,6.8rem);line-height:.94;margin-bottom:20px;transform:skewX(-7deg);transform-origin:left bottom}
+.phone{display:inline-block;margin-bottom:26px;font-weight:800;font-stretch:80%;font-size:clamp(2.7rem,9.6vw,5.2rem);line-height:1;color:var(--brick-lit);text-decoration:none;font-variant-numeric:tabular-nums;transform:skewX(-7deg);transform-origin:left bottom}
+.phone:hover{color:#fff}
+.hero .lede{color:var(--on-dark-2);margin-bottom:28px}
 .cta{display:flex;flex-wrap:wrap;gap:12px}
-.facts{margin-top:26px;display:grid;gap:4px;font-size:.9375rem;color:var(--muted)}
+.hero .proof{margin-top:30px;padding-top:20px;border-top:1px solid var(--dark-line);max-width:36em}
+.hero .proof p:first-child{font-size:1.125rem;line-height:1.5;color:#fff}
+.hero .proof cite{display:block;margin-top:8px;font-style:normal;font-size:.9375rem;color:var(--on-dark-2)}
+.hero .facts{margin-top:14px;font-size:.9375rem;color:var(--on-dark-2)}
 
-.sign{background:var(--ink);color:var(--on-brick);padding:26px 24px 22px;border-radius:4px}
-.sign h2{font-size:1.5rem;margin-bottom:4px}
-.sign .now{font-weight:700;margin-bottom:14px;color:var(--on-brick)}
+.sign{background:var(--paper);color:var(--ink);padding:26px 26px 22px;border-radius:var(--r)}
+.sign h2{font-size:1.75rem;margin-bottom:4px}
+.sign .now{font-weight:700;margin-bottom:14px}
 .hours{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
-.hours th,.hours td{padding:9px 10px;text-align:left;font-weight:400;border-top:1px solid #4a4a4a}
+.hours th,.hours td{padding:9px 10px;text-align:left;font-weight:400;border-top:1px solid var(--line)}
 .hours th{font-weight:600}
 .hours td{text-align:right}
-.hours tr.today{background:var(--brick)}
+.hours tr.today{background:var(--brick);color:#fff}
 .hours tr.today th,.hours tr.today td{font-weight:800}
-.sign .note{margin-top:12px;font-size:.875rem;color:var(--on-brick-2)}
+.sign .note{margin-top:12px;font-size:.875rem;color:var(--muted)}
+@media (min-width:900px){.hero .grid{grid-template-columns:1.25fr .75fr;gap:64px}}
 
-/* sections */
-section{padding:60px 0}
-.head{margin-bottom:28px;max-width:34em}
-.head h2{margin-bottom:10px}
-.rule{display:block;height:1px;background:var(--ink);transform-origin:left center;margin-bottom:28px}
-.js .rule{transform:scaleX(0);transition:transform .7s cubic-bezier(.2,.7,.2,1)}
-.js .rule.in{transform:none}
+section{padding:clamp(56px,8vw,96px) 0}
 
-.reviews{--cut:18px;background:var(--ink);color:#f1f1f1;padding:calc(48px + var(--cut)) 0;clip-path:polygon(0 var(--cut),100% 0,100% calc(100% - var(--cut)),0 100%)}
-.reviews h2{color:#fff}
-.reviews .sum{margin:8px 0 26px;color:#c9ccce;max-width:40em}
-.reviews .sum strong{color:#fff}
-.feature{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid #444}
-.feature blockquote{font-size:1.125rem;line-height:1.5;font-weight:500;font-stretch:95%;max-width:60em}
-cite{display:block;margin-top:8px;font-style:normal;font-size:.875rem;color:var(--muted)}
-cite b{color:var(--ink);font-weight:700}
-.reviews cite{color:#c9ccce}
-.reviews cite b{color:#fff}
-.quotes li{padding:14px 0;border-bottom:1px solid #444;break-inside:avoid}
-.quotes li:last-child{border-bottom:0}
-.quotes blockquote{font-size:.9375rem;line-height:1.5}
-.quotes cite{margin-top:5px}
-
-.svc-grid{display:grid;gap:36px}
-.svc li{padding:20px 0;border-top:1px solid var(--line)}
-.svc li:last-child{border-bottom:1px solid var(--line)}
-.svc h3{font-size:1.5rem;font-weight:800;font-stretch:78%;line-height:1.1;margin-bottom:4px}
-.svc p{color:var(--muted);max-width:34em}
+/* services: what the car is doing, then what the shop does about it */
+.svc-grid{display:grid;gap:44px}
+.head{margin-bottom:30px;max-width:34em}
+.head h2{margin-bottom:12px}
+.svc{border-top:2px solid var(--ink)}
+.svc a{--pi:clamp(8px,1.4vw,14px);display:grid;grid-template-columns:1fr auto;gap:2px 16px;align-items:baseline;padding:20px var(--pi);margin-inline:calc(var(--pi)*-1);border-bottom:1px solid var(--line);text-decoration:none;transition:background-color .2s}
+.svc a:hover{background:var(--card)}
+.svc .sym{font-weight:800;font-stretch:78%;font-size:clamp(1.5rem,3vw,2.15rem);line-height:1.1}
+.svc .go{font-weight:700;color:var(--brick-d);white-space:nowrap}
+.svc .svn{grid-column:1/-1;font-weight:700;font-size:.9375rem;color:var(--brick-d);margin-top:4px}
+.svc .d{grid-column:1/-1;color:var(--muted);max-width:36em}
 .photos{display:grid;gap:20px}
-.photo img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:4px;background:var(--sand)}
-.strip{margin-top:44px}
-.strip img{width:100%;aspect-ratio:1200/480;object-fit:cover;border-radius:4px;background:var(--sand)}
+.photo img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:var(--r);background:var(--sand)}
+@media (min-width:900px){.svc-grid{grid-template-columns:1.2fr .8fr;gap:72px;align-items:start}.photos{position:sticky;top:24px}}
 
+/* reviews: slanted dark band, one long quote, then short ones */
+.reviews{--cut:30px;background:var(--ink);color:var(--on-dark);padding:calc(56px + var(--cut)) 0;clip-path:polygon(0 var(--cut),100% 0,100% calc(100% - var(--cut)),0 100%)}
+.reviews h2{color:#fff}
+.reviews .sum{margin:12px 0 28px;color:var(--on-dark-2);max-width:40em}
+.reviews .sum strong{color:#fff}
+.feature{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--dark-line)}
+.feature blockquote{font-size:clamp(1.2rem,2.2vw,1.55rem);line-height:1.45;font-weight:500;font-stretch:92%;max-width:46em;color:#fff}
+cite{display:block;margin-top:10px;font-style:normal;font-size:.9375rem;color:var(--on-dark-2)}
+cite b{color:#fff;font-weight:700}
+.quotes li{padding:16px 0;border-bottom:1px solid var(--dark-line);break-inside:avoid}
+.quotes li:last-child{border-bottom:0}
+.quotes blockquote{font-size:1rem;line-height:1.55}
+@media (min-width:900px){.reviews{--cut:48px;padding:calc(72px + var(--cut)) 0}.quotes{columns:2;column-gap:48px}}
+
+/* find the shop */
 .visit{background:var(--sand)}
 .vgrid{display:grid;gap:36px}
-address{font-style:normal;font-size:1.375rem;line-height:1.35;font-weight:600;font-stretch:90%;margin-bottom:6px}
+address{font-style:normal;font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.2;font-weight:700;font-stretch:84%;margin-bottom:8px}
 .vcol .btn{margin-top:18px}
 .vcol .small{margin-top:12px;max-width:30em}
-.know h3{font-weight:800;font-stretch:78%;font-size:1.375rem;margin-bottom:12px}
+.know h3{font-weight:800;font-stretch:78%;font-size:1.5rem;margin-bottom:12px}
 .know ul{display:grid;gap:10px}
-.know li{padding-left:22px;position:relative}
-.know li::before{content:"";position:absolute;left:0;top:.75em;width:10px;height:2px;background:var(--brick)}
+.know li{padding-left:24px;position:relative}
+.know li::before{content:"";position:absolute;left:0;top:.8em;width:12px;height:2px;background:var(--brick)}
+.strip{margin-top:44px}
+.strip img{width:100%;aspect-ratio:1200/480;object-fit:cover;border-radius:var(--r);background:var(--paper)}
+@media (min-width:900px){.vgrid{grid-template-columns:1fr 1fr;gap:80px}}
 
+/* estimate */
 .fgrid{display:grid;gap:32px}
 form{display:grid;gap:18px}
 .row{display:grid;gap:18px}
 label{display:block;font-weight:600;font-size:.9375rem;margin-bottom:6px}
-input,textarea{width:100%;font:400 1rem/1.4 "Archivo",sans-serif;color:var(--ink);background:#fff;border:2px solid var(--field);border-radius:4px;padding:12px 14px;min-height:50px}
-textarea{min-height:130px;resize:vertical}
+input,textarea{width:100%;font:400 1rem/1.4 "Archivo",sans-serif;color:var(--ink);background:#fff;border:2px solid var(--field);border-radius:var(--r);padding:12px 14px;min-height:52px}
+textarea{min-height:140px;resize:vertical}
 input:focus-visible,textarea:focus-visible{outline:3px solid var(--brick);outline-offset:1px;border-color:var(--brick)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .msg{min-height:1.5em;font-weight:600}
 .msg.err{color:var(--brick-d)}
-.done{padding:22px;border:2px solid var(--brick);border-radius:4px;background:var(--card)}
+.done{padding:22px;border:2px solid var(--brick);border-radius:var(--r);background:var(--card)}
 .done h3{font-weight:800;font-stretch:78%;font-size:1.75rem;margin-bottom:6px}
+@media (min-width:640px){.row.two{grid-template-columns:1fr 1fr}}
+@media (min-width:900px){.fgrid{grid-template-columns:.8fr 1.2fr;gap:80px}}
 
 footer{padding:32px 0 110px;font-size:.9375rem;color:var(--muted)}
 footer .wrap{display:grid;gap:8px}
 
 .bar-m{position:fixed;left:0;right:0;bottom:0;z-index:10;display:grid;grid-template-columns:1.4fr 1fr;gap:10px;padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom));background:var(--paper);border-top:1px solid var(--line)}
 .bar-m .btn{min-height:50px;padding:0 12px}
-
-@media (min-width:640px){.row.two{grid-template-columns:1fr 1fr}}
-@media (min-width:900px){
-  :root{--gut:32px}
-  .hero{padding:72px 0 88px}
-  .hero .grid{grid-template-columns:1.2fr .8fr;gap:72px;align-items:start}
-  section{padding:84px 0}
-  .reviews{--cut:44px;padding:calc(60px + var(--cut)) 0}
-  .quotes{columns:2;column-gap:40px}
-  .svc-grid{grid-template-columns:1.15fr .85fr;gap:64px;align-items:start}
-  .vgrid{grid-template-columns:1fr 1fr;gap:80px}
-  .fgrid{grid-template-columns:.8fr 1.2fr;gap:80px}
-  .bar-m{display:none}
-  footer{padding-bottom:48px}
-}
-@media (min-width:640px){.brand img{height:34px}}
-@media (max-width:379px){.top-call{display:none}}
-@media (prefers-reduced-motion:reduce){
-  .js .rule{transform:none;transition:none}
-  .btn{transition:none}
-  .btn:active{transform:none}
-}
+@media (min-width:900px){:root{--gut:32px}.bar-m{display:none}footer{padding-bottom:48px}}
+@media (max-width:560px){.cta .btn{flex:1 1 100%}}
+@media (prefers-reduced-motion:reduce){.btn,.svc a{transition:none}.btn:active{transform:none}}
 </style>
 </head>
 <body>
@@ -165,24 +167,31 @@ footer .wrap{display:grid;gap:8px}
 <header class="top">
   <div class="wrap">
     <a class="brand" href="./" aria-label="Ab's Auto Inc., home"><img src="img/logo-520.webp" width="520" height="67" alt="Ab's Auto Inc."></a>
-    <a class="top-call" href="tel:+19417357399">(941) 735-7399</a>
+    <div class="right">
+      <span class="open" id="now-h">Mon to Thu 8 AM to 4 PM</span>
+      <a class="top-call" href="tel:+19417357399">(941) 735-7399</a>
+    </div>
   </div>
 </header>
 
 <main id="main">
-<section class="hero">
+<section class="hero dark">
   <div class="wrap grid">
     <div>
       <h1>Car trouble? Call Ab's Auto.</h1>
       <a class="phone" href="tel:+19417357399">(941) 735-7399</a>
       <p class="lede">Independent auto repair in the Merchants Pointe shopping center on Princeton Street, Sarasota. Oil changes, A/C, engine diagnostics and general repairs.</p>
       <div class="cta">
-        <a class="btn" href="#estimate">Describe your problem</a>
-        <a class="btn ghost" href="#visit">Find the shop</a>
+        <a class="btn" href="tel:+19417357399"><svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8Z"/></svg>Call the shop</a>
+        <a class="btn ghost" href="#estimate">Describe your problem</a>
       </div>
-      <p class="facts"><span>Rated 4.8 on Google from 34 reviews</span><span>Appointments recommended</span><span>Credit and debit cards accepted</span></p>
+      <div class="proof">
+        <p>"AB fixed my 2001 Toyota Avalon when everyone else told me to get a new car."</p>
+        <cite>Gayle, 5 stars on Google</cite>
+        <p class="facts">Rated 4.8 on Google from 34 reviews. Appointments recommended. Credit and debit cards accepted.</p>
+      </div>
     </div>
-    <aside class="sign on-brick" aria-labelledby="hrs-h">
+    <aside class="sign" aria-labelledby="hrs-h">
       <h2 id="hrs-h">Shop hours</h2>
       <p class="now" id="now" role="status">Mon to Thu 8 AM to 4 PM, Fri 8 AM to 2 PM</p>
       <table class="hours" id="hours">
@@ -201,7 +210,35 @@ footer .wrap{display:grid;gap:8px}
   </div>
 </section>
 
-<section class="reviews" id="reviews" aria-labelledby="rev-h">
+<section id="services" aria-labelledby="svc-h">
+  <div class="wrap svc-grid">
+    <div>
+      <div class="head">
+        <h2 id="svc-h">What is your car doing?</h2>
+        <p class="lede">Taken from the shop's public listings. Pick the closest one, then tell the shop more below. If your problem is not here, call and ask.</p>
+      </div>
+      <ul class="svc">
+        <li><a href="#estimate" data-note="The check engine light is on."><span class="sym">The check engine light is on</span><span class="go" aria-hidden="true">Tell us</span><span class="svn">Engine diagnostics</span><span class="d">Finding out what is causing the problem.</span></a></li>
+        <li><a href="#estimate" data-note="The A/C is not cooling."><span class="sym">The A/C is not cooling</span><span class="go" aria-hidden="true">Tell us</span><span class="svn">Air conditioning</span><span class="d">A/C repair, which matters in a Florida summer.</span></a></li>
+        <li><a href="#estimate" data-note="It is due for an oil change."><span class="sym">It is due for an oil change</span><span class="go" aria-hidden="true">Tell us</span><span class="svn">Oil changes</span><span class="d">Routine oil service, done on site.</span></a></li>
+        <li><a href="#estimate" data-note="Something does not feel right."><span class="sym">Something does not feel right</span><span class="go" aria-hidden="true">Tell us</span><span class="svn">General repairs and maintenance</span><span class="d">The everyday work that keeps a car on the road.</span></a></li>
+        <li><a href="#estimate" data-note="It is an older car."><span class="sym">It is an older car</span><span class="go" aria-hidden="true">Tell us</span><span class="svn">Older vehicles</span><span class="d">Customers say he knows older cars well, from a 1993 300ZX to a 2001 Avalon.</span></a></li>
+      </ul>
+      <p class="small" style="margin-top:18px">Prices are not listed here because they depend on the car and the job. Call or send the details for an estimate.</p>
+    </div>
+    <div class="photos">
+      <figure class="photo">
+        <!-- PLACEHOLDER PHOTOS (3, Unsplash stock, not the shop; replace with real photos before launch): hood-*.webp by Tim Mossholder (oil being poured into an engine), vintage-*.webp (car restoration garage), garage-*.webp (workshop interior). -->
+        <img src="img/hood-800.webp" srcset="img/hood-480.webp 480w, img/hood-800.webp 800w" sizes="(min-width: 900px) 420px, calc(100vw - 40px)" width="800" height="553" alt="A mechanic's hands pouring oil into a car engine bay" loading="lazy" decoding="async">
+      </figure>
+      <figure class="photo">
+        <img src="img/vintage-800.webp" srcset="img/vintage-480.webp 480w, img/vintage-800.webp 800w" sizes="(min-width: 900px) 420px, calc(100vw - 40px)" width="800" height="534" alt="An old car body on stands in a garage" loading="lazy" decoding="async">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="reviews dark" id="reviews" aria-labelledby="rev-h">
   <div class="wrap">
     <h2 id="rev-h">What customers say</h2>
     <p class="sum"><strong>4.8 out of 5 on Google, from 34 reviews:</strong> 30 five-star, 2 four-star, 1 three-star, 1 one-star. The quotes below are five-star reviews, shown as written.</p>
@@ -220,37 +257,6 @@ footer .wrap{display:grid;gap:8px}
       <li><blockquote>"AB is legit. He takes good care of my family. Pretty cool guy, too."</blockquote><cite><b>Gian</b>, 5 stars on Google</cite></li>
       <li><blockquote>"AB is by far the best mechanic I have ever met.  No attitude at all and a seriously great guy."</blockquote><cite><b>Lucky Dog</b>, 5 stars on Google</cite></li>
     </ul>
-  </div>
-</section>
-
-<section id="services" aria-labelledby="svc-h">
-  <div class="wrap">
-    <span class="rule" aria-hidden="true"></span>
-    <div class="svc-grid">
-      <div>
-        <div class="head">
-          <h2 id="svc-h">What the shop handles</h2>
-          <p class="lede">Taken from the shop's public listings. If your problem is not here, call and ask.</p>
-        </div>
-        <ul class="svc">
-          <li><h3>Oil changes</h3><p>Routine oil service, done on site.</p></li>
-          <li><h3>Engine diagnostics</h3><p>Finding out what is causing the problem.</p></li>
-          <li><h3>Air conditioning</h3><p>A/C repair, which matters in a Florida summer.</p></li>
-          <li><h3>General repairs and maintenance</h3><p>The everyday work that keeps a car on the road.</p></li>
-          <li><h3>Older vehicles</h3><p>Customers say he knows older cars well, from a 1993 300ZX to a 2001 Avalon.</p></li>
-        </ul>
-        <p class="small" style="margin-top:18px">Prices are not listed here because they depend on the car and the job. Call or send the details for an estimate.</p>
-      </div>
-      <div class="photos">
-        <figure class="photo">
-          <!-- PLACEHOLDER PHOTOS (3, Unsplash stock, not the shop; replace with real photos before launch): hood-*.webp by Tim Mossholder (oil being poured into an engine), vintage-*.webp (car restoration garage), garage-*.webp (workshop interior). -->
-          <img src="img/hood-800.webp" srcset="img/hood-480.webp 480w, /img/hood-800.webp 800w" sizes="(min-width: 900px) 440px, calc(100vw - 40px)" width="800" height="553" alt="A mechanic's hands pouring oil into a car engine bay" loading="lazy" decoding="async">
-        </figure>
-        <figure class="photo">
-          <img src="img/vintage-800.webp" srcset="img/vintage-480.webp 480w, /img/vintage-800.webp 800w" sizes="(min-width: 900px) 440px, calc(100vw - 40px)" width="800" height="534" alt="An old car body on stands in a garage" loading="lazy" decoding="async">
-        </figure>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -274,7 +280,7 @@ footer .wrap{display:grid;gap:8px}
       </div>
     </div>
     <figure class="strip">
-      <img src="img/garage-1200.webp" srcset="img/garage-640.webp 640w, /img/garage-1200.webp 1200w" sizes="(min-width: 1184px) 1056px, calc(100vw - 40px)" width="1200" height="480" alt="Inside a busy garage with a car on a lift and tools on the wall" loading="lazy" decoding="async">
+      <img src="img/garage-1200.webp" srcset="img/garage-640.webp 640w, img/garage-1200.webp 1200w" sizes="(min-width: 1224px) 1160px, calc(100vw - 40px)" width="1200" height="480" alt="Inside a busy garage with a car on a lift and tools on the wall" loading="lazy" decoding="async">
     </figure>
   </div>
 </section>
@@ -317,8 +323,7 @@ footer .wrap{display:grid;gap:8px}
 
 <script>
 (function(){
-  var d=document,root=d.documentElement;
-  root.classList.add('js');
+  var d=document;
 
   /* open / closed, in the shop's time zone (Eastern) */
   var H={1:[8,16],2:[8,16],3:[8,16],4:[8,16],5:[8,14]};
@@ -335,23 +340,23 @@ footer .wrap{display:grid;gap:8px}
   if(n){
     var rows=d.querySelectorAll('#hours tr');
     for(var i=0;i<rows.length;i++){if(+rows[i].getAttribute('data-d')===n.d){rows[i].className='today';rows[i].setAttribute('aria-current','date')}}
-    var t=d.getElementById('now'),h=H[n.d];
-    if(h&&n.m>=h[0]*60&&n.m<h[1]*60){t.textContent='Open now, until '+fmt(h[1])}
+    var t=d.getElementById('now'),th=d.getElementById('now-h'),h=H[n.d],txt,short;
+    if(h&&n.m>=h[0]*60&&n.m<h[1]*60){txt='Open now, until '+fmt(h[1]);short=txt}
     else{
       var nd=n.d,nxt=null,add=0;
       if(h&&n.m<h[0]*60){nxt=h;add=0}
       else{for(var k=1;k<=7;k++){var x=(n.d+k)%7;if(H[x]){nxt=H[x];nd=x;add=k;break}}}
       var names=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-      t.textContent='Closed now, opens '+(add===0?'today':add===1?'tomorrow':names[nd])+' at '+fmt(nxt[0]);
+      txt='Closed now, opens '+(add===0?'today':add===1?'tomorrow':names[nd])+' at '+fmt(nxt[0]);short=txt;
     }
+    t.textContent=txt;if(th)th.textContent=short;
   }
 
-  /* hairlines draw in once as they scroll into view */
-  var items=d.querySelectorAll('.rule');
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.2});
-    for(var j=0;j<items.length;j++)io.observe(items[j]);
-  }else{for(var j2=0;j2<items.length;j2++)items[j2].classList.add('in')}
+  /* symptom rows carry their note into the form */
+  var det=d.getElementById('f-det');
+  [].forEach.call(d.querySelectorAll('.svc a[data-note]'),function(a){
+    a.addEventListener('click',function(){if(det&&!det.value.trim())det.value=a.getAttribute('data-note')+' '});
+  });
 
   /* estimate form */
   var f=d.getElementById('form'),msg=d.getElementById('msg'),btn=d.getElementById('send');
@@ -366,7 +371,7 @@ footer .wrap{display:grid;gap:8px}
     var body={name:name,phone:phone,vehicle:f.vehicle.value,details:f.details.value,website:f.website.value};
     /* Demo copy on the Wavefront site: nothing is sent, so a test request never reaches the real business. */
     Promise.resolve({ok:true,json:function(){return Promise.resolve({ok:true})}})
-      .then(function(r){return {ok:true}})
+      .then(function(r){return r.json().then(function(j){return {ok:r.ok&&j&&j.ok}},function(){return {ok:false}})})
       .then(function(res){
         btn.disabled=false;
         if(res.ok){

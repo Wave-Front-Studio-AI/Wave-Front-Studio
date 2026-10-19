@@ -26,6 +26,7 @@
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%}
+html,body{overflow-x:clip}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.65 var(--body);-webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%;height:auto}
 a{color:inherit}
@@ -35,7 +36,7 @@ p{margin:0;text-wrap:pretty}
 .skip{position:absolute;left:-999px;top:8px;background:#fff;color:#000;padding:10px 16px;z-index:200}
 .skip:focus{left:8px}
 :focus-visible{outline:3px solid var(--green);outline-offset:3px}
-.dark :focus-visible,.hp :focus-visible,.forest :focus-visible,.dock :focus-visible{outline-color:#fff}
+.dark :focus-visible,.hero :focus-visible,.forest :focus-visible,.dock :focus-visible{outline-color:#fff}
 .dark{background:var(--ink);color:var(--on-dark)}
 .forest{background:var(--forest);color:var(--on-dark)}
 
@@ -43,10 +44,12 @@ p{margin:0;text-wrap:pretty}
 .btn:hover{background:var(--green-deep);border-color:var(--green-deep);transform:translateY(-1px)}
 .btn.quiet{background:transparent;color:inherit;border-color:currentColor}
 .btn.quiet:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.hp .btn,.dark .btn,.forest .btn{background:var(--sand);color:var(--ink);border-color:var(--sand)}
-.hp .btn:hover,.dark .btn:hover,.forest .btn:hover{background:#fff;border-color:#fff}
-.hp .btn.quiet,.dark .btn.quiet,.forest .btn.quiet{background:transparent;color:#fff;border-color:rgba(255,255,255,.7)}
-.hp .btn.quiet:hover,.dark .btn.quiet:hover,.forest .btn.quiet:hover{background:#fff;color:var(--ink);border-color:#fff}
+.hero .btn{background:var(--green);color:#fff;border-color:var(--green)}
+.hero .btn:hover{background:var(--green-deep);border-color:var(--green-deep)}
+.dark .btn,.forest .btn{background:var(--sand);color:var(--ink);border-color:var(--sand)}
+.dark .btn:hover,.forest .btn:hover{background:#fff;border-color:#fff}
+.hero .btn.quiet,.dark .btn.quiet,.forest .btn.quiet{background:transparent;color:#fff;border-color:rgba(255,255,255,.75)}
+.hero .btn.quiet:hover,.dark .btn.quiet:hover,.forest .btn.quiet:hover{background:#fff;color:var(--ink);border-color:#fff}
 
 /* floating pill header */
 .pill{position:fixed;z-index:100;top:14px;left:50%;transform:translateX(-50%);width:min(1180px,calc(100% - 28px));display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px 10px 24px;border-radius:999px;background:rgba(246,244,240,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid var(--line);transition:transform .3s,box-shadow .3s,background-color .3s}
@@ -62,21 +65,32 @@ p{margin:0;text-wrap:pretty}
 .pill nav .btn{min-height:44px;padding:0 22px;border-radius:999px;color:#fff;background:var(--green);border-color:var(--green)}
 .pill nav .btn:hover{background:var(--green-deep)}
 
-/* split hero */
-.hero{display:grid;grid-template-columns:minmax(0,42fr) minmax(0,58fr);min-height:100vh;min-height:100svh;background:var(--ink)}
-.hp{min-width:0;display:flex;flex-direction:column;justify-content:center;background:var(--ink);color:var(--on-dark);padding:clamp(120px,16vh,170px) clamp(20px,4vw,64px) clamp(40px,7vh,80px) var(--gutter)}
-.hp h1{font-size:clamp(2.5rem,4.6vw,5rem);overflow-wrap:break-word}
-.hp .lead{margin-top:22px;font-size:clamp(1.05rem,1.5vw,1.25rem);color:var(--on-dark-soft);max-width:32ch}
+/* hero: a full-bleed project photo, the promise, one action (reference: Peachtree Pavers, Outside Inc., Cedar Springs) */
+.hero{position:relative;isolation:isolate;min-height:min(100vh,880px);min-height:min(100svh,880px);display:flex;align-items:flex-end;background:var(--ink);color:var(--on-dark)}
+.hero .bg{position:absolute;inset:0;z-index:-2;overflow:hidden;background:#2a3034}
+.hero .bg img{width:100%;height:100%;object-fit:cover;object-position:62% 58%}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(24,28,30,.9) 0%,rgba(24,28,30,.64) 40%,rgba(24,28,30,.1) 76%),linear-gradient(0deg,rgba(24,28,30,.6),transparent 40%)}
+.hp{width:100%;max-width:calc(var(--max) + var(--gutter)*2);margin:0 auto;padding:clamp(120px,18vh,190px) var(--gutter) clamp(44px,8vh,92px)}
+.hp h1{font-size:clamp(2.8rem,6.4vw,6rem);max-width:11ch;overflow-wrap:break-word;letter-spacing:-.018em}
+.hp .lead{margin-top:22px;font-size:clamp(1.1rem,1.5vw,1.3rem);color:var(--on-dark);max-width:30ch}
 .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
-.proof{list-style:none;margin:36px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 26px;font-size:.95rem;color:var(--on-dark-soft)}
+.proof{list-style:none;margin:36px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 26px;font-size:.98rem;color:var(--on-dark-soft)}
 .proof b{color:var(--on-dark);font-weight:700}
-.hphoto{position:relative;overflow:hidden;background:#2a3034}
-.hphoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 60%}
-.laid{position:absolute;inset:0;display:flex;flex-direction:column;pointer-events:none}
-.laid .lr{flex:1;display:flex;width:112%;margin-left:-6%}
-.laid .lr:nth-child(even){margin-left:-12%}
-.laid i{flex:1;margin:1px;background:#252b2f;border-radius:2px;animation:lay .6s cubic-bezier(.3,.7,.2,1) forwards}
-@keyframes lay{to{opacity:0;transform:translateY(-16px) scale(.92)}}
+@media(prefers-reduced-motion:no-preference){
+  .hero .bg img{animation:settle 1.8s cubic-bezier(.16,1,.3,1) backwards}
+  .hp>*{animation:rise .9s cubic-bezier(.16,1,.3,1) backwards}
+  .hp .lead{animation-delay:.08s}.hp .cta{animation-delay:.16s}.hp .proof{animation-delay:.24s}
+  @keyframes settle{from{transform:scale(1.07)}}
+  @keyframes rise{from{opacity:0;transform:translateY(20px)}}
+}
+
+/* what clients mention: three real lines, no counters */
+.said{background:var(--paper);padding:clamp(48px,6vw,84px) 0 0}
+.said ul{list-style:none;margin:0;padding:0;display:grid;gap:30px 0;border-top:2px solid var(--ink)}
+.said li{padding:24px 0 0}
+.said blockquote{margin:0;font-family:var(--display);font-weight:600;font-size:clamp(1.35rem,2.3vw,1.9rem);line-height:1.22}
+.said p{margin-top:10px;color:var(--ink-soft);font-size:.95rem}
+@media(min-width:860px){.said ul{grid-template-columns:repeat(3,minmax(0,1fr))}.said li{padding:26px clamp(20px,3vw,44px) 0 0}.said li+li{padding-left:clamp(20px,3vw,44px);border-left:1px solid var(--line)}}
 
 section{padding:clamp(70px,10vw,130px) 0}
 h2{font-size:clamp(2.2rem,5vw,4.2rem)}
@@ -99,21 +113,29 @@ h2{font-size:clamp(2.2rem,5vw,4.2rem)}
 .svl li.on figure{clip-path:inset(0);z-index:2}
 .svl li.on figure img{transform:scale(1)}
 
-/* projects: pinned, travels sideways with the scroll */
-#work{padding:0}
-.pin-in{padding-block:clamp(70px,10vw,130px)}
-.pin.pinned .pin-in{position:sticky;top:0;height:100vh;height:100svh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding-block:0}
-.pin .head{margin-bottom:clamp(18px,3vh,36px)}
-.strip{overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin;padding-inline:var(--gutter)}
-.ptrack{display:flex;gap:clamp(12px,1.6vw,22px);width:max-content}
-.ptrack figure{margin:0;flex:none;scroll-snap-align:start}
-.ptrack img{height:clamp(220px,46vh,500px);width:auto;border-radius:var(--r);background:#2c3236}
-.ptrack figcaption{margin-top:7px;font-size:.9rem;color:var(--on-dark-soft)}
-.pin.pinned .strip{overflow:hidden}
-.pin.pinned .ptrack{will-change:transform}
-.pbar{display:none;height:3px;background:rgba(255,255,255,.18);margin:clamp(16px,3vh,32px) var(--gutter) 0}
-.pin.pinned .pbar{display:block}
-.pbar i{display:block;height:100%;background:var(--sand);transform:scaleX(0);transform-origin:0 50%}
+/* projects: a masonry of every photo, opens in a viewer */
+#work{padding:clamp(70px,10vw,130px) 0}
+.mason{list-style:none;margin:0;padding:0;columns:3;column-gap:clamp(12px,1.6vw,22px)}
+.mason li{break-inside:avoid;margin:0 0 clamp(12px,1.6vw,22px)}
+.ph{all:unset;box-sizing:border-box;display:block;width:100%;cursor:zoom-in}
+.ph:focus-visible{outline:3px solid #fff;outline-offset:3px;border-radius:var(--r)}
+.ph .im{display:block;overflow:hidden;border-radius:var(--r);background:#2c3236}
+.ph img{width:100%;height:auto;transition:transform .7s cubic-bezier(.16,1,.3,1)}
+.ph:hover img{transform:scale(1.04)}
+.ph .cap{display:block;margin-top:7px;font-size:.92rem;color:var(--on-dark-soft)}
+@media(max-width:900px){.mason{columns:2}}
+dialog.lb{border:0;padding:0;background:transparent;color:#fff;max-width:none;max-height:none;width:100%;height:100%;margin:0}
+dialog.lb::backdrop{background:rgba(18,22,24,.94)}
+.lb .stage{height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto;place-items:center;gap:12px;padding:clamp(56px,8vh,80px) clamp(16px,6vw,96px) clamp(20px,4vh,36px)}
+.lb img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:var(--r)}
+.lb figcaption{font-size:1rem;color:var(--on-dark-soft);text-align:center}
+.lb button{all:unset;box-sizing:border-box;position:absolute;min-width:48px;min-height:48px;display:grid;place-items:center;border:1.5px solid rgba(255,255,255,.55);border-radius:50%;cursor:pointer;font-size:1.3rem;color:#fff;background:rgba(18,22,24,.6)}
+.lb button:hover{background:#fff;color:var(--ink)}
+.lb button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.lb .x{top:14px;right:14px}
+.lb .pv,.lb .nx{top:50%;transform:translateY(-50%)}
+.lb .pv{left:12px}.lb .nx{right:12px}
+@media(max-width:560px){.lb .pv,.lb .nx{top:auto;bottom:18px;transform:none}.lb .pv{left:calc(50% - 60px)}.lb .nx{right:calc(50% - 60px)}.lb .stage{padding-bottom:84px}}
 
 /* about */
 .about .grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(28px,6vw,96px);align-items:start}
@@ -220,9 +242,8 @@ footer a:hover{color:#fff}
   .pill{padding-left:18px}
   .pill nav a:not(.btn){display:none}
   .pill nav .btn{display:none}
-  .hero{grid-template-columns:1fr;min-height:0}
-  .hphoto{order:-1;height:56vh;min-height:300px}
-  .hp{padding:34px var(--gutter) 44px}
+  .hero{min-height:min(100svh,780px)}
+  .hp{padding-top:140px}
   .svc{padding-right:0;min-height:0}
   .svl figure{display:none;position:static;width:100%;height:min(62vw,320px);border-radius:var(--r);clip-path:none;transition:none}
   .svl li.on figure{display:block;margin-bottom:18px;animation:figIn .55s cubic-bezier(.7,0,.2,1)}
@@ -232,6 +253,7 @@ footer a:hover{color:#fff}
   .dock{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:90;padding:10px max(14px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));background:var(--paper);border-top:1px solid var(--line)}
   .dock .btn{min-height:48px;padding:0 8px;font-size:.95rem;white-space:nowrap}
   .dock .btn.quiet{color:var(--ink);border-color:var(--ink)}
+  .dock .btn.quiet:hover{background:var(--ink);color:var(--paper)}
   body{padding-bottom:72px}
   .pill .mcall{display:inline-flex}
 }
@@ -243,15 +265,16 @@ footer a:hover{color:#fff}
   html{scroll-behavior:auto}
   .svl figure,.svl figure img,.sb .n,.sb .d,.js .slide,.chip span,.btn,.pill{transition:none}
   .svl li.on figure,.js .st.on,.js .st.back.on{animation:none}
+  .hero .bg img,.hp>*{animation:none}
   .js .slide{transform:none}
   .pill.solid{transform:translateX(-50%)}
-  .laid{display:none}
   .prog{display:none}
 }
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+<span id="sentinel" aria-hidden="true" style="position:absolute;top:30px;left:0;width:1px;height:1px"></span>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="star" viewBox="0 0 24 24"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z"/></symbol></svg>
 
 <header class="pill" id="pill">
@@ -269,6 +292,9 @@ footer a:hover{color:#fff}
 
 <main id="main">
 <div id="top" class="hero">
+  <div class="bg">
+    <img src="img/hero-1400.webp" srcset="img/hero-800.webp 800w, img/hero-1400.webp 1400w" sizes="100vw" width="1400" height="800" alt="A new paver driveway curving up to a garage" fetchpriority="high" decoding="async">
+  </div>
   <div class="hp">
     <h1>Pavers and landscaping, laid right.</h1>
     <p class="lead">Family owned and serving Sarasota County for over 20 years.</p>
@@ -278,11 +304,17 @@ footer a:hover{color:#fff}
     </div>
     <ul class="proof"><li><b>4.6 stars</b> on Google, 11 reviews</li><li><b>Family owned</b></li><li><b>20+ years</b> in Sarasota County</li></ul>
   </div>
-  <div class="hphoto">
-    <img src="img/hero-1400.webp" srcset="img/hero-800.webp 800w, img/hero-1400.webp 1400w" sizes="(max-width:900px) 100vw, 58vw" width="1400" height="800" alt="A new paver driveway curving up to a garage" fetchpriority="high" decoding="async">
-    <div class="laid" id="laid" aria-hidden="true"></div>
-  </div>
 </div>
+
+<section class="said" aria-label="What clients mention">
+  <div class="wrap">
+    <ul>
+      <li><blockquote>“They were very professional and reasonably priced.”</blockquote><p>Jeff Lidster, Google review</p></li>
+      <li><blockquote>“They were on time and cleaned up after themselves.”</blockquote><p>Jim Dahl, Google review</p></li>
+      <li><blockquote>“They did an amazing job and it only took about a week!”</blockquote><p>Ingrid Fernandes Hatch, Google review</p></li>
+    </ul>
+  </div>
+</section>
 
 <section id="services">
   <div class="wrap">
@@ -303,24 +335,32 @@ footer a:hover{color:#fff}
   </div>
 </section>
 
-<section id="work" class="dark pin">
-  <div class="pin-in">
-    <div class="wrap"><div class="head"><h2>Recent projects.</h2><p>Finished paver and landscaping jobs around Sarasota.</p></div></div>
-    <div class="strip" id="strip"><div class="ptrack" id="ptrack">
-      <figure><img src="img/drive1.webp" width="720" height="960" alt="Grey paver driveway" decoding="async" loading="lazy"><figcaption>Driveway</figcaption></figure>
-      <figure><img src="img/arc.webp" width="720" height="540" alt="Curved paver driveway" decoding="async" loading="lazy"><figcaption>Driveway</figcaption></figure>
-      <figure><img src="img/walk1.webp" width="720" height="960" alt="Paver walkway to a front door" decoding="async" loading="lazy"><figcaption>Walkway</figcaption></figure>
-      <figure><img src="img/pool.webp" width="720" height="960" alt="Paver pool deck" decoding="async" loading="lazy"><figcaption>Pool deck</figcaption></figure>
-      <figure><img src="img/entry.webp" width="720" height="960" alt="Paver entry" decoding="async" loading="lazy"><figcaption>Entry</figcaption></figure>
-      <figure><img src="img/hut.webp" width="720" height="960" alt="Patio with a tiki hut" decoding="async" loading="lazy"><figcaption>Outdoor patio</figcaption></figure>
-      <figure><img src="img/drive2.webp" width="720" height="960" alt="Large paver driveway at a blue house" decoding="async" loading="lazy"><figcaption>Driveway</figcaption></figure>
-      <figure><img src="img/build.webp" width="720" height="540" alt="Paver driveway partly laid, with pavers stacked at the edge" decoding="async" loading="lazy"><figcaption>Driveway, mid-install</figcaption></figure>
-      <figure><img src="img/walk2.webp" width="720" height="960" alt="Paver side walkway along a yellow house" decoding="async" loading="lazy"><figcaption>Side walkway</figcaption></figure>
-      <figure><img src="img/travertine.webp" width="720" height="960" alt="Sealed ivory travertine patio" decoding="async" loading="lazy"><figcaption>Travertine patio, sealed</figcaption></figure>
-    </div></div>
-    <div class="pbar" aria-hidden="true"><i id="pbar"></i></div>
+<section id="work" class="dark">
+  <div class="wrap">
+    <div class="head"><h2>Recent projects.</h2><p>Finished paver and landscaping jobs around Sarasota. Tap a photo to see it larger.</p></div>
+    <ul class="mason" id="mason">
+      <li><button class="ph" type="button" data-i="0"><span class="im"><img src="img/drive1.webp" width="720" height="960" alt="Grey paver driveway" decoding="async" loading="lazy"></span><span class="cap">Driveway</span></button></li>
+      <li><button class="ph" type="button" data-i="1"><span class="im"><img src="img/arc.webp" width="720" height="540" alt="Curved paver driveway" decoding="async" loading="lazy"></span><span class="cap">Driveway</span></button></li>
+      <li><button class="ph" type="button" data-i="2"><span class="im"><img src="img/pool.webp" width="720" height="960" alt="Paver pool deck" decoding="async" loading="lazy"></span><span class="cap">Pool deck</span></button></li>
+      <li><button class="ph" type="button" data-i="3"><span class="im"><img src="img/walk1.webp" width="720" height="960" alt="Paver walkway to a front door" decoding="async" loading="lazy"></span><span class="cap">Walkway</span></button></li>
+      <li><button class="ph" type="button" data-i="4"><span class="im"><img src="img/drive2.webp" width="720" height="960" alt="Large paver driveway at a blue house" decoding="async" loading="lazy"></span><span class="cap">Driveway</span></button></li>
+      <li><button class="ph" type="button" data-i="5"><span class="im"><img src="img/hut.webp" width="720" height="960" alt="Patio with a tiki hut" decoding="async" loading="lazy"></span><span class="cap">Outdoor patio</span></button></li>
+      <li><button class="ph" type="button" data-i="6"><span class="im"><img src="img/build.webp" width="720" height="540" alt="Paver driveway partly laid, with pavers stacked at the edge" decoding="async" loading="lazy"></span><span class="cap">Driveway, mid-install</span></button></li>
+      <li><button class="ph" type="button" data-i="7"><span class="im"><img src="img/entry.webp" width="720" height="960" alt="Paver entry" decoding="async" loading="lazy"></span><span class="cap">Entry</span></button></li>
+      <li><button class="ph" type="button" data-i="8"><span class="im"><img src="img/travertine.webp" width="720" height="960" alt="Sealed ivory travertine patio" decoding="async" loading="lazy"></span><span class="cap">Travertine patio, sealed</span></button></li>
+      <li><button class="ph" type="button" data-i="9"><span class="im"><img src="img/walk2.webp" width="720" height="960" alt="Paver side walkway along a yellow house" decoding="async" loading="lazy"></span><span class="cap">Side walkway</span></button></li>
+    </ul>
   </div>
 </section>
+
+<dialog class="lb" id="lb" aria-label="Project photo viewer">
+  <div class="stage">
+    <figure style="margin:0;display:contents"><img id="lbimg" alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="><figcaption id="lbcap"></figcaption></figure>
+  </div>
+  <button class="x" type="button" id="lbx" aria-label="Close viewer">&times;</button>
+  <button class="pv" type="button" id="lbp" aria-label="Previous photo">&larr;</button>
+  <button class="nx" type="button" id="lbn" aria-label="Next photo">&rarr;</button>
+</dialog>
 
 <section id="about" class="about">
   <div class="wrap grid">
@@ -346,7 +386,7 @@ footer a:hover{color:#fff}
   <div class="wrap">
     <div class="rhead">
       <h2>What clients say.</h2>
-      <div class="score"><strong class="num" data-to="4.6" data-dec="1">4.6</strong><div><span class="stars big" role="img" aria-label="Rated 4.6 out of 5"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span><div class="meta"><a href="https://www.google.com/maps/place/Father+%26+Son+Pavers+And+Landscaping,+LLC/@27.338039,-82.5070152,16z/data=!4m8!3m7!1s0x88c33f87f41269f1:0x7b60396b852a13f7!8m2!3d27.338039!4d-82.5070152!9m1!1b1!16s%2Fg%2F11cmbm39y7" rel="noopener">11 Google reviews</a></div></div></div>
+      <div class="score"><strong>4.6</strong><div><span class="stars big" role="img" aria-label="Rated 4.6 out of 5"><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg></span><div class="meta"><a href="https://www.google.com/maps/place/Father+%26+Son+Pavers+And+Landscaping,+LLC/@27.338039,-82.5070152,16z/data=!4m8!3m7!1s0x88c33f87f41269f1:0x7b60396b852a13f7!8m2!3d27.338039!4d-82.5070152!9m1!1b1!16s%2Fg%2F11cmbm39y7" rel="noopener">11 Google reviews</a></div></div></div>
     </div>
     <div class="car" id="car" role="group" aria-roledescription="carousel" aria-label="Customer reviews">
       <div class="slides" aria-live="off">
@@ -456,39 +496,8 @@ footer a:hover{color:#fff}
   d.getElementById('yr').textContent=new Date().getFullYear();
 
   /* header: tightens once you scroll */
-  var pill=d.getElementById('pill');
-  function onScroll(){pill.classList.toggle('solid',scrollY>30)}
-  addEventListener('scroll',onScroll,{passive:true});onScroll();
-
-  /* hero: the photo is "laid" paver by paver */
-  var laid=d.getElementById('laid');
-  if(laid&&!rm){
-    var rows=7,cols=9,maxT=0;
-    for(var r=0;r<rows;r++){
-      var row=d.createElement('div');row.className='lr';
-      for(var c=0;c<cols+1;c++){
-        var i=d.createElement('i');
-        var t=c*55+(rows-1-r)*70+Math.random()*170;
-        i.style.animationDelay=t+'ms';if(t>maxT)maxT=t;
-        row.appendChild(i);
-      }
-      laid.appendChild(row);
-    }
-    setTimeout(function(){laid.remove()},maxT+900);
-  }
-
-  /* numbers count up when they come into view */
-  var nums=[].slice.call(d.querySelectorAll('.num'));
-  function fmt(el,v){var dec=+el.getAttribute('data-dec')||0;el.textContent=(dec?v.toFixed(dec):Math.round(v))+(el.getAttribute('data-suffix')||'')}
-  if(!rm&&'IntersectionObserver' in window){
-    nums.forEach(function(el){fmt(el,0)});
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){
-      if(!e.isIntersecting)return;io.unobserve(e.target);
-      var el=e.target,to=+el.getAttribute('data-to'),t0=performance.now(),dur=1300;
-      (function step(t){var p=Math.min(1,(t-t0)/dur),k=1-Math.pow(1-p,3);fmt(el,to*k);if(p<1)requestAnimationFrame(step)})(t0);
-    })},{threshold:.6});
-    nums.forEach(function(el){io.observe(el)});
-  }
+  var pill=d.getElementById('pill'),sent=d.getElementById('sentinel');
+  if(sent&&'IntersectionObserver' in window)new IntersectionObserver(function(es){pill.classList.toggle('solid',!es[0].isIntersecting)}).observe(sent);
 
   /* services: pick one and its photo wipes in */
   var items=[].slice.call(d.querySelectorAll('.svl li'));
@@ -501,33 +510,24 @@ footer a:hover{color:#fff}
     li.addEventListener('mouseenter',function(){if(hoverOK.matches)act(n)});
   });
 
-  /* projects: the gallery travels sideways as you scroll down */
-  var pin=d.getElementById('work'),trk=d.getElementById('ptrack'),strip=d.getElementById('strip'),pbar=d.getElementById('pbar');
-  var wide=matchMedia('(min-width:901px)'),travel=0,pinned=false,ticking=false;
-  function measure(){
-    pinned=wide.matches&&!rm;
-    pin.classList.toggle('pinned',pinned);
-    if(!pinned){pin.style.height='';trk.style.transform='';return}
-    var gut=parseFloat(getComputedStyle(strip).paddingLeft)||0;
-    travel=Math.max(0,trk.scrollWidth+gut*2-strip.clientWidth);
-    pin.style.height=(innerHeight+travel)+'px';
-    frame();
+  /* projects: photo viewer */
+  var mason=d.getElementById('mason'),lb=d.getElementById('lb'),lbimg=d.getElementById('lbimg'),lbcap=d.getElementById('lbcap');
+  var shots=[].slice.call(mason.querySelectorAll('.ph')),li=0;
+  function open(n){
+    li=(n+shots.length)%shots.length;
+    var im=shots[li].querySelector('img'),cap=shots[li].querySelector('.cap').textContent;
+    lbimg.src=im.currentSrc||im.src;lbimg.alt=im.alt;lbcap.textContent=cap+'  ('+(li+1)+' of '+shots.length+')';
+    if(!lb.open){if(lb.showModal)lb.showModal();else lb.setAttribute('open','')}
   }
-  function frame(){
-    ticking=false;if(!pinned)return;
-    var top=pin.getBoundingClientRect().top;
-    var p=travel?Math.min(1,Math.max(0,-top/travel)):0;
-    trk.style.transform='translate3d('+(-p*travel)+'px,0,0)';
-    pbar.style.transform='scaleX('+p+')';
-  }
-  function req(){if(!ticking){ticking=true;requestAnimationFrame(frame)}}
-  addEventListener('scroll',req,{passive:true});
-  addEventListener('resize',measure);
-  addEventListener('load',measure);
-  measure();
+  shots.forEach(function(b,n){b.addEventListener('click',function(){open(n)})});
+  d.getElementById('lbx').addEventListener('click',function(){lb.close()});
+  d.getElementById('lbp').addEventListener('click',function(){open(li-1)});
+  d.getElementById('lbn').addEventListener('click',function(){open(li+1)});
+  lb.addEventListener('click',function(e){if(e.target===lb||e.target.classList.contains('stage'))lb.close()});
+  lb.addEventListener('keydown',function(e){if(e.key==='ArrowLeft')open(li-1);else if(e.key==='ArrowRight')open(li+1)});
   if('IntersectionObserver' in window){
-    var warm=new IntersectionObserver(function(es){if(es[0].isIntersecting){trk.querySelectorAll('img[loading=lazy]').forEach(function(i){i.loading='eager'});warm.disconnect()}},{rootMargin:'1400px 0px'});
-    warm.observe(pin);
+    var warm=new IntersectionObserver(function(es){if(es[0].isIntersecting){mason.querySelectorAll('img[loading=lazy]').forEach(function(i){i.loading='eager'});warm.disconnect()}},{rootMargin:'1400px 0px'});
+    warm.observe(mason);
   }
 
   /* reviews: a carousel with a progress bar */

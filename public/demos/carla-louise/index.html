@@ -10,14 +10,20 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/Newsreader-500.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/AlbertSans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="img/carla-640.webp" imagesrcset="img/carla-360.webp 360w, img/carla-640.webp 640w" imagesizes="(max-width:860px) 80vw, 440px" fetchpriority="high">
 <style>
 @font-face{font-family:"Newsreader";src:url(fonts/Newsreader-500.woff2) format("woff2");font-weight:500;font-style:normal;font-display:swap}
 @font-face{font-family:"Albert Sans";src:url(fonts/AlbertSans-400.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Albert Sans";src:url(fonts/AlbertSans-600.woff2) format("woff2");font-weight:600;font-style:normal;font-display:swap}
 
+/* Direction, informed by solo-agent sites that feel personal rather than IDX (Lindsay Carlile, Jenelle Tremblett, Kayla Adamson):
+   a first-person promise beside one real portrait, a plain buy / sell / just-asking chooser that preselects the form,
+   the towns she actually serves set as type, one repeated call to action, and no proof section until there is real proof.
+   Colour stays the logo's: black, white, warm stone. The portrait sits on a full-bleed stone panel instead of a mask. */
 :root{
   --paper:#FDFCFA;
   --stone:#EAE3D3;
+  --stone-line:#C9BFA8;
   --ink:#171717;
   --muted:#595959;
   --line:#D2CFC8;
@@ -28,13 +34,16 @@
   --sans:"Albert Sans","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
   --gutter:clamp(20px,5vw,56px);
   --max:1120px;
+  --r:4px;
+  --ease:cubic-bezier(.16,1,.3,1);
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:84px}
-body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.65 var(--sans);overflow-x:hidden}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.65 var(--sans);overflow-x:clip}
 img,svg{max-width:100%;display:block}
 a{color:inherit}
-h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.1;margin:0;letter-spacing:-.01em;text-wrap:balance}
+::selection{background:var(--stone);color:var(--ink)}
+h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;letter-spacing:-.012em;text-wrap:balance}
 p{margin:0}
 .wrap{width:100%;max-width:calc(var(--max) + var(--gutter)*2);margin:0 auto;padding:0 var(--gutter)}
 :focus-visible{outline:3px solid var(--ink);outline-offset:3px}
@@ -44,95 +53,102 @@ p{margin:0}
 
 /* header */
 .top{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
-/* header logo mark: img/logo-140.webp */
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
 .logo-ph{display:flex;align-items:center;gap:12px;text-decoration:none;min-height:44px}
 .logo-ph .mark{height:56px;width:auto;mix-blend-mode:multiply}
 .logo-ph .word{font-family:var(--serif);font-weight:500;font-size:1.125rem;line-height:1.1}
 .logo-ph .word small{display:block;font:400 .8125rem/1.2 var(--sans);color:var(--muted);letter-spacing:0}
 .nav{display:flex;align-items:center;gap:6px}
 .nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;text-decoration:none;font-weight:600;font-size:.9375rem}
-.nav a:hover{text-decoration:underline;text-underline-offset:4px}
-.nav .call{border:1.5px solid var(--ink);margin-left:6px;white-space:nowrap}
-@media(max-width:760px){.nav .call{padding:0 10px;font-size:.875rem}.nav a:not(.call){display:none}.logo-ph .word small{display:none}}
+.nav a:not(.call):hover{text-decoration:underline;text-underline-offset:4px}
+.nav .call{background:var(--ink);color:var(--paper);margin-left:8px;padding:0 20px;border-radius:var(--r);white-space:nowrap;transition:background-color .2s}
+.nav .call:hover{background:#333}
+@media(max-width:760px){.nav .call{padding:0 14px;font-size:.875rem}.nav a:not(.call){display:none}.logo-ph .word small{display:none}}
 
 /* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;background:var(--ink);color:var(--paper);border:1.5px solid var(--ink);font:600 1rem/1 var(--sans);text-decoration:none;cursor:pointer;transition:background-color .2s,color .2s}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;background:var(--ink);color:var(--paper);border:1.5px solid var(--ink);border-radius:var(--r);font:600 1.0625rem/1 var(--sans);text-decoration:none;cursor:pointer;white-space:nowrap;transition:background-color .2s,color .2s,transform .12s var(--ease)}
 .btn:hover{background:transparent;color:var(--ink)}
+.btn:active{transform:translateY(1px)}
 .btn.ghost{background:transparent;color:var(--ink)}
 .btn.ghost:hover{background:var(--ink);color:var(--paper)}
 .dark .btn{background:var(--dark-text);color:var(--dark);border-color:var(--dark-text)}
 .dark .btn:hover{background:transparent;color:var(--dark-text)}
 
-/* hero */
-.hero{padding:clamp(48px,9vw,112px) 0 clamp(48px,8vw,96px)}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,6vw,80px);align-items:end}
-.heroimg{background:var(--stone);border-radius:999px 999px 0 0;overflow:hidden;max-width:420px;justify-self:end;width:100%}
-.arch{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover}
-.facts{margin:44px 0 0;padding-top:20px;border-top:1.5px solid var(--ink);display:grid;grid-template-columns:repeat(3,auto);gap:14px 32px;justify-content:start}
-.facts dt{font-size:.8125rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.facts dd{margin:2px 0 0;font-family:var(--serif);font-size:1.25rem;line-height:1.25}
-@media(max-width:560px){.facts{grid-template-columns:1fr}}
-.hero h1{font-size:clamp(2.75rem,7.4vw,5.5rem)}
-.hero .lede{margin-top:28px;max-width:34em;font-size:1.1875rem;color:var(--muted)}
+/* hero: promise on paper, portrait on a full-bleed stone panel */
+.hero{display:grid;grid-template-columns:minmax(var(--gutter),1fr) minmax(0,calc(var(--max)*.57)) minmax(0,calc(var(--max)*.43)) minmax(var(--gutter),1fr);background:var(--paper)}
+.hero .copy{grid-column:2;padding:clamp(48px,7vw,112px) clamp(24px,4vw,64px) clamp(48px,7vw,96px) 0;align-self:center}
+.hero .panel{grid-column:3/5;background:var(--stone);display:flex;align-items:flex-end;padding:clamp(36px,5vw,72px) var(--gutter) 0 clamp(24px,4vw,64px)}
+.hero .panel img{width:100%;max-width:440px;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r) var(--r) 0 0}
+.hero h1{font-size:clamp(3rem,6.6vw,5.9rem)}
+.hero .lede{margin-top:28px;max-width:30em;font-size:1.25rem;color:var(--muted)}
 .hero .actions{margin-top:36px;display:flex;flex-wrap:wrap;gap:12px}
-.intro{border-top:1.5px solid var(--ink);padding-top:20px}
-.intro dl{margin:0;display:grid;gap:14px}
-.intro dt{font-size:.8125rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.intro dd{margin:2px 0 0;font-family:var(--serif);font-size:1.375rem;line-height:1.25}
-.intro dd a{text-decoration-thickness:1px;text-underline-offset:4px}
-@media(max-width:860px){.hero .wrap{grid-template-columns:1fr}.heroimg{order:-1;justify-self:start;max-width:210px}}
+.facts{margin:44px 0 0;padding-top:22px;border-top:1.5px solid var(--ink);display:grid;grid-template-columns:repeat(3,auto);gap:14px 36px;justify-content:start}
+.facts dt{font-size:.9rem;color:var(--muted)}
+.facts dd{margin:2px 0 0;font-family:var(--serif);font-size:1.25rem;line-height:1.25}
+@media(max-width:860px){
+  .hero{grid-template-columns:var(--gutter) minmax(0,1fr) var(--gutter)}
+  .hero .copy{grid-column:2;padding:44px 0 40px}
+  .hero .panel{grid-column:1/-1;justify-content:center;padding:36px var(--gutter) 0}
+  .hero .panel img{max-width:380px}
+  .facts{grid-template-columns:1fr}
+}
+@media(max-width:560px){.hero .actions .btn{flex:1 1 100%}}
+@media(prefers-reduced-motion:no-preference){
+  .hero .copy>*,.hero .panel img{animation:rise .8s var(--ease) backwards}
+  .hero .lede{animation-delay:.08s!important}.hero .actions{animation-delay:.16s!important}.hero .facts{animation-delay:.24s!important}.hero .panel img{animation-delay:.1s!important}
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}}
+}
 
-/* paths */
+/* where are you in the process */
 .paths{border-top:1px solid var(--line)}
-.sec-head{padding:clamp(48px,7vw,88px) 0 clamp(20px,3vw,32px)}
-.sec-head h2{font-size:clamp(2rem,4.6vw,3.25rem);max-width:16em}
-.sec-head p{margin-top:16px;max-width:36em;color:var(--muted)}
-.path{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr) auto;gap:16px 40px;align-items:center;padding:28px 0;border-top:1px solid var(--line);text-decoration:none}
-.path:last-child{border-bottom:1px solid var(--line)}
-.path h3{font-size:clamp(1.75rem,3.6vw,2.5rem)}
-.path p{color:var(--muted)}
-.path .go{font-weight:600;white-space:nowrap;border-bottom:1.5px solid var(--ink);padding:8px 0;min-height:44px;display:inline-flex;align-items:center}
-.path{transition:background-color .25s,padding .25s}
-.path:hover{background:var(--stone);padding-left:20px;padding-right:20px}
-.path:hover .go{border-bottom-width:3px}
+.sec-head{padding:clamp(52px,7vw,96px) 0 clamp(22px,3vw,36px)}
+.sec-head h2{font-size:clamp(2.2rem,4.8vw,3.6rem);max-width:16em}
+.sec-head p{margin-top:16px;max-width:36em;color:var(--muted);font-size:1.125rem}
+.path{--pi:clamp(10px,2vw,24px);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr) auto;gap:16px 40px;align-items:center;padding:34px var(--pi);margin-inline:calc(var(--pi)*-1);border-top:1px solid var(--line);text-decoration:none;transition:background-color .25s,color .25s}
+.path:last-of-type{border-bottom:1px solid var(--line)}
+.path h3{font-size:clamp(2rem,4vw,3rem)}
+.path p{color:var(--muted);transition:color .25s}
+.path .go{font-weight:600;white-space:nowrap;border-bottom:1.5px solid currentColor;padding:8px 0;min-height:44px;display:inline-flex;align-items:center}
+.path:hover{background:var(--ink);color:var(--paper)}
+.path:hover p{color:var(--dark-muted)}
+.paths-end{padding-bottom:clamp(52px,7vw,96px)}
 @media(max-width:760px){.path{grid-template-columns:1fr;gap:8px}.path .go{justify-self:start;margin-top:6px}}
-.paths-end{padding-bottom:clamp(48px,7vw,88px)}
 
-.band{margin:0;background:var(--stone)}
-.band img{width:100%;height:clamp(220px,38vw,460px);object-fit:cover;object-position:50% 60%}
-/* where */
+/* towns: type on stone beside a house */
 .where{background:var(--stone)}
-.where .wrap{padding-top:clamp(48px,7vw,88px);padding-bottom:clamp(48px,7vw,88px);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(28px,6vw,80px)}
-.where h2{font-size:clamp(2rem,4.6vw,3.25rem)}
-.where .note{margin-top:18px;color:var(--muted);max-width:30em}
-.towns{list-style:none;margin:0;padding:0;columns:2;column-gap:32px;font-family:var(--serif);font-size:clamp(1.75rem,3.6vw,2.75rem);line-height:1.25}
-.towns li{padding:8px 0;border-bottom:1px solid #C9BFA8;break-inside:avoid}
-.towns-more{margin-top:20px;color:var(--muted)}
-@media(max-width:860px){.where .wrap{grid-template-columns:1fr}}
+.where .wrap{padding-top:clamp(52px,7vw,96px);padding-bottom:clamp(52px,7vw,96px);display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(28px,6vw,88px);align-items:center}
+.where h2{font-size:clamp(2.2rem,4.8vw,3.6rem)}
+.where .note{margin-top:18px;color:var(--muted);max-width:30em;font-size:1.125rem}
+.towns{list-style:none;margin:clamp(24px,3vw,40px) 0 0;padding:0;columns:2;column-gap:36px;font-family:var(--serif);font-size:clamp(1.7rem,3.2vw,2.5rem);line-height:1.25}
+.towns li{padding:8px 0;border-bottom:1px solid var(--stone-line);break-inside:avoid}
+.towns-more{margin-top:22px;color:var(--muted)}
+.where figure{margin:0}
+/* STOCK PHOTO (placeholder): "Red brick house with white shutters" by Roger Starnes Sr (@rstar50) on Unsplash, https://unsplash.com/photos/red-brick-house-with-white-shutters-Ny6ZtbducqU . Free to use under the Unsplash License. Not a listing and not in Arkansas. Replace with a real local photo. */
+.where figure img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:62% 50%;border-radius:var(--r)}
+@media(max-width:860px){.where .wrap{grid-template-columns:1fr}.where figure img{aspect-ratio:16/10}}
 @media(max-width:420px){.towns{columns:1}}
 
 /* about */
-.about .wrap{padding-top:clamp(48px,7vw,96px);padding-bottom:clamp(48px,7vw,96px);display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(28px,6vw,80px);align-items:start}
-.portrait{width:100%;height:auto;mix-blend-mode:multiply}
-.about h2{font-size:clamp(2rem,4.6vw,3.25rem)}
-.about .body{margin-top:24px;display:grid;gap:18px;max-width:36em}
-.about .body .ph{border-left:3px solid var(--ink);padding-left:16px;color:var(--muted)}
-@media(max-width:860px){.about .wrap{grid-template-columns:1fr}.portrait{max-width:360px}}
+.about .wrap{padding-top:clamp(52px,7vw,104px);padding-bottom:clamp(52px,7vw,104px);display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(28px,6vw,88px);align-items:center}
+.about .portrait{width:100%;height:auto;max-width:400px;aspect-ratio:1/1;object-fit:cover;object-position:50% 22%;border-radius:var(--r)}
+.about h2{font-size:clamp(2.2rem,4.8vw,3.6rem)}
+.about .body{margin-top:24px;display:grid;gap:18px;max-width:36em;font-size:1.125rem}
+.about .ph{padding:16px 18px;background:var(--stone);border-radius:var(--r);color:var(--muted);font-size:1rem}
+@media(max-width:860px){.about .wrap{grid-template-columns:1fr}.about .portrait{max-width:320px}}
 
-/* reviews */
+/* reviews: honest until there are real quotes */
 .reviews{border-top:1px solid var(--line)}
-.reviews .wrap{padding-top:clamp(40px,6vw,72px);padding-bottom:clamp(40px,6vw,72px);display:flex;flex-wrap:wrap;gap:24px 56px;align-items:center;justify-content:space-between}
-.reviews h2{font-size:clamp(1.75rem,3.6vw,2.5rem);max-width:15em}
+.reviews .wrap{padding-top:clamp(44px,6vw,80px);padding-bottom:clamp(44px,6vw,80px);display:flex;flex-wrap:wrap;gap:24px 56px;align-items:center;justify-content:space-between}
+.reviews h2{font-size:clamp(1.9rem,3.8vw,2.75rem);max-width:15em}
 .reviews p{margin-top:10px;color:var(--muted);max-width:34em}
 .links{display:flex;flex-wrap:wrap;gap:12px}
 
 /* contact */
 .dark{background:var(--dark);color:var(--dark-text)}
-.contact .wrap{padding-top:clamp(56px,8vw,104px);padding-bottom:clamp(56px,8vw,104px);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,6vw,88px)}
-.contact h2{font-size:clamp(2.25rem,5vw,3.75rem)}
+.contact .wrap{padding-top:clamp(56px,8vw,112px);padding-bottom:clamp(56px,8vw,112px);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,6vw,88px)}
+.contact h2{font-size:clamp(2.4rem,5.2vw,4rem)}
 .contact .side p{margin-top:20px;color:var(--dark-muted);max-width:28em}
-.contact .side .tel{display:inline-block;margin-top:28px;font-family:var(--serif);font-size:clamp(1.75rem,3.4vw,2.375rem);text-decoration-thickness:1px;text-underline-offset:6px}
+.contact .side .tel{display:inline-block;margin-top:28px;font-family:var(--serif);font-size:clamp(2rem,3.8vw,2.75rem);text-decoration-thickness:1px;text-underline-offset:6px}
 .contact .side .tel-note{margin-top:6px;font-size:.875rem}
 form{display:grid;gap:20px}
 fieldset{border:0;margin:0;padding:0;min-width:0}
@@ -140,47 +156,37 @@ legend{padding:0;margin-bottom:10px;font-weight:600;font-size:.9375rem}
 .opts{display:flex;flex-wrap:wrap;gap:10px}
 .opts label{position:relative}
 .opts input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
-.opts span{display:inline-flex;align-items:center;min-height:48px;padding:0 20px;border:1.5px solid var(--dark-muted);font-weight:600}
+.opts span{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border:1.5px solid var(--dark-muted);font-weight:600;border-radius:var(--r);transition:background-color .2s,color .2s}
 .opts input:checked+span{background:var(--dark-text);color:var(--dark);border-color:var(--dark-text)}
 .opts input:focus-visible+span{outline:3px solid var(--dark-text);outline-offset:3px}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 @media(max-width:560px){.row{grid-template-columns:1fr}}
 .field label{display:block;font-weight:600;font-size:.9375rem;margin-bottom:6px}
 .field .opt{font-weight:400;color:var(--dark-muted)}
-input[type=text],input[type=tel],input[type=email],select,textarea{width:100%;min-height:48px;padding:11px 14px;background:transparent;color:var(--dark-text);border:1.5px solid var(--dark-muted);border-radius:0;font:400 1rem/1.4 var(--sans)}
+input[type=text],input[type=tel],input[type=email],select,textarea{width:100%;min-height:50px;padding:11px 14px;background:transparent;color:var(--dark-text);border:1.5px solid var(--dark-muted);border-radius:var(--r);font:400 1rem/1.4 var(--sans)}
 select option{color:#171717;background:#FDFCFA}
 textarea{min-height:128px;resize:vertical}
 input::placeholder,textarea::placeholder{color:#B0B0B0}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .fine{font-size:.875rem;color:var(--dark-muted)}
-.msg{padding:16px 18px;border:1.5px solid var(--dark-text);display:none}
+.msg{padding:16px 18px;border:1.5px solid var(--dark-text);border-radius:var(--r);display:none}
 .msg.show{display:block}
 .msg a{font-weight:600}
 .sending .btn{opacity:.6;pointer-events:none}
+@media(max-width:860px){.contact .wrap{grid-template-columns:1fr}}
 
 /* footer */
 .foot{border-top:1px solid var(--line)}
 .foot .wrap{padding-top:40px;padding-bottom:48px;display:grid;gap:20px;font-size:.9375rem;color:var(--muted)}
-.foot .flogo{width:min(100%,260px);height:auto;mix-blend-mode:multiply}
-.foot .brand{font-family:var(--serif);font-size:1.5rem;color:var(--ink);line-height:1.2}
+.foot .flogo{width:min(100%,240px);height:auto;mix-blend-mode:multiply}
 .foot .eho{display:flex;gap:12px;align-items:center}
 .foot .eho svg{flex:none}
 .foot p{max-width:46em}
 .foot a{color:var(--ink)}
-
-/* motion: opacity + transform only */
-.rise{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
-.rise.in{opacity:1;transform:none}
-.hero .rise{transition-delay:calc(var(--i,0)*90ms)}
-@media(prefers-reduced-motion:reduce){
-  .rise{transform:none;transition:opacity .2s linear}
-  .btn,.path{transition:none}
-}
-.nojs .rise{opacity:1;transform:none}
-@media(max-width:860px){.contact .wrap{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.btn,.path,.nav .call,.opts span{transition:none}.btn:active{transform:none}}
 </style>
 </head>
-<body class="nojs">
+<body>
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="top">
@@ -200,23 +206,21 @@ input::placeholder,textarea::placeholder{color:#B0B0B0}
 
 <main id="main">
 <section class="hero">
-  <div class="wrap">
-    <div>
-      <h1 class="rise" style="--i:0">Putting your family first.</h1>
-      <p class="lede rise" style="--i:1">I'm Carla Louise, a residential realtor with Family First Realty in Bryant, Arkansas. I help families buy and sell homes in Saline County and across the state, and I'm easy to reach.</p>
-      <div class="actions rise" style="--i:2">
-        <a class="btn" href="#contact">Tell me what you need</a>
-        <a class="btn ghost" href="tel:+15012423044">Call 501-242-3044</a>
-      </div>
-      <dl class="facts rise" style="--i:3">
-        <div><dt>Brokerage</dt><dd>Family First Realty</dd></div>
-        <div><dt>Based in</dt><dd>Bryant, Arkansas</dd></div>
-        <div><dt>Focus</dt><dd>Saline County and all of Arkansas</dd></div>
-      </dl>
+  <div class="copy">
+    <h1>Putting your family first.</h1>
+    <p class="lede">I'm Carla Louise, a residential realtor with Family First Realty in Bryant, Arkansas. I help families buy and sell homes in Saline County and across the state, and I'm easy to reach.</p>
+    <div class="actions">
+      <a class="btn" href="#contact">Tell me what you need</a>
+      <a class="btn ghost" href="tel:+15012423044">Call 501-242-3044</a>
     </div>
-    <div class="heroimg rise" style="--i:1">
-      <img class="arch" src="img/carla-640.webp" srcset="img/carla-360.webp 360w, img/carla-640.webp 640w" sizes="(max-width:860px) 300px, 400px" width="640" height="800" fetchpriority="high" decoding="async" alt="Carla Louise, realtor with Family First Realty, seated in front of a black front door">
-    </div>
+    <dl class="facts">
+      <div><dt>Brokerage</dt><dd>Family First Realty</dd></div>
+      <div><dt>Based in</dt><dd>Bryant, Arkansas</dd></div>
+      <div><dt>Focus</dt><dd>Saline County and all of Arkansas</dd></div>
+    </dl>
+  </div>
+  <div class="panel">
+    <img src="img/carla-640.webp" srcset="img/carla-360.webp 360w, img/carla-640.webp 640w" sizes="(max-width:860px) 80vw, 440px" width="640" height="800" fetchpriority="high" decoding="async" alt="Carla Louise, realtor with Family First Realty, seated in front of a black front door">
   </div>
 </section>
 
@@ -226,17 +230,17 @@ input::placeholder,textarea::placeholder{color:#B0B0B0}
       <h2 id="ways-h">Where are you in the process?</h2>
       <p>Pick the one that fits and send a short note. No forms about money, no pressure.</p>
     </div>
-    <a class="path rise" href="#contact" data-intent="Buying">
+    <a class="path" href="#contact" data-intent="Buying">
       <h3>Buying a home</h3>
       <p>Start with what matters to your family: the area, the size, the schools and the commute. Then we look together.</p>
       <span class="go">Ask about buying</span>
     </a>
-    <a class="path rise" href="#contact" data-intent="Selling">
+    <a class="path" href="#contact" data-intent="Selling">
       <h3>Selling a home</h3>
       <p>Talk through your timing and your goals first, so the plan fits your life and not just the listing.</p>
       <span class="go">Ask about selling</span>
     </a>
-    <a class="path rise" href="#contact" data-intent="Just asking">
+    <a class="path" href="#contact" data-intent="Just asking">
       <h3>Just asking</h3>
       <p>Not sure yet, or only have a question about the area or the process? That's a fine place to start.</p>
       <span class="go">Ask a question</span>
@@ -245,18 +249,11 @@ input::placeholder,textarea::placeholder{color:#B0B0B0}
   </div>
 </section>
 
-<figure class="band rise">
-  <!-- STOCK PHOTO (placeholder): "Red brick house with white shutters" by Roger Starnes Sr (@rstar50) on Unsplash, https://unsplash.com/photos/red-brick-house-with-white-shutters-Ny6ZtbducqU . Free to use under the Unsplash License. Not a listing and not in Arkansas. Replace with a real local photo. -->
-  <img src="img/home-1499.webp" srcset="img/home-720.webp 720w, img/home-1499.webp 1499w" sizes="100vw" width="1499" height="740" loading="lazy" decoding="async" alt="A red brick single-story home with white shutters, a columned front entry and a green lawn">
-</figure>
-
 <section class="where" id="where" aria-labelledby="where-h">
   <div class="wrap">
-    <div class="rise">
+    <div>
       <h2 id="where-h">Rooted in Saline County.</h2>
       <p class="note">My base is Bryant, and Saline County is where I focus. I also work with buyers and sellers across Arkansas.</p>
-    </div>
-    <div class="rise">
       <ul class="towns">
         <li>Benton</li>
         <li>Bryant</li>
@@ -268,13 +265,16 @@ input::placeholder,textarea::placeholder{color:#B0B0B0}
       </ul>
       <p class="towns-more">Somewhere else in Arkansas? Ask. I'll tell you plainly whether I can help.</p>
     </div>
+    <figure>
+      <img src="img/home-1499.webp" srcset="img/home-720.webp 720w, img/home-1499.webp 1499w" sizes="(max-width:860px) 100vw, 480px" width="1499" height="740" loading="lazy" decoding="async" alt="A red brick single-story home with white shutters, a columned front entry and a green lawn">
+    </figure>
   </div>
 </section>
 
 <section class="about" id="about" aria-labelledby="about-h">
   <div class="wrap">
-    <img class="portrait rise" src="img/logo-560.webp" width="560" height="457" loading="lazy" decoding="async" alt="Family First Realty logo: a tree of interlocking figures forming hearts, with the words Putting your family first">
-    <div class="rise">
+    <img class="portrait" src="img/carla-640.webp" srcset="img/carla-360.webp 360w, img/carla-640.webp 640w" sizes="400px" width="640" height="800" loading="lazy" decoding="async" alt="Carla Louise, smiling, in a blazer">
+    <div>
       <h2 id="about-h">Meet Carla.</h2>
       <div class="body">
         <p>Carla Louise is a residential realtor with Family First Realty in Bryant, Arkansas. The brokerage name says how she works: your family comes first, and the rest follows from that.</p>
@@ -292,7 +292,7 @@ input::placeholder,textarea::placeholder{color:#B0B0B0}
       <!-- PLACEHOLDER: paste real five-star quotes here, word for word, with first names, once confirmed from the profile. -->
     </div>
     <div class="links">
-      <a class="btn" href="https://www.realtor.com/realestateagency/668c1b86f7eedc0ee3283ec2" rel="noopener" target="_blank">See reviews and listings on Realtor.com</a>
+      <a class="btn" href="https://www.realtor.com/realestateagency/668c1b86f7eedc0ee3283ec2" rel="noopener" target="_blank">Reviews on Realtor.com</a>
       <a class="btn ghost" href="https://www.facebook.com/people/Carla-Louise-Family-First-Realty/100058725211262/" rel="noopener" target="_blank">Facebook page</a>
     </div>
   </div>
@@ -356,14 +356,6 @@ input::placeholder,textarea::placeholder{color:#B0B0B0}
 
 <script>
 (function(){
-  var de=document.documentElement,b=document.body;
-  b.classList.remove('nojs');
-  var els=[].slice.call(document.querySelectorAll('.rise'));
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
-    els.forEach(function(el){io.observe(el)});
-  }else{els.forEach(function(el){el.classList.add('in')})}
-
   // path rows preselect the intent
   [].forEach.call(document.querySelectorAll('[data-intent]'),function(a){
     a.addEventListener('click',function(){
