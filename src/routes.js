@@ -49,6 +49,7 @@ const postSlugs = [
   'brand-is-more-than-a-logo',
   'answer-leads-within-minutes',
   'how-to-ask-for-google-reviews',
+  'do-you-need-an-llms-txt-file',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
