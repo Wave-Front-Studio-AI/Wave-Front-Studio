@@ -5,6 +5,7 @@ import { pathToFileURL } from 'node:url'
 import sharp from 'sharp'
 import { routes, staticPages } from '../src/routes.js'
 import { contact, siteOrigin } from '../src/data/site.js'
+import { services } from '../src/data/services.js'
 import { posts } from '../src/data/generated/posts.js'
 import { blogSeo, postShareImage } from '../src/data/seo.js'
 
@@ -201,10 +202,23 @@ await writeFile(
 
 // lastmod only where the date is real. Stamping every URL with the build date
 // teaches Google to ignore the field, so pages without a known date leave it out.
+// Pages that carry a promo video also list it, so Google can match the video to
+// the page (the home page shows the web development ad).
+const xml = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+const videoEntries = new Map([
+  ...services.filter((service) => service.hero.video).map((service) => [`/${service.slug}/`, service.hero]),
+  ['/', services.find((service) => service.slug === 'web-development').hero],
+])
+const videoTag = (path) => {
+  const hero = videoEntries.get(path)
+  if (!hero) return ''
+  const seconds = Number(/PT(\d+)S/.exec(hero.duration)?.[1])
+  return `<video:video><video:thumbnail_loc>${siteOrigin}${hero.poster}</video:thumbnail_loc><video:title>${xml(hero.alt)}</video:title><video:description>${xml(hero.description)}</video:description><video:content_loc>${siteOrigin}${hero.video}</video:content_loc><video:duration>${seconds}</video:duration><video:publication_date>${hero.uploadDate}</video:publication_date><video:family_friendly>yes</video:family_friendly></video:video>`
+}
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 ${[...pages.filter((page) => !page.noindex), ...staticPages.map((path) => ({ path }))]
-  .map(({ path, modified }) => `  <url><loc>${siteOrigin}${path}</loc>${modified ? `<lastmod>${modified}</lastmod>` : ''}</url>`)
+  .map(({ path, modified }) => `  <url><loc>${siteOrigin}${path}</loc>${modified ? `<lastmod>${modified}</lastmod>` : ''}${videoTag(path)}</url>`)
   .join('\n')}
 </urlset>
 `

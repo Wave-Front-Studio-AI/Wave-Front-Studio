@@ -557,8 +557,8 @@ p { margin: 0; text-wrap: pretty; }
 .review-controls button:active { transform: scale(0.95); }
 .review-count { margin-left: 6px; color: var(--muted); font-size: 0.875rem; font-variant-numeric: tabular-nums; }
 .review-source { margin-left: auto; color: var(--brand-deep); font-size: 0.875rem; font-weight: 600; }
-.review-video { position: relative; margin: 0; overflow: hidden; border-radius: var(--r-lg); background: var(--ink); }
-.review-video video { display: block; width: 100%; height: 100%; min-height: 280px; object-fit: cover; }
+.review-video { position: relative; width: 100%; max-width: 340px; margin: 0 auto; aspect-ratio: 9 / 16; overflow: hidden; border-radius: var(--r-lg); background: var(--ink); }
+.review-video video { display: block; width: 100%; height: 100%; object-fit: contain; }
 .review-video.is-playing video { object-fit: contain; }
 .video-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .video-play { position: absolute; inset: 0; display: grid; place-items: center; border: 0; background: rgba(13, 27, 42, 0.22); cursor: pointer; }
@@ -575,7 +575,7 @@ p { margin: 0; text-wrap: pretty; }
 @keyframes play-ring { from { opacity: 0.8; transform: scale(0.85); } to { opacity: 0; transform: scale(1.35); } }
 .review-video figcaption { position: absolute; bottom: 14px; left: 16px; padding: 4px 12px; border-radius: 999px; color: var(--white); background: rgba(13, 27, 42, 0.72); font-size: 0.8125rem; pointer-events: none; }
 .home-reviews .google-attribution { margin-top: 18px; text-align: center; }
-.review-video-col { display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; }
+.review-video-col { width: 100%; max-width: 340px; margin-inline: auto; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; }
 /* The text version of a video: closed by default, one line under the player. */
 .video-transcript { color: var(--text); font-size: 0.9rem; line-height: 1.6; }
 .video-transcript summary { width: fit-content; color: var(--brand-deep); font-weight: 600; cursor: pointer; }
@@ -770,6 +770,9 @@ p { margin: 0; text-wrap: pretty; }
 .service-media { position: relative; overflow: hidden; border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--ink); }
 .service-media img, .service-media video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--ink); }
 .service-media video { border: 0; }
+/* The ads are vertical (9:16) with the captions burned in, so never crop them. */
+.service-media:has(.service-hero-video) { width: 100%; max-width: 340px; margin-inline: auto; }
+.service-media .service-hero-video { aspect-ratio: 9 / 16; object-fit: contain; }
 .service-media.is-frame { padding: 8px; background: var(--white); }
 .service-media.is-frame img { border-radius: var(--r-sm); aspect-ratio: 16 / 10; object-fit: cover; }
 .service-media-tag { position: absolute; bottom: 16px; left: 16px; padding: 7px 13px; border-radius: 999px; background: var(--ink); color: var(--white); font-size: 0.8125rem; font-weight: 500; }

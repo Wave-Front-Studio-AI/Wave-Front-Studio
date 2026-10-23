@@ -92,6 +92,25 @@ export function pageGraph(...nodes) {
   return { '@context': 'https://schema.org', '@graph': [organization, website, ...nodes.filter(Boolean)] }
 }
 
+// A promo video on a page, for Google's video results. Needs the poster as the
+// thumbnail and a real upload date and length; hero data carries all three.
+export function videoObject(hero, path, name) {
+  return {
+    '@type': 'VideoObject',
+    '@id': `${absoluteUrl(path)}#video`,
+    name,
+    description: hero.description,
+    thumbnailUrl: [absoluteUrl(hero.poster)],
+    uploadDate: hero.uploadDate,
+    duration: hero.duration,
+    contentUrl: absoluteUrl(hero.video),
+    inLanguage: 'en-US',
+    isFamilyFriendly: true,
+    publisher: { '@id': ORGANIZATION_ID },
+    mainEntityOfPage: absoluteUrl(path),
+  }
+}
+
 export function webPage({ type = 'WebPage', path, name, description, ...rest }) {
   return {
     '@type': type,

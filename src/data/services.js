@@ -11,10 +11,12 @@ export const services = [
     metaDescription: 'We design and build websites that load fast and bring in enquiries: business sites, online stores, SaaS platforms, landing pages and multi-site setups.',
     hero: {
       alt: 'Wavefront Studio video about website development',
-      video: '/videos/web-development-ad.mp4',
-      // Transcribed with Whisper (small.en), checked and punctuated by hand.
-      captions: '/videos/web-development-ad.vtt',
-      poster: '/videos/web-development-poster.webp',
+      video: '/videos/web-development-ad-v2.mp4',
+      description: 'Why most business websites bring in nothing, and how Wavefront Studio builds sites where visitors understand you and the next step is one tap.',
+      uploadDate: '2026-10-23',
+      duration: 'PT15S',
+      captions: '/videos/web-development-ad-v2.vtt',
+      poster: '/videos/web-development-poster-v2.webp',
     },
     approach: {
       title: 'What we build',
@@ -66,6 +68,9 @@ export const services = [
     hero: {
       alt: 'Wavefront Studio video about showing up on Google',
       video: '/videos/seo-google-presence-ad.mp4',
+      description: 'How Wavefront Studio helps customers find your business when they search on Google, and the online presence assessment to see where you stand.',
+      uploadDate: '2026-09-22',
+      duration: 'PT32S',
       // Transcribed with Whisper (small.en), checked and punctuated by hand.
       captions: '/videos/seo-google-presence-ad.vtt',
       poster: '/videos/seo-google-presence-poster.webp',
@@ -190,7 +195,15 @@ export const services = [
     subhead: 'Custom apps built to scale your business',
     metaTitle: 'Custom Mobile App Development | Wavefront Studio LLC',
     metaDescription: 'iOS and Android apps for your customers or your own team, from a first version to a finished product, designed and built in Sarasota.',
-    hero: {},
+    hero: {
+      alt: 'Wavefront Studio video about mobile app development',
+      video: '/videos/mobile-app-ad-v2.mp4',
+      description: 'Wavefront Studio designs and builds iOS and Android apps for your customers or your team, from first version to finished product.',
+      uploadDate: '2026-10-23',
+      duration: 'PT14S',
+      captions: '/videos/mobile-app-ad-v2.vtt',
+      poster: '/videos/mobile-app-poster-v2.webp',
+    },
     approach: {
       title: 'Why businesses trust us with their apps',
       paragraphs: [
@@ -358,10 +371,12 @@ export const services = [
     metaDescription: 'A free audit of your website’s mobile usability, technical health, search visibility and enquiry path, with a clear list of what to fix first.',
     hero: {
       alt: 'Wavefront Studio video about the free website audit',
-      video: '/videos/free-audit-ad.mp4',
-      // Transcribed with Whisper (small.en), checked and punctuated by hand.
-      captions: '/videos/free-audit-ad.vtt',
-      poster: '/videos/free-audit-poster.webp',
+      video: '/videos/free-audit-ad-v2.mp4',
+      description: 'Your website may be costing you enquiries. The free audit checks mobile, speed, search visibility and your enquiry path, then lists what to fix first.',
+      uploadDate: '2026-10-23',
+      duration: 'PT13S',
+      captions: '/videos/free-audit-ad-v2.vtt',
+      poster: '/videos/free-audit-poster-v2.webp',
     },
     primaryCta: { label: 'Get my free audit', href: '#service-form' },
     // The Meta ads send people here. Meta's report for 12–17 Sept showed the
@@ -428,10 +443,12 @@ export const services = [
     metaDescription: 'Lead capture systems that collect enquiries from your website and other channels, qualify each one, create clean CRM records and alert the right person.',
     hero: {
       alt: 'Wavefront Studio video about lead capture',
-      video: '/videos/lead-capture-ad.mp4',
-      // Transcribed with Whisper (small.en), checked and punctuated by hand.
-      captions: '/videos/lead-capture-ad.vtt',
-      poster: '/videos/lead-capture-poster.webp',
+      video: '/videos/lead-capture-ad-v2.mp4',
+      description: "The click isn't the win, the reply is. Wavefront Studio captures each enquiry, qualifies it and alerts the right person right away.",
+      uploadDate: '2026-10-23',
+      duration: 'PT12S',
+      captions: '/videos/lead-capture-ad-v2.vtt',
+      poster: '/videos/lead-capture-poster-v2.webp',
     },
     primaryCta: { label: 'Plan my lead system', href: '#service-form' },
     form: {

@@ -5,7 +5,7 @@ import { Breadcrumbs, CtaBand, DemoSites, EnquiryForm, FaqAccordion, SectionHead
 import { services } from '../data/services.js'
 import { customWorks } from '../data/customWorks.js'
 import { siteOrigin } from '../data/site.js'
-import { breadcrumbs, byOrganization, pageGraph } from '../data/seo.js'
+import { breadcrumbs, byOrganization, pageGraph, videoObject } from '../data/seo.js'
 import VideoTranscript from '../components/VideoTranscript.jsx'
 import { sizeOf } from '../data/imageSizes.js'
 
@@ -142,6 +142,7 @@ export default function ServicePage({ service }) {
       provider: byOrganization,
     },
     breadcrumbs(trail),
+    service.hero.video ? videoObject(service.hero, canonical, service.hero.alt) : null,
     service.faqs
       ? {
           '@type': 'FAQPage',

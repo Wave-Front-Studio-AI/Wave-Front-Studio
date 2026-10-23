@@ -6,7 +6,8 @@ import FunnelStory from '../components/FunnelStory.jsx'
 import { DemoSites, FaqAccordion, Stars, initials, useGoogleReviews } from '../components/shared.jsx'
 import { contact, googleListingUrl, offerings } from '../data/site.js'
 import { siteFaqs } from '../data/faqs.js'
-import { byOrganization, homeSeo, pageGraph, webPage } from '../data/seo.js'
+import { services } from '../data/services.js'
+import { byOrganization, homeSeo, pageGraph, videoObject, webPage } from '../data/seo.js'
 
 // The home page borrows its layout and motion from the brief the studio chose
 // in October 2026 (modelled on realtimemarketing.com): a photo hero, sourced
@@ -629,13 +630,13 @@ function Reviews() {
 
           <div className="review-video-col">
             <figure className={`review-video ${playing ? 'is-playing' : ''}`} data-enter="right">
-              <video ref={video} controls={playing} playsInline preload="none" width="1280" height="720" aria-label="Wavefront Studio explains how we build websites">
-                <source src="/videos/web-development-ad.mp4" type="video/mp4" />
-                <track kind="captions" src="/videos/web-development-ad.vtt" srcLang="en" label="English" />
+              <video ref={video} controls={playing} playsInline preload="none" width="540" height="960" aria-label="Wavefront Studio explains how we build websites">
+                <source src="/videos/web-development-ad-v2.mp4" type="video/mp4" />
+                <track kind="captions" src="/videos/web-development-ad-v2.vtt" srcLang="en" label="English" />
               </video>
               {/* A poster attribute downloads with the page even when the video
                   does not; a lazy image waits until the section is near. */}
-              {playing ? null : <img className="video-poster" src="/videos/web-development-poster.webp" alt="" width="1280" height="720" loading="lazy" decoding="async" />}
+              {playing ? null : <img className="video-poster" src="/videos/web-development-poster-v2.webp" alt="" width="540" height="960" loading="lazy" decoding="async" />}
               {playing ? null : (
                 <button type="button" className="video-play" onClick={play} aria-label="Play the video: how Wavefront builds websites">
                   <span>
@@ -647,7 +648,7 @@ function Reviews() {
               )}
               {playing ? null : <figcaption>How we build websites</figcaption>}
             </figure>
-            <VideoTranscript video="/videos/web-development-ad.mp4" />
+            <VideoTranscript video="/videos/web-development-ad-v2.mp4" />
           </div>
         </div>
 
@@ -723,9 +724,14 @@ function FinalBanner() {
   )
 }
 
+const webDevelopmentHero = services.find((service) => service.slug === 'web-development').hero
+
 export default function Home() {
   // The organization and website nodes come with every page's graph.
-  const schema = pageGraph(webPage({ path: '/', name: homeSeo.title, description: homeSeo.description, about: byOrganization }))
+  const schema = pageGraph(
+    webPage({ path: '/', name: homeSeo.title, description: homeSeo.description, about: byOrganization }),
+    videoObject(webDevelopmentHero, '/', webDevelopmentHero.alt),
+  )
   const root = useRef(null)
   useEntrances(root)
 
