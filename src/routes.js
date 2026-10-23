@@ -51,6 +51,7 @@ const postSlugs = [
   'how-to-ask-for-google-reviews',
   'do-you-need-an-llms-txt-file',
   'title-tags-and-meta-descriptions',
+  'about-page-is-not-about-you',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
