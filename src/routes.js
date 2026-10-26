@@ -52,6 +52,7 @@ const postSlugs = [
   'do-you-need-an-llms-txt-file',
   'title-tags-and-meta-descriptions',
   'about-page-is-not-about-you',
+  'colours-and-fonts-guide',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
