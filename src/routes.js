@@ -53,6 +53,7 @@ const postSlugs = [
   'title-tags-and-meta-descriptions',
   'about-page-is-not-about-you',
   'colours-and-fonts-guide',
+  'one-page-per-service',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
