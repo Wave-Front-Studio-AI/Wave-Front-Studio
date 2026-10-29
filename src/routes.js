@@ -54,6 +54,7 @@ const postSlugs = [
   'about-page-is-not-about-you',
   'colours-and-fonts-guide',
   'one-page-per-service',
+  'what-a-chatbot-should-never-say',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
