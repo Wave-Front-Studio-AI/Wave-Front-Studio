@@ -58,6 +58,7 @@ const postSlugs = [
   'reply-to-a-bad-review',
   'test-your-site-on-a-phone',
   'search-console-in-fifteen-minutes',
+  'pick-one-social-platform',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
