@@ -60,6 +60,7 @@ const postSlugs = [
   'search-console-in-fifteen-minutes',
   'pick-one-social-platform',
   'internal-links-for-small-sites',
+  'contact-form-fields',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
