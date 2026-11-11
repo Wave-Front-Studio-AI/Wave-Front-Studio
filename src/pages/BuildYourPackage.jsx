@@ -20,12 +20,11 @@ const CUSTOM_LANDING_ROW = 'Landing Pages — Custom'
 
 const tierLabel = (tier, staff) => (tier.custom && !staff ? CUSTOM_PRICE_LABEL : tierPrice(tier))
 
-// A visitor's quote leaves out everything only staff can set: credits, custom items and custom landing prices.
+// A visitor's quote leaves out everything only staff can set: credits, and custom landing prices. Custom items are open to everyone.
 // The project name and details stay, so the studio still sees what the visitor described.
 function visitorQuote(state) {
   const safe = { ...state }
   delete safe.credit
-  delete safe.customItems
   if (safe.landing?.custom) safe.landing = { ...safe.landing, custom: { name: safe.landing.custom.name, details: safe.landing.custom.details } }
   const quote = calculateQuote(safe)
   let customPriced = false
@@ -539,7 +538,7 @@ export default function BuildYourPackage() {
 
   function toggleSend() {
     if (!hasItems) {
-      setToast(staff ? 'Select a service or add a custom item first' : 'Select a service first')
+      setToast('Select a service or add a custom item first')
       return
     }
     setSendOpen((open) => !open)
@@ -887,7 +886,7 @@ export default function BuildYourPackage() {
               </label>
             ) : null}
             {!hasItems ? (
-              <p className="package-empty">No services selected yet. Pick some on the left{staff ? ', or add a custom quote' : ''}.</p>
+              <p className="package-empty">No services selected yet. Pick some on the left, or add a custom quote.</p>
             ) : (
               <>
                 <div className="package-lines">
@@ -1056,16 +1055,14 @@ export default function BuildYourPackage() {
               )}
             </div>
 
-            {staff ? (
-              <button ref={customButtonRef} className="kinetic-button light group package-custom-button" type="button" onClick={() => setCustomEditor({ id: null })} aria-haspopup="dialog">
-                <span>Custom quote</span>
-                <span className="button-island">
-                  <svg className="size-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                    <path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" />
-                  </svg>
-                </span>
-              </button>
-            ) : null}
+            <button ref={customButtonRef} className="kinetic-button light group package-custom-button" type="button" onClick={() => setCustomEditor({ id: null })} aria-haspopup="dialog">
+              <span>Custom quote</span>
+              <span className="button-island">
+                <svg className="size-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" />
+                </svg>
+              </span>
+            </button>
 
             <p className="package-note">
               Estimates for standard scopes. Final quote confirmed on a quick call. Ad spend for paid campaigns billed separately.
