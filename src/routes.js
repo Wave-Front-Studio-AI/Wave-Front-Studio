@@ -61,6 +61,7 @@ const postSlugs = [
   'pick-one-social-platform',
   'internal-links-for-small-sites',
   'contact-form-fields',
+  'five-accessibility-fixes',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
