@@ -4,6 +4,7 @@ import { Breadcrumbs } from '../components/shared.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { TEMPLATES, demoUrl } from '../templates/list.js'
 import NotFound from './NotFound.jsx'
+import { OneDollarDeadline, useOneDollarEnded } from '../components/OneDollarDeal.jsx'
 
 const DEVICES = [
   ['desktop', 'Desktop'],
@@ -13,6 +14,7 @@ const DEVICES = [
 
 export default function OneDollarTemplate({ slug }) {
   const [device, setDevice] = useState('desktop')
+  const ended = useOneDollarEnded()
   const index = TEMPLATES.findIndex((template) => template.slug === slug)
   if (index < 0) return <NotFound />
   const own = TEMPLATES[index]
@@ -38,6 +40,13 @@ export default function OneDollarTemplate({ slug }) {
               </h1>
               <p>A five page website that works for any business. Every name, photo and line of text here is a sample we replace with yours.</p>
             </div>
+            {ended ? (
+              <div className="one-dollar-bar-actions">
+                <a className="text-link" href="/1-dollar-website/">
+                  The $1 deal has ended
+                </a>
+              </div>
+            ) : (
             <div className="one-dollar-bar-actions">
               <a className="kinetic-button group" href={`/1-dollar-website/?template=${slug}#start`}>
                 <span>Use this template</span>
@@ -49,7 +58,9 @@ export default function OneDollarTemplate({ slug }) {
                 Add to a quote
               </a>
             </div>
+            )}
           </div>
+          {ended ? null : <OneDollarDeadline compact />}
         </div>
       </section>
       <section className="one-dollar-stage">
@@ -80,7 +91,7 @@ export default function OneDollarTemplate({ slug }) {
               <li>Works on phones, tablets and computers</li>
               <li>A contact form that sends enquiries to your email</li>
               <li>Hosting and a security certificate included</li>
-              <li>$1 to set up, then $99 a month, 12 month minimum</li>
+              <li>$1 to set up until December 1, then $99 a month, 12 month minimum</li>
             </ul>
           </div>
           <nav className="one-dollar-pager" aria-label="More templates">

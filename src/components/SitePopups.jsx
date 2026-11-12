@@ -213,6 +213,7 @@ const dealCards = [
   { name: 'Build Deal', add: 'web', text: '20% off setup on a website, landing page, quote calculator or visualizer tool.' },
   { name: 'Leads Deal', add: 'lead', text: '3 months free instead of 1 on lead generation and SEO.' },
   { name: 'Brand Deal', add: 'social', text: '20% off logo and print work. Add a social plan and the logo is free.' },
+  { name: '$1 Website', add: 'site1', text: 'Pick one of 15 designs and we build it for $1. Hosting is $99 a month, 12 month minimum.' },
 ]
 
 function DealPopup({ open, onClose, phase }) {

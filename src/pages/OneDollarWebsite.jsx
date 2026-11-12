@@ -5,6 +5,7 @@ import { Breadcrumbs, FaqAccordion, Honeypot, SmsConsentField } from '../compone
 import { contact } from '../data/site.js'
 import { ONE_DOLLAR } from '../data/oneDollarSite.js'
 import { deliverLead } from '../formSubmission.js'
+import { OneDollarDeadline, OneDollarEnded, useOneDollarEnded } from '../components/OneDollarDeal.jsx'
 import { TEMPLATES, thumbUrl } from '../templates/list.js'
 
 const money = (n) => `$${n.toLocaleString('en-US')}`
@@ -34,6 +35,7 @@ const NOT_INCLUDED = [
 
 const FAQ = [
   ['Will a template work for my kind of business?', 'Yes. The templates are styles, not industries. Any of the 15 works for a contractor, a clinic, a salon, a shop or an office. We swap in your services, photos, colors and words so it reads as your business.'],
+  ['How long does the $1 setup last?', 'It is a Black Friday deal. Send your details by Tuesday, December 1 at 11:59 PM Eastern and you get the $1 setup. After that the deal ends and this page comes down.'],
   ['Why is the setup only $1?', `The setup is $1 because the money comes from hosting. Hosting is ${money(ONE_DOLLAR.hosting)} a month and runs for at least ${ONE_DOLLAR.minMonths} months, so the first year comes to ${money(ONE_DOLLAR.minTotal)}. We would rather you see the whole price up front than find it later.`],
   ['What does the 12 month minimum mean?', `Hosting runs for at least ${ONE_DOLLAR.minMonths} months from the day your site goes live. If you cancel before month ${ONE_DOLLAR.minMonths}, the remaining months of hosting are due. After that you can cancel any time by telling us in writing.`],
   ['Who owns the site?', 'You own your text, photos, logo and domain. The design and the code that runs your site stay with Wavefront Studio, which is how we can build it for $1. If you leave, we send you your text and photos.'],
@@ -169,6 +171,7 @@ function Intake({ chosen, onChoose }) {
 export default function OneDollarWebsite() {
   const [chosen, setChosen] = useState('')
   const formRef = useRef(null)
+  const ended = useOneDollarEnded()
 
   // /1-dollar-website/?template=atlas arrives with that template already picked.
   useEffect(() => {
@@ -187,14 +190,23 @@ export default function OneDollarWebsite() {
       className="one-dollar-page"
       seo={{
         title: '$1 Website: Pick a Design, We Build It | Wavefront Studio',
-        description: `A five page website for ${money(ONE_DOLLAR.setup)} to set up. Pick one of 15 templates and send your details. Hosting is ${money(ONE_DOLLAR.hosting)} a month, 12 month minimum.`,
+        description: `Black Friday: a five page website for ${money(ONE_DOLLAR.setup)} to set up, until December 1. Pick one of 15 templates and send your details. Hosting is ${money(ONE_DOLLAR.hosting)} a month, 12 month minimum.`,
         canonical: '/1-dollar-website/',
       }}
     >
+      {ended ? (
+        <section className="offer-hero one-dollar-hero">
+          <div className="page-frame">
+            <Breadcrumbs trail={[['Home', '/'], ['$1 Website', '/1-dollar-website/']]} />
+            <OneDollarEnded Heading="h1" />
+          </div>
+        </section>
+      ) : (
+      <>
       <section className="offer-hero one-dollar-hero">
         <div className="page-frame">
           <Breadcrumbs trail={[['Home', '/'], ['$1 Website', '/1-dollar-website/']]} />
-          <p className="eyebrow-label">The $1 Website</p>
+          <p className="eyebrow-label">Black Friday: the $1 Website</p>
           <h1>A real website for $1 to start.</h1>
           <p className="one-dollar-lede">
             Pick one of 15 templates. Send us your details and we build your site with your words, photos and logo. Hosting is {money(ONE_DOLLAR.hosting)} a month.
@@ -220,6 +232,7 @@ export default function OneDollarWebsite() {
             </div>
           </dl>
           <p className="one-dollar-total">That is {money(ONE_DOLLAR.minTotal)} for the first year, hosting included.</p>
+          <OneDollarDeadline />
           <div className="one-dollar-actions">
             <a className="kinetic-button group" href="#designs">
               <span>See the 15 templates</span>
@@ -299,14 +312,17 @@ export default function OneDollarWebsite() {
       <section className="one-dollar-section" id="start" ref={formRef}>
         <div className="page-frame one-dollar-formwrap">
           <h2>Send us your details</h2>
+          <OneDollarDeadline compact />
           <p className="one-dollar-intro">
-            Fill this in once and we build from it. We reply within two working days, and we invoice the {money(ONE_DOLLAR.setup)} setup when we confirm your design.
+            Send it by Tuesday, December 1 at 11:59 PM Eastern to lock in the $1 setup. Fill this in once and we build from it. We reply within two working days, and we invoice the {money(ONE_DOLLAR.setup)} setup when we confirm your design.
           </p>
           <Intake chosen={chosen} onChoose={setChosen} />
         </div>
       </section>
 
       <FaqAccordion items={FAQ} heading={{ title: 'Questions about the $1 website' }} />
+      </>
+      )}
     </Layout>
   )
 }
