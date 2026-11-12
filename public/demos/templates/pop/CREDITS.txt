@@ -1,0 +1,19 @@
+Pop Co. sample template: photo credits
+Unsplash photos are used under the Unsplash licence (free for commercial use, no credit required).
+URL pattern: https://unsplash.com/photos/<id> (image: https://images.unsplash.com/photo-<id>)
+
+hero.webp            AI generated (ChatGPT) for Wavefront Studio
+celebrate.webp       Unsplash photo-1758874384556-ad48ed1c946c
+yellow.webp          Unsplash photo-1659353741447-30ae068cb28e
+high-five.webp       Unsplash photo-1600880292203-757bb62b4baf
+counter.webp         Unsplash photo-1556742049-0cfed4f6a45d
+owner.webp           Unsplash photo-1761839256840-7780a45b85dc
+tablet-meeting.webp  Unsplash photo-1556740758-90de374c12ad
+smile.webp           Unsplash photo-1484863137850-59afcfe05386
+tablet.webp          Unsplash photo-1543269664-56d93c1b41a6
+chat.webp            Unsplash photo-1758274252457-18a23285169c
+office.webp          Unsplash photo-1590649613897-1d5c44ca3409
+laptop.webp          Unsplash photo-1545184180-25d471fe75eb
+confetti.webp        Unsplash photo-1545315003-c5ad6226c272
+
+Fonts: Baloo 2 and Nunito Sans (SIL Open Font License), self hosted from Fontsource.

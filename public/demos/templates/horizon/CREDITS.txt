@@ -1,0 +1,18 @@
+Horizon Co. sample template: photo credits
+Unsplash photos (free licence, commercial use allowed). URL: https://images.unsplash.com/photo-<id>
+
+img/hero.webp          AI generated (ChatGPT) for Wavefront Studio
+img/lakeview.webp      1465056836041-7f43ac27dcb5
+img/mist.webp          1444927714506-8492d94b4e3d
+img/peaks.webp         1768409234914-96f61529b7e2
+img/lake.webp          1501786223405-6d024d7c3b8d
+img/columns.webp       1531077386034-d12285794b5c
+img/white-block.webp   1479839672679-a46483c0e7c8
+img/curve.webp         1518005020951-eccb494ad742
+img/sweep.webp         1567943183748-3a7542120c90
+img/tower.webp         1574848296471-28f79a036f79
+img/summit.webp        1610892415063-d89a504ce049
+img/talk.webp          1573497620053-ea5300f94f21
+img/desk-meeting.webp  1551836022-4c4c79ecde51
+
+Fonts: Sora and DM Sans (SIL Open Font License), self hosted from Fontsource.

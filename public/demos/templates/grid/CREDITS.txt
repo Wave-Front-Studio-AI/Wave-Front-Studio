@@ -1,0 +1,23 @@
+Grid Co. sample template: photo credits
+All photos are from Unsplash (https://unsplash.com) under the Unsplash License: free for commercial use, no attribution required.
+Converted to WebP at the sizes used on the site.
+
+img/hero-facade.webp  Unsplash photo id: 1488972685288-c3fd157d7c7a  (source: https://images.unsplash.com/photo-1488972685288-c3fd157d7c7a)
+img/curve-black.webp  Unsplash photo id: 1527576539890-dfa815648363  (source: https://images.unsplash.com/photo-1527576539890-dfa815648363)
+img/curve-white.webp  Unsplash photo id: 1567943183748-3a7542120c90  (source: https://images.unsplash.com/photo-1567943183748-3a7542120c90)
+img/block.webp  Unsplash photo id: 1479839672679-a46483c0e7c8  (source: https://images.unsplash.com/photo-1479839672679-a46483c0e7c8)
+img/tower.webp  Unsplash photo id: 1574848296471-28f79a036f79  (source: https://images.unsplash.com/photo-1574848296471-28f79a036f79)
+img/columns.webp  Unsplash photo id: 1531077386034-d12285794b5c  (source: https://images.unsplash.com/photo-1531077386034-d12285794b5c)
+img/edge.webp  Unsplash photo id: 1516730670158-8c52cb740fcf  (source: https://images.unsplash.com/photo-1516730670158-8c52cb740fcf)
+img/portrait-a.webp  Unsplash photo id: 1506863530036-1efeddceb993  (source: https://images.unsplash.com/photo-1506863530036-1efeddceb993)
+img/portrait-b.webp  Unsplash photo id: 1500648767791-00dcc994a43e  (source: https://images.unsplash.com/photo-1500648767791-00dcc994a43e)
+img/portrait-c.webp  Unsplash photo id: 1558222218-b7b54eede3f3  (source: https://images.unsplash.com/photo-1558222218-b7b54eede3f3)
+img/portrait-d.webp  Unsplash photo id: 1573497019940-1c28c88b4f3e  (source: https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e)
+img/desk.webp  Unsplash photo id: 1611269154421-4e27233ac5c7  (source: https://images.unsplash.com/photo-1611269154421-4e27233ac5c7)
+img/office.webp  Unsplash photo id: 1769002240965-7cc4b129d81a  (source: https://images.unsplash.com/photo-1769002240965-7cc4b129d81a)
+
+Fonts: self-hosted from Fontsource (SIL Open Font License).
+fonts/hanken-grotesk-400.woff2
+fonts/hanken-grotesk-500.woff2
+fonts/hanken-grotesk-800.woff2
+fonts/ibm-plex-mono-400.woff2

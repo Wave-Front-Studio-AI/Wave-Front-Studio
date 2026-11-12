@@ -5,14 +5,12 @@ import { Breadcrumbs, FaqAccordion, Honeypot, SmsConsentField } from '../compone
 import { contact } from '../data/site.js'
 import { ONE_DOLLAR } from '../data/oneDollarSite.js'
 import { deliverLead } from '../formSubmission.js'
-import { TemplateThumb } from '../templates/TemplateSite.jsx'
-import { DESIGNS } from '../templates/designs/index.js'
-import { TEMPLATES } from '../templates/list.js'
+import { TEMPLATES, thumbUrl } from '../templates/list.js'
 
 const money = (n) => `$${n.toLocaleString('en-US')}`
 
 const STEPS = [
-  ['Pick a design', 'Look through all 15 and click through the five pages of any of them.'],
+  ['Pick a template', 'Look through all 15 and click through the five pages of any of them. Any template works for any business.'],
   ['Send your details', 'Your business name, services, hours, photos and logo go in one form below.'],
   ['We build it', 'We put your information into the design and send you a link to look over. We reply within two working days.'],
   ['Go live', `When you say it looks right, we publish it on our hosting. Hosting starts at ${money(ONE_DOLLAR.hosting)} a month from that day.`],
@@ -35,6 +33,7 @@ const NOT_INCLUDED = [
 ]
 
 const FAQ = [
+  ['Will a template work for my kind of business?', 'Yes. The templates are styles, not industries. Any of the 15 works for a contractor, a clinic, a salon, a shop or an office. We swap in your services, photos, colors and words so it reads as your business.'],
   ['Why is the setup only $1?', `The setup is $1 because the money comes from hosting. Hosting is ${money(ONE_DOLLAR.hosting)} a month and runs for at least ${ONE_DOLLAR.minMonths} months, so the first year comes to ${money(ONE_DOLLAR.minTotal)}. We would rather you see the whole price up front than find it later.`],
   ['What does the 12 month minimum mean?', `Hosting runs for at least ${ONE_DOLLAR.minMonths} months from the day your site goes live. If you cancel before month ${ONE_DOLLAR.minMonths}, the remaining months of hosting are due. After that you can cancel any time by telling us in writing.`],
   ['Who owns the site?', 'You own your text, photos, logo and domain. The design and the code that runs your site stay with Wavefront Studio, which is how we can build it for $1. If you leave, we send you your text and photos.'],
@@ -88,12 +87,12 @@ function Intake({ chosen, onChoose }) {
     <form className="enquiry-form one-dollar-form" onSubmit={submit}>
       <Honeypot />
       <label className="wide">
-        <span>Design you picked</span>
+        <span>Template you picked</span>
         <select required name="template" value={chosen} onChange={(event) => onChoose(event.target.value)}>
-          <option value="">Choose a design</option>
+          <option value="">Choose a template</option>
           {TEMPLATES.map((template) => (
-            <option key={template.slug} value={`${template.name} (${template.industry})`}>
-              {template.name}: {template.industry}
+            <option key={template.slug} value={`${template.name} (${template.style})`}>
+              {template.name}: {template.style}
             </option>
           ))}
         </select>
@@ -171,15 +170,15 @@ export default function OneDollarWebsite() {
   const [chosen, setChosen] = useState('')
   const formRef = useRef(null)
 
-  // /1-dollar-website/?template=ridgeline arrives with that design already picked.
+  // /1-dollar-website/?template=atlas arrives with that template already picked.
   useEffect(() => {
     const slug = new URLSearchParams(window.location.search).get('template')
     const found = TEMPLATES.find((template) => template.slug === slug)
-    if (found) setChosen(`${found.name} (${found.industry})`)
+    if (found) setChosen(`${found.name} (${found.style})`)
   }, [])
 
   function pick(template) {
-    setChosen(`${template.name} (${template.industry})`)
+    setChosen(`${template.name} (${template.style})`)
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
@@ -188,7 +187,7 @@ export default function OneDollarWebsite() {
       className="one-dollar-page"
       seo={{
         title: '$1 Website: Pick a Design, We Build It | Wavefront Studio',
-        description: `A five page website for ${money(ONE_DOLLAR.setup)} to set up. Pick one of 15 designs and send your details. Hosting is ${money(ONE_DOLLAR.hosting)} a month, 12 month minimum.`,
+        description: `A five page website for ${money(ONE_DOLLAR.setup)} to set up. Pick one of 15 templates and send your details. Hosting is ${money(ONE_DOLLAR.hosting)} a month, 12 month minimum.`,
         canonical: '/1-dollar-website/',
       }}
     >
@@ -198,7 +197,7 @@ export default function OneDollarWebsite() {
           <p className="eyebrow-label">The $1 Website</p>
           <h1>A real website for $1 to start.</h1>
           <p className="one-dollar-lede">
-            Pick one of 15 designs. Send us your details and we build your site with your words, photos and logo. Hosting is {money(ONE_DOLLAR.hosting)} a month.
+            Pick one of 15 templates. Send us your details and we build your site with your words, photos and logo. Hosting is {money(ONE_DOLLAR.hosting)} a month.
           </p>
           <dl className="one-dollar-price" aria-label="Price">
             <div>
@@ -223,7 +222,7 @@ export default function OneDollarWebsite() {
           <p className="one-dollar-total">That is {money(ONE_DOLLAR.minTotal)} for the first year, hosting included.</p>
           <div className="one-dollar-actions">
             <a className="kinetic-button group" href="#designs">
-              <span>See the 15 designs</span>
+              <span>See the 15 templates</span>
               <span className="button-island">
                 <ArrowIcon className="size-4" />
               </span>
@@ -252,27 +251,26 @@ export default function OneDollarWebsite() {
 
       <section className="one-dollar-section" id="designs">
         <div className="page-frame">
-          <h2>Pick your design</h2>
-          <p className="one-dollar-intro">Each design is a five page site. Open a preview and click through Home, Services, About, Gallery and Contact.</p>
+          <h2>Pick your template</h2>
+          <p className="one-dollar-intro">Every template is a full five page website, and any of them works for any business. Open a preview and click through Home, Services, About, Gallery and Contact.</p>
           <ul className="one-dollar-grid">
-            {TEMPLATES.map((template) => {
-              const design = DESIGNS[template.slug]
-              return (
-                <li key={template.slug}>
-                  {design ? <TemplateThumb template={design} /> : null}
-                  <div className="one-dollar-card-body">
-                    <h3>{template.name}</h3>
-                    <p>{template.industry}</p>
-                    <div className="one-dollar-card-actions">
-                      <a href={`/1-dollar-website/${template.slug}/`}>Preview</a>
-                      <button type="button" onClick={() => pick(template)}>
-                        Pick this one
-                      </button>
-                    </div>
+            {TEMPLATES.map((template) => (
+              <li key={template.slug}>
+                <a className="one-dollar-shot" href={`/1-dollar-website/${template.slug}/`} aria-label={`Preview the ${template.name} template`}>
+                  <img src={thumbUrl(template.slug)} alt="" width="1200" height="900" loading="lazy" decoding="async" />
+                </a>
+                <div className="one-dollar-card-body">
+                  <h3>{template.name}</h3>
+                  <p>{template.style}</p>
+                  <div className="one-dollar-card-actions">
+                    <a href={`/1-dollar-website/${template.slug}/`}>Preview</a>
+                    <button type="button" onClick={() => pick(template)}>
+                      Pick this one
+                    </button>
                   </div>
-                </li>
-              )
-            })}
+                </div>
+              </li>
+            ))}
           </ul>
         </div>
       </section>

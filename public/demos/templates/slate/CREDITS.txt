@@ -1,0 +1,17 @@
+Slate Co. sample template: photo credits
+Unsplash photos are used under the Unsplash licence (free for commercial use, no credit required).
+URL pattern: https://unsplash.com/photos/<id> (image: https://images.unsplash.com/photo-<id>)
+
+hero.webp      Unsplash photo-1488972685288-c3fd157d7c7a
+concrete.webp  Unsplash photo-1609262825865-63bcaaf7fd05
+crew.webp      Unsplash photo-1662447176130-60356c625453
+scaffold.webp  Unsplash photo-1664662566501-73a7e41d8c19
+tower.webp     Unsplash photo-1574848296471-28f79a036f79
+curve.webp     Unsplash photo-1527576539890-dfa815648363
+steel.webp     Unsplash photo-1531591022136-eb8b0da1e6d0
+bench.webp     Unsplash photo-1553051021-9f94520a6cad
+lathe.webp     Unsplash photo-1579196179453-1531eddf62e3
+sparks.webp    Unsplash photo-1786648336954-1f6aec7b7edd
+owner.webp     Unsplash photo-1545262722-9e0d80a0bc01
+
+Fonts: Big Shoulders Display and Barlow (SIL Open Font License), self hosted from Fontsource.

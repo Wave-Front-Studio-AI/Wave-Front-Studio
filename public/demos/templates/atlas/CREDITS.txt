@@ -1,0 +1,18 @@
+Atlas Co. sample template: photo credits
+All photos from Unsplash (Unsplash License: free for commercial use, no attribution required).
+Source URL pattern: https://images.unsplash.com/photo-<id>
+
+img/hero.webp               1739298061740-5ed03045b280
+img/handshake-office.webp   1758519288905-38b7b00c1023
+img/handshake-outdoor.webp  1758599543157-bc1a94fec33c
+img/client-welcome.webp     1698047682091-782b1e5c6536
+img/meeting-table.webp      1758518730083-4c12527b6742
+img/meeting-coffee.webp     1758518731706-be5d5230e5a5
+img/team-review.webp        1630487656049-6db93a53a7e9
+img/team-screen.webp        1758873268695-1b55590e507a
+img/arch-facade.webp        1488972685288-c3fd157d7c7a
+img/arch-tower.webp         1574848296471-28f79a036f79
+img/arch-columns.webp       1531077386034-d12285794b5c
+img/skyline.webp            1611728337177-89dfbbdc7a3a
+
+Fonts: Schibsted Grotesk and Public Sans (SIL Open Font License), via Fontsource.

@@ -1,21 +1,25 @@
-// The 15 $1 Website templates. The slug is the URL (/1-dollar-website/<slug>/) and the value the quote builder
-// and the intake form carry. The full design of each lives in src/templates/designs/.
+// The 15 $1 Website templates. Each is a design style any business can use. The slug is the preview URL
+// (/1-dollar-website/<slug>/) and the folder of the live demo site (public/demos/templates/<slug>/).
 export const TEMPLATES = [
-  { slug: 'ridgeline', name: 'Ridgeline', industry: 'Roofing and exteriors' },
-  { slug: 'harbor-dental', name: 'Harbor Dental', industry: 'Dental and medical' },
-  { slug: 'copper-kettle', name: 'Copper Kettle', industry: 'Restaurant and cafe' },
-  { slug: 'iron-yard', name: 'Iron Yard', industry: 'Gym and fitness' },
-  { slug: 'luna-salon', name: 'Luna', industry: 'Hair and beauty' },
-  { slug: 'bluebird', name: 'Bluebird', industry: 'Plumbing and HVAC' },
-  { slug: 'oakline', name: 'Oakline', industry: 'Law and accounting' },
-  { slug: 'greenleaf', name: 'Greenleaf', industry: 'Landscaping and lawn care' },
-  { slug: 'brightpath', name: 'Brightpath', industry: 'Cleaning services' },
-  { slug: 'summit-realty', name: 'Summit', industry: 'Real estate' },
-  { slug: 'paws-and-co', name: 'Paws & Co', industry: 'Pet care and grooming' },
-  { slug: 'stonework', name: 'Stonework', industry: 'Concrete and masonry' },
-  { slug: 'spark', name: 'Spark', industry: 'Electricians' },
-  { slug: 'northside-auto', name: 'Northside Auto', industry: 'Auto repair and detailing' },
-  { slug: 'willow-studio', name: 'Willow Studio', industry: 'Photography and creative' },
+  { slug: 'atlas', name: 'Atlas', style: 'Bold and corporate' },
+  { slug: 'linen', name: 'Linen', style: 'Soft and elegant' },
+  { slug: 'volt', name: 'Volt', style: 'Dark and modern' },
+  { slug: 'meadow', name: 'Meadow', style: 'Fresh and friendly' },
+  { slug: 'grid', name: 'Grid', style: 'Swiss editorial' },
+  { slug: 'harbor', name: 'Harbor', style: 'Calm and coastal' },
+  { slug: 'ember', name: 'Ember', style: 'Warm and cinematic' },
+  { slug: 'frame', name: 'Frame', style: 'Minimal gallery' },
+  { slug: 'heritage', name: 'Heritage', style: 'Classic and trusted' },
+  { slug: 'pop', name: 'Pop', style: 'Bright and playful' },
+  { slug: 'slate', name: 'Slate', style: 'Industrial' },
+  { slug: 'bloom', name: 'Bloom', style: 'Luxury boutique' },
+  { slug: 'pulse', name: 'Pulse', style: 'Energetic' },
+  { slug: 'horizon', name: 'Horizon', style: 'Photo led' },
+  { slug: 'nordic', name: 'Nordic', style: 'Scandinavian minimal' },
 ]
 
 export const templateBySlug = Object.fromEntries(TEMPLATES.map((template) => [template.slug, template]))
+
+// Where each template's live demo and its gallery screenshot live.
+export const demoUrl = (slug) => `/demos/templates/${slug}/`
+export const thumbUrl = (slug) => `/images/templates/${slug}.webp`

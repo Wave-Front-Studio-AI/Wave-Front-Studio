@@ -1,0 +1,15 @@
+Photo credits for the Heritage Co. sample template.
+Unsplash photos (https://unsplash.com/license) are free for commercial use. Source URL: https://images.unsplash.com/photo-<id>
+
+img/agreement.webp  Unsplash photo 1681505526188-b05e68c77582
+img/associate.webp  Unsplash photo 1558222218-b7b54eede3f3
+img/consult.webp  Unsplash photo 1551135049-8a33b5883817
+img/founder.webp  Unsplash photo 1573497019940-1c28c88b4f3e
+img/hands.webp  Unsplash photo 1596633607590-7156877ef734
+img/papers.webp  Unsplash photo 1549923746-c502d488b3ea
+img/storefront.webp  Unsplash photo 1528698827591-e19ccd7bc23d
+img/table.webp  Unsplash photo 1764173039192-2bbd508d5211
+img/team.webp  Unsplash photo 1681949103006-70066fb25dfe
+img/welcome.webp  Unsplash photo 1764173039506-c5cc7b8ec14b
+
+Fonts are self hosted from Fontsource under the SIL Open Font License.

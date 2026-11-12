@@ -1,0 +1,15 @@
+Pulse Co. sample template: photo credits
+All photos from Unsplash (free licence, commercial use allowed). URL: https://images.unsplash.com/photo-<id>
+
+img/hero.webp        1646324554833-f0b6a479fa5d
+img/crew.webp        1662447176130-60356c625453
+img/sparks.webp      1630683924997-fe27050a0416
+img/apron.webp       1758519289791-ffce8889ca8c
+img/welcome.webp     1659353741447-30ae068cb28e
+img/chat.webp        1758274252457-18a23285169c
+img/meeting.webp     1758519288905-38b7b00c1023
+img/handshake.webp   1698047682091-782b1e5c6536
+img/outdoor.webp     1758599543157-bc1a94fec33c
+img/greenhouse.webp  1758524056027-212423b272e4
+
+Fonts: Unbounded and Archivo (SIL Open Font License), self hosted from Fontsource.

@@ -1,0 +1,20 @@
+Harbor Co. sample template: photo credits
+All photos are from Unsplash (https://unsplash.com) under the Unsplash License: free for commercial use, no attribution required.
+Converted to WebP at the sizes used on the site.
+
+img/hero-meeting.webp  Unsplash photo id: 1573497620053-ea5300f94f21  (source: https://images.unsplash.com/photo-1573497620053-ea5300f94f21)
+img/mist.webp  Unsplash photo id: 1444927714506-8492d94b4e3d  (source: https://images.unsplash.com/photo-1444927714506-8492d94b4e3d)
+img/lake.webp  Unsplash photo id: 1465056836041-7f43ac27dcb5  (source: https://images.unsplash.com/photo-1465056836041-7f43ac27dcb5)
+img/welcome.webp  Unsplash photo id: 1698047682091-782b1e5c6536  (source: https://images.unsplash.com/photo-1698047682091-782b1e5c6536)
+img/signing.webp  Unsplash photo id: 1562564055-71e051d33c19  (source: https://images.unsplash.com/photo-1562564055-71e051d33c19)
+img/board.webp  Unsplash photo id: 1681949215173-fe0d15c790c1  (source: https://images.unsplash.com/photo-1681949215173-fe0d15c790c1)
+img/window-desk.webp  Unsplash photo id: 1534430071631-854ff55eec78  (source: https://images.unsplash.com/photo-1534430071631-854ff55eec78)
+img/table-talk.webp  Unsplash photo id: 1551836022-4c4c79ecde51  (source: https://images.unsplash.com/photo-1551836022-4c4c79ecde51)
+img/hands.webp  Unsplash photo id: 1580893246395-52aead8960dc  (source: https://images.unsplash.com/photo-1580893246395-52aead8960dc)
+img/team.webp  Unsplash photo id: 1630487656049-6db93a53a7e9  (source: https://images.unsplash.com/photo-1630487656049-6db93a53a7e9)
+img/dusk.webp  Unsplash photo id: 1610892415063-d89a504ce049  (source: https://images.unsplash.com/photo-1610892415063-d89a504ce049)
+
+Fonts: self-hosted from Fontsource (SIL Open Font License).
+fonts/alegreya-sans-400.woff2
+fonts/alegreya-sans-500.woff2
+fonts/eb-garamond-500.woff2

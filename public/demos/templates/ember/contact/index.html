@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Contact | Ember Co. | Sample website</title>
+<meta name="description" content="Get a free written quote from Ember Co. Call, email or send a message.">
+<link rel="preload" href="/demos/templates/ember/fonts/antonio-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/demos/templates/ember/style.css">
+<script src="/demos/templates/ember/main.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head" data-head>
+  <div class="head-in">
+    <a class="brand" href="/demos/templates/ember/"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect x="3" y="3" width="26" height="26" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 8c3 4 6 6.5 6 10.5A6 6 0 0 1 10 18.5c0-2.4 1.4-4 2.8-5.4.3 2 1.3 3.2 2.6 3.6C15 13.8 15.2 11 16 8z" fill="var(--amber)"/></svg><span>Ember Co.</span></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="menu-lines" aria-hidden="true"></span><span class="menu-label">Menu</span></button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <ul><li><a href="/demos/templates/ember/services/">Services</a></li><li><a href="/demos/templates/ember/about/">About</a></li><li><a href="/demos/templates/ember/gallery/">Our work</a></li><li><a href="/demos/templates/ember/contact/" aria-current="page">Contact</a></li></ul>
+      <a class="btn btn-amber btn-sm" href="/demos/templates/ember/contact/">Get a quote</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+
+<section class="hero hero-half hero-short" aria-labelledby="h1">
+  <img src="/demos/templates/ember/img/handshake.webp" width="900" height="600" alt="Two people shaking hands in warm light" fetchpriority="high" decoding="async" class="hero-img">
+  <div class="scrim scrim-hero" aria-hidden="true"></div>
+  <div class="wrap hero-copy">
+    <h1 id="h1" class="display-xl">Get a quote</h1>
+    <p class="lead">Tell us about the job. A real person reads every message and replies with next steps.</p>
+  </div>
+</section>
+
+<section class="contact wrap" aria-label="Contact form and details">
+  <form class="form rv" data-demo-form novalidate>
+    <h2 class="display-m">Send a message</h2>
+    <div class="field-row">
+      <div class="field"><label for="name">Your name</label><input id="name" name="name" type="text" autocomplete="name" required></div>
+      <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" autocomplete="tel"></div>
+    </div>
+    <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+    <div class="field"><label for="service">What do you need?</label>
+      <select id="service" name="service"><option>Consultation</option><option>Planning and design</option><option>Installation</option><option>Repair</option><option>Maintenance plan</option><option>Custom project</option></select></div>
+    <div class="field"><label for="msg">Tell us about the job</label><textarea id="msg" name="message" rows="5"></textarea></div>
+    <button class="btn btn-amber" type="submit">Send message</button>
+    <p class="form-note" role="status" aria-live="polite" data-form-status></p>
+  </form>
+  <aside class="contact-side rv" aria-label="Other ways to reach us">
+    <div class="side-block"><h2 class="foot-h">Call</h2><p class="big-link"><a href="tel:5550100100">(555) 010-0100</a></p></div>
+    <div class="side-block"><h2 class="foot-h">Email</h2><p class="big-link"><a href="mailto:hello@yourbusiness.com">hello@yourbusiness.com</a></p></div>
+    <div class="side-block"><h2 class="foot-h">Find us</h2><p>100 Main Street, Your Town</p></div>
+  </aside>
+</section>
+
+<section class="hours wrap" aria-labelledby="hours-h">
+  <h2 id="hours-h" class="display-l rv">Opening hours</h2>
+  <dl class="hours-list rv">
+    <div><dt>Monday to Friday</dt><dd>8am to 6pm</dd></div>
+    <div><dt>Saturday</dt><dd>9am to 1pm</dd></div>
+    <div><dt>Sunday</dt><dd>Closed, emergencies by phone</dd></div>
+  </dl>
+</section>
+
+<section class="faq wrap" aria-labelledby="faq-h">
+  <h2 id="faq-h" class="display-l rv">Before you write</h2>
+  <div class="faq-list rv">
+    <details><summary>What should I include?</summary><p>A short description, where the job is, and photos if you have them. Rough timing helps too.</p></details>
+    <details><summary>Will you call me?</summary><p>If you leave a number, yes. Otherwise we reply by email with a few questions and times to visit.</p></details>
+    <details><summary>Do you cover my area?</summary><p>We work across Your Town and the surrounding area. If you are further out, ask anyway.</p></details>
+  </div>
+</section>
+
+</main>
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <p class="foot-word">Ember Co.</p>
+      <p class="foot-line">Local, careful and on time. Call us and talk to a real person who knows the work.</p>
+    </div>
+    <div>
+      <h2 class="foot-h">Visit</h2>
+      <p>100 Main Street, Your Town<br>Monday to Friday, 8am to 6pm<br>Saturday, 9am to 1pm</p>
+    </div>
+    <div>
+      <h2 class="foot-h">Talk</h2>
+      <p><a href="tel:5550100100">(555) 010-0100</a><br><a href="mailto:hello@yourbusiness.com">hello@yourbusiness.com</a></p>
+    </div>
+    <nav aria-label="Footer">
+      <h2 class="foot-h">Pages</h2>
+      <ul class="foot-links"><li><a href="/demos/templates/ember/">Home</a></li><li><a href="/demos/templates/ember/services/">Services</a></li><li><a href="/demos/templates/ember/about/">About</a></li><li><a href="/demos/templates/ember/gallery/">Our work</a></li><li><a href="/demos/templates/ember/contact/">Contact</a></li></ul>
+    </nav>
+  </div>
+  <div class="wrap foot-base"><p>&copy; Ember Co. Sample website by Wavefront Studio.</p></div>
+</footer>
+</body>
+</html>

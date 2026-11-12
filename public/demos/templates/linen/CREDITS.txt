@@ -1,0 +1,18 @@
+Linen Co. sample template: photo credits
+All photos from Unsplash (Unsplash License: free for commercial use, no attribution required).
+Source URL pattern: https://images.unsplash.com/photo-<id>
+
+img/hero.webp            1772797583328-f83bc3f94f80
+img/living-room.webp     1774199496664-a9690967be5a
+img/reading-chair.webp   1635435605591-217d993deb88
+img/tea-candle.webp      1632927126606-e9f653064555
+img/leaf-shadow.webp     1704083043868-a23986597567
+img/plant-white.webp     1585664428450-1665a336eb19
+img/plant-sun.webp       1571684116845-6d62d8460b86
+img/sofa-room.webp       1554995207-c18c203602cb
+img/window-sofa.webp     1648216771482-2f9b9c3d57ee
+img/owner.webp           1760543998147-117ae5649c5c
+img/smile.webp           1580489944761-15a19d654956
+img/desk.webp            1542435503-956c469947f6
+
+Fonts: Cormorant Garamond and Jost (SIL Open Font License), via Fontsource.
