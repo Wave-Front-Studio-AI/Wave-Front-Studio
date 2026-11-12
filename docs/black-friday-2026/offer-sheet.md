@@ -1,0 +1,58 @@
+# Black Friday and Cyber Monday 2026: offer sheet
+
+Audience: construction businesses (GCs, remodelers, roofers, concrete, trades).
+Runs: Tuesday Nov 24 to Tuesday Dec 1, 2026, ending 11:59pm Eastern. Black Friday is Nov 27, Cyber Monday is Nov 30.
+Hard rules: no countdown timer, no places counter, no testimonials, reply within two working days, combined discount never above 25%.
+
+## The ladder
+
+| Step | What it is | Job it does |
+|---|---|---|
+| Hook | Free website audit (/free-website-audit/) | Fills the lead list for December follow up |
+| Build Deal | 20% off one-time setup | Cash now |
+| Leads Deal | 3 free months instead of 1 on monthly fees | Recurring revenue |
+| Brand Deal | 20% off branding plus a free logo with social | Recurring revenue and brand work |
+
+## Build Deal (cash now)
+- Covers one-time setup of: Website Development, Landing Pages, Custom Calculators, Live Visualizer Tool, Custom Development.
+- 20% off. If the quote also earns a bundle discount (2 services 5%, 3 services 10%, 5 services 15%), the two stack but the total on those lines stops at 25%.
+- Example at list prices: Website Grow $4,500 becomes $3,600. Website Grow plus a Calculator Launch ($1,200) bundles two services: 25% off both, $5,700 becomes $4,275.
+- Construction angle: the estimate calculator is the sleeper. It answers "what will this cost me" at 9pm and hands you the lead.
+
+## Leads Deal (recurring revenue)
+- Covers: Custom Lead Generation System and Website SEO monthly fees.
+- 3 months free instead of the usual 1. Setup fees on lead gen stay at list.
+- Cost to us: 2 extra months of service per signup (SEO Launch $500/mo, so $1,000 of free work; lead gen Launch $150/mo, so $300). Only worth it if these clients stay. Check retention before extending past this window.
+- Construction angle: "Show up when someone searches roofer near me, and get the call before the other guy."
+
+## Brand Deal (recurring revenue and brand work)
+- 20% off one-time Graphic Design and Branding, Logo and Favicon, Animated Logo, Brochure and Business Card work. Same 25% cap with bundles.
+- Free Launch Logo and Favicon Design (list $250) on any quote that includes a Social Media Management plan, if no logo is already on the quote.
+- Construction angle: truck wraps, yard signs, hard hats and shirts all start from a clean logo.
+
+## Where it applies
+- The Build Your Package quote builder applies all three automatically inside the window, shows each as its own line, and the PDF carries them.
+- A landing page at /black-friday/ explains the deals and links to the builder.
+- Outside the window everything reverts. The page swaps to "These deals ended Dec 1."
+
+## What we are not doing
+- No fake urgency. The end date is real and printed. No timer, no "only 5 left".
+- No chatbot setup, app, video or podcast discounts. Keeps margin where work is heaviest.
+- Nothing goes to leads, contractors or customers until Tony says go (email, texts, Slack are ask first).
+
+## Rollout calendar
+| Date | What |
+|---|---|
+| Thu Nov 19 | Merge PR, deploy, test the builder with the window forced on |
+| Mon Nov 23 | Email to existing leads (approval needed first) |
+| Tue Nov 24 | Offer live. Organic posts start |
+| Fri Nov 27 | Black Friday push: email 2, posts |
+| Mon Nov 30 | Cyber Monday push: last call email |
+| Tue Dec 1 | Final day post. Midnight, page flips to ended |
+| Wed Dec 2 | Follow up everyone who opened the audit or builder but did not book |
+
+## Checks before launch
+1. Builder shows the banner only inside the window and never changes a quote outside it.
+2. PDF and copied quote text show the three deal lines.
+3. /black-friday/ is in the sitemap and loads on a phone with no sideways scroll.
+4. SMS wording keeps the opt out line and sends only to people with consent. See the CRM consent rules before any text goes out.

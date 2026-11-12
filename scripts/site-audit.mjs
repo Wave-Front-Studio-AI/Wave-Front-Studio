@@ -39,7 +39,7 @@ function checkCsp(path, html) {
     if (!policy.includes(hash)) failures.push(`${path}: an inline script is not in the CSP`)
   }
 }
-for (const file of ['404.html', 'free-website-audit/index.html']) checkCsp(`/${file}`, await readFile(resolve(dist, file), 'utf8'))
+for (const file of ['404.html', 'free-website-audit/index.html', 'black-friday/index.html']) checkCsp(`/${file}`, await readFile(resolve(dist, file), 'utf8'))
 
 for (const route of routes) {
   const file = route.path === '/' ? resolve(dist, 'index.html') : resolve(dist, `.${route.path}index.html`)

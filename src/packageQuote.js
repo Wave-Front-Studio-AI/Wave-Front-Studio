@@ -1,5 +1,28 @@
 import { LANDING_PAGE_BUNDLES, OFFER, SERVICES } from './data/generated/packages.js'
 
+// Black Friday 2026. The window is Tue Nov 24 00:00 to Tue Dec 1 23:59:59 Eastern (EST, UTC-5), so it ends
+// at the start of Dec 2. Outside the window every deal is off and the quote is exactly the normal quote.
+export const HOLIDAY_DEAL = {
+  name: 'Black Friday',
+  start: '2026-11-24T00:00:00-05:00',
+  endExclusive: '2026-12-02T00:00:00-05:00',
+  endsLabel: 'Tuesday, December 1 at 11:59 PM Eastern',
+  // 20% off setup, and setup discounts together (bundle plus deal) never pass maxCombinedPct.
+  build: { pct: 20, maxCombinedPct: 25, services: ['web', 'landing', 'calc', 'viz', 'custom'] },
+  brand: { pct: 20, maxCombinedPct: 25, services: ['design', 'logo', 'logoanim', 'brochure', 'cards'] },
+  // Months free on the monthly fee, instead of OFFER.firstMonthsFree.
+  leads: { monthsFree: 3, services: ['lead', 'seo'] },
+  // A Launch Logo & Favicon Design comes free with any quote that has a social service and no logo of its own.
+  freeLogo: { whenService: 'social', skipIfService: 'logo', tier: 0 },
+}
+
+export function holidayDealActive(now = new Date()) {
+  const time = new Date(now).getTime()
+  return time >= Date.parse(HOLIDAY_DEAL.start) && time < Date.parse(HOLIDAY_DEAL.endExclusive)
+}
+
+const cents = (n) => Math.round(n * 100) / 100
+
 export const money = (n) => n.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 })
 
 export const defaultOptionIndex = (addon) => {
@@ -97,10 +120,14 @@ export function creditAmount(credit) {
 }
 
 // All quote formats share this calculation, including page quantities and savings.
-export function calculateQuote(state) {
+export function calculateQuote(state, now = new Date()) {
+  const holiday = holidayDealActive(now)
   let one = 0
   let monthly = 0
   let count = 0
+  let buildOne = 0
+  let brandOne = 0
+  let leadsMonthly = 0
   const rows = []
   const errors = []
   let pendingPageRate
@@ -139,6 +166,9 @@ export function calculateQuote(state) {
       const total = { s: (bundle ? landingPagesPrice(tier, bundle.pages) : tier.s) * qty, m: tier.m * qty }
       one += total.s
       monthly += total.m
+      if (HOLIDAY_DEAL.build.services.includes(service.id)) buildOne += total.s
+      if (HOLIDAY_DEAL.brand.services.includes(service.id)) brandOne += total.s
+      if (HOLIDAY_DEAL.leads.services.includes(service.id)) leadsMonthly += total.m
       const pageLabel = bundle ? ` · ${bundle.pages} page${bundle.pages === 1 ? '' : 's'}` : ''
       const qtyLabel = qty > 1 ? ` · ${qty} × ${eachPrice(tier)}` : ''
       const description = [service.id === 'email' ? tier.note : '', note].filter(Boolean).join('\n')
@@ -151,12 +181,25 @@ export function calculateQuote(state) {
       const chosen = entry.opts?.[addonIndex] ?? defaultOptionIndex(addon)
       const each = addon.p * addonQty(addon, chosen)
       const price = each * units
-      if (addon.t === 'monthly') monthly += price
-      else one += price
+      if (addon.t === 'monthly') {
+        monthly += price
+        if (HOLIDAY_DEAL.leads.services.includes(service.id)) leadsMonthly += price
+      } else one += price
       const base = addon.opts ? `${addon.l} × ${addonQty(addon, chosen)}/mo — ${addon.opts[chosen].l}` : addon.l
       const label = units > 1 ? `${base} · ${units} × ${money(each)}${addon.t === 'monthly' ? '/mo' : ''}` : base
       const note = cleanNote(entry.addonNotes?.[addonIndex])
       rows.push({ label, amount: `${money(price)}${addon.t === 'monthly' ? '/mo' : ''}`, sub: true, ...(note ? { description: note } : {}) })
+    }
+  }
+
+  // The free logo is a $0 line with its value noted. It is not a service for the bundle count.
+  let freeLogo
+  if (holiday && state[HOLIDAY_DEAL.freeLogo.whenService] && !state[HOLIDAY_DEAL.freeLogo.skipIfService]) {
+    const logo = SERVICES.find((service) => service.id === HOLIDAY_DEAL.freeLogo.skipIfService)
+    const tier = logo?.tiers[HOLIDAY_DEAL.freeLogo.tier]
+    if (tier) {
+      freeLogo = { label: `${logo.name} — ${tier.n}`, value: tier.s }
+      rows.push({ label: freeLogo.label, amount: '$0', description: `Free with the ${HOLIDAY_DEAL.name} Brand Deal. A ${money(tier.s)} value.` })
     }
   }
 
@@ -182,5 +225,23 @@ export function calculateQuote(state) {
   const discounted = one - bundleAmount
   const credit = Math.min(creditAmount(state.credit), discounted)
   const creditLabel = String(state.credit?.label ?? '').trim().slice(0, 80)
-  return { one, monthly, count, pct, bundleAmount, credit, creditLabel, oneAfter: discounted - credit, firstMonthsFree: monthly * OFFER.firstMonthsFree, rows, ...(customCount ? { customCount } : {}), ...(pendingPageRate !== undefined ? { pendingPageRate, pendingPageRateAfter: pendingPageRate * (1 - pct / 100) } : {}), ...(errors.length ? { errors } : {}) }
+  // Each deal is its own line. A bundle discount counts toward the cap, so the deal only adds what is left under it.
+  // kind 'off' comes off the one-time total; kind 'free' is value given and is not taken off any total.
+  const deals = []
+  if (holiday) {
+    const extraPct = (deal) => Math.max(0, Math.min(deal.pct, deal.maxCombinedPct - pct))
+    const buildAmount = cents((buildOne * extraPct(HOLIDAY_DEAL.build)) / 100)
+    const brandAmount = cents((brandOne * extraPct(HOLIDAY_DEAL.brand)) / 100)
+    const leadsAmount = cents(leadsMonthly * Math.max(0, HOLIDAY_DEAL.leads.monthsFree - OFFER.firstMonthsFree))
+    if (buildAmount > 0) deals.push({ id: 'build', kind: 'off', label: `${HOLIDAY_DEAL.name} Build Deal`, amount: buildAmount })
+    if (brandAmount > 0) deals.push({ id: 'brand', kind: 'off', label: `${HOLIDAY_DEAL.name} Brand Deal`, amount: brandAmount })
+    if (leadsAmount > 0) deals.push({ id: 'leads', kind: 'free', label: `${HOLIDAY_DEAL.name} Leads Deal: ${HOLIDAY_DEAL.leads.monthsFree} months free on Lead and SEO plans`, amount: leadsAmount })
+    if (freeLogo) deals.push({ id: 'logo', kind: 'free', label: `${HOLIDAY_DEAL.name} Brand Deal: free ${freeLogo.label}`, amount: freeLogo.value })
+  }
+  const dealOff = cents(deals.filter((deal) => deal.kind === 'off').reduce((sum, deal) => sum + deal.amount, 0))
+  const dealSavings = cents(deals.reduce((sum, deal) => sum + deal.amount, 0))
+  const afterDeals = discounted - dealOff
+  const creditApplied = dealOff > 0 ? Math.min(creditAmount(state.credit), afterDeals) : credit
+  const holidayFields = holiday ? { deals, dealOff, dealSavings, holiday: { name: HOLIDAY_DEAL.name, endsLabel: HOLIDAY_DEAL.endsLabel } } : {}
+  return { ...holidayFields, one, monthly, count, pct, bundleAmount, credit: creditApplied, creditLabel, oneAfter: afterDeals - creditApplied, firstMonthsFree: monthly * OFFER.firstMonthsFree, rows, ...(customCount ? { customCount } : {}), ...(pendingPageRate !== undefined ? { pendingPageRate, pendingPageRateAfter: pendingPageRate * (1 - pct / 100) } : {}), ...(errors.length ? { errors } : {}) }
 }

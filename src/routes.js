@@ -67,7 +67,7 @@ const postSlugs = [
 // both read it, so a new page can never exist in one and not the other.
 // Pages served as plain HTML from public/ rather than rendered by the app. They
 // are real URLs: internal links may point at them, and they are in the sitemap.
-export const staticPages = ['/free-website-audit/']
+export const staticPages = ['/free-website-audit/', '/black-friday/']
 
 export const routes = [
   { path: '/', kind: 'home' },
