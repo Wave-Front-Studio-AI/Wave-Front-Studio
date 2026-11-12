@@ -2034,3 +2034,10 @@ body.menu-open .chat-agent { display: none; }
   .deal-banner { animation: fade-in 200ms ease both; }
 }
 body.menu-open .deal-banner, body.chat-open .deal-banner { display: none; }
+
+.deal-list li { padding: 0; }
+.deal-list li a { display: grid; gap: 3px; padding: 12px 14px; border-radius: var(--r-sm); color: inherit; text-decoration: none; transition: background-color 160ms ease, box-shadow 160ms ease; }
+.deal-list li:hover, .deal-list li:focus-within { border-color: var(--brand); background: var(--white); }
+.deal-list li a:hover, .deal-list li a:focus-visible { box-shadow: 0 0 0 2px var(--brand) inset; }
+.deal-list em { color: var(--brand-deep); font-size: 0.85rem; font-style: normal; font-weight: 600; }
+.deal-list li a:hover em { text-decoration: underline; text-underline-offset: 3px; }

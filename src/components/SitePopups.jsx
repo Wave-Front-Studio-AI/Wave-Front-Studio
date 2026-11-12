@@ -208,6 +208,13 @@ function dealWords(phase) {
   return { eyebrow: 'Black Friday for contractors', ends: `These deals end ${HOLIDAY_WINDOW.endsLabel}.` }
 }
 
+// Each card adds a service that earns that deal to a fresh quote.
+const dealCards = [
+  { name: 'Build Deal', add: 'web', text: '20% off setup on a website, landing page, quote calculator or visualizer tool.' },
+  { name: 'Leads Deal', add: 'lead', text: '3 months free instead of 1 on lead generation and SEO.' },
+  { name: 'Brand Deal', add: 'social', text: '20% off logo and print work. Add a social plan and the logo is free.' },
+]
+
 function DealPopup({ open, onClose, phase }) {
   const words = dealWords(phase)
   return (
@@ -218,18 +225,15 @@ function DealPopup({ open, onClose, phase }) {
         <p>{words.ends} After that the prices go back to normal.</p>
       </div>
       <ul className="deal-list">
-        <li>
-          <strong>Build Deal</strong>
-          <span>20% off setup on a website, landing page, quote calculator or visualizer tool.</span>
-        </li>
-        <li>
-          <strong>Leads Deal</strong>
-          <span>3 months free instead of 1 on lead generation and SEO.</span>
-        </li>
-        <li>
-          <strong>Brand Deal</strong>
-          <span>20% off logo and print work. Add a social plan and the logo is free.</span>
-        </li>
+        {dealCards.map((card) => (
+          <li key={card.name}>
+            <a href={`/package-builder/?add=${card.add}&${dealUtm}&utm_content=popup-${card.add}`} onClick={onClose}>
+              <strong>{card.name}</strong>
+              <span>{card.text}</span>
+              <em>Add to my quote</em>
+            </a>
+          </li>
+        ))}
       </ul>
       <div className="deal-actions">
         <a className="kinetic-button group" href={`/package-builder/?${dealUtm}&utm_content=popup-quote`} onClick={onClose}>
