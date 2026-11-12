@@ -393,6 +393,17 @@ export default function BuildYourPackage() {
   // Read after hydration, so the prerendered HTML and the first render in the browser match.
   useEffect(() => {
     setStaff(isStaffUrl())
+    // A link such as /package-builder/?add=web,lead starts the quote with those services
+    // already ticked. The deals popup uses it. Unknown names are ignored.
+    const wanted = (new URLSearchParams(window.location.search).get('add') ?? '').split(',').filter((id) => serviceById[id])
+    if (wanted.length) {
+      setState((current) => {
+        const next = { ...current }
+        for (const id of wanted) if (!next[id]) next[id] = { tiers: [1], addons: [], opts: {} }
+        return next
+      })
+      setToast('Added to your quote')
+    }
   }, [])
 
   const optionIndex = (id, addonIndex) => {
