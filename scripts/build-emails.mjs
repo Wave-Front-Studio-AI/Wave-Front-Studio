@@ -122,21 +122,12 @@ function dollarEmail() {
   const step = (n, title, text) => `<tr><td width="40" valign="top" style="padding:0 14px 16px 0"><span style="display:inline-block;width:32px;height:32px;line-height:32px;border-radius:16px;background:${C.ink};color:#ffffff;font-family:${FONT};font-size:14px;font-weight:700;text-align:center">${n}</span></td>
 <td valign="top" style="padding:0 0 16px">${p(`<strong style="color:${C.ink}">${title}</strong><br>${text}`, { bottom: 0, size: 15 })}</td></tr>`
 
-  // A dark deadline strip, the email's FOMO device. The date is real: the $1 setup ends with the sale.
-  const deadline = (text) => `<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"><tr>
-<td bgcolor="${C.ink}" style="padding:14px 18px;border-radius:10px;background:${C.ink}">
-<span style="display:block;font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:${C.cyan}">Black Friday deal</span>
-<span style="display:block;margin-top:4px;font-family:${FONT};font-size:16px;font-weight:700;line-height:1.45;color:#ffffff">${text}</span>
-</td></tr></table>`
-
   const body = [
     row(`${p(greeting, { top: 12 })}
 <h1 class="h1" style="margin:0 0 14px;font-family:${FONT};font-size:34px;line-height:1.15;color:${C.ink};font-weight:800;letter-spacing:-0.4px">A real website for $1. Only until December 1.</h1>
 ${p('Most business owners put off a new website because of the bill up front. For Black Friday we took the bill away. Pick one of our 15 designs, send us your details, and we build your site with your own words, photos and logo.')}
 ${p('The $1 setup ends Tuesday, December 1 at 11:59pm Eastern. That night the offer comes off our site, and anyone who has not sent their details by then misses it.', { bottom: 22 })}
 ${button('Claim my $1 website', L('/1-dollar-website/#designs', 'hero'))}`, { pad: '8px 40px 0' }),
-    spacer(30),
-    row(deadline('Send your details by Tuesday, December 1 at 11:59pm Eastern to lock in the $1 setup.'), { pad: '0 40px' }),
     spacer(34),
     row(`${h2('Your custom website')}
 ${p('Every template is a full five page site with real photos, built to work for any kind of business. Here are four of them.', { bottom: 20 })}`, { pad: '0 40px' }),
