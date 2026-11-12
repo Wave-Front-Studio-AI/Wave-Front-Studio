@@ -1,4 +1,5 @@
-import { LANDING_PAGE_BUNDLES, OFFER, SERVICES } from './data/generated/packages.js'
+import { LANDING_PAGE_BUNDLES, OFFER } from './data/generated/packages.js'
+import { BUILDER_SERVICES as SERVICES } from './data/oneDollarSite.js'
 import { HOLIDAY_WINDOW, holidayDealActive } from './holidayWindow.js'
 
 export { holidayDealActive }
@@ -123,6 +124,9 @@ export function calculateQuote(state, now = new Date()) {
   let buildOne = 0
   let brandOne = 0
   let leadsMonthly = 0
+  // The $1 Website is a flat price: no bundle count, no discounts, no free first month.
+  let flatOne = 0
+  let flatMonthly = 0
   const rows = []
   const errors = []
   let pendingPageRate
@@ -130,7 +134,7 @@ export function calculateQuote(state, now = new Date()) {
   for (const service of SERVICES) {
     const entry = state[service.id]
     if (!entry) continue
-    count += 1
+    if (!service.flat) count += 1
     for (const tierIndex of selectedTiers(service, entry)) {
       const tier = service.tiers[tierIndex]
       const note = cleanNote(entry.notes?.[tierIndex])
@@ -161,12 +165,16 @@ export function calculateQuote(state, now = new Date()) {
       const total = { s: (bundle ? landingPagesPrice(tier, bundle.pages) : tier.s) * qty, m: tier.m * qty }
       one += total.s
       monthly += total.m
+      if (service.flat) {
+        flatOne += total.s
+        flatMonthly += total.m
+      }
       if (HOLIDAY_DEAL.build.services.includes(service.id)) buildOne += total.s
       if (HOLIDAY_DEAL.brand.services.includes(service.id)) brandOne += total.s
       if (HOLIDAY_DEAL.leads.services.includes(service.id)) leadsMonthly += total.m
       const pageLabel = bundle ? ` · ${bundle.pages} page${bundle.pages === 1 ? '' : 's'}` : ''
       const qtyLabel = qty > 1 ? ` · ${qty} × ${eachPrice(tier)}` : ''
-      const description = [service.id === 'email' ? tier.note : '', note].filter(Boolean).join('\n')
+      const description = [service.id === 'email' || service.flat ? tier.note : '', note].filter(Boolean).join('\n')
       rows.push({ label: `${service.name} — ${tier.n}${pageLabel}${qtyLabel}`, amount: tierPrice(total), ...(description ? { description } : {}) })
     }
 
@@ -180,6 +188,10 @@ export function calculateQuote(state, now = new Date()) {
         monthly += price
         if (HOLIDAY_DEAL.leads.services.includes(service.id)) leadsMonthly += price
       } else one += price
+      if (service.flat) {
+        if (addon.t === 'monthly') flatMonthly += price
+        else flatOne += price
+      }
       const base = addon.opts ? `${addon.l} × ${addonQty(addon, chosen)}/mo — ${addon.opts[chosen].l}` : addon.l
       const label = units > 1 ? `${base} · ${units} × ${money(each)}${addon.t === 'monthly' ? '/mo' : ''}` : base
       const note = cleanNote(entry.addonNotes?.[addonIndex])
@@ -199,7 +211,7 @@ export function calculateQuote(state, now = new Date()) {
   }
 
   // Custom items are quoted at exactly the price entered: they don't count towards the bundle or get its discount.
-  const serviceOne = one
+  const serviceOne = one - flatOne
   let customCount = 0
   for (const raw of Array.isArray(state.customItems) ? state.customItems : []) {
     const item = customQuoteItem(raw)
@@ -238,5 +250,5 @@ export function calculateQuote(state, now = new Date()) {
   const afterDeals = discounted - dealOff
   const creditApplied = dealOff > 0 ? Math.min(creditAmount(state.credit), afterDeals) : credit
   const holidayFields = holiday ? { deals, dealOff, dealSavings, holiday: { name: HOLIDAY_DEAL.name, endsLabel: HOLIDAY_DEAL.endsLabel } } : {}
-  return { ...holidayFields, one, monthly, count, pct, bundleAmount, credit: creditApplied, creditLabel, oneAfter: afterDeals - creditApplied, firstMonthsFree: monthly * OFFER.firstMonthsFree, rows, ...(customCount ? { customCount } : {}), ...(pendingPageRate !== undefined ? { pendingPageRate, pendingPageRateAfter: pendingPageRate * (1 - pct / 100) } : {}), ...(errors.length ? { errors } : {}) }
+  return { ...holidayFields, one, monthly, count, pct, bundleAmount, credit: creditApplied, creditLabel, oneAfter: afterDeals - creditApplied, firstMonthsFree: (monthly - flatMonthly) * OFFER.firstMonthsFree, rows, ...(customCount ? { customCount } : {}), ...(pendingPageRate !== undefined ? { pendingPageRate, pendingPageRateAfter: pendingPageRate * (1 - pct / 100) } : {}), ...(errors.length ? { errors } : {}) }
 }
