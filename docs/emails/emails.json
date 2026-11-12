@@ -1,0 +1,42 @@
+[
+  {
+    "file": "0-dollar-website-launch.html",
+    "subjects": [
+      "A real website for $1",
+      "Your new website, $1 to start"
+    ],
+    "preheader": "Pick one of 15 designs and we build it with your details. Hosting is $99 a month."
+  },
+  {
+    "file": "1-black-friday-deals-live.html",
+    "subjects": [
+      "Black Friday pricing is on now",
+      "20% off a new website through Dec 1"
+    ],
+    "preheader": "Three deals for local businesses, through December 1."
+  },
+  {
+    "file": "2-black-friday.html",
+    "subjects": [
+      "Would a customer find you tonight?",
+      "A price calculator that works at 9pm"
+    ],
+    "preheader": "The deals are live through December 1."
+  },
+  {
+    "file": "3-black-friday-last-days.html",
+    "subjects": [
+      "The deals end tomorrow night",
+      "Two days left on Black Friday pricing"
+    ],
+    "preheader": "Ends Tuesday, December 1 at 11:59pm Eastern."
+  },
+  {
+    "file": "4-black-friday-follow-up.html",
+    "subjects": [
+      "Still want that quote?",
+      "Your quote is easy to rebuild"
+    ],
+    "preheader": "The deals ended last night. We can still talk through the plan."
+  }
+]

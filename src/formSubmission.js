@@ -24,7 +24,8 @@ function normalizeWebsite(value) {
 // landing page (public/free-website-audit/), so a visit that starts there and
 // enquires here keeps its source.
 const ATTRIBUTION_KEY = 'wfs_utm'
-const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+// fbclid and gclid are the click ids Meta and Google add to ad links, so a lead can be tied to the exact ad.
+const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid']
 
 export function rememberAttribution() {
   try {
