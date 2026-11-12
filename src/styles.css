@@ -2125,3 +2125,6 @@ body.menu-open .deal-banner, body.chat-open .deal-banner { display: none; }
 .one-dollar-ended h1, .one-dollar-ended h2 { font-size: clamp(2rem, 5vw, 3.2rem); }
 .one-dollar-ended p { margin-top: 16px; color: var(--text); font-size: 1.1rem; line-height: 1.6; }
 .one-dollar-ended .one-dollar-actions { margin-top: 24px; }
+
+/* Home page template showcase (src/pages/Home.jsx) */
+.template-showcase-more { display: flex; justify-content: center; margin-top: 32px; }
