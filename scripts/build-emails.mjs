@@ -48,7 +48,8 @@ const row = (inner, { pad = '0 40px', bg } = {}) =>
 
 const spacer = (n) => `<tr><td style="height:${n}px;line-height:${n}px;font-size:0">&nbsp;</td></tr>`
 
-const greeting = `*|IF:FNAME|*Hi *|FNAME|*,*|ELSE:|*Hi there,*|END:IF|*`
+// Plain greeting: the audience has junk first names ("Hey"), so FNAME reads badly.
+const greeting = 'Hi there,'
 
 function layout({ title, preheader, body, campaign, content }) {
   const home = link('/', campaign, `${content}-logo`)
@@ -106,10 +107,10 @@ function dollarEmail() {
   const content = 'launch-email'
   const L = (path, part, term) => link(path, campaign, `${content}-${part}`, term)
   const picks = [
-    ['atlas', 'Atlas', 'Bold and corporate'],
-    ['bloom', 'Bloom', 'Luxury boutique'],
-    ['volt', 'Volt', 'Dark and modern'],
-    ['pop', 'Pop', 'Bright and playful'],
+    ['pulse', 'Pulse', 'Energetic'],
+    ['slate', 'Slate', 'Industrial'],
+    ['grid', 'Grid', 'Swiss editorial'],
+    ['harbor', 'Harbor', 'Calm and coastal'],
   ]
   const card = ([slug, name, style]) => `<td width="50%" valign="top" style="padding:0 6px">
 <a href="${esc(L(`/1-dollar-website/${slug}/`, 'template', slug))}" target="_blank" style="text-decoration:none">
@@ -118,25 +119,16 @@ function dollarEmail() {
 <span style="display:block;margin-top:2px;font-family:${FONT};font-size:14px;color:${C.muted}">${style}</span>
 </a></td>`
   const grid = (a, b) => `<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" class="stack"><tr>${card(a)}${card(b)}</tr></table>`
-  const price = (big, small) => `<td align="center" valign="top" style="padding:16px 8px;border:1px solid ${C.line};border-radius:10px;background:#ffffff">
-<span style="display:block;font-family:${FONT};font-size:28px;font-weight:800;color:${C.ink};line-height:1.1">${big}</span>
-<span style="display:block;margin-top:4px;font-family:${FONT};font-size:13px;color:${C.muted}">${small}</span></td>`
   const step = (n, title, text) => `<tr><td width="40" valign="top" style="padding:0 14px 16px 0"><span style="display:inline-block;width:32px;height:32px;line-height:32px;border-radius:16px;background:${C.ink};color:#ffffff;font-family:${FONT};font-size:14px;font-weight:700;text-align:center">${n}</span></td>
 <td valign="top" style="padding:0 0 16px">${p(`<strong style="color:${C.ink}">${title}</strong><br>${text}`, { bottom: 0, size: 15 })}</td></tr>`
 
   const body = [
     row(`${p(greeting, { top: 12 })}
 <h1 class="h1" style="margin:0 0 14px;font-family:${FONT};font-size:34px;line-height:1.15;color:${C.ink};font-weight:800;letter-spacing:-0.4px">A real website for $1 to start.</h1>
-${p('Most business owners put off a new website because of the bill up front. So we took the bill away. Pick one of our 15 designs, send us your details, and we build your site with your own words, photos and logo.')}
-${p('Hosting is $99 a month, and that covers keeping it online, secure and working.', { bottom: 22 })}
+${p('Most business owners put off a new website because of the bill up front. So we took the bill away. Pick one of our 15 designs, send us your details, and we build your site with your own words, photos and logo.', { bottom: 22 })}
 ${button('See the 15 templates', L('/1-dollar-website/#designs', 'hero'))}`, { pad: '8px 40px 0' }),
-    spacer(30),
-    row(`<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"><tr>
-${price('$1', 'to set up')}<td width="10" style="font-size:0">&nbsp;</td>${price('$99', 'a month hosting')}<td width="10" style="font-size:0">&nbsp;</td>${price('12', 'month minimum')}
-</tr></table>
-${p('That is $1,189 for the first year, hosting included. No surprises later.', { size: 13, color: C.muted, top: 12, bottom: 0, align: 'center' })}`, { pad: '0 40px' }),
     spacer(34),
-    row(`${h2('Real websites, not page builders')}
+    row(`${h2('Your custom website')}
 ${p('Every template is a full five page site with real photos, built to work for any kind of business. Here are four of them.', { bottom: 20 })}`, { pad: '0 40px' }),
     row(`${grid(picks[0], picks[1])}<div class="stack-gap" style="height:22px;line-height:22px;font-size:0">&nbsp;</div>${grid(picks[2], picks[3])}`, { pad: '0 34px' }),
     row(`${p(`<a href="${esc(L('/1-dollar-website/#designs', 'all-templates'))}" style="color:${C.brand};font-weight:700">See all 15 templates</a>`, { top: 22, bottom: 0 })}`, { pad: '0 40px' }),
