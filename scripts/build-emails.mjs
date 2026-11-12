@@ -119,9 +119,6 @@ function dollarEmail() {
 <span style="display:block;margin-top:2px;font-family:${FONT};font-size:14px;color:${C.muted}">${style}</span>
 </a></td>`
   const grid = (a, b) => `<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" class="stack"><tr>${card(a)}${card(b)}</tr></table>`
-  const price = (big, small) => `<td align="center" valign="top" style="padding:16px 8px;border:1px solid ${C.line};border-radius:10px;background:#ffffff">
-<span style="display:block;font-family:${FONT};font-size:28px;font-weight:800;color:${C.ink};line-height:1.1">${big}</span>
-<span style="display:block;margin-top:4px;font-family:${FONT};font-size:13px;color:${C.muted}">${small}</span></td>`
   const step = (n, title, text) => `<tr><td width="40" valign="top" style="padding:0 14px 16px 0"><span style="display:inline-block;width:32px;height:32px;line-height:32px;border-radius:16px;background:${C.ink};color:#ffffff;font-family:${FONT};font-size:14px;font-weight:700;text-align:center">${n}</span></td>
 <td valign="top" style="padding:0 0 16px">${p(`<strong style="color:${C.ink}">${title}</strong><br>${text}`, { bottom: 0, size: 15 })}</td></tr>`
 
@@ -131,11 +128,6 @@ function dollarEmail() {
 ${p('Most business owners put off a new website because of the bill up front. So we took the bill away. Pick one of our 15 designs, send us your details, and we build your site with your own words, photos and logo.')}
 ${p('Hosting is $99 a month, and that covers keeping it online, secure and working.', { bottom: 22 })}
 ${button('See the 15 templates', L('/1-dollar-website/#designs', 'hero'))}`, { pad: '8px 40px 0' }),
-    spacer(30),
-    row(`<table role="presentation" width="200" align="center" border="0" cellspacing="0" cellpadding="0" style="margin:0 auto"><tr>
-${price('$1', 'to set up')}
-</tr></table>
-${p('Hosting has a 12 month minimum, so the first year is $1,189 all in. No surprises later.', { size: 13, color: C.muted, top: 12, bottom: 0, align: 'center' })}`, { pad: '0 40px' }),
     spacer(34),
     row(`${h2('Real websites, not page builders')}
 ${p('Every template is a full five page site with real photos, built to work for any kind of business. Here are four of them.', { bottom: 20 })}`, { pad: '0 40px' }),
