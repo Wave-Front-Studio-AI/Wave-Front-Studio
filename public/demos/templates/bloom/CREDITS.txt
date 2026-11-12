@@ -1,0 +1,18 @@
+Bloom Co. sample template: photo credits
+Unsplash photos are used under the Unsplash licence (free for commercial use, no credit required).
+URL pattern: https://unsplash.com/photos/<id> (image: https://images.unsplash.com/photo-<id>)
+
+hero.webp        AI generated (ChatGPT) for Wavefront Studio
+room.webp        Unsplash photo-1774199496664-a9690967be5a
+founder.webp     Unsplash photo-1760543998147-117ae5649c5c
+consult.webp     Unsplash photo-1573497620053-ea5300f94f21
+signing.webp     Unsplash photo-1562564055-71e051d33c19
+portrait-1.webp  Unsplash photo-1765005204227-bf58bcdd4449
+portrait-2.webp  Unsplash photo-1580489944761-15a19d654956
+calm-room.webp   Unsplash photo-1772797583328-f83bc3f94f80
+lamp.webp        Unsplash photo-1635435605591-217d993deb88
+candles.webp     Unsplash photo-1632927126606-e9f653064555
+leaves.webp      Unsplash photo-1585664428450-1665a336eb19
+leaf.webp        Unsplash photo-1571684116845-6d62d8460b86
+
+Fonts: Bodoni Moda and Outfit (SIL Open Font License), self hosted from Fontsource.

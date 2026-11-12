@@ -1,0 +1,20 @@
+Photo credits for the Frame Co. sample template.
+Unsplash photos (https://unsplash.com/license) are free for commercial use. Source URL: https://images.unsplash.com/photo-<id>
+
+All Frame photos are converted to black and white for this template.
+
+img/brush.webp  Unsplash photo 1583591900414-7031eb309cb6
+img/columns.webp  Unsplash photo 1531077386034-d12285794b5c
+img/cubes.webp  Unsplash photo 1479839672679-a46483c0e7c8
+img/curves.webp  Unsplash photo 1567943183748-3a7542120c90
+img/desk-sun.webp  Unsplash photo 1611269154421-4e27233ac5c7
+img/desk-white.webp  Unsplash photo 1449247709967-d4461a6a6103
+img/office-mono.webp  Unsplash photo 1769002240965-7cc4b129d81a
+img/portrait.webp  Unsplash photo 1506863530036-1efeddceb993
+img/ring.webp  Unsplash photo 1527576539890-dfa815648363
+img/screen.webp  Unsplash photo 1639413665566-2f75adf7b7ca
+img/stripes.webp  Unsplash photo 1488972685288-c3fd157d7c7a
+img/swirl.webp  Unsplash photo 1568733873715-f9d497a47ea0
+img/wave.webp  Unsplash photo 1582045253062-f63cfbd45bcb
+
+Fonts are self hosted from Fontsource under the SIL Open Font License.

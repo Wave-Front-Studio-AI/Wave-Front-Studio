@@ -411,7 +411,7 @@ export default function BuildYourPackage() {
           if (next[id]) continue
           next[id] = { tiers: [startTier(id)], addons: [], opts: {} }
         }
-        if (template) next.site1 = { ...next.site1, notes: { 0: `Template: ${template.name} (${template.industry})` } }
+        if (template) next.site1 = { ...next.site1, notes: { 0: `Template: ${template.name} (${template.style})` } }
         return next
       })
       setToast('Added to your quote')

@@ -1,0 +1,18 @@
+Photo credits for the Ember Co. sample template.
+Unsplash photos (https://unsplash.com/license) are free for commercial use. Source URL: https://images.unsplash.com/photo-<id>
+
+img/bench.webp  Unsplash photo 1778077128762-594e292467a2
+img/block.webp  Unsplash photo 1553051021-9f94520a6cad
+img/carve.webp  Unsplash photo 1496769843785-93aa0be525dc
+img/chisel.webp  Unsplash photo 1721508490084-1b1de5b230d4
+img/doorway.webp  Unsplash photo 1662445407335-db6b4e68c323
+img/grinder.webp  Unsplash photo 1786648336954-1f6aec7b7edd
+img/handshake.webp  Unsplash photo 1638262052640-82e94d64664a
+img/hero.webp  AI generated (ChatGPT) for Wavefront Studio
+img/lamp-room.webp  Unsplash photo 1730154838429-642ab631e311
+img/lathe.webp  Unsplash photo 1579196179453-1531eddf62e3
+img/leather.webp  Unsplash photo 1648216771482-2f9b9c3d57ee
+img/meeting.webp  Unsplash photo 1511376979163-f804dff7ad7b
+img/skyline.webp  Unsplash photo 1650570725926-cd88ef8784bd
+
+Fonts are self hosted from Fontsource under the SIL Open Font License.

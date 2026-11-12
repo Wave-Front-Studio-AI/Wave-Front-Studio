@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Contact | Nordic Co. | Sample website</title>
+<meta name="description" content="Contact Nordic Co. for a free consultation. Call (555) 010-0100 or send a message.">
+<link rel="preload" href="/demos/templates/nordic/fonts/albert-sans-300.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/demos/templates/nordic/fonts/karla-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/demos/templates/nordic/style.css">
+<script src="/demos/templates/nordic/main.js" defer></script>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header" data-header>
+  <div class="wrap site-header__in">
+    <a class="brand" href="/demos/templates/nordic/" aria-label="Nordic Co. home"><span class="brand__sq" aria-hidden="true"></span>Nordic Co.</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="/demos/templates/nordic/">Home</a></li>
+        <li><a href="/demos/templates/nordic/services/">Services</a></li>
+        <li><a href="/demos/templates/nordic/about/">About</a></li>
+        <li><a href="/demos/templates/nordic/gallery/">Gallery</a></li>
+        <li><a href="/demos/templates/nordic/contact/" aria-current="page">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main id="main">
+
+
+<section class="hero" aria-labelledby="hero-h">
+  <div class="wrap hero__grid">
+    <div class="hero__text">
+      <p class="label">Contact</p>
+      <h1 id="hero-h" class="hero__h">Say hello.</h1>
+      <p class="hero__p">Ask a question or book a free visit. We reply within one working day.</p>
+      
+    </div>
+    <figure class="hero__img"><img src="/demos/templates/nordic/img/white-desk.webp" width="1400" height="933" alt="A white desk and pale chair against a clean white wall" fetchpriority="high" decoding="async"></figure>
+  </div>
+</section>
+
+<section class="contact" aria-labelledby="form-h">
+  <div class="wrap contact__grid">
+    <div class="fade">
+      <h2 id="form-h" class="h2">Send a message</h2>
+      <form class="form" data-demo-form novalidate>
+        <div class="field"><label for="n-name">Name</label><input id="n-name" name="name" type="text" autocomplete="name"></div>
+        <div class="field"><label for="n-email">Email</label><input id="n-email" name="email" type="email" autocomplete="email"></div>
+        <div class="field"><label for="n-phone">Phone</label><input id="n-phone" name="phone" type="tel" autocomplete="tel"></div>
+        <div class="field"><label for="n-svc">Service</label><select id="n-svc" name="service"><option>Not sure yet</option><option>Consultations</option><option>Planning and design</option><option>Installation</option><option>Repairs</option><option>Maintenance plans</option><option>Custom projects</option></select></div>
+        <div class="field"><label for="n-msg">Message</label><textarea id="n-msg" name="message" rows="5"></textarea></div>
+        <button class="btn btn--dark" type="submit">Send message <span class="arr" aria-hidden="true"></span></button>
+        <p class="form__note" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+    <aside class="contact__info fade" aria-label="Contact details">
+      <div><h2 class="label">Phone</h2><p><a href="tel:+15550100100">(555) 010-0100</a></p></div>
+      <div><h2 class="label">Email</h2><p><a href="mailto:hello@yourbusiness.com">hello@yourbusiness.com</a></p></div>
+      <div><h2 class="label">Address</h2><p>100 Main Street<br>Your Town</p></div>
+      <div><h2 class="label">Hours</h2><p>Monday to Friday, 8am to 5pm<br>Weekends by arrangement</p></div>
+    </aside>
+  </div>
+</section>
+
+<section class="steps" aria-labelledby="next-h">
+  <div class="wrap">
+    <h2 id="next-h" class="h2 fade">What happens next</h2>
+    <ol class="steps__list steps__list--three">
+      <li class="fade"><h3 class="steps__t">Reply</h3><p>We get back to you within one working day.</p></li>
+      <li class="fade"><h3 class="steps__t">Visit</h3><p>We arrange a free visit at a time that suits you.</p></li>
+      <li class="fade"><h3 class="steps__t">Quote</h3><p>You receive a clear, fixed written price.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="faq" aria-labelledby="contact-faq">
+  <div class="wrap faq__grid">
+    <h2 id="contact-faq" class="h2 fade">Common questions</h2>
+    <div class="faq__list fade">
+      <details><summary>Is the first visit really free?<span class="faq__mark" aria-hidden="true"></span></summary><p>Yes. We visit, listen and give honest advice. There is no charge and no obligation.</p></details>
+      <details><summary>How soon can you start?<span class="faq__mark" aria-hidden="true"></span></summary><p>Usually within one to two weeks. We will always give you a clear date up front.</p></details>
+      <details><summary>Will the price change?<span class="faq__mark" aria-hidden="true"></span></summary><p>Your written quote is the price you pay. If you ask for changes, we agree any difference first.</p></details>
+      <details><summary>Do you clean up afterwards?<span class="faq__mark" aria-hidden="true"></span></summary><p>Always. We protect your space while we work and leave it tidy at the end of every day.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <p class="brand brand--foot"><span class="brand__sq" aria-hidden="true"></span>Nordic Co.</p>
+        <p class="site-footer__text">Careful, considered service for homes and businesses in Your Town.</p>
+      </div>
+      <div><h2 class="label">Address</h2><p>100 Main Street<br>Your Town</p></div>
+      <div><h2 class="label">Contact</h2><p><a href="tel:+15550100100">(555) 010-0100</a><br><a href="mailto:hello@yourbusiness.com">hello@yourbusiness.com</a></p></div>
+      <nav aria-label="Footer"><h2 class="label">Pages</h2><ul><li><a href="/demos/templates/nordic/">Home</a></li><li><a href="/demos/templates/nordic/services/">Services</a></li><li><a href="/demos/templates/nordic/about/">About</a></li><li><a href="/demos/templates/nordic/gallery/">Gallery</a></li><li><a href="/demos/templates/nordic/contact/">Contact</a></li></ul></nav>
+    </div>
+    <p class="site-footer__legal">© Nordic Co. A sample website.</p>
+  </div>
+</footer>
+</body>
+</html>

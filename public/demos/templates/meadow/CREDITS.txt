@@ -1,0 +1,21 @@
+Meadow Co. sample template: photo credits
+All photos are from Unsplash (https://unsplash.com) under the Unsplash License: free for commercial use, no attribution required.
+Converted to WebP at the sizes used on the site.
+
+img/hero-greenhouse.webp  Unsplash photo id: 1758524055384-6b54143f32ed  (source: https://images.unsplash.com/photo-1758524055384-6b54143f32ed)
+img/counter.webp  Unsplash photo id: 1556742049-0cfed4f6a45d  (source: https://images.unsplash.com/photo-1556742049-0cfed4f6a45d)
+img/high-five.webp  Unsplash photo id: 1600880292203-757bb62b4baf  (source: https://images.unsplash.com/photo-1600880292203-757bb62b4baf)
+img/chat.webp  Unsplash photo id: 1758274252457-18a23285169c  (source: https://images.unsplash.com/photo-1758274252457-18a23285169c)
+img/smile.webp  Unsplash photo id: 1484863137850-59afcfe05386  (source: https://images.unsplash.com/photo-1484863137850-59afcfe05386)
+img/plants.webp  Unsplash photo id: 1583753075968-1236ccb83c66  (source: https://images.unsplash.com/photo-1583753075968-1236ccb83c66)
+img/leaf.webp  Unsplash photo id: 1585664428450-1665a336eb19  (source: https://images.unsplash.com/photo-1585664428450-1665a336eb19)
+img/family-field.webp  Unsplash photo id: 1542037104857-ffbb0b9155fb  (source: https://images.unsplash.com/photo-1542037104857-ffbb0b9155fb)
+img/room.webp  Unsplash photo id: 1554995207-c18c203602cb  (source: https://images.unsplash.com/photo-1554995207-c18c203602cb)
+img/living.webp  Unsplash photo id: 1774199496664-a9690967be5a  (source: https://images.unsplash.com/photo-1774199496664-a9690967be5a)
+img/notebook.webp  Unsplash photo id: 1758519289791-ffce8889ca8c  (source: https://images.unsplash.com/photo-1758519289791-ffce8889ca8c)
+img/cheer.webp  Unsplash photo id: 1758874384556-ad48ed1c946c  (source: https://images.unsplash.com/photo-1758874384556-ad48ed1c946c)
+
+Fonts: self-hosted from Fontsource (SIL Open Font License).
+fonts/figtree-400.woff2
+fonts/figtree-600.woff2
+fonts/fredoka-600.woff2

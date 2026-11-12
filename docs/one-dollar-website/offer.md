@@ -17,6 +17,8 @@ Quote builder: a new "$1 Website" service under Websites & Development, or /pack
 2. Send the intake form: business details, services, hours, colors, a link to logo and photos. It arrives in the lead inbox as "$1 Website intake".
 3. We reply within two working days, invoice the $1, and confirm a go-live date. There is no card checkout on the site for this yet.
 
-## The 15 designs
-Ridgeline (roofing), Harbor Dental, Copper Kettle (restaurant), Iron Yard (gym), Luna (beauty), Bluebird (plumbing and HVAC), Oakline (law), Greenleaf (landscaping), Brightpath (cleaning), Summit (real estate), Paws & Co (pet care), Stonework (concrete), Spark (electricians), Northside Auto, Willow Studio (photography).
-Designs live in src/templates/designs/. `node scripts/check-templates.mjs` checks fields, color contrast and dashes.
+## The 15 templates
+Every template is a design style that works for any business: Atlas (bold and corporate), Linen (soft and elegant), Volt (dark and modern), Meadow (fresh and friendly), Grid (Swiss editorial), Harbor (calm and coastal), Ember (warm and cinematic), Frame (minimal gallery), Heritage (classic and trusted), Pop (bright and playful), Slate (industrial), Bloom (luxury boutique), Pulse (energetic), Horizon (photo led), Nordic (Scandinavian minimal).
+
+Each is a real five page static site in public/demos/templates/<slug>/ (Home, Services, About, Gallery, Contact) with its own layout, fonts and photos. To build a customer site, copy the folder, swap the text, photos, colors and logo, and publish it. Photos are Unsplash free licence or AI images made for us; each folder has a CREDITS.txt.
+How they were built: docs/one-dollar-website/template-brief.md. Gallery screenshots: `node scripts/template-thumbs.mjs` with the dev server running.

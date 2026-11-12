@@ -1,0 +1,18 @@
+Volt Co. sample template: photo credits
+Unsplash photos (Unsplash License: free for commercial use, no attribution required).
+Source URL pattern: https://images.unsplash.com/photo-<id>
+
+img/hero.webp            AI generated (ChatGPT) for Wavefront Studio
+img/thumbs.webp          1579047917338-a6a69144fe63
+img/host.webp            1758519289791-ffce8889ca8c
+img/counter.webp         1556742049-0cfed4f6a45d
+img/cafe-smile.webp      1484863137850-59afcfe05386
+img/chat.webp            1758274252457-18a23285169c
+img/doorway.webp         1662445407335-db6b4e68c323
+img/hands-wood.webp      1553051021-9f94520a6cad
+img/hands-lathe.webp     1579196179453-1531eddf62e3
+img/laptop-coffee.webp   1579338775661-7d0b8621ec83
+img/glow.webp            1765137102445-8d29f80c0d46
+img/carving.webp         1660796334938-cf0b03be7e6d
+
+Fonts: Bricolage Grotesque and Manrope (SIL Open Font License), via Fontsource.

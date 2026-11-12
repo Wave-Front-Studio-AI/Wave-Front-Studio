@@ -1,0 +1,15 @@
+Nordic Co. sample template: photo credits
+All photos from Unsplash (free licence, commercial use allowed). URL: https://images.unsplash.com/photo-<id>
+
+img/hero.webp        1611269154421-4e27233ac5c7
+img/white-desk.webp  1449247709967-d4461a6a6103
+img/oak-desk.webp    1587522705669-61de54c723bf
+img/plant.webp       1585664428450-1665a336eb19
+img/leaf.webp        1571684116845-6d62d8460b86
+img/room.webp        1772797583328-f83bc3f94f80
+img/living.webp      1774199496664-a9690967be5a
+img/waves.webp       1558591710-4b4a1ae0f04d
+img/marble.webp      1602536052359-ef94c21c5948
+img/flatlay.webp     1542435503-956c469947f6
+
+Fonts: Albert Sans and Karla (SIL Open Font License), self hosted from Fontsource.
