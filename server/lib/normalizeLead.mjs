@@ -1,4 +1,5 @@
 import { consentWording } from '../../src/data/smsConsent.js'
+import { attributionFrom } from './attribution.mjs'
 
 const text = (value) => (typeof value === 'string' ? value.trim() : value == null ? '' : String(value))
 
@@ -82,5 +83,7 @@ export function normalizeLead(body = {}) {
     smsMarketingConsentText: marketing.wording,
     consentUrl: pageUrl,
     consentCapturedAt: submittedAt,
+    // The ad or email that brought them: UTM fields, first and last touch, and a Lead source when one fits.
+    ...attributionFrom(labelled, page, submittedAt),
   }
 }

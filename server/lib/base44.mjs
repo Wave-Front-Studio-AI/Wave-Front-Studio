@@ -17,6 +17,15 @@ export const LEAD_FIELD_MAP = {
   smsMarketingConsentText: 'sms_marketing_consent_text',
   consentUrl: 'consent_url',
   consentCapturedAt: 'consent_captured_at',
+  utmSource: 'utm_source',
+  utmMedium: 'utm_medium',
+  utmCampaign: 'utm_campaign',
+  utmContent: 'utm_content',
+  utmTerm: 'utm_term',
+  fbclid: 'fbclid',
+  gclid: 'gclid',
+  firstTouch: 'first_touch',
+  lastTouch: 'last_touch',
 }
 
 export function resolveBusinessName(lead) {
@@ -93,7 +102,9 @@ export async function createLead(lead, config, fetchImpl = fetch) {
   const record = toBase44Record({ ...lead, company: resolveBusinessName(lead) }, config.base44FieldMap)
   record[config.base44StageField] = config.base44Stage
   record[config.base44StatusField] = config.base44Status
-  if (config.base44LeadSource) record.lead_source = config.base44LeadSource
+  // A tagged ad or social visit sets its own Lead source; everything else keeps the service default.
+  const leadSource = lead.leadSource || config.base44LeadSource
+  if (leadSource) record.lead_source = leadSource
   if (config.base44Owner) record.assigned_to = config.base44Owner
   if (config.base44OwnerEmail) record.assigned_to_email = config.base44OwnerEmail
 
@@ -179,6 +190,8 @@ export async function mergeIntoLead(existing, lead, config, fetchImpl = fetch) {
   for (const [field, value] of Object.entries(incoming)) {
     if (field === map.notes || field === map.email || field === map.phone || consentFields.has(field)) continue
     if (existing[field] === undefined || existing[field] === null || existing[field] === '') update[field] = value
+    // The latest visit always replaces the last touch; the first touch is only ever filled once.
+    else if (field === map.lastTouch && value !== existing[field]) update[field] = value
   }
   // Ticking the text box adds permission. Leaving it unticked never takes away
   // permission given earlier: only replying STOP does that. A record marked do
