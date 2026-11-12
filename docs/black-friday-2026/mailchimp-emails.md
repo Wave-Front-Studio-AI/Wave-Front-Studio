@@ -8,7 +8,7 @@ Nothing has been scheduled or sent. Tony reviews and sends each one in Mailchimp
 
 | # | File | Send | Audience | Subject (option B) |
 |---|---|---|---|---|
-| 0 | `0-dollar-website-launch.html` | Tue Nov 17, 9am Eastern | Whole audience | A real website for $1 (Your new website, $1 to start) |
+| 0 | `0-dollar-website-launch.html` | Tue Nov 17, 9am Eastern | Whole audience | Black Friday: a PROFESSIONAL website for $1 (Your $1 website ends December 1) |
 | 1 | `1-black-friday-deals-live.html` | Thu Nov 19, 8am Eastern | Whole audience | Black Friday pricing is on now (20% off a new website through Dec 1) |
 | 2 | `2-black-friday.html` | Fri Nov 27, 8am Eastern | Whole audience | Would a customer find you tonight? (A price calculator that works at 9pm) |
 | 3 | `3-black-friday-last-days.html` | Mon Nov 30, 8am Eastern | Whole audience | The deals end tomorrow night (Two days left on Black Friday pricing) |
