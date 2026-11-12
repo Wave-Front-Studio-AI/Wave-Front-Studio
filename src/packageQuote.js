@@ -1,12 +1,12 @@
 import { LANDING_PAGE_BUNDLES, OFFER, SERVICES } from './data/generated/packages.js'
+import { HOLIDAY_WINDOW, holidayDealActive } from './holidayWindow.js'
+
+export { holidayDealActive }
 
 // Black Friday 2026. The window is Tue Nov 24 00:00 to Tue Dec 1 23:59:59 Eastern (EST, UTC-5), so it ends
 // at the start of Dec 2. Outside the window every deal is off and the quote is exactly the normal quote.
 export const HOLIDAY_DEAL = {
-  name: 'Black Friday',
-  start: '2026-11-24T00:00:00-05:00',
-  endExclusive: '2026-12-02T00:00:00-05:00',
-  endsLabel: 'Tuesday, December 1 at 11:59 PM Eastern',
+  ...HOLIDAY_WINDOW,
   // 20% off setup, and setup discounts together (bundle plus deal) never pass maxCombinedPct.
   build: { pct: 20, maxCombinedPct: 25, services: ['web', 'landing', 'calc', 'viz', 'custom'] },
   brand: { pct: 20, maxCombinedPct: 25, services: ['design', 'logo', 'logoanim', 'brochure', 'cards'] },
@@ -14,11 +14,6 @@ export const HOLIDAY_DEAL = {
   leads: { monthsFree: 3, services: ['lead', 'seo'] },
   // A Launch Logo & Favicon Design comes free with any quote that has a social service and no logo of its own.
   freeLogo: { whenService: 'social', skipIfService: 'logo', tier: 0 },
-}
-
-export function holidayDealActive(now = new Date()) {
-  const time = new Date(now).getTime()
-  return time >= Date.parse(HOLIDAY_DEAL.start) && time < Date.parse(HOLIDAY_DEAL.endExclusive)
 }
 
 const cents = (n) => Math.round(n * 100) / 100
