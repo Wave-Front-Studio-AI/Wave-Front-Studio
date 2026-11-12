@@ -275,6 +275,8 @@ function DealBanner({ onClose, phase }) {
 // already ask for the visitor's details, and a second form on top of the
 // first only gets in the way.
 const noPopupPaths = new Set(['/platform', '/data-deletion', '/contact', '/free-website-audit', '/free-setup', '/package-builder'])
+// The $1 Website pages hold an intake form and full page previews, so no popup covers them.
+const noPopupPrefixes = ['/1-dollar-website']
 
 export default function SitePopups() {
   const path = useCurrentPath()
@@ -283,7 +285,7 @@ export default function SitePopups() {
   const [bannerOpen, setBannerOpen] = useState(false)
   // Decided in the browser: the page is prerendered at build time, outside the sale.
   const [phase, setPhase] = useState(null)
-  const suppressed = noPopupPaths.has(path)
+  const suppressed = noPopupPaths.has(path) || noPopupPrefixes.some((prefix) => path.startsWith(prefix))
 
   useEffect(() => {
     setPhase(holidayDealActive() ? holidayDayPhase() : null)

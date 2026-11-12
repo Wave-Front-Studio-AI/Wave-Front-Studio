@@ -1,4 +1,5 @@
 import { isLive } from './data/schedule.js'
+import { TEMPLATES } from './templates/list.js'
 
 // Route metadata stays deliberately lightweight. Page content is loaded only by
 // the matching route family, so the home page does not download every location
@@ -87,6 +88,9 @@ export const routes = [
   { path: '/lost-leads/', kind: 'lost-leads', noindex: true },
   { path: '/free-setup/', kind: 'free-setup' },
   { path: '/package-builder/', kind: 'packages' },
+  // The $1 Website: the 15 designs and an intake form, then one preview page for each design.
+  { path: '/1-dollar-website/', kind: 'one-dollar' },
+  ...TEMPLATES.map(({ slug }) => ({ path: `/1-dollar-website/${slug}/`, kind: 'one-dollar-template', slug })),
   { path: '/locations/', kind: 'locations' },
   { path: '/services/', kind: 'services-hub' },
   { path: '/platform/', kind: 'platform' },

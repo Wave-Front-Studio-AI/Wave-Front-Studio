@@ -2,12 +2,16 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { Honeypot, SmsConsentField } from '../components/shared.jsx'
-import { CATEGORIES, DETAILS, LANDING_PAGE_BUNDLES, OFFER, PAIRS, SERVICES } from '../data/generated/packages.js'
+import { LANDING_PAGE_BUNDLES, OFFER, PAIRS } from '../data/generated/packages.js'
+import { BUILDER_CATEGORIES as CATEGORIES, BUILDER_DETAILS as DETAILS, BUILDER_SERVICES as SERVICES } from '../data/oneDollarSite.js'
+import { templateBySlug } from '../templates/list.js'
 import { contact } from '../data/site.js'
 import { deliverLead } from '../formSubmission.js'
 import { HOLIDAY_DEAL, MAX_TIER_QTY, addonQty, calculateQuote, creditAmount, customQuoteItem, defaultOptionIndex, holidayDealActive, landingPageBundle, landingPagesPrice, money, selectedTiers, serviceUnits, tierPrice, tierQty } from '../packageQuote.js'
 
 const serviceById = Object.fromEntries(SERVICES.map((service) => [service.id, service]))
+// A one-tier service (the $1 Website) has only tier 0; the others start on their middle tier.
+const startTier = (id) => (serviceById[id].tiers.length > 1 ? 1 : 0)
 
 // Staff open the page with ?staff=1 to add a client name, a credit and their own prices.
 // This only keeps those tools out of a visitor's way; it is not access control.
@@ -395,11 +399,19 @@ export default function BuildYourPackage() {
     setStaff(isStaffUrl())
     // A link such as /package-builder/?add=web,lead starts the quote with those services
     // already ticked. The deals popup uses it. Unknown names are ignored.
-    const wanted = (new URLSearchParams(window.location.search).get('add') ?? '').split(',').filter((id) => serviceById[id])
+    const params = new URLSearchParams(window.location.search)
+    const wanted = (params.get('add') ?? '').split(',').filter((id) => serviceById[id])
+    // ?template=ridgeline on the $1 Website notes which design was picked.
+    const template = templateBySlug[params.get('template') ?? '']
+    if (template) wanted.push('site1')
     if (wanted.length) {
       setState((current) => {
         const next = { ...current }
-        for (const id of wanted) if (!next[id]) next[id] = { tiers: [1], addons: [], opts: {} }
+        for (const id of new Set(wanted)) {
+          if (next[id]) continue
+          next[id] = { tiers: [startTier(id)], addons: [], opts: {} }
+        }
+        if (template) next.site1 = { ...next.site1, notes: { 0: `Template: ${template.name} (${template.industry})` } }
         return next
       })
       setToast('Added to your quote')
@@ -421,7 +433,7 @@ export default function BuildYourPackage() {
     setState((current) => {
       const next = { ...current }
       if (next[id]) delete next[id]
-      else next[id] = { tiers: [1], addons: [], opts: {} }
+      else next[id] = { tiers: [startTier(id)], addons: [], opts: {} }
       return next
     })
   }
@@ -444,7 +456,7 @@ export default function BuildYourPackage() {
 
   function setEntryMap(id, field, key, value) {
     setState((current) => {
-      const entry = current[id] || { tiers: [1], addons: [], opts: {} }
+      const entry = current[id] || { tiers: [startTier(id)], addons: [], opts: {} }
       return { ...current, [id]: { ...entry, [field]: { ...entry[field], [key]: value } } }
     })
   }
@@ -463,7 +475,7 @@ export default function BuildYourPackage() {
 
   function toggleAddon(id, addonIndex) {
     setState((current) => {
-      const entry = current[id] || { tiers: [1], addons: [], opts: {} }
+      const entry = current[id] || { tiers: [startTier(id)], addons: [], opts: {} }
       const addons = entry.addons.includes(addonIndex)
         ? entry.addons.filter((value) => value !== addonIndex)
         : [...entry.addons, addonIndex]
@@ -473,7 +485,7 @@ export default function BuildYourPackage() {
 
   function setAddonOption(id, addonIndex, value) {
     setState((current) => {
-      const entry = current[id] || { tiers: [1], addons: [], opts: {} }
+      const entry = current[id] || { tiers: [startTier(id)], addons: [], opts: {} }
       const addons = entry.addons.includes(addonIndex) ? entry.addons : [...entry.addons, addonIndex]
       return { ...current, [id]: { ...entry, addons, opts: { ...entry.opts, [addonIndex]: value } } }
     })

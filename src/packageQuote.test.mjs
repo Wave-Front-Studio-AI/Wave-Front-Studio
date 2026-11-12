@@ -372,3 +372,39 @@ test('custom items and credits are not discounted by the deals', () => {
   assert.equal(quote.deals[0].amount, 360)
   assert.equal(quote.oneAfter, 1800 + 1000 - 360 - 500)
 })
+
+// The $1 Website: $1 to set up, $99 a month hosting, and it stays out of every discount.
+test('the $1 website is $1 setup and $99 a month, with no bundle count, deals or free month', () => {
+  const alone = calculateQuote({ site1: { tiers: [0], addons: [], opts: {} } })
+  assert.equal(alone.one, 1)
+  assert.equal(alone.monthly, 99)
+  assert.equal(alone.count, 0)
+  assert.equal(alone.pct, 0)
+  assert.equal(alone.firstMonthsFree, 0)
+  assert.equal(alone.oneAfter, 1)
+  assert.equal(alone.rows[0].label, '$1 Website — Template site')
+  assert.match(alone.rows[0].amount, /\$1/)
+  assert.match(alone.rows[0].amount, /\$99/)
+  assert.match(alone.rows[0].description, /12 month minimum/)
+})
+
+test('the $1 website does not count toward the bundle or take its discount', () => {
+  const web = { tiers: [0], addons: [], opts: {} }
+  const without = calculateQuote({ web })
+  const withSite = calculateQuote({ web, site1: { tiers: [0], addons: [], opts: {} } })
+  assert.equal(withSite.count, 1)
+  assert.equal(withSite.pct, 0)
+  assert.equal(withSite.oneAfter, without.oneAfter + 1)
+  const two = calculateQuote({ web, calc: { tiers: [0], addons: [], opts: {} }, site1: { tiers: [0], addons: [], opts: {} } })
+  assert.equal(two.count, 2)
+  assert.equal(two.pct, 5)
+  assert.equal(two.bundleAmount, (1800 + 1200) * 0.05)
+  // The first month free still only covers monthly fees on the other services (none here), not the $99 hosting.
+  assert.equal(two.firstMonthsFree, 0)
+})
+
+test('the $1 website gets no Black Friday deal lines', () => {
+  const quote = calculateQuote({ site1: { tiers: [0], addons: [], opts: {} } }, new Date('2026-11-27T12:00:00-05:00'))
+  assert.equal(quote.deals.length, 0)
+  assert.equal(quote.oneAfter, 1)
+})
