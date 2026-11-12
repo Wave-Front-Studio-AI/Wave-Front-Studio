@@ -107,10 +107,10 @@ function dollarEmail() {
   const content = 'launch-email'
   const L = (path, part, term) => link(path, campaign, `${content}-${part}`, term)
   const picks = [
-    ['atlas', 'Atlas', 'Bold and corporate'],
-    ['bloom', 'Bloom', 'Luxury boutique'],
-    ['volt', 'Volt', 'Dark and modern'],
-    ['pop', 'Pop', 'Bright and playful'],
+    ['pulse', 'Pulse', 'Energetic'],
+    ['slate', 'Slate', 'Industrial'],
+    ['grid', 'Grid', 'Swiss editorial'],
+    ['harbor', 'Harbor', 'Calm and coastal'],
   ]
   const card = ([slug, name, style]) => `<td width="50%" valign="top" style="padding:0 6px">
 <a href="${esc(L(`/1-dollar-website/${slug}/`, 'template', slug))}" target="_blank" style="text-decoration:none">
