@@ -6,7 +6,7 @@ The four Mailchimp emails are in `mailchimp-emails.md`. This file covers texts, 
 
 ## SMS (only to contacts with consent; keep the opt out line)
 
-SMS 1 (launch week): Wavefront Studio: Black Friday deals for contractors run through Dec 1. 20% off a website or calculator, and 3 months free on lead gen and SEO. {short link} Reply STOP to opt out.
+SMS 1 (launch week): Wavefront Studio: Black Friday deals for contractors run through Dec 1. 20% off a website, calculator or lead generation system. {short link} Reply STOP to opt out.
 
 SMS 2 (Nov 30): Wavefront Studio: the contractor deals end tomorrow night. Build your quote: {short link} Reply STOP to opt out.
 
@@ -14,7 +14,7 @@ SMS 2 (Nov 30): Wavefront Studio: the contractor deals end tomorrow night. Build
 
 Post A, launch:
 Black Friday for contractors is on now and runs through Dec 1.
-20% off a website, landing page or quote calculator. 3 months free on lead generation and SEO. 20% off logo and print work, and the logo is free when you add social media management.
+20% off a website, landing page or quote calculator. 20% off the setup of a lead generation system. 20% off logo and print work.
 Build a quote and the deals apply on their own: {link}
 
 Post B, Nov 27:
@@ -30,7 +30,7 @@ Last day for the contractor deals. They end at 11:59pm Eastern tonight: {link}
 
 - Caption 1: Your next job is on Google right now. Free audit, link in bio.
 - Caption 2: A calculator that quotes at 9pm so you don't have to. Black Friday pricing through Dec 1.
-- Caption 3: It starts with the logo, and the logo ends up on the truck, the yard sign and the shirts. Free logo with any social plan through Dec 1.
+- Caption 3: It starts with the logo, and the logo ends up on the truck, the yard sign and the shirts. 20% off logo work through Dec 1.
 
 ## Short video script (20 seconds, voiceover)
 

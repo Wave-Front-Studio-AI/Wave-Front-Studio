@@ -190,8 +190,8 @@ function dealCards(L) {
 </td></tr></table></td></tr>`
   return `<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
 ${deal('Build Deal', '20% off setup when you add a website, landing page, quote calculator or visualizer tool. Website Grow lists at $4,500 and comes to $3,600.', '/package-builder/?add=web', 'build-deal', C.brand)}
-${deal('Leads Deal', '3 months free instead of 1 on the monthly fee for lead generation and SEO.', '/package-builder/?add=lead', 'leads-deal', C.cyan)}
-${deal('Brand Deal', '20% off logo and print work. Add a social media plan and the Launch logo and favicon design is free.', '/package-builder/?add=social', 'brand-deal', C.ink)}
+${deal('Leads Deal', '20% off setup on our Lead Generation System. Launch lists at $2,500 and comes to $2,000.', '/package-builder/?add=lead', 'leads-deal', C.cyan)}
+${deal('Brand Deal', '20% off logo, branding and print work.', '/package-builder/?add=logo', 'brand-deal', C.ink)}
 ${deal('$1 Website', 'Pick one of 15 designs and we build your five page site for $1. Hosting is $99 a month, 12 month minimum.', '/package-builder/?add=site1', 'dollar-deal', C.cyan)}
 </table>`
 }

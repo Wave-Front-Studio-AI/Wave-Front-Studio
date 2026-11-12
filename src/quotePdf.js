@@ -216,7 +216,7 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
     y += 22
   }
   if (savings > 0) {
-    text(pendingPages ? 'Savings on fixed fees and first month' : 'Total savings', MARGIN, y, { bold: true })
+    text(pendingPages ? 'Savings on fixed fees' : 'Total savings', MARGIN, y, { bold: true })
     text(money(savings), RIGHT, y, { bold: true, color: COLORS.blue, align: 'right' })
     y += 12
   }

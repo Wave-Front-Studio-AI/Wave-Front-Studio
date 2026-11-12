@@ -10,8 +10,8 @@ Hard rules: no countdown timer, no places counter, no testimonials, reply within
 |---|---|---|
 | Hook | Free website audit (/free-website-audit/) | Fills the lead list for December follow up |
 | Build Deal | 20% off one-time setup | Cash now |
-| Leads Deal | 3 free months instead of 1 on monthly fees | Recurring revenue |
-| Brand Deal | 20% off branding plus a free logo with social | Recurring revenue and brand work |
+| Leads Deal | 20% off Lead Generation System setup | Cash now, then recurring revenue |
+| Brand Deal | 20% off branding | Brand work |
 
 ## Build Deal (cash now)
 - Covers one-time setup of: Website Development, Landing Pages, Custom Calculators, Live Visualizer Tool, Custom Development.
@@ -20,14 +20,13 @@ Hard rules: no countdown timer, no places counter, no testimonials, reply within
 - Construction angle: the estimate calculator is the sleeper. It answers "what will this cost me" at 9pm and hands you the lead.
 
 ## Leads Deal (recurring revenue)
-- Covers: Custom Lead Generation System and Website SEO monthly fees.
-- 3 months free instead of the usual 1. Setup fees on lead gen stay at list.
-- Cost to us: 2 extra months of service per signup (SEO Launch $500/mo, so $1,000 of free work; lead gen Launch $150/mo, so $300). Only worth it if these clients stay. Check retention before extending past this window.
+- Covers: one-time setup of the Custom Lead Generation System. Website SEO has no setup fee, so it is not part of this deal.
+- 20% off setup, same 25% cap with bundles. Launch $2,500 becomes $2,000. Monthly fees stay at full price.
+- Changed 2026-11-12: this used to be 3 free months. Free months were dropped for ROI, and so was the normal free first month on monthly plans.
 - Construction angle: "Show up when someone searches roofer near me, and get the call before the other guy."
 
 ## Brand Deal (recurring revenue and brand work)
 - 20% off one-time Graphic Design and Branding, Logo and Favicon, Animated Logo, Brochure and Business Card work. Same 25% cap with bundles.
-- Free Launch Logo and Favicon Design (list $250) on any quote that includes a Social Media Management plan, if no logo is already on the quote.
 - Construction angle: truck wraps, yard signs, hard hats and shirts all start from a clean logo.
 
 ## Where it applies

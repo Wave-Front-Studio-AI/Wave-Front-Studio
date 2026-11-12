@@ -33,7 +33,7 @@ test('mixed quotes discount the per-page landing price', () => {
   assert.equal(quote.pct, 5)
   assert.equal(quote.bundleAmount, 850)
   assert.equal(quote.oneAfter, 16150)
-  assert.equal(quote.firstMonthsFree, 199)
+  assert.equal(quote.firstMonthsFree, 0)
   assert.deepEqual(state, original)
 })
 
@@ -60,7 +60,7 @@ test('email plans add one setup fee and keep recurring charges separate', () => 
     assert.equal(email.one, 500)
     assert.equal(email.oneAfter, 500)
     assert.equal(email.monthly, price)
-    assert.equal(email.firstMonthsFree, price)
+    assert.equal(email.firstMonthsFree, 0)
     assert.equal(email.rows[0].label, `Email Marketing — ${label}`)
     assert.equal(email.rows[0].amount, `$500 + $${price}/mo`)
     const combined = calculateQuote({ landing: selected(1, 25), email: selected(tier) })
@@ -99,7 +99,7 @@ test('unconfirmed page counts quote fixed fees and a rate without inventing a qu
   assert.equal(quote.pendingPageRate, 100)
   assert.equal(quote.pendingPageRateAfter, 95)
   assert.equal(quote.monthly, 250)
-  assert.equal(quote.firstMonthsFree, 250)
+  assert.equal(quote.firstMonthsFree, 0)
   assert.equal(quote.rows[1].amount, '$100 per page')
   assert.match(quote.rows[1].label, /to be confirmed/)
   assert.equal(quote.errors, undefined)
@@ -152,7 +152,7 @@ test('custom landing pages replace standard tiers and can include a monthly char
   assert.equal(quote.one, 2000)
   assert.equal(quote.rows.length, 1)
   assert.equal(quote.monthly, 99)
-  assert.equal(quote.firstMonthsFree, 99)
+  assert.equal(quote.firstMonthsFree, 0)
   assert.equal(quote.rows[0].amount, '$2,000 + $99/mo')
   assert.equal(quote.rows[0].description, 'Custom build.\n\nCare plan explained')
   assert.equal(calculateQuote({ landing: { tier: 3, custom: { setup: 0, monthly: 150, details: 'Monthly only.' } } }).rows[0].amount, '$150/mo')
@@ -191,7 +191,7 @@ test('a tier quantity multiplies its setup and monthly price but still counts as
   const hybrid = calculateQuote({ bot: { tiers: [0], qtyByTier: { 0: '3' }, addons: [], opts: {} } })
   assert.equal(hybrid.one, 4500)
   assert.equal(hybrid.monthly, 297)
-  assert.equal(hybrid.firstMonthsFree, 297)
+  assert.equal(hybrid.firstMonthsFree, 0)
   assert.equal(hybrid.rows[0].label, 'AI Chatbot Integration — Launch · 3 × ($1,500 + $99/mo)')
   assert.equal(hybrid.rows[0].amount, '$4,500 + $297/mo')
 
@@ -213,7 +213,7 @@ test('add-ons are charged once for each item bought', () => {
   const quote = calculateQuote({ web: { tiers: [0], qtyByTier: { 0: 2 }, addons: [1, 3], opts: {} } })
   assert.equal(quote.one, 3600 + 750 * 2)
   assert.equal(quote.monthly, 99 * 2)
-  assert.equal(quote.firstMonthsFree, 198)
+  assert.equal(quote.firstMonthsFree, 0)
   assert.equal(quote.rows[1].label, 'E-commerce setup · 2 × $750')
   assert.equal(quote.rows[1].amount, '$1,500')
   assert.equal(quote.rows[2].label, 'Website care plan · 2 × $99/mo')
@@ -336,34 +336,27 @@ test('build deal leaves other services on the normal bundle discount only', () =
   assert.equal(quote.oneAfter, 9800 - 490 - quote.deals[0].amount)
 })
 
-test('leads deal gives 3 months free on lead and seo only', () => {
-  const quote = calculateQuote({ lead: sel(0), seo: sel(0), bot: sel(0) }, inside)
-  assert.equal(quote.firstMonthsFree, quote.monthly) // the normal 1 month stays as it was
-  const leads = quote.deals.find((deal) => deal.id === 'leads')
-  assert.equal(leads.amount, (150 + 500) * 2)
-  assert.equal(leads.kind, 'free')
-  assert.equal(quote.oneAfter, quote.one - quote.bundleAmount) // months free never change the one-time total
-  assert.equal(calculateQuote({ bot: sel(0) }, inside).deals.length, 0)
+test('there is no free first month on monthly plans', () => {
+  const quote = calculateQuote({ seo: sel(0), bot: sel(0) })
+  assert.equal(quote.firstMonthsFree, 0)
 })
 
-test('brand deal discounts brand services and adds a free logo with social', () => {
+test('leads deal takes 20% off lead generation setup only, never the monthly fee', () => {
+  const quote = calculateQuote({ lead: sel(0) }, inside)
+  const leads = quote.deals.find((deal) => deal.id === 'leads')
+  assert.equal(leads.amount, 500) // 20% of the $2,500 setup
+  assert.equal(leads.kind, 'off')
+  assert.equal(quote.oneAfter, 2000)
+  assert.equal(quote.monthly, 150)
+  assert.equal(calculateQuote({ seo: sel(0), bot: sel(0) }, inside).deals.length, 0) // SEO has no setup fee
+})
+
+test('brand deal discounts brand services and gives no free logo', () => {
   const brand = calculateQuote({ design: sel(0), brochure: sel(0) }, inside)
   assert.equal(brand.deals.find((deal) => deal.id === 'brand').amount, 170) // 20% of 850 beyond 5% bundle capped at 25%
   const withSocial = calculateQuote({ social: sel(0) }, inside)
-  const logo = withSocial.deals.find((deal) => deal.id === 'logo')
-  assert.equal(logo.amount, 250)
-  const row = withSocial.rows.find((item) => item.label.startsWith('Logo & Favicon'))
-  assert.equal(row.amount, '$0')
-  assert.match(row.description, /\$250 value/)
-  assert.equal(withSocial.count, 1)
-  assert.equal(withSocial.one, 0)
-})
-
-test('the free logo is not added when a logo is already chosen or social is absent', () => {
-  const owned = calculateQuote({ social: sel(0), logo: sel(1) }, inside)
-  assert.equal(owned.deals.some((deal) => deal.id === 'logo'), false)
-  assert.equal(owned.rows.filter((row) => row.label.startsWith('Logo & Favicon')).length, 1)
-  assert.equal(calculateQuote({ web: sel(0) }, inside).rows.some((row) => row.amount === '$0'), false)
+  assert.equal(withSocial.deals.length, 0)
+  assert.equal(withSocial.rows.some((row) => row.amount === '$0'), false)
 })
 
 test('custom items and credits are not discounted by the deals', () => {
@@ -374,7 +367,7 @@ test('custom items and credits are not discounted by the deals', () => {
 })
 
 // The $1 Website: $1 to set up, $99 a month hosting, and it stays out of every discount.
-test('the $1 website is $1 setup and $99 a month, with no bundle count, deals or free month', () => {
+test('the $1 website is $1 setup and $99 a month, with no bundle count or deals', () => {
   const alone = calculateQuote({ site1: { tiers: [0], addons: [], opts: {} } })
   assert.equal(alone.one, 1)
   assert.equal(alone.monthly, 99)
@@ -399,7 +392,6 @@ test('the $1 website does not count toward the bundle or take its discount', () 
   assert.equal(two.count, 2)
   assert.equal(two.pct, 5)
   assert.equal(two.bundleAmount, (1800 + 1200) * 0.05)
-  // The first month free still only covers monthly fees on the other services (none here), not the $99 hosting.
   assert.equal(two.firstMonthsFree, 0)
 })
 
