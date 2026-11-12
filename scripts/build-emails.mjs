@@ -125,8 +125,7 @@ function dollarEmail() {
   const body = [
     row(`${p(greeting, { top: 12 })}
 <h1 class="h1" style="margin:0 0 14px;font-family:${FONT};font-size:34px;line-height:1.15;color:${C.ink};font-weight:800;letter-spacing:-0.4px">A real website for $1 to start.</h1>
-${p('Most business owners put off a new website because of the bill up front. So we took the bill away. Pick one of our 15 designs, send us your details, and we build your site with your own words, photos and logo.')}
-${p('Hosting is $99 a month, and that covers keeping it online, secure and working.', { bottom: 22 })}
+${p('Most business owners put off a new website because of the bill up front. So we took the bill away. Pick one of our 15 designs, send us your details, and we build your site with your own words, photos and logo.', { bottom: 22 })}
 ${button('See the 15 templates', L('/1-dollar-website/#designs', 'hero'))}`, { pad: '8px 40px 0' }),
     spacer(34),
     row(`${h2('Your custom website')}
