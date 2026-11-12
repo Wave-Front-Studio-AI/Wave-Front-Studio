@@ -129,7 +129,7 @@ ${p('Most business owners put off a new website because of the bill up front. So
 ${p('Hosting is $99 a month, and that covers keeping it online, secure and working.', { bottom: 22 })}
 ${button('See the 15 templates', L('/1-dollar-website/#designs', 'hero'))}`, { pad: '8px 40px 0' }),
     spacer(34),
-    row(`${h2('Real websites, not page builders')}
+    row(`${h2('Your custom website')}
 ${p('Every template is a full five page site with real photos, built to work for any kind of business. Here are four of them.', { bottom: 20 })}`, { pad: '0 40px' }),
     row(`${grid(picks[0], picks[1])}<div class="stack-gap" style="height:22px;line-height:22px;font-size:0">&nbsp;</div>${grid(picks[2], picks[3])}`, { pad: '0 34px' }),
     row(`${p(`<a href="${esc(L('/1-dollar-website/#designs', 'all-templates'))}" style="color:${C.brand};font-weight:700">See all 15 templates</a>`, { top: 22, bottom: 0 })}`, { pad: '0 40px' }),
