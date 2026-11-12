@@ -4,6 +4,7 @@ import { Honeypot, SmsConsentField } from './shared.jsx'
 import { contact } from '../data/site.js'
 import { deliverLead } from '../formSubmission.js'
 import { useCurrentPath } from '../routeContext.js'
+import { HOLIDAY_WINDOW, holidayDayPhase, holidayDealActive } from '../holidayWindow.js'
 
 // Shown once per visit unless the visitor dismisses it. Storage can throw in
 // private modes, so every read and write is guarded.
@@ -197,6 +198,73 @@ function AuditPopup({ open, onClose }) {
   )
 }
 
+const dealUtm = 'utm_source=site&utm_medium=popup&utm_campaign=bf2026'
+
+// Only a real date goes in the headline: no timer and no places counter. The
+// wording changes on Cyber Monday and on the last day because those are true.
+function dealWords(phase) {
+  if (phase === 'last') return { eyebrow: 'Last day', ends: 'These deals end tonight at 11:59 PM Eastern.' }
+  if (phase === 'cyber') return { eyebrow: 'Cyber Monday', ends: 'These deals end tomorrow night, Tuesday, December 1 at 11:59 PM Eastern.' }
+  return { eyebrow: 'Black Friday for contractors', ends: `These deals end ${HOLIDAY_WINDOW.endsLabel}.` }
+}
+
+function DealPopup({ open, onClose, phase }) {
+  const words = dealWords(phase)
+  return (
+    <Modal open={open} onClose={onClose} labelledBy="deal-title" className="modal-deal">
+      <div className="deal-head">
+        <p className="deal-eyebrow">{words.eyebrow}</p>
+        <h2 id="deal-title">Somebody is searching for your trade tonight. Get found first.</h2>
+        <p>{words.ends} After that the prices go back to normal.</p>
+      </div>
+      <ul className="deal-list">
+        <li>
+          <strong>Build Deal</strong>
+          <span>20% off setup on a website, landing page, quote calculator or visualizer tool.</span>
+        </li>
+        <li>
+          <strong>Leads Deal</strong>
+          <span>3 months free instead of 1 on lead generation and SEO.</span>
+        </li>
+        <li>
+          <strong>Brand Deal</strong>
+          <span>20% off logo and print work. Add a social plan and the logo is free.</span>
+        </li>
+      </ul>
+      <div className="deal-actions">
+        <a className="kinetic-button group" href={`/package-builder/?${dealUtm}&utm_content=popup-quote`} onClick={onClose}>
+          <span>Build my quote</span>
+          <span className="button-island">
+            <ArrowIcon className="size-4" />
+          </span>
+        </a>
+        <a className="deal-link" href={`/free-website-audit/?${dealUtm}&utm_content=popup-audit`}>
+          Get the free audit first
+        </a>
+      </div>
+      <p className="deal-fine">Deals stack with our bundle discount, up to 25% off in total. We reply within two working days.</p>
+    </Modal>
+  )
+}
+
+function DealBanner({ onClose, phase }) {
+  const words = dealWords(phase)
+  return (
+    <aside className="deal-banner" aria-label="Black Friday deals">
+      <button className="deal-banner-close" type="button" onClick={onClose} aria-label="Dismiss deals banner">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="m5 5 10 10M15 5 5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      </button>
+      <p className="deal-eyebrow">{words.eyebrow}</p>
+      <p className="deal-banner-text">20% off websites and calculators. 3 months free on lead gen and SEO.</p>
+      <a className="deal-banner-cta" href={`/package-builder/?${dealUtm}&utm_content=banner-quote`}>
+        See the deals and build a quote
+      </a>
+    </aside>
+  )
+}
+
 // Pages that must stay readable with nothing overlaying them. /platform/ is the
 // public app home page Google's OAuth reviewers open logged out, and Meta's
 // reviewers check /data-deletion/, so no modal may cover either. The rest
@@ -207,10 +275,19 @@ const noPopupPaths = new Set(['/platform', '/data-deletion', '/contact', '/free-
 export default function SitePopups() {
   const path = useCurrentPath()
   const [open, setOpen] = useState(false)
+  const [dealOpen, setDealOpen] = useState(false)
+  const [bannerOpen, setBannerOpen] = useState(false)
+  // Decided in the browser: the page is prerendered at build time, outside the sale.
+  const [phase, setPhase] = useState(null)
   const suppressed = noPopupPaths.has(path)
 
   useEffect(() => {
-    if (suppressed) return undefined
+    setPhase(holidayDealActive() ? holidayDayPhase() : null)
+  }, [])
+
+  // During the sale the deals replace the audit exit popup, so nobody gets two.
+  useEffect(() => {
+    if (suppressed || phase) return undefined
     const done = () => seen('wf-audit') || dismissed('wf-audit-dismissed') || dismissed('wf-lead-sent')
     if (done()) return undefined
 
@@ -222,12 +299,47 @@ export default function SitePopups() {
 
     document.addEventListener('mouseout', onLeave)
     return () => document.removeEventListener('mouseout', onLeave)
-  }, [suppressed])
+  }, [suppressed, phase])
+
+  // The deals popup shows once per visit after a short wait. The slide-in
+  // banner follows it for the rest of the visit, until it is dismissed.
+  useEffect(() => {
+    if (suppressed || !phase) return undefined
+    const timers = []
+    if (!seen('wf-bf-popup') && !dismissed('wf-bf-popup-dismissed')) {
+      timers.push(
+        window.setTimeout(() => {
+          markSeen('wf-bf-popup')
+          setDealOpen(true)
+        }, 7000),
+      )
+    } else if (!seen('wf-bf-banner-closed')) {
+      timers.push(window.setTimeout(() => setBannerOpen(true), 2500))
+    }
+    return () => timers.forEach(window.clearTimeout)
+  }, [suppressed, phase])
 
   const closePermanently = () => {
     markDismissed('wf-audit-dismissed')
     setOpen(false)
   }
 
-  return <AuditPopup open={open} onClose={closePermanently} />
+  const closeDeal = () => {
+    markDismissed('wf-bf-popup-dismissed')
+    setDealOpen(false)
+    if (!seen('wf-bf-banner-closed')) setBannerOpen(true)
+  }
+
+  const closeBanner = () => {
+    markSeen('wf-bf-banner-closed')
+    setBannerOpen(false)
+  }
+
+  return (
+    <>
+      <AuditPopup open={open} onClose={closePermanently} />
+      <DealPopup open={dealOpen} onClose={closeDeal} phase={phase} />
+      {bannerOpen && !dealOpen && phase ? <DealBanner onClose={closeBanner} phase={phase} /> : null}
+    </>
+  )
 }

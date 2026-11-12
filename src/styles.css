@@ -1995,3 +1995,42 @@ body.menu-open .chat-agent { display: none; }
 @media (max-width: 980px) { .demo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 620px) { .demo-grid { grid-template-columns: minmax(0, 1fr); } }
 @media (prefers-reduced-motion: reduce) { .demo-card { transition: none; } .demo-card:hover, .demo-card:focus-visible { transform: none; } }
+
+/* Black Friday deals popup and slide-in banner (shown only Nov 24 to Dec 1, 2026). */
+.modal-deal { width: min(100%, 520px); }
+.deal-head { display: grid; gap: 10px; margin-bottom: 18px; padding-right: 36px; }
+.deal-head h2 { font-size: clamp(1.35rem, 2.6vw, 1.75rem); line-height: 1.2; }
+.deal-head p:last-child { color: var(--muted); font-size: 0.95rem; line-height: 1.6; }
+.deal-eyebrow { color: var(--cyan-deep); font-family: var(--display); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.deal-list { display: grid; gap: 10px; margin: 0 0 22px; padding: 0; list-style: none; }
+.deal-list li { display: grid; gap: 3px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--paper); }
+.deal-list strong { font-family: var(--display); font-size: 1rem; color: var(--ink); }
+.deal-list span { color: var(--text); font-size: 0.92rem; line-height: 1.5; }
+.deal-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; }
+.deal-link { color: var(--brand-deep); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.deal-link:hover { color: var(--ink); }
+.deal-fine { margin-top: 16px; color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
+
+.deal-banner {
+  position: fixed; left: 24px; bottom: 24px; z-index: 59; display: grid; gap: 6px;
+  width: min(340px, calc(100vw - 48px)); padding: 16px 44px 16px 18px;
+  border-radius: var(--r-md); color: var(--white); background: var(--ink); box-shadow: var(--shadow-lift);
+  animation: deal-slide 420ms var(--ease-out) both;
+}
+.deal-banner .deal-eyebrow { color: var(--cyan); }
+.deal-banner-text { font-size: 0.92rem; line-height: 1.45; }
+.deal-banner-cta { justify-self: start; color: var(--white); font-weight: 600; font-size: 0.9rem; text-decoration: underline; text-underline-offset: 3px; }
+.deal-banner-cta:hover { color: var(--cyan); }
+.deal-banner-close { position: absolute; top: 8px; right: 8px; display: grid; width: 32px; height: 32px; place-items: center; border: 0; border-radius: 50%; color: var(--white); background: transparent; cursor: pointer; }
+.deal-banner-close:hover { background: rgba(255, 255, 255, 0.14); }
+.deal-banner-close svg { width: 15px; height: 15px; }
+.deal-banner a:focus-visible, .deal-banner button:focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
+@keyframes deal-slide { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+@media (max-width: 760px) {
+  /* Sits above the bottom bar and the closed chat button. */
+  .deal-banner { left: 12px; right: 12px; width: auto; bottom: calc(140px + env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .deal-banner { animation: fade-in 200ms ease both; }
+}
+body.menu-open .deal-banner, body.chat-open .deal-banner { display: none; }
