@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { calculateQuote, customLandingQuote, customQuoteItem, landingPageBundle, money, tierQty } from './packageQuote.js'
+import { calculateQuote, customLandingQuote, customQuoteItem, holidayDealActive, landingPageBundle, money, tierQty } from './packageQuote.js'
 
 const selected = (tier = 1, pages = 1) => ({ tier, pages, addons: [], opts: {} })
 
@@ -288,4 +288,84 @@ test('custom items need a title, a whole quantity and a cost in cents', () => {
   }
   // Anything invalid that reaches the calculation is left off rather than priced wrongly.
   assert.deepEqual(calculateQuote({ customItems: [{ ...logo, qty: 0 }] }).rows, [])
+})
+
+// Black Friday 2026 deals. The window is Nov 24 to Dec 1, Eastern.
+const inside = new Date('2026-11-27T12:00:00-05:00')
+const sel = (tier = 0) => ({ tier, addons: [], opts: {} })
+
+test('black friday deals are off outside the window and the quote is unchanged', () => {
+  const state = { web: sel(0), lead: sel(0), social: sel(0), design: sel(0) }
+  const plain = calculateQuote(state, new Date('2026-11-23T23:59:59-05:00'))
+  for (const when of ['2026-11-23T23:59:59-05:00', '2026-12-02T00:00:00-05:00', '2026-06-01T12:00:00Z']) {
+    const quote = calculateQuote(state, new Date(when))
+    assert.deepEqual(quote, plain)
+    for (const key of ['deals', 'dealOff', 'dealSavings', 'holiday']) assert.equal(key in quote, false)
+    assert.equal(quote.rows.some((row) => row.amount === '$0'), false)
+  }
+  assert.equal(holidayDealActive(new Date('2026-11-24T00:00:00-05:00')), true)
+  assert.equal(holidayDealActive(new Date('2026-12-01T23:59:59-05:00')), true)
+})
+
+test('build deal takes 20% off setup alone and stacks with a 5% bundle up to the 25% cap', () => {
+  const solo = calculateQuote({ web: sel(0) }, inside)
+  assert.equal(solo.pct, 0)
+  assert.deepEqual(solo.deals.map((deal) => [deal.id, deal.amount]), [['build', 360]])
+  assert.equal(solo.oneAfter, 1440)
+
+  const five = calculateQuote({ web: sel(0), calc: sel(0) }, inside) // 2 services, 5% bundle
+  assert.equal(five.bundleAmount, 150)
+  assert.equal(five.deals[0].amount, 600) // 20% deal plus 5% bundle is 25%
+  assert.equal(five.oneAfter, 3000 - 150 - 600)
+  assert.equal((3000 - five.oneAfter) / 3000, 0.25)
+
+  const ten = calculateQuote({ web: sel(0), calc: sel(0), viz: sel(0) }, inside) // 10% bundle
+  assert.equal((5500 - ten.oneAfter) / 5500, 0.25)
+  const fifteen = calculateQuote({ web: sel(0), calc: sel(0), viz: sel(0), custom: sel(0), landing: sel(0) }, inside) // 15% bundle
+  assert.equal(fifteen.pct, 15)
+  assert.equal(Math.round(((fifteen.one - fifteen.oneAfter) / fifteen.one) * 1000) / 1000, 0.25)
+})
+
+test('build deal leaves other services on the normal bundle discount only', () => {
+  const quote = calculateQuote({ web: sel(0), app: sel(0) }, inside)
+  assert.equal(quote.bundleAmount, 490) // 5% of 9800
+  assert.equal(quote.deals[0].amount, 360) // 20% of the website only; the app gets just the 5% bundle
+  assert.equal(quote.oneAfter, 9800 - 490 - quote.deals[0].amount)
+})
+
+test('leads deal gives 3 months free on lead and seo only', () => {
+  const quote = calculateQuote({ lead: sel(0), seo: sel(0), bot: sel(0) }, inside)
+  assert.equal(quote.firstMonthsFree, quote.monthly) // the normal 1 month stays as it was
+  const leads = quote.deals.find((deal) => deal.id === 'leads')
+  assert.equal(leads.amount, (150 + 500) * 2)
+  assert.equal(leads.kind, 'free')
+  assert.equal(quote.oneAfter, quote.one - quote.bundleAmount) // months free never change the one-time total
+  assert.equal(calculateQuote({ bot: sel(0) }, inside).deals.length, 0)
+})
+
+test('brand deal discounts brand services and adds a free logo with social', () => {
+  const brand = calculateQuote({ design: sel(0), brochure: sel(0) }, inside)
+  assert.equal(brand.deals.find((deal) => deal.id === 'brand').amount, 170) // 20% of 850 beyond 5% bundle capped at 25%
+  const withSocial = calculateQuote({ social: sel(0) }, inside)
+  const logo = withSocial.deals.find((deal) => deal.id === 'logo')
+  assert.equal(logo.amount, 250)
+  const row = withSocial.rows.find((item) => item.label.startsWith('Logo & Favicon'))
+  assert.equal(row.amount, '$0')
+  assert.match(row.description, /\$250 value/)
+  assert.equal(withSocial.count, 1)
+  assert.equal(withSocial.one, 0)
+})
+
+test('the free logo is not added when a logo is already chosen or social is absent', () => {
+  const owned = calculateQuote({ social: sel(0), logo: sel(1) }, inside)
+  assert.equal(owned.deals.some((deal) => deal.id === 'logo'), false)
+  assert.equal(owned.rows.filter((row) => row.label.startsWith('Logo & Favicon')).length, 1)
+  assert.equal(calculateQuote({ web: sel(0) }, inside).rows.some((row) => row.amount === '$0'), false)
+})
+
+test('custom items and credits are not discounted by the deals', () => {
+  const state = { web: sel(0), customItems: [{ title: 'Extra', qty: 1, cost: 1000 }], credit: { amount: 500 } }
+  const quote = calculateQuote(state, inside)
+  assert.equal(quote.deals[0].amount, 360)
+  assert.equal(quote.oneAfter, 1800 + 1000 - 360 - 500)
 })

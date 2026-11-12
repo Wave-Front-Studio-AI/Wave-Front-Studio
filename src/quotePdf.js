@@ -164,9 +164,10 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
   })
 
   y += 16
-  const savings = quote.bundleAmount + quote.firstMonthsFree
+  const deals = quote.deals ?? []
+  const savings = quote.bundleAmount + quote.firstMonthsFree + (quote.dealSavings ?? 0)
   const pendingNote = pendingPages ? lines(`Plus ${money(quote.pendingPageRateAfter)} per page${quote.pct ? ` after the ${quote.pct}% bundle discount` : ''}. Page count and final total to be confirmed.`, WIDTH, 9) : []
-  ensureSpace(148 + (quote.monthly > 0 && quote.firstMonthsFree > 0 ? 22 : 0) + (quote.pct > 0 ? 22 : 0) + (quote.credit > 0 ? 22 : 0) + (savings > 0 ? 22 : 0) + pendingNote.length * 13 + (pendingPages ? 12 : 0))
+  ensureSpace(148 + (quote.monthly > 0 && quote.firstMonthsFree > 0 ? 22 : 0) + (quote.pct > 0 ? 22 : 0) + (quote.credit > 0 ? 22 : 0) + deals.length * 22 + (savings > 0 ? 22 : 0) + pendingNote.length * 13 + (pendingPages ? 12 : 0))
   text('YOUR INVESTMENT', MARGIN, y + 9, { size: 9, bold: true, color: COLORS.blue })
   y += 29
   text(pendingPages ? 'Fixed fees subtotal (excludes page charges)' : 'One-time subtotal', MARGIN, y)
@@ -175,6 +176,11 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
     y += 22
     text(`Bundle discount (${quote.pct}%)`, MARGIN, y)
     text(`-${money(quote.bundleAmount)}`, RIGHT, y, { bold: true, color: COLORS.blue, align: 'right' })
+  }
+  for (const deal of deals.filter((item) => item.kind === 'off')) {
+    y += 22
+    text(deal.label, MARGIN, y)
+    text(`-${money(deal.amount)}`, RIGHT, y, { bold: true, color: COLORS.blue, align: 'right' })
   }
   if (quote.credit > 0) {
     y += 22
@@ -202,6 +208,11 @@ export function createQuotePdf(quote, assets, createdAt = new Date()) {
   if (quote.monthly > 0 && quote.firstMonthsFree > 0) {
     text('Free-month savings', MARGIN, y)
     text(money(quote.firstMonthsFree), RIGHT, y, { bold: true, align: 'right' })
+    y += 22
+  }
+  for (const deal of deals.filter((item) => item.kind === 'free')) {
+    text(deal.label, MARGIN, y)
+    text(money(deal.amount), RIGHT, y, { bold: true, align: 'right' })
     y += 22
   }
   if (savings > 0) {

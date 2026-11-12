@@ -124,3 +124,10 @@ test('a quote of custom items alone exports, with or without services', () => {
   assert.equal(createQuotePdf(calculateQuote({ customItems: items }), assets, date).getNumberOfPages(), 1)
   assert.equal(createQuotePdf(calculateQuote({ web: { tier: 0, addons: [] }, customItems: items }), assets, date).getNumberOfPages(), 1)
 })
+
+test('black friday deal lines print in the PDF', () => {
+  const state = { web: { tier: 0, addons: [], opts: {} }, lead: { tier: 0, addons: [], opts: {} }, social: { tier: 0, addons: [], opts: {} } }
+  const doc = createQuotePdf(calculateQuote(state, new Date('2026-11-27T12:00:00-05:00')), assets, date)
+  assert.ok(doc.getNumberOfPages() >= 1)
+  assert.equal(doc.output().startsWith('%PDF-'), true)
+})

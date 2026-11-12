@@ -329,23 +329,23 @@ await rm(resolve(root, 'dist-ssr'), { recursive: true, force: true })
 
 // The Meta ads landing page is static HTML of its own (public/), with its own
 // font, images and lead destinations, so it gets its own policy.
-const adPage = resolve(dist, 'free-website-audit/index.html')
-await writeFile(
-  adPage,
-  withCsp(await readFile(adPage, 'utf8'), {
-    'default-src': ["'self'"],
-    'script-src': ["'self'", 'https://connect.facebook.net'],
-    'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-    'font-src': ["'self'", 'https://fonts.gstatic.com'],
-    'img-src': ["'self'", 'data:', 'https://cdn.shopify.com', 'https://www.facebook.com'],
-    // The Google Apps Script web app answers from script.googleusercontent.com.
-    'connect-src': ["'self'", ...leadOrigin, 'https://script.google.com', 'https://script.googleusercontent.com', 'https://www.facebook.com', 'https://connect.facebook.net', ...metaGateways],
-    'frame-src': ["'self'", 'https://www.facebook.com'],
-    'object-src': ["'none'"],
-    'base-uri': ["'self'"],
-    'form-action': ["'self'", 'https://www.facebook.com'],
-    'upgrade-insecure-requests': [],
-  }),
-)
+const adPolicy = {
+  'default-src': ["'self'"],
+  'script-src': ["'self'", 'https://connect.facebook.net'],
+  'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+  'font-src': ["'self'", 'https://fonts.gstatic.com'],
+  'img-src': ["'self'", 'data:', 'https://cdn.shopify.com', 'https://www.facebook.com'],
+  // The Google Apps Script web app answers from script.googleusercontent.com.
+  'connect-src': ["'self'", ...leadOrigin, 'https://script.google.com', 'https://script.googleusercontent.com', 'https://www.facebook.com', 'https://connect.facebook.net', ...metaGateways],
+  'frame-src': ["'self'", 'https://www.facebook.com'],
+  'object-src': ["'none'"],
+  'base-uri': ["'self'"],
+  'form-action': ["'self'", 'https://www.facebook.com'],
+  'upgrade-insecure-requests': [],
+}
+for (const file of ['free-website-audit/index.html', 'black-friday/index.html']) {
+  const adPage = resolve(dist, file)
+  await writeFile(adPage, withCsp(await readFile(adPage, 'utf8'), adPolicy))
+}
 
 console.log(`Prerendered ${pages.length} pages + 404 + sitemap.xml, rss.xml, llms.txt`)

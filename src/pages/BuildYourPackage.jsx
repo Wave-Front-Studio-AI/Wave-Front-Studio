@@ -5,7 +5,7 @@ import { Honeypot, SmsConsentField } from '../components/shared.jsx'
 import { CATEGORIES, DETAILS, LANDING_PAGE_BUNDLES, OFFER, PAIRS, SERVICES } from '../data/generated/packages.js'
 import { contact } from '../data/site.js'
 import { deliverLead } from '../formSubmission.js'
-import { MAX_TIER_QTY, addonQty, calculateQuote, creditAmount, customQuoteItem, defaultOptionIndex, landingPageBundle, landingPagesPrice, money, selectedTiers, serviceUnits, tierPrice, tierQty } from '../packageQuote.js'
+import { HOLIDAY_DEAL, MAX_TIER_QTY, addonQty, calculateQuote, creditAmount, customQuoteItem, defaultOptionIndex, holidayDealActive, landingPageBundle, landingPagesPrice, money, selectedTiers, serviceUnits, tierPrice, tierQty } from '../packageQuote.js'
 
 const serviceById = Object.fromEntries(SERVICES.map((service) => [service.id, service]))
 
@@ -527,6 +527,7 @@ export default function BuildYourPackage() {
     const lines = quote.rows.map((row) => `${row.sub ? '  + ' : ''}${row.label} — ${row.amount}${row.description ? `\n${row.description}` : ''}`)
     let text = `${staff && clientName.trim() ? `Prepared for: ${clientName.trim()}\n\n` : ''}${lines.join('\n')}\n\n---\n${pendingPages ? 'Fixed one-time fees' : 'One-time total'}: ${money(quote.oneAfter)}`
     if (quote.pct > 0) text += ` (after ${quote.pct}% bundle discount, saving ${money(quote.bundleAmount)})`
+    for (const deal of quote.deals ?? []) text += deal.kind === 'off' ? `\n${deal.label}: -${money(deal.amount)}` : `\n${deal.label}: ${money(deal.amount)} saved`
     if (quote.credit > 0) text += `\nCredit applied${quote.creditLabel ? ` — ${quote.creditLabel}` : ''}: -${money(quote.credit)}`
     text += `\nMonthly: ${money(quote.monthly)}/mo`
     if (pendingNote) text += `\n${pendingNote}`
@@ -598,6 +599,22 @@ export default function BuildYourPackage() {
           </p>
         </div>
       </section>
+
+      {holidayDealActive() ? (
+        <section className="package-mini package-holiday" aria-label={`${HOLIDAY_DEAL.name} deals`}>
+          <div className="page-frame">
+            <b>{HOLIDAY_DEAL.name} deals are on until {HOLIDAY_DEAL.endsLabel}.</b>
+            <span>
+              They apply on their own, with no code to type. Build Deal: {HOLIDAY_DEAL.build.pct}% off setup for websites, landing pages, calculators, data visuals and custom builds.
+              Leads Deal: {HOLIDAY_DEAL.leads.monthsFree} months free on Lead and SEO plans. Brand Deal: {HOLIDAY_DEAL.brand.pct}% off setup for design, logo, logo animation, brochures and cards, plus a free Launch Logo and Favicon Design when you add social media.
+              Setup discounts, including your bundle discount, stop at {HOLIDAY_DEAL.build.maxCombinedPct}% in total.
+            </span>
+            {quote.deals?.length ? (
+              <span className="package-holiday-applied">Applied to your quote: {quote.deals.map((deal) => deal.label.replace(`${HOLIDAY_DEAL.name} `, '').split(':')[0]).filter((name, index, all) => all.indexOf(name) === index).join(', ')}.</span>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
 
       {hasItems ? (
         <div className="package-mini">
@@ -921,6 +938,12 @@ export default function BuildYourPackage() {
                       <b>-{money(quote.bundleAmount)}</b>
                     </div>
                   ) : null}
+                  {(quote.deals ?? []).filter((deal) => deal.kind === 'off').map((deal) => (
+                    <div className="is-discount" key={deal.id}>
+                      <span>{deal.label}</span>
+                      <b>-{money(deal.amount)}</b>
+                    </div>
+                  ))}
                   {quote.credit > 0 ? (
                     <div className="is-discount">
                       <span>{quote.creditLabel ? `Credit — ${quote.creditLabel}` : 'Credit applied'}</span>
@@ -1080,9 +1103,15 @@ export default function BuildYourPackage() {
                   <b>{money(quote.firstMonthsFree)}</b>
                 </div>
               ) : null}
+              {(quote.deals ?? []).map((deal) => (
+                <div key={deal.id}>
+                  <span>{deal.label}</span>
+                  <b>{money(deal.amount)}</b>
+                </div>
+              ))}
               <div className="is-total">
                 <span>Total savings</span>
-                <b>{money(quote.bundleAmount + quote.firstMonthsFree)}</b>
+                <b>{money(quote.bundleAmount + quote.firstMonthsFree + (quote.dealSavings ?? 0))}</b>
               </div>
             </div>
 
