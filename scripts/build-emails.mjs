@@ -122,11 +122,21 @@ function dollarEmail() {
   const step = (n, title, text) => `<tr><td width="40" valign="top" style="padding:0 14px 16px 0"><span style="display:inline-block;width:32px;height:32px;line-height:32px;border-radius:16px;background:${C.ink};color:#ffffff;font-family:${FONT};font-size:14px;font-weight:700;text-align:center">${n}</span></td>
 <td valign="top" style="padding:0 0 16px">${p(`<strong style="color:${C.ink}">${title}</strong><br>${text}`, { bottom: 0, size: 15 })}</td></tr>`
 
+  // A dark deadline strip, the email's FOMO device. The date is real: the $1 setup ends with the sale.
+  const deadline = (text) => `<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"><tr>
+<td bgcolor="${C.ink}" style="padding:14px 18px;border-radius:10px;background:${C.ink}">
+<span style="display:block;font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:${C.cyan}">Black Friday deal</span>
+<span style="display:block;margin-top:4px;font-family:${FONT};font-size:16px;font-weight:700;line-height:1.45;color:#ffffff">${text}</span>
+</td></tr></table>`
+
   const body = [
     row(`${p(greeting, { top: 12 })}
-<h1 class="h1" style="margin:0 0 14px;font-family:${FONT};font-size:34px;line-height:1.15;color:${C.ink};font-weight:800;letter-spacing:-0.4px">A real website for $1 to start.</h1>
-${p('Most business owners put off a new website because of the bill up front. So we took the bill away. Pick one of our 15 designs, send us your details, and we build your site with your own words, photos and logo.', { bottom: 22 })}
-${button('See the 15 templates', L('/1-dollar-website/#designs', 'hero'))}`, { pad: '8px 40px 0' }),
+<h1 class="h1" style="margin:0 0 14px;font-family:${FONT};font-size:34px;line-height:1.15;color:${C.ink};font-weight:800;letter-spacing:-0.4px">A real website for $1. Only until December 1.</h1>
+${p('Most business owners put off a new website because of the bill up front. For Black Friday we took the bill away. Pick one of our 15 designs, send us your details, and we build your site with your own words, photos and logo.')}
+${p('The $1 setup ends Tuesday, December 1 at 11:59pm Eastern. That night the offer comes off our site, and anyone who has not sent their details by then misses it.', { bottom: 22 })}
+${button('Claim my $1 website', L('/1-dollar-website/#designs', 'hero'))}`, { pad: '8px 40px 0' }),
+    spacer(30),
+    row(deadline('Send your details by Tuesday, December 1 at 11:59pm Eastern to lock in the $1 setup.'), { pad: '0 40px' }),
     spacer(34),
     row(`${h2('Your custom website')}
 ${p('Every template is a full five page site with real photos, built to work for any kind of business. Here are four of them.', { bottom: 20 })}`, { pad: '0 40px' }),
@@ -136,7 +146,7 @@ ${p('Every template is a full five page site with real photos, built to work for
     row(`${h2('How it works', { top: 26 })}
 <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
 ${step(1, 'Pick a template', 'Click through all five pages of any design before you choose.')}
-${step(2, 'Send your details', 'Business name, services, hours, photos and logo, in one short form.')}
+${step(2, 'Send your details before December 1', 'Business name, services, hours, photos and logo, in one short form. That locks in the $1 setup.')}
 ${step(3, 'We build it', 'You get a link to look it over. We reply within two working days.')}
 ${step(4, 'Go live', 'When it looks right, we publish it. Hosting starts that day.')}
 </table>`, { pad: '0 40px 10px', bg: C.mist }),
@@ -147,17 +157,20 @@ ${p(`&#10003;&nbsp; Home, Services, About, Gallery and Contact pages<br>
 &#10003;&nbsp; A contact form that sends enquiries to your email<br>
 &#10003;&nbsp; Hosting and a security certificate<br>
 &#10003;&nbsp; Your own domain connected, if you have one`, { bottom: 24 })}
-${button('Pick my template', L('/1-dollar-website/#designs', 'footer-button'), { bg: C.brand })}
-${p('Want more than a template? Our <a href="' + esc(L('/package-builder/', 'package-builder')) + '" style="color:' + C.brand + '">package builder</a> prices a custom site in a couple of minutes.', { size: 14, color: C.muted, top: 22, bottom: 0 })}
-${signoff}`, { pad: '0 40px' }),
+${p('<strong style="color:' + C.ink + '">The clock is running.</strong> Pick a design today and the form takes a few minutes. Wait until after December 1 and the $1 deal is gone.', { bottom: 22 })}
+${button('Pick my template before Dec 1', L('/1-dollar-website/#designs', 'footer-button'), { bg: C.brand })}
+<div style="height:22px;line-height:22px;font-size:0">&nbsp;</div>
+${signoff}
+${p('P.S. The $1 setup ends Tuesday, December 1 at 11:59pm Eastern. If a new website is on your list for next year, this is the cheapest it will be.', { size: 15, top: 0, bottom: 30 })}`, { pad: '0 40px' }),
   ].join('\n')
 
+  const pre = 'Black Friday: pick one of 15 designs and we build it for $1. Ends December 1.'
   return {
     file: '0-dollar-website-launch.html',
-    title: 'A real website for $1',
-    subjects: ['A real website for $1', 'Your new website, $1 to start'],
-    preheader: 'Pick one of 15 designs and we build it with your details. Hosting is $99 a month.',
-    html: layout({ title: 'A real website for $1', preheader: 'Pick one of 15 designs and we build it with your details. Hosting is $99 a month.', body, campaign, content }),
+    title: 'A real website for $1, until December 1',
+    subjects: ['Black Friday: a real website for $1', 'Your $1 website ends December 1'],
+    preheader: pre,
+    html: layout({ title: 'A real website for $1, until December 1', preheader: pre, body, campaign, content }),
   }
 }
 
@@ -179,6 +192,7 @@ function dealCards(L) {
 ${deal('Build Deal', '20% off setup when you add a website, landing page, quote calculator or visualizer tool. Website Grow lists at $4,500 and comes to $3,600.', '/package-builder/?add=web', 'build-deal', C.brand)}
 ${deal('Leads Deal', '3 months free instead of 1 on the monthly fee for lead generation and SEO.', '/package-builder/?add=lead', 'leads-deal', C.cyan)}
 ${deal('Brand Deal', '20% off logo and print work. Add a social media plan and the Launch logo and favicon design is free.', '/package-builder/?add=social', 'brand-deal', C.ink)}
+${deal('$1 Website', 'Pick one of 15 designs and we build your five page site for $1. Hosting is $99 a month, 12 month minimum.', '/package-builder/?add=site1', 'dollar-deal', C.cyan)}
 </table>`
 }
 
@@ -190,7 +204,7 @@ function bf1() {
   const body = [
     row(`${p(greeting, { top: 12 })}
 <h1 class="h1" style="margin:0 0 14px;font-family:${FONT};font-size:32px;line-height:1.15;color:${C.ink};font-weight:800">Black Friday pricing is on now.</h1>
-${p(`Three deals for local businesses, running through December 1. ${ends}`)}
+${p(`Four deals for local businesses, running through December 1. ${ends}`)}
 ${p('Pick what you need in the quote builder and the deals apply on their own. You can download the PDF right away, and it costs nothing to look.', { bottom: 22 })}
 ${button('Build my quote', L('/package-builder/', 'hero'))}`, { pad: '8px 40px 0' }),
     spacer(28),
@@ -200,7 +214,7 @@ ${p(`Want us to look at your current site first? The <a href="${esc(L('/free-web
 ${p('We reply within two working days.')}
 ${signoff}`, { pad: '0 40px' }),
   ].join('\n')
-  const pre = 'Three deals for local businesses, through December 1.'
+  const pre = 'Four deals for local businesses, through December 1.'
   return { file: '1-black-friday-deals-live.html', title: 'Black Friday pricing is on now', subjects: ['Black Friday pricing is on now', '20% off a new website through Dec 1'], preheader: pre, html: layout({ title: 'Black Friday pricing is on now', preheader: pre, body, campaign: BF, content }) }
 }
 

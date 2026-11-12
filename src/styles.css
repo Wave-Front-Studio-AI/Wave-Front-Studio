@@ -1998,6 +1998,7 @@ body.menu-open .chat-agent { display: none; }
 
 /* Black Friday deals popup and slide-in banner (shown only Nov 12 to Dec 1, 2026). */
 .modal-deal { width: min(100%, 520px); }
+@media (min-width: 720px) { .modal-deal { width: min(100%, 680px); } .modal-deal .deal-list { grid-template-columns: 1fr 1fr; } }
 .deal-head { display: grid; gap: 10px; margin-bottom: 18px; padding-right: 36px; }
 .deal-head h2 { font-size: clamp(1.35rem, 2.6vw, 1.75rem); line-height: 1.2; }
 .deal-head p:last-child { color: var(--muted); font-size: 0.95rem; line-height: 1.6; }
@@ -2107,3 +2108,20 @@ body.menu-open .deal-banner, body.chat-open .deal-banner { display: none; }
 .one-dollar-about p { margin-top: 10px; color: var(--text); line-height: 1.65; }
 .one-dollar-about .tick-list { margin-top: 0; }
 @media (max-width: 760px) { .one-dollar-about { grid-template-columns: 1fr; } }
+
+/* $1 Website Black Friday deadline (src/components/OneDollarDeal.jsx) */
+.one-dollar-deadline { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; margin-top: 24px; padding: 16px 20px; border-radius: var(--r-md); color: var(--white); background: var(--ink); }
+.one-dollar-deadline:not([data-ready]) { visibility: hidden; }
+.one-dollar-deadline p { max-width: 54ch; margin: 0; line-height: 1.5; }
+.one-dollar-deadline p span { color: rgba(255, 255, 255, 0.86); }
+.one-dollar-deadline strong { color: var(--white); }
+.one-dollar-deadline.is-compact { margin-top: 14px; padding: 12px 16px; }
+.one-dollar-clock { display: flex; gap: 14px; }
+.one-dollar-clock > div { display: grid; gap: 2px; min-width: 42px; text-align: center; }
+.one-dollar-clock b { font-family: var(--display); font-size: 1.6rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; color: var(--cyan); }
+.one-dollar-clock small { color: rgba(255, 255, 255, 0.86); font-size: 0.8rem; }
+.one-dollar-deadline.is-compact .one-dollar-clock b { font-size: 1.25rem; }
+.one-dollar-ended { max-width: 62ch; }
+.one-dollar-ended h1, .one-dollar-ended h2 { font-size: clamp(2rem, 5vw, 3.2rem); }
+.one-dollar-ended p { margin-top: 16px; color: var(--text); font-size: 1.1rem; line-height: 1.6; }
+.one-dollar-ended .one-dollar-actions { margin-top: 24px; }
