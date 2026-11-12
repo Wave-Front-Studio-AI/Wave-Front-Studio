@@ -158,10 +158,10 @@ ${p('P.S. The $1 setup ends Tuesday, December 1 at 11:59pm Eastern. If a new web
   const pre = 'Black Friday: pick one of 15 designs and we build it for $1. Ends December 1.'
   return {
     file: '0-dollar-website-launch.html',
-    title: 'A real website for $1, until December 1',
-    subjects: ['Black Friday: a real website for $1', 'Your $1 website ends December 1'],
+    title: 'A PROFESSIONAL website for $1, until December 1',
+    subjects: ['Black Friday: a PROFESSIONAL website for $1', 'Your $1 website ends December 1'],
     preheader: pre,
-    html: layout({ title: 'A real website for $1, until December 1', preheader: pre, body, campaign, content }),
+    html: layout({ title: 'A PROFESSIONAL website for $1, until December 1', preheader: pre, body, campaign, content }),
   }
 }
 
