@@ -1,6 +1,6 @@
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { CtaBand, DemoSites, EnquiryForm, FaqAccordion, OfferingList, SectionHeading, SupportCallout, Testimonials } from '../components/shared.jsx'
+import { CtaBand, EnquiryForm, FaqAccordion, OfferingList, SectionHeading, SupportCallout, TemplateShowcase, Testimonials } from '../components/shared.jsx'
 import { contact, offerings, projects, siteOrigin } from '../data/site.js'
 import { siteFaqs as faqItems } from '../data/faqs.js'
 import { pageGraph } from '../data/seo.js'
@@ -153,10 +153,7 @@ export function PortfolioPage() {
         </div>
       </section>
 
-      <DemoSites
-        title="Demo sites we have built"
-        copy="Concepts for a restaurant, a paving company, a garage, a dental practice, a realtor and a salon. They are demos, not client sites, and none of their forms send anything."
-      />
+      <TemplateShowcase title="Website templates we built" />
 
       <Testimonials />
 
