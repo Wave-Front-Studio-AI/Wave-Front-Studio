@@ -1,43 +1,71 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { ArrowIcon, ChevronIcon } from './Icons.jsx'
-import { sizeOf } from '../data/imageSizes.js'
-import { contact, demoSites, googleListingUrl, isHiddenReviewer, offeringGroups, testimonialsHeading } from '../data/site.js'
+import { contact, googleListingUrl, isHiddenReviewer, offeringGroups, testimonialsHeading } from '../data/site.js'
 import { deliverLead } from '../formSubmission.js'
 import { SMS_CONSENT_CURRENT, SMS_MARKETING_CONSENT_CURRENT } from '../data/smsConsent.js'
+import { holidayDealActive } from '../holidayWindow.js'
+import { templateBySlug, thumbUrl } from '../templates/list.js'
 
 /* ------------------------------------------------------------------ */
-/* Demo sites                                                          */
+/* Template showcase                                                   */
 /* ------------------------------------------------------------------ */
 
-// A grid of the demo sites (site.js, demoSites). Every card says it is a demo
-// concept, because none is a client's live site. `animate` adds the home page's
-// scroll-in attribute.
-export function DemoSites({ title, copy, className = '', animate = false }) {
+// Six of the 15 $1 Website templates (src/templates/list.js), each a design
+// style any business can use. While the Black Friday sale runs the section
+// sells the $1 Website. After Dec 1 it shows the templates as our work and
+// points to the contact page. The prerendered page is the sale version, and
+// the browser switches it after the deadline.
+const SHOWCASE = [
+  ['pulse', 'Loud and confident, for a business that wants to look busy and booked.'],
+  ['slate', 'Dark, sharp and industrial, with plain answers up front.'],
+  ['harbor', 'Calm and welcoming, for a business people trust with their home or health.'],
+  ['grid', 'Clean editorial type that lets your work do the talking.'],
+  ['atlas', 'Bold and corporate, for a team that wants to look established.'],
+  ['bloom', 'Soft and upscale, for a boutique, salon or studio.'],
+].map(([slug, what]) => ({ ...templateBySlug[slug], what }))
+
+export function TemplateShowcase({ title = 'Pick a website and we build it for you', className = '', animate = false }) {
   const enter = animate ? { 'data-enter': 'up' } : {}
+  const [dealOn, setDealOn] = useState(true)
+  useEffect(() => setDealOn(holidayDealActive()), [])
+  const heading = dealOn ? title : 'Website templates we designed'
+  const button = dealOn ? ['See all 15 templates', '/1-dollar-website/#designs'] : ['Start a project', '/contact/']
   return (
-    <section className={`demo-sites chapter ${className}`} id="demo-sites">
+    <section className={`demo-sites chapter ${className}`} id="templates">
       <div className="page-frame">
         <div className="home-center-head" {...enter}>
-          <h2>{title}</h2>
-          {copy ? <p>{copy}</p> : null}
+          <h2>{heading}</h2>
+          <p>
+            {dealOn
+              ? '15 full five page websites that work for any business. Pick one and we fill it with your words, photos and logo. For Black Friday the setup is $1, until December 1.'
+              : 'A look at the range we build, from bold to calm. Every one is a full five page site.'}
+          </p>
         </div>
         <ul className="demo-grid">
-          {demoSites.map((demo) => (
-            <li key={demo.slug} {...enter}>
-              <a className="demo-card" href={demo.href} target="_blank">
-                <img src={demo.image} alt={demo.alt} loading="lazy" decoding="async" {...sizeOf(demo.image)} />
+          {SHOWCASE.map((template) => (
+            <li key={template.slug} {...enter}>
+              <a className="demo-card" href={`/1-dollar-website/${template.slug}/`}>
+                <img src={thumbUrl(template.slug)} alt={`The ${template.name} website template`} width="1200" height="900" loading="lazy" decoding="async" />
                 <span className="demo-card-body">
-                  <span className="demo-kind">{demo.kind} · demo concept</span>
-                  <strong>{demo.business}</strong>
-                  <span className="demo-what">{demo.what}</span>
+                  <span className="demo-kind">Template · {template.style}</span>
+                  <strong>{template.name}</strong>
+                  <span className="demo-what">{template.what}</span>
                   <span className="text-link">
-                    View the demo <ArrowIcon />
+                    Preview the template <ArrowIcon />
                   </span>
                 </span>
               </a>
             </li>
           ))}
         </ul>
+        <div className="template-showcase-more" {...enter}>
+          <a className="kinetic-button group" href={button[1]}>
+            <span>{button[0]}</span>
+            <span className="button-island">
+              <ArrowIcon className="size-4" />
+            </span>
+          </a>
+        </div>
       </div>
     </section>
   )

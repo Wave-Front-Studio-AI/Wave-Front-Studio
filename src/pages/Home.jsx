@@ -3,9 +3,7 @@ import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import VideoTranscript from '../components/VideoTranscript.jsx'
 import FunnelStory from '../components/FunnelStory.jsx'
-import { FaqAccordion, Stars, initials, useGoogleReviews } from '../components/shared.jsx'
-import { useOneDollarEnded } from '../components/OneDollarDeal.jsx'
-import { templateBySlug, thumbUrl } from '../templates/list.js'
+import { FaqAccordion, Stars, TemplateShowcase, initials, useGoogleReviews } from '../components/shared.jsx'
 import { contact, googleListingUrl, offerings } from '../data/site.js'
 import { siteFaqs } from '../data/faqs.js'
 import { services } from '../data/services.js'
@@ -726,55 +724,6 @@ function FinalBanner() {
   )
 }
 
-// Six of the 15 $1 Website templates, each a design style any business can use.
-const SHOWCASE = [
-  ['pulse', 'Loud and confident, for a business that wants to look busy and booked.'],
-  ['slate', 'Dark, sharp and industrial, with plain answers up front.'],
-  ['harbor', 'Calm and welcoming, for a business people trust with their home or health.'],
-  ['grid', 'Clean editorial type that lets your work do the talking.'],
-  ['atlas', 'Bold and corporate, for a team that wants to look established.'],
-  ['bloom', 'Soft and upscale, for a boutique, salon or studio.'],
-].map(([slug, what]) => ({ ...templateBySlug[slug], what }))
-
-function TemplateShowcase() {
-  const ended = useOneDollarEnded()
-  return (
-    <section className="demo-sites chapter" id="templates">
-      <div className="page-frame">
-        <div className="home-center-head" data-enter="up">
-          <h2>Pick a website and we build it for you</h2>
-          <p>
-            15 full five page websites that work for any business. Pick one and we fill it with your words, photos and logo.
-            {ended === false || ended === null ? ' For Black Friday the setup is $1, until December 1.' : null}
-          </p>
-        </div>
-        <ul className="demo-grid">
-          {SHOWCASE.map((template) => (
-            <li key={template.slug} data-enter="up">
-              <a className="demo-card" href={`/1-dollar-website/${template.slug}/`}>
-                <img src={thumbUrl(template.slug)} alt={`The ${template.name} website template`} width="1200" height="900" loading="lazy" decoding="async" />
-                <span className="demo-card-body">
-                  <span className="demo-kind">Template · {template.style}</span>
-                  <strong>{template.name}</strong>
-                  <span className="demo-what">{template.what}</span>
-                  <span className="text-link">
-                    Preview the template <ArrowIcon />
-                  </span>
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <div className="template-showcase-more" data-enter="up">
-          <ActionButton href="/1-dollar-website/#designs" shine>
-            See all 15 templates
-          </ActionButton>
-        </div>
-      </div>
-    </section>
-  )
-}
-
 const webDevelopmentHero = services.find((service) => service.slug === 'web-development').hero
 
 export default function Home() {
@@ -793,7 +742,7 @@ export default function Home() {
         <Intro />
         <Advantage />
         <ServiceTiles />
-        <TemplateShowcase />
+        <TemplateShowcase animate />
         <Routing />
         <Reviews />
         <Process />

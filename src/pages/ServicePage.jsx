@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { Breadcrumbs, CtaBand, DemoSites, EnquiryForm, FaqAccordion, SectionHeading, SupportCallout, Testimonials, choosePlan } from '../components/shared.jsx'
+import { Breadcrumbs, CtaBand, EnquiryForm, FaqAccordion, SectionHeading, SupportCallout, TemplateShowcase, Testimonials, choosePlan } from '../components/shared.jsx'
 import { services } from '../data/services.js'
 import { customWorks } from '../data/customWorks.js'
 import { siteOrigin } from '../data/site.js'
@@ -249,11 +249,7 @@ export default function ServicePage({ service }) {
       </section>
 
       {service.slug === 'web-development' ? (
-        <DemoSites
-          className="is-light"
-          title="Demo sites we have built"
-          copy="Six small-business sites we designed to show the range, from a restaurant to a dental practice. They are demos, not client sites, and none of their forms send anything."
-        />
+        <TemplateShowcase className="is-light" title="Websites we can build for you this week" />
       ) : null}
 
       <section className="service-capabilities chapter">
