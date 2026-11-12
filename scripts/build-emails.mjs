@@ -124,7 +124,7 @@ function dollarEmail() {
 
   const body = [
     row(`${p(greeting, { top: 12 })}
-<h1 class="h1" style="margin:0 0 14px;font-family:${FONT};font-size:34px;line-height:1.15;color:${C.ink};font-weight:800;letter-spacing:-0.4px">A real website for $1. Only until December 1.</h1>
+<h1 class="h1" style="margin:0 0 14px;font-family:${FONT};font-size:34px;line-height:1.15;color:${C.ink};font-weight:800;letter-spacing:-0.4px">A <strong style="font-weight:900">PROFESSIONAL</strong> website for $1. Only until December 1.</h1>
 ${p('Most business owners put off a new website because of the bill up front. For Black Friday we took the bill away. Pick one of our 15 designs, send us your details, and we build your site with your own words, photos and logo.')}
 ${p('The $1 setup ends Tuesday, December 1 at 11:59pm Eastern. That night the offer comes off our site, and anyone who has not sent their details by then misses it.', { bottom: 22 })}
 ${button('Claim my $1 website', L('/1-dollar-website/#designs', 'hero'))}`, { pad: '8px 40px 0' }),
