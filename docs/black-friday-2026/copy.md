@@ -1,19 +1,19 @@
 # Black Friday 2026: ad copy (drafts, nothing sent)
 
-Sender name and links to confirm before use. Dates: Nov 24 to Dec 1, 2026. All sends need Tony's yes first. This version has had a humanizer pass.
+Sender name and links to confirm before use. Dates: Nov 12 to Dec 1, 2026. All sends need Tony's yes first. This version has had a humanizer pass.
 
 The four Mailchimp emails are in `mailchimp-emails.md`. This file covers texts, social, video and ads.
 
 ## SMS (only to contacts with consent; keep the opt out line)
 
-SMS 1 (Nov 24): Wavefront Studio: Black Friday deals for contractors run through Dec 1. 20% off a website or calculator, and 3 months free on lead gen and SEO. {short link} Reply STOP to opt out.
+SMS 1 (launch week): Wavefront Studio: Black Friday deals for contractors run through Dec 1. 20% off a website or calculator, and 3 months free on lead gen and SEO. {short link} Reply STOP to opt out.
 
 SMS 2 (Nov 30): Wavefront Studio: the contractor deals end tomorrow night. Build your quote: {short link} Reply STOP to opt out.
 
 ## Social: Facebook and LinkedIn (organic)
 
-Post A, Nov 24:
-Black Friday for contractors starts today and runs through Dec 1.
+Post A, launch:
+Black Friday for contractors is on now and runs through Dec 1.
 20% off a website, landing page or quote calculator. 3 months free on lead generation and SEO. 20% off logo and print work, and the logo is free when you add social media management.
 Build a quote and the deals apply on their own: {link}
 

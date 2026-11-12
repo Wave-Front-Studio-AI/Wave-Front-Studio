@@ -19,12 +19,12 @@ Merge tags used: `*|FNAME|*` with a fallback, `*|UNSUB|*`, `*|UPDATE_PROFILE|*`,
 
 | # | Send | Audience | Job |
 |---|---|---|---|
-| 1 | Tue Nov 24, 7am Eastern | Whole audience | Deals are live, go build a quote |
+| 1 | Fri Nov 13, 7am Eastern | Whole audience | Deals are live, go build a quote |
 | 2 | Fri Nov 27, 8am Eastern | Everyone except people who clicked Email 1 and built a quote (skip this filter if you cannot see it, then send to all) | Black Friday push with the calculator angle |
 | 3 | Mon Nov 30, 8am Eastern | Whole audience | Last two days |
 | 4 | Wed Dec 2, 9am Eastern | Segment: clicked any link in emails 1 to 3 | Follow up after the deals end |
 
-Email 1 moved from Mon Nov 23 to Tue Nov 24 so the quote builder shows the deals the moment someone clicks. If you want a Nov 23 heads up, point it at /black-friday/, which says the deals start Nov 24.
+The sale went live on the site on Nov 12 (moved up from Nov 24), so Email 1 can go as soon as you approve it. Send it in the morning so replies land in working hours.
 
 Track clicks and replies. Open rates are unreliable now because mail apps preload images.
 
@@ -34,15 +34,15 @@ Every link carries UTM tags so the site and Mailchimp both show where the visit 
 
 ## Email 1: deals are live
 
-Send: Tue Nov 24, 7am Eastern
-Subject A: Contractor pricing starts today (31 characters, plain and direct)
+Send: Fri Nov 13, 7am Eastern
+Subject A: Contractor pricing is on now (31 characters, plain and direct)
 Subject B: 20% off a contractor website through Dec 1 (the offer first)
 Preview text: Websites, calculators, lead generation and logos. Build a quote and see your price.
 
 ```
 *|IF:FNAME|*Hi *|FNAME|*,*|ELSE:|*Hi there,*|END:IF|*
 
-Our Black Friday pricing for contractors starts today and runs through Tuesday, Dec 1, ending at 11:59pm Eastern.
+Our Black Friday pricing for contractors is on now and runs through Tuesday, Dec 1, ending at 11:59pm Eastern.
 
 There are three deals. Each one stands on its own.
 
@@ -173,9 +173,9 @@ Unsubscribe: *|UNSUB|*   Update your preferences: *|UPDATE_PROFILE|*
 
 1. Subject matches the body. Sender and reply-to are real and monitored.
 2. Every `*|...|*` tag renders in Mailchimp's preview. Send a test to yourself and check the fallback by sending one with the first name blank.
-3. The three links open the right pages on a phone, and the builder shows the deal banner (only works between Nov 24 and Dec 1).
+3. The three links open the right pages on a phone, and the builder shows the deal banner (only works between Nov 12 and Dec 1).
 4. The unsubscribe link and postal address show in the footer.
-5. Dates in the copy match the real window: Nov 24 to Dec 1, ending 11:59pm Eastern. The site flips to "deals ended" on its own after that.
+5. Dates in the copy match the real window: Nov 12 to Dec 1, ending 11:59pm Eastern. The site flips to "deals ended" on its own after that.
 6. Test the plain-text view in Mailchimp. Button text becomes a bare link line, which is fine.
 
 ## Rules these follow

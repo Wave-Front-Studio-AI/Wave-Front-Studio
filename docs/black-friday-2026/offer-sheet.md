@@ -1,7 +1,7 @@
 # Black Friday and Cyber Monday 2026: offer sheet
 
 Audience: construction businesses (GCs, remodelers, roofers, concrete, trades).
-Runs: Tuesday Nov 24 to Tuesday Dec 1, 2026, ending 11:59pm Eastern. Black Friday is Nov 27, Cyber Monday is Nov 30.
+Runs: Thursday Nov 12 to Tuesday Dec 1, 2026 (moved up from Nov 24 on Nov 12), ending 11:59pm Eastern. Black Friday is Nov 27, Cyber Monday is Nov 30.
 Hard rules: no countdown timer, no places counter, no testimonials, reply within two working days, combined discount never above 25%.
 
 ## The ladder
@@ -44,8 +44,9 @@ Hard rules: no countdown timer, no places counter, no testimonials, reply within
 | Date | What |
 |---|---|
 | Thu Nov 19 | Merge PR, deploy, test the builder with the window forced on |
-| Mon Nov 23 | Email to existing leads (approval needed first) |
-| Tue Nov 24 | Offer live. Organic posts start |
+| Thu Nov 12 | Sale goes live on the site. Popup and banner on |
+| Fri Nov 13 | Email 1 to existing leads (approval needed first) |
+| Mon Nov 16 | Organic posts start |
 | Fri Nov 27 | Black Friday push: email 2, posts |
 | Mon Nov 30 | Cyber Monday push: last call email |
 | Tue Dec 1 | Final day post. Midnight, page flips to ended |

@@ -1996,7 +1996,7 @@ body.menu-open .chat-agent { display: none; }
 @media (max-width: 620px) { .demo-grid { grid-template-columns: minmax(0, 1fr); } }
 @media (prefers-reduced-motion: reduce) { .demo-card { transition: none; } .demo-card:hover, .demo-card:focus-visible { transform: none; } }
 
-/* Black Friday deals popup and slide-in banner (shown only Nov 24 to Dec 1, 2026). */
+/* Black Friday deals popup and slide-in banner (shown only Nov 12 to Dec 1, 2026). */
 .modal-deal { width: min(100%, 520px); }
 .deal-head { display: grid; gap: 10px; margin-bottom: 18px; padding-right: 36px; }
 .deal-head h2 { font-size: clamp(1.35rem, 2.6vw, 1.75rem); line-height: 1.2; }
