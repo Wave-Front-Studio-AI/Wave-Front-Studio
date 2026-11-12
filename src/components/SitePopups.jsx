@@ -211,8 +211,8 @@ function dealWords(phase) {
 // Each card adds a service that earns that deal to a fresh quote.
 const dealCards = [
   { name: 'Build Deal', add: 'web', text: '20% off setup on a website, landing page, quote calculator or visualizer tool.' },
-  { name: 'Leads Deal', add: 'lead', text: '3 months free instead of 1 on lead generation and SEO.' },
-  { name: 'Brand Deal', add: 'social', text: '20% off logo and print work. Add a social plan and the logo is free.' },
+  { name: 'Leads Deal', add: 'lead', text: '20% off setup on our Lead Generation System.' },
+  { name: 'Brand Deal', add: 'logo', text: '20% off logo, branding and print work.' },
   { name: '$1 Website', add: 'site1', text: 'Pick one of 15 designs and we build it for $1. Hosting is $99 a month, 12 month minimum.' },
 ]
 
@@ -262,7 +262,7 @@ function DealBanner({ onClose, phase }) {
         </svg>
       </button>
       <p className="deal-eyebrow">{words.eyebrow}</p>
-      <p className="deal-banner-text">20% off websites and calculators. 3 months free on lead gen and SEO.</p>
+      <p className="deal-banner-text">20% off websites, calculators, lead generation and branding.</p>
       <a className="deal-banner-cta" href={`/package-builder/?${dealUtm}&utm_content=banner-quote`}>
         See the deals and build a quote
       </a>

@@ -163,7 +163,7 @@ const companyEntries = [
   {
     id: 'company-build-your-package', title: 'Build Your Package', url: '/package-builder/', kind: 'company',
     keywords: ['build your package', 'package', 'bundle', 'configurator', 'quote', 'estimate', 'pricing', 'price', 'cost', 'how much', 'budget', 'tiers'],
-    body: `Tick the services you want and pick a tier. Your total updates as you go. Tap the info icon on any service to see exactly what each tier includes. The more you bundle, the more you save: ${OFFER.bundleTiers.map((tier) => `${tier.min}+ services saves ${tier.pct}%`).join(', ')}. Monthly services include the first month free. ${PACKAGE_SERVICES.length} services are priced on the page across websites and development, marketing and growth, AI and automation, branding and design, print and collateral, and video and podcast.`,
+    body: `Tick the services you want and pick a tier. Your total updates as you go. Tap the info icon on any service to see exactly what each tier includes. The more you bundle, the more you save: ${OFFER.bundleTiers.map((tier) => `${tier.min}+ services saves ${tier.pct}%`).join(', ')}. ${PACKAGE_SERVICES.length} services are priced on the page across websites and development, marketing and growth, AI and automation, branding and design, print and collateral, and video and podcast.`,
     linkLabel: 'Build your package and see the price',
   },
 ].map(makeEntry)
@@ -678,7 +678,7 @@ const INTENTS = [
     test: (text) => has(text, 'price', 'prices', 'pricing', 'cost', 'costs', 'budget', 'afford', 'expensive', 'cheap', 'fee', 'fees', 'rates', 'quote')
       || /how much/i.test(text),
     reply: () => ({
-      text: `Choose the services you want on the Build Your Package page and it will show the total price. Starting points include ${cheapestTiers}. Monthly services include the first month free.`,
+      text: `Choose the services you want on the Build Your Package page and it will show the total price. Starting points include ${cheapestTiers}.`,
       links: [
       { label: 'Build your package and see the price', href: '/package-builder/' },
         { label: 'Free setup this quarter', href: '/free-setup/' },

@@ -13,7 +13,7 @@ export const LANDING_PAGE_BUNDLES = [
 
 export const OFFER = {
   "countdownHours": 72,
-  "firstMonthsFree": 1,
+  "firstMonthsFree": 0,
   "bundleTiers": [
     {
       "min": 5,

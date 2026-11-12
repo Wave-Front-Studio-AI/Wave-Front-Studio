@@ -629,7 +629,7 @@ export default function BuildYourPackage() {
             <b>{HOLIDAY_DEAL.name} deals are on until {HOLIDAY_DEAL.endsLabel}.</b>
             <span>
               They apply on their own, with no code to type. Build Deal: {HOLIDAY_DEAL.build.pct}% off setup for websites, landing pages, calculators, data visuals and custom builds.
-              Leads Deal: {HOLIDAY_DEAL.leads.monthsFree} months free on Lead and SEO plans. Brand Deal: {HOLIDAY_DEAL.brand.pct}% off setup for design, logo, logo animation, brochures and cards, plus a free Launch Logo and Favicon Design when you add social media.
+              Leads Deal: {HOLIDAY_DEAL.leads.pct}% off setup for the Lead Generation System. Brand Deal: {HOLIDAY_DEAL.brand.pct}% off setup for design, logo, logo animation, brochures and cards.
               Setup discounts, including your bundle discount, stop at {HOLIDAY_DEAL.build.maxCombinedPct}% in total.
             </span>
             {quote.deals?.length ? (
@@ -1151,8 +1151,7 @@ export default function BuildYourPackage() {
                 <p>
                   Pair it with <b>{suggestion.name}</b> to{' '}
                   {nextTier ? `get ${nextTier.pct}% off your whole setup` : `keep your ${quote.pct}% bundle discount`}
-                  {/* The free first month is only on monthly charges, so it is only promised for a service that has one. */}
-                  {suggestion.billing === 'onetime' ? '' : ', plus your first month free'}.
+                  .
                 </p>
                 <button
                   type="button"
