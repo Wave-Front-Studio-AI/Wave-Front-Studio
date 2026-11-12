@@ -48,7 +48,8 @@ const row = (inner, { pad = '0 40px', bg } = {}) =>
 
 const spacer = (n) => `<tr><td style="height:${n}px;line-height:${n}px;font-size:0">&nbsp;</td></tr>`
 
-const greeting = `*|IF:FNAME|*Hi *|FNAME|*,*|ELSE:|*Hi there,*|END:IF|*`
+// Plain greeting: the audience has junk first names ("Hey"), so FNAME reads badly.
+const greeting = 'Hi there,'
 
 function layout({ title, preheader, body, campaign, content }) {
   const home = link('/', campaign, `${content}-logo`)
@@ -131,10 +132,10 @@ ${p('Most business owners put off a new website because of the bill up front. So
 ${p('Hosting is $99 a month, and that covers keeping it online, secure and working.', { bottom: 22 })}
 ${button('See the 15 templates', L('/1-dollar-website/#designs', 'hero'))}`, { pad: '8px 40px 0' }),
     spacer(30),
-    row(`<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"><tr>
-${price('$1', 'to set up')}<td width="10" style="font-size:0">&nbsp;</td>${price('$99', 'a month hosting')}<td width="10" style="font-size:0">&nbsp;</td>${price('12', 'month minimum')}
+    row(`<table role="presentation" width="200" align="center" border="0" cellspacing="0" cellpadding="0" style="margin:0 auto"><tr>
+${price('$1', 'to set up')}
 </tr></table>
-${p('That is $1,189 for the first year, hosting included. No surprises later.', { size: 13, color: C.muted, top: 12, bottom: 0, align: 'center' })}`, { pad: '0 40px' }),
+${p('Hosting has a 12 month minimum, so the first year is $1,189 all in. No surprises later.', { size: 13, color: C.muted, top: 12, bottom: 0, align: 'center' })}`, { pad: '0 40px' }),
     spacer(34),
     row(`${h2('Real websites, not page builders')}
 ${p('Every template is a full five page site with real photos, built to work for any kind of business. Here are four of them.', { bottom: 20 })}`, { pad: '0 40px' }),
