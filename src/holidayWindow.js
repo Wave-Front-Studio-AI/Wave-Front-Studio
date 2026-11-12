@@ -1,9 +1,9 @@
 // The Black Friday 2026 window, kept apart from the pricing data so the site-wide
 // popup can read it without pulling the whole package catalogue into every page.
-// Tue Nov 24 00:00 to Tue Dec 1 23:59:59 Eastern (EST, UTC-5).
+// Thu Nov 12 00:00 to Tue Dec 1 23:59:59 Eastern (EST, UTC-5).
 export const HOLIDAY_WINDOW = {
   name: 'Black Friday',
-  start: '2026-11-24T00:00:00-05:00',
+  start: '2026-11-12T00:00:00-05:00',
   endExclusive: '2026-12-02T00:00:00-05:00',
   endsLabel: 'Tuesday, December 1 at 11:59 PM Eastern',
 }

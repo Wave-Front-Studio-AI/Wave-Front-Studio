@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { calculateQuote, customLandingQuote, customQuoteItem, holidayDealActive, landingPageBundle, money, tierQty } from './packageQuote.js'
+import { calculateQuote as quoteAt, customLandingQuote, customQuoteItem, holidayDealActive, landingPageBundle, money, tierQty } from './packageQuote.js'
+
+// Normal-price tests run on a day outside the sale, so they do not change when the sale is on.
+const calculateQuote = (state, now = new Date('2026-06-01T12:00:00Z')) => quoteAt(state, now)
 
 const selected = (tier = 1, pages = 1) => ({ tier, pages, addons: [], opts: {} })
 
@@ -290,20 +293,20 @@ test('custom items need a title, a whole quantity and a cost in cents', () => {
   assert.deepEqual(calculateQuote({ customItems: [{ ...logo, qty: 0 }] }).rows, [])
 })
 
-// Black Friday 2026 deals. The window is Nov 24 to Dec 1, Eastern.
+// Black Friday 2026 deals. The window is Nov 12 to Dec 1, Eastern.
 const inside = new Date('2026-11-27T12:00:00-05:00')
 const sel = (tier = 0) => ({ tier, addons: [], opts: {} })
 
 test('black friday deals are off outside the window and the quote is unchanged', () => {
   const state = { web: sel(0), lead: sel(0), social: sel(0), design: sel(0) }
-  const plain = calculateQuote(state, new Date('2026-11-23T23:59:59-05:00'))
-  for (const when of ['2026-11-23T23:59:59-05:00', '2026-12-02T00:00:00-05:00', '2026-06-01T12:00:00Z']) {
+  const plain = calculateQuote(state, new Date('2026-11-11T23:59:59-05:00'))
+  for (const when of ['2026-11-11T23:59:59-05:00', '2026-12-02T00:00:00-05:00', '2026-06-01T12:00:00Z']) {
     const quote = calculateQuote(state, new Date(when))
     assert.deepEqual(quote, plain)
     for (const key of ['deals', 'dealOff', 'dealSavings', 'holiday']) assert.equal(key in quote, false)
     assert.equal(quote.rows.some((row) => row.amount === '$0'), false)
   }
-  assert.equal(holidayDealActive(new Date('2026-11-24T00:00:00-05:00')), true)
+  assert.equal(holidayDealActive(new Date('2026-11-12T00:00:00-05:00')), true)
   assert.equal(holidayDealActive(new Date('2026-12-01T23:59:59-05:00')), true)
 })
 

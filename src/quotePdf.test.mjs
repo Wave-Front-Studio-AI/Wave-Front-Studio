@@ -3,7 +3,10 @@ import { readFile } from 'node:fs/promises'
 import test from 'node:test'
 import { createQuotePdf, loadQuoteBrandAssets, renderQuotePdf } from './quotePdf.js'
 import { SERVICES } from './data/generated/packages.js'
-import { calculateQuote } from './packageQuote.js'
+import { calculateQuote as quoteAt } from './packageQuote.js'
+
+// Normal-price tests run on a day outside the sale, so they do not change when the sale is on.
+const calculateQuote = (state, now = new Date('2026-06-01T12:00:00Z')) => quoteAt(state, now)
 
 const assets = {
   logo: new Uint8Array(await readFile(new URL('../public/wp-content/uploads/2026/04/Wavefront-studio.jpg', import.meta.url))),

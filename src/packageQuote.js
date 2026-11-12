@@ -3,7 +3,7 @@ import { HOLIDAY_WINDOW, holidayDealActive } from './holidayWindow.js'
 
 export { holidayDealActive }
 
-// Black Friday 2026. The window is Tue Nov 24 00:00 to Tue Dec 1 23:59:59 Eastern (EST, UTC-5), so it ends
+// Black Friday 2026. The window is Thu Nov 12 00:00 to Tue Dec 1 23:59:59 Eastern (EST, UTC-5), so it ends
 // at the start of Dec 2. Outside the window every deal is off and the quote is exactly the normal quote.
 export const HOLIDAY_DEAL = {
   ...HOLIDAY_WINDOW,
