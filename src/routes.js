@@ -65,6 +65,7 @@ const postSlugs = [
   'five-accessibility-fixes',
   'start-an-email-list',
   'service-area-business-profile',
+  'schema-markup-what-it-does',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
