@@ -67,6 +67,7 @@ const postSlugs = [
   'service-area-business-profile',
   'schema-markup-what-it-does',
   'heavy-images-slow-your-site',
+  'google-ads-or-seo',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
