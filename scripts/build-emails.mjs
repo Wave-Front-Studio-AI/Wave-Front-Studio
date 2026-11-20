@@ -5,6 +5,7 @@
 // and the lead service writes them to the lead's UTM Source, Medium, Campaign, Content and Term
 // fields in the WF app, so each lead shows which email (and which template) brought it.
 import { mkdir, writeFile } from 'node:fs/promises'
+import { TEMPLATES } from '../src/templates/list.js'
 
 const SITE = 'https://www.wavefrontstudiollc.com'
 const IMG = `${SITE}/images/email`
@@ -106,19 +107,10 @@ function dollarEmail() {
   const campaign = 'dollar-website'
   const content = 'launch-email'
   const L = (path, part, term) => link(path, campaign, `${content}-${part}`, term)
-  const picks = [
-    ['pulse', 'Pulse', 'Energetic'],
-    ['slate', 'Slate', 'Industrial'],
-    ['grid', 'Grid', 'Swiss editorial'],
-    ['harbor', 'Harbor', 'Calm and coastal'],
-  ]
-  const card = ([slug, name, style]) => `<td width="50%" valign="top" style="padding:0 6px">
-<a href="${esc(L(`/1-dollar-website/${slug}/`, 'template', slug))}" target="_blank" style="text-decoration:none">
-<img src="${IMG}/template-${slug}.jpg" width="252" height="189" alt="${name} template preview" style="display:block;width:100%;max-width:252px;height:auto;border:1px solid ${C.line};border-radius:10px">
-<span style="display:block;margin-top:10px;font-family:${FONT};font-size:16px;font-weight:800;color:${C.ink}">${name}</span>
-<span style="display:block;margin-top:2px;font-family:${FONT};font-size:14px;color:${C.muted}">${style}</span>
-</a></td>`
-  const grid = (a, b) => `<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" class="stack"><tr>${card(a)}${card(b)}</tr></table>`
+  // All 15 templates in one looping GIF (built by scripts/make-email-gif.mjs). The whole picture links to the gallery.
+  const templatesGif = `<a href="${esc(L('/1-dollar-website/#designs', 'templates-gif'))}" target="_blank" style="text-decoration:none">
+<img src="${IMG}/templates-all.gif" width="520" height="500" alt="${esc(`All 15 $1 Website templates: ${TEMPLATES.map((template) => template.name).join(', ')}`)}" style="display:block;width:100%;max-width:520px;height:auto;border:0">
+</a>`
   const step = (n, title, text) => `<tr><td width="40" valign="top" style="padding:0 14px 16px 0"><span style="display:inline-block;width:32px;height:32px;line-height:32px;border-radius:16px;background:${C.ink};color:#ffffff;font-family:${FONT};font-size:14px;font-weight:700;text-align:center">${n}</span></td>
 <td valign="top" style="padding:0 0 16px">${p(`<strong style="color:${C.ink}">${title}</strong><br>${text}`, { bottom: 0, size: 15 })}</td></tr>`
 
@@ -131,8 +123,8 @@ ${p(`The whole price, so there are no surprises: <strong style="color:${C.ink}">
 ${button('Claim my $1 website', L('/1-dollar-website/#designs', 'hero'))}`, { pad: '8px 40px 0' }),
     spacer(34),
     row(`${h2('Your custom website')}
-${p('Every template is a full five page site with real photos, built to work for any kind of business. Here are four of them.', { bottom: 20 })}`, { pad: '0 40px' }),
-    row(`${grid(picks[0], picks[1])}<div class="stack-gap" style="height:22px;line-height:22px;font-size:0">&nbsp;</div>${grid(picks[2], picks[3])}`, { pad: '0 34px' }),
+${p('Every template is a full five page site with real photos, built to work for any kind of business. Here are all 15.', { bottom: 20 })}`, { pad: '0 40px' }),
+    row(templatesGif, { pad: '0 40px' }),
     row(`${p(`<a href="${esc(L('/1-dollar-website/#designs', 'all-templates'))}" style="color:${C.brand};font-weight:700">See all 15 templates</a>`, { top: 22, bottom: 0 })}`, { pad: '0 40px' }),
     spacer(30),
     row(`${h2('How it works', { top: 26 })}
