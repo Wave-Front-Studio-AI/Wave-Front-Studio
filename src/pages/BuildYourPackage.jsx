@@ -3,6 +3,7 @@ import Layout from '../components/Layout.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { Honeypot, SmsConsentField } from '../components/shared.jsx'
 import { LANDING_PAGE_BUNDLES, OFFER, PAIRS } from '../data/generated/packages.js'
+import { ONE_DOLLAR_TERMS_PATH, ONE_DOLLAR_TERMS_VERSION } from '../data/oneDollarTerms.js'
 import { BUILDER_CATEGORIES as CATEGORIES, BUILDER_DETAILS as DETAILS, BUILDER_SERVICES as SERVICES } from '../data/oneDollarSite.js'
 import { templateBySlug } from '../templates/list.js'
 import { contact } from '../data/site.js'
@@ -494,6 +495,8 @@ export default function BuildYourPackage() {
   const quote = useMemo(() => (staff ? calculateQuote(state) : visitorQuote(state)), [state, staff])
   // Services drive the bundle meter; a quote can also be custom items alone.
   const hasItems = quote.rows.length > 0
+  // The $1 Website is a contract with a 12 month hosting minimum, so it cannot be sent without agreeing to it.
+  const hasOneDollar = Boolean(state.site1)
   const pendingPages = quote.pendingPageRate !== undefined
   const pendingNote = pendingPages ? `Plus ${money(quote.pendingPageRateAfter)} per page${quote.pct ? ` after the ${quote.pct}% bundle discount` : ''}. Page count and final total to be confirmed.` : ''
   const customNote = quote.customPriced ? 'Your custom landing page is priced on a quick call, so it isn’t in these totals yet.' : ''
@@ -586,6 +589,7 @@ export default function BuildYourPackage() {
           ['Email', 'email'],
           [pendingPages ? 'Fixed one-time fees' : 'One-time total', null, money(quote.oneAfter)],
           ['Monthly', null, `${money(quote.monthly)}/mo`],
+          ...(hasOneDollar ? [['Agreed to the $1 Website Agreement', 'agree'], ['Agreement version', null, ONE_DOLLAR_TERMS_VERSION], ['Agreed at (UTC)', null, new Date().toISOString()]] : []),
         ],
       })
       setSentName(typeof submittedName === 'string' ? submittedName.trim() : '')
@@ -1084,6 +1088,14 @@ export default function BuildYourPackage() {
                   <input name="subject" type="hidden" value="Package builder quote" />
                   <input name="message" type="hidden" value={message} />
                   <SmsConsentField />
+                  {hasOneDollar ? (
+                    <label className="audit-check">
+                      <input required type="checkbox" name="agree" value="Yes" />
+                      <span>
+                        I have read and agree to the <a href={ONE_DOLLAR_TERMS_PATH} target="_blank" rel="noopener">$1 Website Agreement</a>: $1 setup, $99 a month hosting, 12 month minimum, $149 a month from month 13, and SEO and every other service cost extra and start only after I accept a written quote.
+                      </span>
+                    </label>
+                  ) : null}
                   {/* aria-disabled, not disabled: a disabled button drops keyboard focus. */}
                   <button className="kinetic-button group" type="submit" aria-disabled={sendPhase === 'sending' || undefined}>
                     <span>{sendPhase === 'sending' ? 'Sending…' : 'Send my quote'}</span>

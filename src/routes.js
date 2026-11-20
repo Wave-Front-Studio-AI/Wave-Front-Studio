@@ -95,6 +95,7 @@ export const routes = [
   { path: '/package-builder/', kind: 'packages' },
   // The $1 Website: the 15 designs and an intake form, then one preview page for each design.
   { path: '/1-dollar-website/', kind: 'one-dollar' },
+  { path: '/1-dollar-website/terms/', kind: 'one-dollar-terms' },
   ...TEMPLATES.map(({ slug }) => ({ path: `/1-dollar-website/${slug}/`, kind: 'one-dollar-template', slug })),
   { path: '/locations/', kind: 'locations' },
   { path: '/services/', kind: 'services-hub' },

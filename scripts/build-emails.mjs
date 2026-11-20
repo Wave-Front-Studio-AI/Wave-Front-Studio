@@ -126,7 +126,8 @@ function dollarEmail() {
     row(`${p(greeting, { top: 12 })}
 <h1 class="h1" style="margin:0 0 14px;font-family:${FONT};font-size:34px;line-height:1.15;color:${C.ink};font-weight:800;letter-spacing:-0.4px">A <strong style="font-weight:900">PROFESSIONAL</strong> website for $1. Only until December 1.</h1>
 ${p('Most business owners put off a new website because of the bill up front. For Black Friday we took the bill away. Pick one of our 15 designs, send us your details, and we build your site with your own words, photos and logo.')}
-${p('The $1 setup ends Tuesday, December 1 at 11:59pm Eastern. That night the offer comes off our site, and anyone who has not sent their details by then misses it.', { bottom: 22 })}
+${p('The $1 setup ends Tuesday, December 1 at 11:59pm Eastern. That night the offer comes off our site, and anyone who has not sent their details by then misses it.')}
+${p(`The whole price, so there are no surprises: <strong style="color:${C.ink}">$1 to set up, then $99 a month for hosting with a 12 month minimum</strong> ($1,189 for the first year), then $149 a month from month 13. SEO and every other service cost extra and start only with a quote you accept. <a href="${esc(L('/1-dollar-website/terms/', 'terms'))}" style="color:${C.brand};font-weight:700">Read the agreement</a>.`, { bottom: 22 })}
 ${button('Claim my $1 website', L('/1-dollar-website/#designs', 'hero'))}`, { pad: '8px 40px 0' }),
     spacer(34),
     row(`${h2('Your custom website')}
@@ -139,14 +140,14 @@ ${p('Every template is a full five page site with real photos, built to work for
 ${step(1, 'Pick a template', 'Click through all five pages of any design before you choose.')}
 ${step(2, 'Send your details before December 1', 'Business name, services, hours, photos and logo, in one short form. That locks in the $1 setup.')}
 ${step(3, 'We build it', 'You get a link to look it over. We reply within two working days.')}
-${step(4, 'Go live', 'When it looks right, we publish it. Hosting starts that day.')}
+${step(4, 'Go live', 'When it looks right, we publish it. Hosting starts that day at $99 a month.')}
 </table>`, { pad: '0 40px 10px', bg: C.mist }),
     spacer(30),
     row(`${h2('Every site comes with')}
 ${p(`&#10003;&nbsp; Home, Services, About, Gallery and Contact pages<br>
 &#10003;&nbsp; Works on phones, tablets and computers<br>
 &#10003;&nbsp; A contact form that sends enquiries to your email<br>
-&#10003;&nbsp; Hosting and a security certificate<br>
+&#10003;&nbsp; Hosting and a security certificate ($99 a month, 12 month minimum)<br>
 &#10003;&nbsp; Your own domain connected, if you have one`, { bottom: 24 })}
 ${p('<strong style="color:' + C.ink + '">The clock is running.</strong> Pick a design today and the form takes a few minutes. Wait until after December 1 and the $1 deal is gone.', { bottom: 22 })}
 ${button('Pick my template before Dec 1', L('/1-dollar-website/#designs', 'footer-button'), { bg: C.brand })}

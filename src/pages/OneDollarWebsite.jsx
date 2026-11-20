@@ -4,6 +4,7 @@ import { ArrowIcon } from '../components/Icons.jsx'
 import { Breadcrumbs, FaqAccordion, Honeypot, SmsConsentField } from '../components/shared.jsx'
 import { contact } from '../data/site.js'
 import { ONE_DOLLAR } from '../data/oneDollarSite.js'
+import { ONE_DOLLAR_TERMS_PATH, ONE_DOLLAR_TERMS_VERSION } from '../data/oneDollarTerms.js'
 import { deliverLead } from '../formSubmission.js'
 import { OneDollarDeadline, OneDollarEnded, useOneDollarEnded } from '../components/OneDollarDeal.jsx'
 import { TEMPLATES, thumbUrl } from '../templates/list.js'
@@ -31,13 +32,14 @@ const NOT_INCLUDED = [
   `Writing your text. We can add it for ${money(120)} a page.`,
   `More than 5 pages. Extra pages are ${money(150)} each.`,
   'The domain name fee, which is paid to the company you register it with.',
+  'SEO, ads, social media, branding and every other service. Each one is priced separately and starts only after you accept a written quote.',
 ]
 
 const FAQ = [
   ['Will a template work for my kind of business?', 'Yes. The templates are styles, not industries. Any of the 15 works for a contractor, a clinic, a salon, a shop or an office. We swap in your services, photos, colors and words so it reads as your business.'],
   ['How long does the $1 setup last?', 'It is a Black Friday deal. Send your details by Tuesday, December 1 at 11:59 PM Eastern and you get the $1 setup. After that the deal ends and this page comes down.'],
-  ['Why is the setup only $1?', `The setup is $1 because the money comes from hosting. Hosting is ${money(ONE_DOLLAR.hosting)} a month and runs for at least ${ONE_DOLLAR.minMonths} months, so the first year comes to ${money(ONE_DOLLAR.minTotal)}. We would rather you see the whole price up front than find it later.`],
-  ['What does the 12 month minimum mean?', `Hosting runs for at least ${ONE_DOLLAR.minMonths} months from the day your site goes live. If you cancel before month ${ONE_DOLLAR.minMonths}, the remaining months of hosting are due. After that you can cancel any time by telling us in writing.`],
+  ['Why is the setup only $1?', `The setup is $1 because the money comes from hosting. Hosting is ${money(ONE_DOLLAR.hosting)} a month and runs for at least ${ONE_DOLLAR.minMonths} months, so the first year comes to ${money(ONE_DOLLAR.minTotal)}. From month 13 hosting moves to our regular price of ${money(ONE_DOLLAR.regularHosting)} a month. We would rather you see the whole price up front than find it later.`],
+  ['What does the 12 month minimum mean?', `Hosting runs for at least ${ONE_DOLLAR.minMonths} months from the day your site goes live. If you cancel before month ${ONE_DOLLAR.minMonths}, the remaining months of hosting are due. After that hosting is ${money(ONE_DOLLAR.regularHosting)} a month, our regular price, and you can cancel any time by telling us in writing.`],
   ['Who owns the site?', 'You own your text, photos, logo and domain. The design and the code that runs your site stay with Wavefront Studio, which is how we can build it for $1. If you leave, we send you your text and photos.'],
   ['What happens if I stop paying for hosting?', 'We write to you first. If hosting stays unpaid after that notice, the site comes down. You still keep your domain, your text and your photos, and we send them to you on request.'],
   ['Can I change the design?', 'You pick colors, text, photos and your logo. The layout of the design stays as you saw it in the preview. If you want a different layout, our other website packages start from a custom design.'],
@@ -74,7 +76,9 @@ function Intake({ chosen, onChoose }) {
           ['Colors or style', 'colors'],
           ['Link to logo and photos', 'assets'],
           ['Anything else', 'notes'],
-          ['Agreed to terms', 'agree'],
+          ['Agreed to the $1 Website Agreement', 'agree'],
+          ['Agreement version', null, ONE_DOLLAR_TERMS_VERSION],
+          ['Agreed at (UTC)', null, new Date().toISOString()],
         ],
       })
       setStatus('Thanks, your details are in. We reply within two working days.')
@@ -151,7 +155,7 @@ function Intake({ chosen, onChoose }) {
       <label className="audit-check wide">
         <input required type="checkbox" name="agree" value="Yes" />
         <span>
-          I understand the setup is {money(ONE_DOLLAR.setup)}, hosting is {money(ONE_DOLLAR.hosting)} a month with a {ONE_DOLLAR.minMonths} month minimum ({money(ONE_DOLLAR.minTotal)} for the first year), and the design and code stay with Wavefront Studio.
+          I have read and agree to the <a href={ONE_DOLLAR_TERMS_PATH} target="_blank" rel="noopener">$1 Website Agreement</a>. Setup is {money(ONE_DOLLAR.setup)}. Hosting is {money(ONE_DOLLAR.hosting)} a month with a {ONE_DOLLAR.minMonths} month minimum ({money(ONE_DOLLAR.minTotal)} for the first year), then {money(ONE_DOLLAR.regularHosting)} a month from month {ONE_DOLLAR.minMonths + 1}. The design and code stay with Wavefront Studio. SEO and every other service cost extra and start only after I accept a written quote.
         </span>
       </label>
       {/* aria-disabled, not disabled: a disabled button drops keyboard focus. */}
@@ -231,7 +235,7 @@ export default function OneDollarWebsite() {
               </dd>
             </div>
           </dl>
-          <p className="one-dollar-total">That is {money(ONE_DOLLAR.minTotal)} for the first year, hosting included.</p>
+          <p className="one-dollar-total">That is {money(ONE_DOLLAR.minTotal)} for the first year, hosting included. From month 13 hosting is {money(ONE_DOLLAR.regularHosting)} a month.</p>
           <OneDollarDeadline />
           <div className="one-dollar-actions">
             <a className="kinetic-button group" href="#designs">
@@ -305,6 +309,9 @@ export default function OneDollarWebsite() {
                 <li key={item}>{item}</li>
               ))}
             </ul>
+            <p className="one-dollar-terms-link">
+              <a href={ONE_DOLLAR_TERMS_PATH}>Read the full agreement and starting prices</a> or <a href="/package-builder/">price anything else in the package builder</a>.
+            </p>
           </div>
         </div>
       </section>

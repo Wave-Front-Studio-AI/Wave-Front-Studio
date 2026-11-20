@@ -4,7 +4,8 @@ Live pages: /1-dollar-website/ (15 designs, intake form) and /1-dollar-website/<
 Quote builder: a new "$1 Website" service under Websites & Development, or /package-builder/?template=<slug>.
 
 ## Terms as built (confirm before advertising)
-- $1 setup. $99 a month hosting. 12 month minimum, so $1,189 for the first year.
+- $1 setup. $99 a month hosting. 12 month minimum, so $1,189 for the first year. From month 13 hosting is $149 a month (regular price).
+- Customers agree by ticking a box that links /1-dollar-website/terms/ (version id in src/data/oneDollarTerms.js). The lead records the version and a UTC timestamp. Change the wording, bump the version.
 - Up to 5 pages: Home, Services, About, Gallery, Contact. Layout stays as previewed. We fill in the customer's text, photos, logo and colors.
 - Extra pages $150 each. Copywriting $120 per page. Domain fees go to the registrar.
 - Cancelling before month 12: the remaining hosting months are due. After month 12 the customer can cancel in writing.
