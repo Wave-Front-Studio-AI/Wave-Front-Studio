@@ -9,6 +9,7 @@ const steps = [
   'vite build',
   'vite build --ssr src/entry-server.jsx --outDir dist-ssr',
   'node scripts/prerender.mjs',
+  'node scripts/write-packages-json.mjs',
 ]
 
 for (const step of steps) {
