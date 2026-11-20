@@ -153,7 +153,7 @@ export function PortfolioPage() {
         </div>
       </section>
 
-      <TemplateShowcase title="Website templates we built" />
+      <TemplateShowcase title="Homepages we have built for contractors" />
 
       <Testimonials />
 
