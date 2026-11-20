@@ -68,6 +68,7 @@ const postSlugs = [
   'schema-markup-what-it-does',
   'heavy-images-slow-your-site',
   'google-ads-or-seo',
+  'missed-call-text-back',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
