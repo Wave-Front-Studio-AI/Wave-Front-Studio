@@ -120,13 +120,6 @@ function dollarEmail() {
 ${templatesGif}
 <div style="height:22px;line-height:22px;font-size:0">&nbsp;</div>
 ${button('Claim my $1 website', L('/1-dollar-website/#designs', 'hero'))}`, { pad: '8px 40px 0' }),
-    spacer(34),
-    row(`${h2('Your custom website')}
-${p('Every template is a full five page site with real photos, built to work for any kind of business.', { bottom: 20 })}
-${p('Most business owners put off a new website because of the bill up front. For Black Friday we took the bill away. Pick one of our 15 designs, send us your details, and we build your site with your own words, photos and logo.')}
-${p('The $1 setup ends Tuesday, December 1 at 11:59pm Eastern. That night the offer comes off our site, and anyone who has not sent their details by then misses it.')}
-${p(`The whole price, so there are no surprises: <strong style="color:${C.ink}">$1 to set up, then $99 a month for hosting with a 12 month minimum</strong> ($1,189 for the first year), then $149 a month from month 13. SEO and every other service cost extra and start only with a quote you accept. <a href="${esc(L('/1-dollar-website/terms/', 'terms'))}" style="color:${C.brand};font-weight:700">Read the agreement</a>.`, { bottom: 0 })}`, { pad: '0 40px' }),
-    row(`${p(`<a href="${esc(L('/1-dollar-website/#designs', 'all-templates'))}" style="color:${C.brand};font-weight:700">See all 15 templates</a>`, { top: 22, bottom: 0 })}`, { pad: '0 40px' }),
     spacer(30),
     row(`${h2('How it works', { top: 26 })}
 <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
