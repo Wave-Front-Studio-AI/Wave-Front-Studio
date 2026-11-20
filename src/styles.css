@@ -2074,6 +2074,13 @@ body.menu-open .deal-banner, body.chat-open .deal-banner { display: none; }
 .one-dollar-split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 64px); }
 .tick-list.is-muted li::before { background: var(--mist); content: '+'; }
 .one-dollar-formwrap { max-width: 880px; }
+.one-dollar-terms-link { margin-top: 18px; font-size: 0.95rem; }
+.one-dollar-terms-link a { color: var(--brand-deep); font-weight: 600; text-decoration: underline; }
+.audit-check a { color: var(--brand-deep); text-decoration: underline; }
+.one-dollar-prices { width: 100%; margin: 16px 0 24px; border-collapse: collapse; font-size: 0.95rem; }
+.one-dollar-prices th, .one-dollar-prices td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; }
+.one-dollar-prices thead th { font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.one-dollar-prices tbody th { font-weight: 600; }
 .one-dollar-form { margin-top: 24px; }
 .one-dollar-form .wide, .one-dollar-form .sms-consent, .one-dollar-form .form-status, .one-dollar-form .kinetic-button { grid-column: 1 / -1; }
 .one-dollar-form .kinetic-button { justify-self: start; }

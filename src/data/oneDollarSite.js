@@ -11,6 +11,8 @@ export const ONE_DOLLAR = {
   id: 'site1',
   setup: 1,
   hosting: 99,
+  // From month 13 hosting moves to our regular price.
+  regularHosting: 149,
   minMonths: 12,
   // What a customer pays over the minimum term: $1 plus 12 months of hosting.
   get minTotal() {
@@ -25,7 +27,7 @@ export const ONE_DOLLAR_SERVICE = {
   billing: 'hybrid',
   // `flat` keeps it out of the bundle count and every discount. See calculateQuote.
   flat: true,
-  tiers: [{ n: 'Template site', s: ONE_DOLLAR.setup, m: ONE_DOLLAR.hosting, note: 'Up to 5 pages, hosting included. 12 month minimum.' }],
+  tiers: [{ n: 'Template site', s: ONE_DOLLAR.setup, m: ONE_DOLLAR.hosting, note: 'Up to 5 pages, hosting included. 12 month minimum, then $149 a month.' }],
   addons: [
     { l: 'Extra page', p: 150, t: 'onetime' },
     { l: 'Copywriting (per page)', p: 120, t: 'onetime' },
