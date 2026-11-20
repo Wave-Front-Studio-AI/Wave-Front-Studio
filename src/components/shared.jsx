@@ -10,11 +10,11 @@ import { templateBySlug, thumbUrl } from '../templates/list.js'
 /* Template showcase                                                   */
 /* ------------------------------------------------------------------ */
 
-// Six of the 15 $1 Website templates (src/templates/list.js), each a design
-// style any business can use. While the Black Friday sale runs the section
-// sells the $1 Website. After Dec 1 it shows the templates as our work and
-// points to the contact page. The prerendered page is the sale version, and
-// the browser switches it after the deadline.
+// All 15 $1 Website templates (src/templates/list.js), each a design style
+// any business can use. While the Black Friday sale runs the section sells the
+// $1 Website. After Dec 1 it shows the templates as our work and points to the
+// contact page. The prerendered page is the sale version, and the browser
+// switches it after the deadline.
 const SHOWCASE = [
   ['pulse', 'Loud and confident, for a business that wants to look busy and booked.'],
   ['slate', 'Dark, sharp and industrial, with plain answers up front.'],
@@ -22,6 +22,15 @@ const SHOWCASE = [
   ['grid', 'Clean editorial type that lets your work do the talking.'],
   ['atlas', 'Bold and corporate, for a team that wants to look established.'],
   ['bloom', 'Soft and upscale, for a boutique, salon or studio.'],
+  ['linen', 'Soft and elegant, for a business that sells on taste and care.'],
+  ['volt', 'Dark and modern, for a crew that wants to look current and quick.'],
+  ['meadow', 'Fresh and friendly, for a business that lives on word of mouth.'],
+  ['ember', 'Warm and cinematic, for work that looks good in big photos.'],
+  ['frame', 'Minimal and gallery clean, for a business that shows finished jobs.'],
+  ['heritage', 'Classic and trusted, for a family business with years behind it.'],
+  ['pop', 'Bright and playful, for a business that wants to stand out.'],
+  ['horizon', 'Photo led, for a business with great pictures of its work.'],
+  ['nordic', 'Quiet and minimal, with plenty of room to breathe.'],
 ].map(([slug, what]) => ({ ...templateBySlug[slug], what }))
 
 export function TemplateShowcase({ title = 'Pick a website and we build it for you', className = '', animate = false }) {
@@ -29,7 +38,7 @@ export function TemplateShowcase({ title = 'Pick a website and we build it for y
   const [dealOn, setDealOn] = useState(true)
   useEffect(() => setDealOn(holidayDealActive()), [])
   const heading = dealOn ? title : 'Website templates we designed'
-  const button = dealOn ? ['See all 15 templates', '/1-dollar-website/#designs'] : ['Start a project', '/contact/']
+  const button = dealOn ? ['Get your $1 website', '/1-dollar-website/#designs'] : ['Start a project', '/contact/']
   return (
     <section className={`demo-sites chapter ${className}`} id="templates">
       <div className="page-frame">
