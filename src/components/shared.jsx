@@ -4,32 +4,24 @@ import { contact, googleListingUrl, isHiddenReviewer, offeringGroups, testimonia
 import { deliverLead } from '../formSubmission.js'
 import { SMS_CONSENT_CURRENT, SMS_MARKETING_CONSENT_CURRENT } from '../data/smsConsent.js'
 import { holidayDealActive } from '../holidayWindow.js'
-import { templateBySlug, thumbUrl } from '../templates/list.js'
+import { CONTRACTOR_MOCKUPS } from '../templates/contractorMockups.js'
 
 /* ------------------------------------------------------------------ */
 /* Template showcase                                                   */
 /* ------------------------------------------------------------------ */
 
-// Six of the 15 $1 Website templates (src/templates/list.js), each a design
-// style any business can use. While the Black Friday sale runs the section
-// sells the $1 Website. After Dec 1 it shows the templates as our work and
-// points to the contact page. The prerendered page is the sale version, and
-// the browser switches it after the deadline.
-const SHOWCASE = [
-  ['pulse', 'Loud and confident, for a business that wants to look busy and booked.'],
-  ['slate', 'Dark, sharp and industrial, with plain answers up front.'],
-  ['harbor', 'Calm and welcoming, for a business people trust with their home or health.'],
-  ['grid', 'Clean editorial type that lets your work do the talking.'],
-  ['atlas', 'Bold and corporate, for a team that wants to look established.'],
-  ['bloom', 'Soft and upscale, for a boutique, salon or studio.'],
-].map(([slug, what]) => ({ ...templateBySlug[slug], what }))
+// The free homepage mock-ups we built for contractors (src/templates/contractorMockups.js),
+// each a finished one page site. While the Black Friday sale runs the section sells the
+// $1 Website. After Dec 1 it shows them as our work and points to the contact page. The
+// prerendered page is the sale version, and the browser switches it after the deadline.
+const SHOWCASE = CONTRACTOR_MOCKUPS
 
-export function TemplateShowcase({ title = 'Pick a website and we build it for you', className = '', animate = false }) {
+export function TemplateShowcase({ title = 'Homepages we have built for contractors', className = '', animate = false }) {
   const enter = animate ? { 'data-enter': 'up' } : {}
   const [dealOn, setDealOn] = useState(true)
   useEffect(() => setDealOn(holidayDealActive()), [])
-  const heading = dealOn ? title : 'Website templates we designed'
-  const button = dealOn ? ['See all 15 templates', '/1-dollar-website/#designs'] : ['Start a project', '/contact/']
+  const heading = dealOn ? title : 'Homepages we have built for contractors'
+  const button = dealOn ? ['Get your $1 website', '/1-dollar-website/#designs'] : ['Start a project', '/contact/']
   return (
     <section className={`demo-sites chapter ${className}`} id="templates">
       <div className="page-frame">
@@ -37,21 +29,21 @@ export function TemplateShowcase({ title = 'Pick a website and we build it for y
           <h2>{heading}</h2>
           <p>
             {dealOn
-              ? '15 full five page websites that work for any business. Pick one and we fill it with your words, photos and logo. For Black Friday the setup is $1, until December 1.'
-              : 'A look at the range we build, from bold to calm. Every one is a full five page site.'}
+              ? 'Each one is a finished homepage we built for a contractor. Want yours? For Black Friday the setup is $1, until December 1.'
+              : 'Finished homepages we built for contractors, from floor coatings to roofing to landscaping.'}
           </p>
         </div>
         <ul className="demo-grid">
           {SHOWCASE.map((template) => (
             <li key={template.slug} {...enter}>
-              <a className="demo-card" href={`/1-dollar-website/${template.slug}/`}>
-                <img src={thumbUrl(template.slug)} alt={`The ${template.name} website template`} width="1200" height="900" loading="lazy" decoding="async" />
+              <a className="demo-card" href={`/demos/contractors/${template.slug}/`}>
+                <img src={`/images/contractors/${template.slug}.webp`} alt={`Homepage mock-up for ${template.name}`} width="1200" height="900" loading="lazy" decoding="async" />
                 <span className="demo-card-body">
-                  <span className="demo-kind">Template · {template.style}</span>
+                  <span className="demo-kind">Contractor mock-up</span>
                   <strong>{template.name}</strong>
                   <span className="demo-what">{template.what}</span>
                   <span className="text-link">
-                    Preview the template <ArrowIcon />
+                    See the homepage <ArrowIcon />
                   </span>
                 </span>
               </a>

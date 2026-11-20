@@ -249,7 +249,7 @@ export default function ServicePage({ service }) {
       </section>
 
       {service.slug === 'web-development' ? (
-        <TemplateShowcase className="is-light" title="Websites we can build for you this week" />
+        <TemplateShowcase className="is-light" title="Homepages we have built for contractors" />
       ) : null}
 
       <section className="service-capabilities chapter">
