@@ -69,6 +69,7 @@ const postSlugs = [
   'heavy-images-slow-your-site',
   'google-ads-or-seo',
   'missed-call-text-back',
+  'profile-photos-that-help',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
