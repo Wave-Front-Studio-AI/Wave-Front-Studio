@@ -23,3 +23,6 @@ export const templateBySlug = Object.fromEntries(TEMPLATES.map((template) => [te
 // Where each template's live demo and its gallery screenshot live.
 export const demoUrl = (slug) => `/demos/templates/${slug}/`
 export const thumbUrl = (slug) => `/images/templates/${slug}.webp`
+
+// Responsive gallery thumbnails: 400w and 800w copies (scripts/template-thumb-sizes.mjs) plus the 1200w original.
+export const thumbSrcSet = (slug) => `/images/templates/${slug}-400.webp 400w, /images/templates/${slug}-800.webp 800w, ${thumbUrl(slug)} 1200w`

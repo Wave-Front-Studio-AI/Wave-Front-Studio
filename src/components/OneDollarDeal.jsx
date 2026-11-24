@@ -1,12 +1,12 @@
+/* global __BUILD_TIME__ */
 import { useEffect, useState } from 'react'
-import { holidayDayPhase } from '../holidayWindow.js'
 import { ONE_DOLLAR_WINDOW, oneDollarActive } from '../data/oneDollarSite.js'
 
-// The $1 Website is a Black Friday deal. The prerendered page cannot know the
-// time, so it renders the live offer and the browser decides after load:
-// `null` until then, `false` while the deal runs, `true` once it has ended.
+// The $1 Website is a Black Friday deal: `false` while it runs, `true` once it has ended.
 export function useOneDollarEnded() {
-  const [ended, setEnded] = useState(null)
+  // The first render uses the time the site was built, so a build made after
+  // the deal ends prerenders the ended page. The browser then checks the real time.
+  const [ended, setEnded] = useState(() => !oneDollarActive(typeof __BUILD_TIME__ === 'string' ? __BUILD_TIME__ : undefined))
   useEffect(() => {
     const check = () => setEnded(!oneDollarActive())
     check()
@@ -25,19 +25,14 @@ function timeLeft(now = new Date()) {
   }
 }
 
-function headline(phase) {
-  if (phase === 'last') return 'Last day. The $1 setup ends tonight at 11:59 PM Eastern.'
-  if (phase === 'cyber') return 'Cyber Monday. The $1 setup ends tomorrow night at 11:59 PM Eastern.'
-  return `Black Friday deal. The $1 setup ends ${ONE_DOLLAR_WINDOW.endsLabel}.`
-}
-
 // A dark strip with the deadline and a countdown. Space is held while the
-// browser works out the time left, so nothing shifts when it appears.
+// browser works out the time left, so nothing shifts when it appears. The text
+// is there from the first paint; only the clock digits wait for the browser.
 export function OneDollarDeadline({ compact = false }) {
   const [state, setState] = useState(null)
 
   useEffect(() => {
-    const tick = () => setState({ parts: timeLeft(), phase: holidayDayPhase() })
+    const tick = () => setState({ parts: timeLeft() })
     tick()
     const timer = window.setInterval(tick, 30000)
     return () => window.clearInterval(timer)
@@ -47,22 +42,21 @@ export function OneDollarDeadline({ compact = false }) {
   const parts = state?.parts
 
   return (
-    <div className={`one-dollar-deadline${compact ? ' is-compact' : ''}`} data-ready={state ? 'true' : undefined}>
+    <div className={`one-dollar-deadline${compact ? ' is-compact' : ''}`}>
       <p>
-        <strong>{headline(state?.phase)}</strong>
-        {compact ? null : <span> After that the $1 deal is gone for good.</span>}
+        <strong>Black Friday only.</strong> <span>Ends {ONE_DOLLAR_WINDOW.endsLabel}.</span>
       </p>
       <div className="one-dollar-clock" role="timer" aria-label="Time left on the $1 setup">
         <div>
-          <b>{parts ? parts.days : '00'}</b>
+          <b>{parts ? parts.days : '--'}</b>
           <small>Days</small>
         </div>
         <div>
-          <b>{parts ? pad(parts.hours) : '00'}</b>
+          <b>{parts ? pad(parts.hours) : '--'}</b>
           <small>Hrs</small>
         </div>
         <div>
-          <b>{parts ? pad(parts.minutes) : '00'}</b>
+          <b>{parts ? pad(parts.minutes) : '--'}</b>
           <small>Min</small>
         </div>
       </div>
