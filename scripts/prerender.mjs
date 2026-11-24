@@ -99,9 +99,9 @@ const defaultImage = { path: '/og-card.png', type: 'image/png', alt: 'Wavefront 
 const OG_IMAGE_WIDTH = 1200
 const OG_IMAGE_HEIGHT = 630
 
-function buildHead({ title, description, canonical, schema, ogType = 'website', published, modified, image }) {
+function buildHead({ title, description, canonical, schema, ogType = 'website', published, modified, image, imageType, imageAlt, preloadImage }) {
   const url = `${siteOrigin}${canonical || '/'}`
-  const share = image ? { path: image, type: 'image/jpeg', alt: title } : defaultImage
+  const share = image ? { path: image, type: imageType || 'image/jpeg', alt: imageAlt || title } : defaultImage
   const imageUrl = `${siteOrigin}${share.path}`
   const parts = [
     '<meta property="og:site_name" content="Wavefront Studio" />',
@@ -122,6 +122,8 @@ function buildHead({ title, description, canonical, schema, ogType = 'website', 
     `<meta name="twitter:description" content="${escape(description)}" />`,
     `<meta name="twitter:image" content="${imageUrl}" />`,
   ]
+  // The page's own largest image, fetched at high priority so it paints early.
+  if (preloadImage) parts.push(`<link rel="preload" as="image" href="${escape(preloadImage)}" fetchpriority="high" />`)
   if (ogType === 'article') {
     if (published) parts.push(`<meta property="article:published_time" content="${published}" />`)
     if (modified) parts.push(`<meta property="article:modified_time" content="${modified}" />`)
@@ -185,7 +187,7 @@ for (const route of routes) {
   const target = route.path === '/' ? resolve(dist, 'index.html') : resolve(dist, `.${route.path}index.html`)
   await mkdir(dirname(target), { recursive: true })
   await writeFile(target, page)
-  pages.push({ path: route.path, kind: route.kind, title, description, modified: seo.modified, noindex: !!route.noindex })
+  pages.push({ path: route.path, kind: route.kind, title, description, modified: seo.modified, noindex: !!route.noindex, sitemapVideo: seo.sitemapVideo })
 }
 
 // A 404 fallback that still ships the app shell, so a static host can serve it
@@ -210,7 +212,7 @@ const videoEntries = new Map([
   ['/', services.find((service) => service.slug === 'web-development').hero],
 ])
 const videoTag = (path) => {
-  const hero = videoEntries.get(path)
+  const hero = videoEntries.get(path) || pages.find((page) => page.path === path)?.sitemapVideo
   if (!hero) return ''
   const seconds = Number(/PT(\d+)S/.exec(hero.duration)?.[1])
   return `<video:video><video:thumbnail_loc>${siteOrigin}${hero.poster}</video:thumbnail_loc><video:title>${xml(hero.alt)}</video:title><video:description>${xml(hero.description)}</video:description><video:content_loc>${siteOrigin}${hero.video}</video:content_loc><video:duration>${seconds}</video:duration><video:publication_date>${hero.uploadDate}</video:publication_date><video:family_friendly>yes</video:family_friendly></video:video>`

@@ -1,21 +1,27 @@
 import { useEffect, useRef, useState } from 'react'
 import Layout from '../components/Layout.jsx'
+import AdVideo from '../components/AdVideo.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
-import { Breadcrumbs, FaqAccordion, Honeypot, SmsConsentField } from '../components/shared.jsx'
+import { FaqAccordion, Honeypot, SmsConsentField } from '../components/shared.jsx'
 import { contact } from '../data/site.js'
 import { ONE_DOLLAR } from '../data/oneDollarSite.js'
+import { ONE_DOLLAR_FAQ } from '../data/oneDollarPage.js'
+import { oneDollarSeo } from '../data/oneDollarSeo.js'
 import { ONE_DOLLAR_TERMS_PATH, ONE_DOLLAR_TERMS_VERSION } from '../data/oneDollarTerms.js'
 import { deliverLead } from '../formSubmission.js'
 import { OneDollarDeadline, OneDollarEnded, useOneDollarEnded } from '../components/OneDollarDeal.jsx'
-import { TEMPLATES, thumbUrl } from '../templates/list.js'
+import { TEMPLATES, thumbSrcSet, thumbUrl } from '../templates/list.js'
+import { track } from '../oneDollarTrack.js'
 
 const money = (n) => `$${n.toLocaleString('en-US')}`
+const label = (template) => `${template.name} (${template.style})`
+const reducedMotion = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 const STEPS = [
-  ['Pick a template', 'Look through all 15 and click through the five pages of any of them. Any template works for any business.'],
-  ['Send your details', 'Your business name, services, hours, photos and logo go in one form below.'],
-  ['We build it', 'We put your information into the design and send you a link to look over. We reply within two working days.'],
-  ['Go live', `When you say it looks right, we publish it on our hosting. Hosting starts at ${money(ONE_DOLLAR.hosting)} a month from that day.`],
+  'Pick one of the 15 designs below.',
+  'Send your details in the form.',
+  'We reply within two working days and build your site from your details.',
+  'You approve the preview and we put it live. Hosting starts that day.',
 ]
 
 const INCLUDED = [
@@ -35,23 +41,49 @@ const NOT_INCLUDED = [
   'SEO, ads, social media, branding and every other service. Each one is priced separately and starts only after you accept a written quote.',
 ]
 
-const FAQ = [
-  ['Will a template work for my kind of business?', 'Yes. The templates are styles, not industries. Any of the 15 works for a contractor, a clinic, a salon, a shop or an office. We swap in your services, photos, colors and words so it reads as your business.'],
-  ['How long does the $1 setup last?', 'It is a Black Friday deal. Send your details by Tuesday, December 1 at 11:59 PM Eastern and you get the $1 setup. After that the deal ends and this page comes down.'],
-  ['Why is the setup only $1?', `The setup is $1 because the money comes from hosting. Hosting is ${money(ONE_DOLLAR.hosting)} a month and runs for at least ${ONE_DOLLAR.minMonths} months, so the first year comes to ${money(ONE_DOLLAR.minTotal)}. From month 13 hosting moves to our regular price of ${money(ONE_DOLLAR.regularHosting)} a month. We would rather you see the whole price up front than find it later.`],
-  ['What does the 12 month minimum mean?', `Hosting runs for at least ${ONE_DOLLAR.minMonths} months from the day your site goes live. If you cancel before month ${ONE_DOLLAR.minMonths}, the remaining months of hosting are due. After that hosting is ${money(ONE_DOLLAR.regularHosting)} a month, our regular price, and you can cancel any time by telling us in writing.`],
-  ['Who owns the site?', 'You own your text, photos, logo and domain. The design and the code that runs your site stay with Wavefront Studio, which is how we can build it for $1. If you leave, we send you your text and photos.'],
-  ['What happens if I stop paying for hosting?', 'We write to you first. If hosting stays unpaid after that notice, the site comes down. You still keep your domain, your text and your photos, and we send them to you on request.'],
-  ['Can I change the design?', 'You pick colors, text, photos and your logo. The layout of the design stays as you saw it in the preview. If you want a different layout, our other website packages start from a custom design.'],
-  ['Can I add more pages later?', `Yes. Each extra page is ${money(150)}. We can also write the text for ${money(120)} a page.`],
-  ['Can I use my own domain?', 'Yes. Tell us the domain and we connect it. If you do not have one, we can help you choose and register one. The fee goes to the registrar, not to us.'],
-  ['Can I get this with other services?', 'Yes. Add it to a quote in our package builder next to anything else you need. The $1 website does not count toward bundle discounts or sale deals, and the other services in the quote are priced as normal.'],
-  ['How soon will I hear back?', 'We reply within two working days. When we reply we tell you when your preview will be ready.'],
-]
+const FIRST_YEAR = `${money(ONE_DOLLAR.setup)} to set up. Hosting is ${money(ONE_DOLLAR.hosting)} a month for at least ${ONE_DOLLAR.minMonths} months, so ${money(ONE_DOLLAR.minTotal)} the first year, then ${money(ONE_DOLLAR.regularHosting)} a month.`
 
-function Intake({ chosen, onChoose }) {
+// Moves the person to the form and into the first required box still empty.
+function goToForm(formEl) {
+  if (!formEl) return
+  formEl.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' })
+  const fields = formEl.querySelectorAll('form [required]')
+  for (const field of fields) {
+    if (field.name === 'template' || field.type === 'checkbox') continue
+    if (!field.value) {
+      field.focus({ preventScroll: true })
+      return
+    }
+  }
+}
+
+function Intake({ chosen, onChoose, onDone }) {
   const [status, setStatus] = useState('')
   const [sending, setSending] = useState(false)
+  const [done, setDone] = useState(false)
+  const formEl = useRef(null)
+  const started = useRef(false)
+  const thanks = useRef(null)
+  const picked = TEMPLATES.find((template) => label(template) === chosen)
+
+  // The browser's own checks stay in charge. We only count which boxes failed.
+  useEffect(() => {
+    const form = formEl.current
+    if (!form) return undefined
+    const onInvalid = (event) => track('od_field_error', { field: event.target.name || 'unknown' })
+    form.addEventListener('invalid', onInvalid, true)
+    return () => form.removeEventListener('invalid', onInvalid, true)
+  }, [done])
+
+  useEffect(() => {
+    if (done) thanks.current?.focus()
+  }, [done])
+
+  function begin() {
+    if (started.current) return
+    started.current = true
+    track('od_form_start')
+  }
 
   async function submit(event) {
     event.preventDefault()
@@ -81,23 +113,36 @@ function Intake({ chosen, onChoose }) {
           ['Agreed at (UTC)', null, new Date().toISOString()],
         ],
       })
-      setStatus('Thanks, your details are in. We reply within two working days.')
+      track('od_form_submit_success', { template: chosen })
+      setDone(true)
+      onDone?.()
     } catch {
+      track('od_form_submit_fail')
       setStatus(`We could not send that. Please email ${contact.email}.`)
     } finally {
       setSending(false)
     }
   }
 
+  if (done) {
+    return (
+      <div className="one-dollar-thanks">
+        <h3 ref={thanks} tabIndex={-1}>Thanks, your details are in.</h3>
+        <p>We reply within two working days with an invoice for the $1 setup and a go-live date. Keep an eye on your email and check the spam folder if nothing arrives.</p>
+        {picked ? <a className="text-link" href={`/1-dollar-website/${picked.slug}/`}>Look at the {picked.name} preview again</a> : null}
+      </div>
+    )
+  }
+
   return (
-    <form className="enquiry-form one-dollar-form" onSubmit={submit}>
+    <form ref={formEl} className="enquiry-form one-dollar-form" onSubmit={submit} onInput={begin}>
       <Honeypot />
       <label className="wide">
         <span>Template you picked</span>
         <select required name="template" value={chosen} onChange={(event) => onChoose(event.target.value)}>
           <option value="">Choose a template</option>
           {TEMPLATES.map((template) => (
-            <option key={template.slug} value={`${template.name} (${template.style})`}>
+            <option key={template.slug} value={label(template)}>
               {template.name}: {template.style}
             </option>
           ))}
@@ -119,48 +164,57 @@ function Intake({ chosen, onChoose }) {
         <span>Phone</span>
         <input required name="phone" type="tel" inputMode="tel" autoComplete="tel" pattern="(?:[^\d]*\d){7,}[^\d]*" title="Enter a phone number with at least 7 digits." />
       </label>
-      <label>
-        <span>Your domain or current website (optional)</span>
-        <input name="website" type="text" inputMode="url" autoCapitalize="none" spellCheck="false" placeholder="yourbusiness.com" />
-      </label>
-      <label>
-        <span>Business address (optional)</span>
-        <input name="address" type="text" autoComplete="street-address" />
-      </label>
       <label className="wide">
         <span>What does your business do?</span>
         <textarea required name="about" rows="4" placeholder="A few sentences in your own words. Who you help and what makes you different." />
       </label>
-      <label className="wide">
-        <span>Your services</span>
-        <textarea required name="services" rows="4" placeholder="One per line, with a short description if you like." />
-      </label>
-      <label>
-        <span>Opening hours</span>
-        <textarea name="hours" rows="3" placeholder="Mon to Fri: 8am to 5pm" />
-      </label>
-      <label>
-        <span>Colors or style you like (optional)</span>
-        <textarea name="colors" rows="3" placeholder="Your logo colors, or a site you like." />
-      </label>
-      <label className="wide">
-        <span>Link to your logo and photos</span>
-        <input name="assets" type="text" inputMode="url" autoCapitalize="none" spellCheck="false" placeholder="A Google Drive, Dropbox or similar link" />
-      </label>
-      <label className="wide">
-        <span>Anything else we should know (optional)</span>
-        <textarea name="notes" rows="3" />
-      </label>
+      <details className="wide one-dollar-more">
+        <summary>Add more detail (optional)</summary>
+        <div className="one-dollar-more-grid">
+          <label className="wide">
+            <span>Your services</span>
+            <textarea name="services" rows="4" placeholder="One per line, with a short description if you like." />
+          </label>
+          <label>
+            <span>Opening hours</span>
+            <textarea name="hours" rows="3" placeholder="Mon to Fri: 8am to 5pm" />
+          </label>
+          <label>
+            <span>Colors or style you like</span>
+            <textarea name="colors" rows="3" placeholder="Your logo colors, or a site you like." />
+          </label>
+          <label>
+            <span>Your domain or current website</span>
+            <input name="website" type="text" inputMode="url" autoCapitalize="none" spellCheck="false" placeholder="yourbusiness.com" />
+          </label>
+          <label>
+            <span>Business address</span>
+            <input name="address" type="text" autoComplete="street-address" />
+          </label>
+          <label className="wide">
+            <span>Link to your logo and photos</span>
+            <input name="assets" type="text" inputMode="url" autoCapitalize="none" spellCheck="false" placeholder="A Google Drive, Dropbox or similar link" />
+          </label>
+          <label className="wide">
+            <span>Anything else we should know</span>
+            <textarea name="notes" rows="3" />
+          </label>
+        </div>
+      </details>
       <SmsConsentField />
+      <p className="wide one-dollar-disclosure">
+        You pay {money(ONE_DOLLAR.setup)} to set up. Hosting is {money(ONE_DOLLAR.hosting)} a month for at least {ONE_DOLLAR.minMonths} months, which is {money(ONE_DOLLAR.minTotal)} for the first year. If you cancel before month {ONE_DOLLAR.minMonths}, the remaining months are due. From month {ONE_DOLLAR.minMonths + 1} hosting is {money(ONE_DOLLAR.regularHosting)} a month.
+      </p>
       <label className="audit-check wide">
         <input required type="checkbox" name="agree" value="Yes" />
         <span>
           I have read and agree to the <a href={ONE_DOLLAR_TERMS_PATH} target="_blank" rel="noopener">$1 Website Agreement</a>. Setup is {money(ONE_DOLLAR.setup)}. Hosting is {money(ONE_DOLLAR.hosting)} a month with a {ONE_DOLLAR.minMonths} month minimum ({money(ONE_DOLLAR.minTotal)} for the first year), then {money(ONE_DOLLAR.regularHosting)} a month from month {ONE_DOLLAR.minMonths + 1}. The design and code stay with Wavefront Studio. SEO and every other service cost extra and start only after I accept a written quote.
         </span>
       </label>
+      <p className="wide one-dollar-send-note">We reply within two working days, invoice the {money(ONE_DOLLAR.setup)} and give you a go-live date. Nothing to pay on this page.</p>
       {/* aria-disabled, not disabled: a disabled button drops keyboard focus. */}
       <button className="kinetic-button group" type="submit" aria-disabled={sending || undefined}>
-        <span>{sending ? 'Sending…' : 'Send my details'}</span>
+        <span>{sending ? 'Sending…' : 'Lock in my $1 website'}</span>
         <span className="button-island">
           <ArrowIcon className="size-4" />
         </span>
@@ -174,6 +228,9 @@ function Intake({ chosen, onChoose }) {
 
 export default function OneDollarWebsite() {
   const [chosen, setChosen] = useState('')
+  const [formInView, setFormInView] = useState(false)
+  const [overlay, setOverlay] = useState(false)
+  const [sent, setSent] = useState(false)
   const formRef = useRef(null)
   const ended = useOneDollarEnded()
 
@@ -181,84 +238,92 @@ export default function OneDollarWebsite() {
   useEffect(() => {
     const slug = new URLSearchParams(window.location.search).get('template')
     const found = TEMPLATES.find((template) => template.slug === slug)
-    if (found) setChosen(`${found.name} (${found.style})`)
+    if (found) setChosen(label(found))
   }, [])
 
+  // The phone bar steps aside while the form is on screen or the menu or chat is open.
+  useEffect(() => {
+    const form = formRef.current
+    if (!form || ended) return undefined
+    const watcher = new IntersectionObserver(([entry]) => setFormInView(entry.isIntersecting), { threshold: 0.05 })
+    watcher.observe(form)
+    const readBody = () => setOverlay(document.body.classList.contains('menu-open') || document.body.classList.contains('chat-open'))
+    readBody()
+    const classes = new MutationObserver(readBody)
+    classes.observe(document.body, { attributes: true, attributeFilter: ['class'] })
+    return () => {
+      watcher.disconnect()
+      classes.disconnect()
+    }
+  }, [ended])
+
+  const showSticky = !ended && !formInView && !overlay && !sent
+  useEffect(() => {
+    document.body.classList.toggle('od-sticky', showSticky)
+    return () => document.body.classList.remove('od-sticky')
+  }, [showSticky])
+
   function pick(template) {
-    setChosen(`${template.name} (${template.style})`)
-    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    setChosen(label(template))
+    track('od_pick_design', { template: template.slug })
+    goToForm(formRef.current)
+  }
+
+  function stickyClick(event) {
+    track('od_sticky_cta_click', { picked: Boolean(chosen) })
+    if (chosen) {
+      event.preventDefault()
+      goToForm(formRef.current)
+    }
   }
 
   return (
-    <Layout
-      className="one-dollar-page"
-      seo={{
-        title: '$1 Website: Pick a Design, We Build It | Wavefront Studio',
-        description: `Black Friday: a five page website for ${money(ONE_DOLLAR.setup)} to set up, until December 1. Pick one of 15 templates and send your details. Hosting is ${money(ONE_DOLLAR.hosting)} a month, 12 month minimum.`,
-        canonical: '/1-dollar-website/',
-      }}
-    >
+    <Layout className="one-dollar-page" seo={oneDollarSeo({ ended: Boolean(ended) })}>
       {ended ? (
         <section className="offer-hero one-dollar-hero">
           <div className="page-frame">
-            <Breadcrumbs trail={[['Home', '/'], ['$1 Website', '/1-dollar-website/']]} />
             <OneDollarEnded Heading="h1" />
           </div>
         </section>
       ) : (
       <>
       <section className="offer-hero one-dollar-hero">
-        <div className="page-frame">
-          <Breadcrumbs trail={[['Home', '/'], ['$1 Website', '/1-dollar-website/']]} />
-          <p className="eyebrow-label">Black Friday: the $1 Website</p>
-          <h1>A real website for $1 to start.</h1>
-          <p className="one-dollar-lede">
-            Pick one of 15 templates. Send us your details and we build your site with your words, photos and logo. Hosting is {money(ONE_DOLLAR.hosting)} a month.
-          </p>
-          <dl className="one-dollar-price" aria-label="Price">
-            <div>
-              <dt>To set up</dt>
-              <dd>{money(ONE_DOLLAR.setup)}</dd>
+        <div className="page-frame one-dollar-hero-grid">
+          <div className="one-dollar-copy">
+            <h1>A real website for $1.</h1>
+            <p className="one-dollar-lede">
+              Pick one of 15 designs. We build it from your details. Then {money(ONE_DOLLAR.hosting)} a month hosting, {ONE_DOLLAR.minMonths} month minimum. Black Friday only.
+            </p>
+            <div className="one-dollar-actions">
+              <a className="kinetic-button group" href="#designs">
+                <span>Pick my design</span>
+                <span className="button-island">
+                  <ArrowIcon className="size-4" />
+                </span>
+              </a>
+              <a className="text-link" href="#start">
+                Send my details
+              </a>
             </div>
-            <div>
-              <dt>Hosting</dt>
-              <dd>
-                {money(ONE_DOLLAR.hosting)}
-                <small> a month</small>
-              </dd>
-            </div>
-            <div>
-              <dt>Minimum</dt>
-              <dd>
-                {ONE_DOLLAR.minMonths}
-                <small> months</small>
-              </dd>
-            </div>
-          </dl>
-          <p className="one-dollar-total">That is {money(ONE_DOLLAR.minTotal)} for the first year, hosting included. From month 13 hosting is {money(ONE_DOLLAR.regularHosting)} a month.</p>
-          <OneDollarDeadline />
-          <div className="one-dollar-actions">
-            <a className="kinetic-button group" href="#designs">
-              <span>See the 15 templates</span>
-              <span className="button-island">
-                <ArrowIcon className="size-4" />
-              </span>
-            </a>
-            <a className="text-link" href="#start">
-              Send my details
-            </a>
+            <p className="one-dollar-total">
+              {FIRST_YEAR} <a href={ONE_DOLLAR_TERMS_PATH}>Read the $1 Website Agreement</a>
+            </p>
+          </div>
+          <div className="one-dollar-media">
+            <AdVideo />
+          </div>
+          <div className="one-dollar-deadline-slot">
+            <OneDollarDeadline />
           </div>
         </div>
       </section>
 
-      <section className="one-dollar-section">
+      <section className="one-dollar-steps-wrap">
         <div className="page-frame">
-          <h2>How it works</h2>
-          <ol className="one-dollar-steps">
-            {STEPS.map(([title, text], index) => (
-              <li key={title}>
+          <ol className="one-dollar-steps" aria-label="How it works">
+            {STEPS.map((text, index) => (
+              <li key={text}>
                 <span aria-hidden="true">{index + 1}</span>
-                <h3>{title}</h3>
                 <p>{text}</p>
               </li>
             ))}
@@ -268,27 +333,52 @@ export default function OneDollarWebsite() {
 
       <section className="one-dollar-section" id="designs">
         <div className="page-frame">
-          <h2>Pick your template</h2>
-          <p className="one-dollar-intro">Every template is a full five page website, and any of them works for any business. Open a preview and click through Home, Services, About, Gallery and Contact.</p>
+          <h2>Pick your design</h2>
+          <p className="one-dollar-intro">Every design is a full five page website, and any of them works for any business. Open a preview and click through Home, Services, About, Gallery and Contact.</p>
           <ul className="one-dollar-grid">
-            {TEMPLATES.map((template) => (
-              <li key={template.slug}>
-                <a className="one-dollar-shot" href={`/1-dollar-website/${template.slug}/`} aria-label={`Preview the ${template.name} template`}>
-                  <img src={thumbUrl(template.slug)} alt="" width="1200" height="900" loading="lazy" decoding="async" />
-                </a>
-                <div className="one-dollar-card-body">
-                  <h3>{template.name}</h3>
-                  <p>{template.style}</p>
-                  <div className="one-dollar-card-actions">
-                    <a href={`/1-dollar-website/${template.slug}/`}>Preview</a>
-                    <button type="button" onClick={() => pick(template)}>
-                      Pick this one
-                    </button>
+            {TEMPLATES.map((template) => {
+              const isPicked = chosen === label(template)
+              return (
+                <li key={template.slug} className={isPicked ? 'is-picked' : undefined}>
+                  <a className="one-dollar-shot" href={`/1-dollar-website/${template.slug}/`} onClick={() => track('od_preview_open', { template: template.slug })}>
+                    <img
+                      src={thumbUrl(template.slug)}
+                      srcSet={thumbSrcSet(template.slug)}
+                      sizes="(max-width: 760px) calc(50vw - 24px), 360px"
+                      alt={`${template.name} website template, ${template.style.toLowerCase()}`}
+                      width="1200"
+                      height="900"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </a>
+                  <div className="one-dollar-card-body">
+                    <h3>
+                      <a href={`/1-dollar-website/${template.slug}/`} onClick={() => track('od_preview_open', { template: template.slug })}>
+                        {template.name}
+                      </a>
+                    </h3>
+                    <p>{template.style}</p>
                   </div>
-                </div>
-              </li>
-            ))}
+                  <button className="one-dollar-pick" type="button" aria-pressed={isPicked} onClick={() => pick(template)}>
+                    Pick {template.name}
+                  </button>
+                </li>
+              )
+            })}
           </ul>
+        </div>
+      </section>
+
+      <section className="one-dollar-section" id="start" ref={formRef}>
+        <div className="page-frame one-dollar-formwrap">
+          <h2>Send us your details</h2>
+          {chosen && !sent ? (
+            <p className="one-dollar-picked" role="status">
+              You picked {TEMPLATES.find((template) => label(template) === chosen)?.name}. Next: send your details.
+            </p>
+          ) : null}
+          <Intake chosen={chosen} onChoose={setChosen} onDone={() => setSent(true)} />
         </div>
       </section>
 
@@ -316,18 +406,12 @@ export default function OneDollarWebsite() {
         </div>
       </section>
 
-      <section className="one-dollar-section" id="start" ref={formRef}>
-        <div className="page-frame one-dollar-formwrap">
-          <h2>Send us your details</h2>
-          <OneDollarDeadline compact />
-          <p className="one-dollar-intro">
-            Send it by Tuesday, December 1 at 11:59 PM Eastern to lock in the $1 setup. Fill this in once and we build from it. We reply within two working days, and we invoice the {money(ONE_DOLLAR.setup)} setup when we confirm your design.
-          </p>
-          <Intake chosen={chosen} onChoose={setChosen} />
-        </div>
-      </section>
+      <FaqAccordion items={ONE_DOLLAR_FAQ} heading={{ title: 'Questions about the $1 website' }} />
 
-      <FaqAccordion items={FAQ} heading={{ title: 'Questions about the $1 website' }} />
+      <a className={`od-sticky-bar${showSticky ? ' is-shown' : ''}`} href={chosen ? '#start' : '#designs'} onClick={stickyClick} tabIndex={showSticky ? undefined : -1} aria-hidden={showSticky ? undefined : true}>
+        {chosen ? 'Send my details' : 'Pick my design'}
+        <ArrowIcon className="size-4" />
+      </a>
       </>
       )}
     </Layout>

@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
+const BUILD_TIME = process.env.BUILD_TIME || new Date().toISOString()
 const LEAD_SERVICE = process.env.LEAD_SERVICE_URL || 'http://127.0.0.1:8787'
 const BUILD_DATE = process.env.BUILD_DATE || new Date().toISOString().slice(0, 10)
 
@@ -37,7 +38,8 @@ export default defineConfig({
       '/api': { target: LEAD_SERVICE, changeOrigin: true },
     },
   },
-  // The day this build treats as today for scheduled pages (src/data/schedule.js).
-  define: { __BUILD_DATE__: JSON.stringify(BUILD_DATE) },
+  // The day this build treats as today for scheduled pages (src/data/schedule.js),
+// and the exact moment, which decides whether the $1 Website deal is still on.
+  define: { __BUILD_DATE__: JSON.stringify(BUILD_DATE), __BUILD_TIME__: JSON.stringify(BUILD_TIME) },
   build: { outDir: 'dist', emptyOutDir: true },
 })

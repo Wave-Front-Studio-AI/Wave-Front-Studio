@@ -4,6 +4,9 @@
 import { spawnSync } from 'node:child_process'
 
 process.env.BUILD_DATE ||= new Date().toISOString().slice(0, 10)
+// A full timestamp as well: the $1 Website deal ends at 05:00Z on Dec 2, so a
+// date alone cannot say which side of the cutoff a build is on.
+process.env.BUILD_TIME ||= new Date().toISOString()
 
 const steps = [
   'vite build',
