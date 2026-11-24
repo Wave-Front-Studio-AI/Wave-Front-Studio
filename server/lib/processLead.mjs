@@ -1,9 +1,10 @@
 import { saveLead } from './base44.mjs'
+import { emailLead } from './leadEmail.mjs'
 import { normalizeLead } from './normalizeLead.mjs'
 
 // saveLead merges a repeat enquiry into the existing record rather than
 // creating a duplicate; either way the lead is stored.
-export async function processLead(body, config, saveLeadImpl = saveLead) {
+export async function processLead(body, config, saveLeadImpl = saveLead, emailLeadImpl = emailLead) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
     return { status: 400, payload: { ok: false, error: 'Invalid request.' } }
   }
@@ -24,6 +25,11 @@ export async function processLead(body, config, saveLeadImpl = saveLead) {
     return { status: saved?.merged ? 200 : 201, payload }
   } catch (error) {
     console.error(JSON.stringify({ at: new Date().toISOString(), event: 'base44_lead_failed', message: error.message }))
+    // The CRM could not take it. Email it to the studio, so the enquiry still arrives.
+    if (await emailLeadImpl(lead, config)) {
+      console.error(JSON.stringify({ at: new Date().toISOString(), event: 'lead_emailed_instead' }))
+      return { status: 201, payload: { ok: true, stored: true, delivered: 'email' } }
+    }
     return {
       status: error.status === 503 ? 503 : 502,
       payload: { ok: false, error: 'The lead could not be stored.' },

@@ -52,6 +52,13 @@ export class Base44Error extends Error {
   }
 }
 
+// Base44 switched off account API keys (header `api_key`) and now takes a
+// personal access token as `Authorization: Bearer`. BASE44_AUTH_STYLE=api_key
+// brings back the old header for a workspace that still accepts one.
+function authHeaders(config) {
+  return config.base44AuthStyle === 'api_key' ? { api_key: config.base44Key } : { authorization: `Bearer ${config.base44Key}` }
+}
+
 const entityUrl = (config, entity = config.base44Entity) => `${config.base44ApiUrl}/apps/${config.base44AppId}/entities/${entity}`
 
 // One request to the Base44 entities API, with the timeout and error handling
@@ -63,7 +70,7 @@ async function base44Request(url, { method = 'GET', body } = {}, config, fetchIm
   try {
     response = await fetchImpl(url, {
       method,
-      headers: { api_key: config.base44Key, 'content-type': 'application/json', accept: 'application/json' },
+      headers: { ...authHeaders(config), 'content-type': 'application/json', accept: 'application/json' },
       ...(body ? { body: JSON.stringify(body) } : {}),
       signal: controller.signal,
     })

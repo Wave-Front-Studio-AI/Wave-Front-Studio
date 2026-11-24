@@ -26,6 +26,7 @@ export function loadConfig(env = process.env) {
     base44ApiUrl: normalizeApiUrl(env.BASE44_API_URL || 'https://divergent-nexus-growth-hub.base44.app/api'),
     base44AppId: env.BASE44_APP_ID || '',
     base44Key: env.BASE44_API_KEY || '',
+    base44AuthStyle: (env.BASE44_AUTH_STYLE || 'bearer').toLowerCase(),
     base44Entity: env.BASE44_ENTITY || 'ProspectLead',
     base44StageField: env.BASE44_STAGE_FIELD || 'pipeline_stage',
     base44Stage: env.BASE44_NEW_LEAD_STAGE || 'new',
@@ -36,5 +37,13 @@ export function loadConfig(env = process.env) {
     base44OwnerEmail: env.BASE44_LEAD_OWNER_EMAIL || 'daniel@wavefrontstudiostaff.com',
     base44TimeoutMs: number(env.BASE44_TIMEOUT_MS, 10_000),
     base44FieldMap: fieldMap(env.BASE44_FIELD_MAP),
+    // Safety net: when the CRM cannot take a lead, it is emailed to the studio instead.
+    emailProvider: (env.EMAIL_PROVIDER || '').toLowerCase(),
+    emailFrom: env.EMAIL_FROM || '',
+    emailTo: env.LEAD_FALLBACK_EMAIL || env.EMAIL_REPLY_TO || '',
+    emailBcc: env.EMAIL_BCC || '',
+    resendKey: env.RESEND_API_KEY || '',
+    postmarkToken: env.POSTMARK_SERVER_TOKEN || '',
+    sendgridKey: env.SENDGRID_API_KEY || '',
   }
 }
