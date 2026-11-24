@@ -317,11 +317,6 @@ export default function OneDollarWebsite() {
           <div className="one-dollar-deadline-slot">
             <OneDollarDeadline />
           </div>
-        </div>
-      </section>
-
-      <section className="one-dollar-steps-wrap">
-        <div className="page-frame">
           <ol className="one-dollar-steps" aria-label="How it works">
             {STEPS.map((text, index) => (
               <li key={text}>
