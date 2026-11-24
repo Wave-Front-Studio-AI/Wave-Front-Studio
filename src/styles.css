@@ -2185,5 +2185,64 @@ body.menu-open .deal-banner, body.chat-open .deal-banner { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .od-sticky-bar { transition: none; transform: none; } }
 
+/* 15% off paid ads and brand design (src/pages/FifteenOff.jsx). Layout copies the $1 Website hero. */
+.fifteen-off-hero { padding: clamp(28px, 5vw, 72px) 0 clamp(16px, 3vw, 32px); }
+.fifteen-off-hero h1 { max-width: 14ch; font-size: clamp(2.4rem, 7vw, 4.2rem); }
+.fifteen-off-hero-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.25fr); grid-template-areas: "copy form" "deadline form" "how form" "rest form"; grid-template-rows: auto auto auto 1fr; column-gap: clamp(28px, 5vw, 72px); align-items: start; }
+.fifteen-off-copy { grid-area: copy; }
+.fifteen-off-lede { max-width: 46ch; margin-top: 16px; color: var(--text); font-size: 1.15rem; line-height: 1.6; }
+.fifteen-off-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 26px; margin-top: 24px; }
+.fifteen-off-actions .text-link { min-height: 44px; }
+.fifteen-off-total { max-width: 52ch; margin-top: 16px; color: var(--muted); font-size: 0.95rem; line-height: 1.55; }
+.fifteen-off-deadline-slot { grid-area: deadline; align-self: start; margin-top: 22px; }
+.fifteen-off-how { grid-area: how; margin-top: 22px; }
+.fifteen-off-how h2 { font-size: 1.15rem; }
+.fifteen-off-steps { max-width: 760px; margin: 10px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line-strong); }
+.fifteen-off-steps li { display: flex; align-items: baseline; gap: 14px; padding: 17px 0; border-bottom: 1px solid var(--line); }
+.fifteen-off-steps li > span { flex: 0 0 auto; width: 1.4em; color: var(--ink); font-family: var(--display); font-weight: 600; font-variant-numeric: tabular-nums; }
+.fifteen-off-steps p { color: var(--text); font-size: 1rem; line-height: 1.5; }
+.fifteen-off-formcard { grid-area: form; min-width: 0; scroll-margin-top: 88px; padding: clamp(18px, 3vw, 28px); border: 1px solid var(--line-strong); border-radius: var(--r-lg); background: var(--white); }
+.fifteen-off-formcard h2 { font-size: clamp(1.35rem, 2.4vw, 1.75rem); }
+.fifteen-off-formcard .enquiry-form { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.fifteen-off-form { display: grid; grid-template-columns: 1fr 1fr; margin-top: 12px; gap: 10px 14px; }
+.fifteen-off-form label { gap: 4px; }
+.fifteen-off-form input, .fifteen-off-form select { min-height: 42px; }
+.fifteen-off-form textarea { min-height: 72px; }
+.fifteen-off-form select, .fifteen-off-form textarea { width: 100%; font: inherit; }
+.fifteen-off-form .wide, .fifteen-off-form .sms-consent, .fifteen-off-form .form-status, .fifteen-off-form .kinetic-button { grid-column: 1 / -1; }
+.fifteen-off-form .kinetic-button { justify-self: start; }
+.fifteen-off-form :user-invalid { border-color: #b42318; box-shadow: 0 0 0 1px #b42318; }
+.fifteen-off-choices { display: grid; gap: 8px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.fifteen-off-choices legend { margin-bottom: 6px; padding: 0; color: var(--ink); font-weight: 600; }
+.fifteen-off-form .fifteen-off-choice { display: flex; align-items: flex-start; gap: 12px; min-height: 44px; padding: 12px 14px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); background: var(--white); cursor: pointer; }
+.fifteen-off-choice input { flex: 0 0 auto; width: 20px; min-height: 0; height: 20px; margin-top: 2px; accent-color: var(--ink); }
+.fifteen-off-choice span { display: grid; gap: 2px; }
+.fifteen-off-choice b { color: var(--ink); font-weight: 600; }
+.fifteen-off-choice small { color: var(--muted); font-size: 0.9rem; line-height: 1.45; }
+.fifteen-off-choice:has(input:checked) { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+.fifteen-off-choice:has(input:focus-visible) { outline: 3px solid var(--brand); outline-offset: 2px; }
+.fifteen-off-more { border: 1px solid var(--line); border-radius: var(--r-sm); }
+.fifteen-off-more summary { min-height: 44px; display: flex; align-items: center; padding: 0 14px; color: var(--brand-deep); font-weight: 600; cursor: pointer; }
+.fifteen-off-more[open] summary { border-bottom: 1px solid var(--line); }
+.fifteen-off-more-grid { display: grid; gap: 14px; padding: 16px 14px; }
+.fifteen-off-send-note { margin: 0; color: var(--muted); font-size: 0.9375rem; line-height: 1.55; }
+.fifteen-off-thanks { margin-top: 16px; }
+.fifteen-off-thanks h3 { font-size: clamp(1.4rem, 3vw, 1.9rem); }
+.fifteen-off-thanks h3:focus { outline: none; }
+.fifteen-off-thanks p { max-width: 56ch; margin: 12px 0 0; color: var(--text); line-height: 1.6; }
+.fifteen-off-section { padding: clamp(32px, 5vw, 64px) 0; }
+.fifteen-off-section h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); }
+.fifteen-off-split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 64px); }
+.fifteen-off-intro { max-width: 52ch; margin-top: 10px; color: var(--muted); line-height: 1.6; }
+.fifteen-off-more-link { margin-top: 18px; font-size: 0.95rem; }
+.fifteen-off-more-link a { color: var(--brand-deep); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.fifteen-off-ended { max-width: 62ch; }
+.fifteen-off-ended h1 { font-size: clamp(2rem, 5vw, 3.2rem); }
+.fifteen-off-ended p { margin-top: 16px; color: var(--text); font-size: 1.1rem; line-height: 1.6; }
+@media (max-width: 760px) {
+  .fifteen-off-hero-grid { grid-template-columns: 1fr; grid-template-areas: "copy" "form" "deadline" "how"; grid-template-rows: none; row-gap: 22px; }
+  .fifteen-off-form, .fifteen-off-split { grid-template-columns: 1fr; }
+}
+
 /* Home page template showcase (src/pages/Home.jsx) */
 .template-showcase-more { display: flex; justify-content: center; margin-top: 32px; }

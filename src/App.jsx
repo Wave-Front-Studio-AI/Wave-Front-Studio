@@ -16,6 +16,7 @@ const BuildYourPackage = lazy(() => import('./pages/BuildYourPackage.jsx'))
 const OneDollarWebsite = lazy(() => import('./pages/OneDollarWebsite.jsx'))
 const OneDollarTemplate = lazy(() => import('./pages/OneDollarTemplate.jsx'))
 const OneDollarTerms = lazy(() => import('./pages/OneDollarTerms.jsx'))
+const FifteenOff = lazy(() => import('./pages/FifteenOff.jsx'))
 const ServicesHubPage = lazy(() => import('./pages/HubPages.jsx').then((module) => ({ default: module.ServicesHubPage })))
 const CustomWorksHubPage = lazy(() => import('./pages/HubPages.jsx').then((module) => ({ default: module.CustomWorksHubPage })))
 const ServiceRoute = lazy(() => import('./pages/ServiceRoute.jsx'))
@@ -91,6 +92,8 @@ function renderRoute(route) {
       return <BuildYourPackage />
     case 'one-dollar':
       return <OneDollarWebsite />
+    case 'fifteen-off':
+      return <FifteenOff />
     case 'one-dollar-terms':
       return <OneDollarTerms />
     case 'one-dollar-template':
