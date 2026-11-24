@@ -25,15 +25,24 @@ export function leadEmailBody(lead) {
   ].filter((line, index, all) => line || (index > 0 && all[index - 1])).join('\n')
 }
 
+// Says why the email did not go, without secrets: which setting is missing, or
+// the provider's status and short reason.
+const why = (reason) => console.error(JSON.stringify({ at: new Date().toISOString(), event: 'lead_email_failed', reason }))
+
 async function send(url, options, fetchImpl) {
   const response = await fetchImpl(url, options)
+  if (!response.ok) {
+    const detail = (await response.text().catch(() => '')).replace(/[\r\n]+/g, ' ').slice(0, 160)
+    why(`provider answered ${response.status}: ${detail}`)
+  }
   return response.ok
 }
 
 export async function emailLead(lead, config, fetchImpl = fetch) {
   const to = text(config.emailTo)
   const from = text(config.emailFrom)
-  if (!to || !from) return false
+  if (!to) return (why('no recipient set (LEAD_FALLBACK_EMAIL or EMAIL_REPLY_TO)'), false)
+  if (!from) return (why('no sender set (EMAIL_FROM)'), false)
   const subject = `Website enquiry (CRM unavailable): ${text(lead.name) || text(lead.email) || text(lead.phone) || 'new lead'}`
   const body = leadEmailBody(lead)
   const replyTo = text(lead.email)
@@ -65,8 +74,10 @@ export async function emailLead(lead, config, fetchImpl = fetch) {
         }),
       }, fetchImpl)
     }
-  } catch {
+  } catch (error) {
+    why(`send threw: ${error.message}`)
     return false
   }
+  why(`provider "${config.emailProvider || 'none'}" is not set up here (supported: resend, postmark, sendgrid, with its key set)`)
   return false
 }
