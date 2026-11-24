@@ -27,7 +27,7 @@ test('maps only declared Base44 fields and supplies a business name', () => {
   assert.deepEqual(toBase44Record(lead), { contact_name: 'Ada', email: 'ada@example.com' })
 })
 
-test('creates a website lead with Base44 API-key auth and pipeline defaults', async () => {
+test('creates a website lead with Base44 personal access token auth and pipeline defaults', async () => {
   let request
   const fetchImpl = async (url, options) => {
     request = { url, options }
@@ -56,7 +56,8 @@ test('creates a website lead with Base44 API-key auth and pipeline defaults', as
 
   assert.equal(result.id, 'lead-123')
   assert.equal(request.url, 'https://divergent-nexus-growth-hub.base44.app/api/apps/app-123/entities/ProspectLead')
-  assert.equal(request.options.headers.api_key, 'secret-key')
+  assert.equal(request.options.headers.authorization, 'Bearer secret-key')
+  assert.equal(request.options.headers.api_key, undefined)
   assert.equal(record.lead_source, 'website')
   assert.equal(record.pipeline_stage, 'new')
   assert.equal(record.status, 'found')
@@ -375,4 +376,63 @@ test('a rejected lead logs the reason without the person\'s email or phone', asy
     assert.match(error.message, /\[email\].*\[number\]/)
     return true
   })
+})
+
+/* ------------------------------------------------------------------ */
+/* When the CRM is down, the lead is emailed                           */
+/* ------------------------------------------------------------------ */
+
+test('a lead the CRM refuses is emailed to the studio and still counts as delivered', async () => {
+  let emailed
+  const result = await processLead(
+    { name: 'Ada', email: 'ada@example.com', phone: '9415550123', source: 'one-dollar' },
+    {},
+    async () => {
+      const error = new Error('Base44 rejected the lead (403)')
+      error.status = 403
+      throw error
+    },
+    async (lead) => {
+      emailed = lead
+      return true
+    },
+  )
+  assert.equal(result.status, 201)
+  assert.deepEqual(result.payload, { ok: true, stored: true, delivered: 'email' })
+  assert.equal(emailed.email, 'ada@example.com')
+})
+
+test('if the CRM and the email both fail, the visitor is told it failed', async () => {
+  const result = await processLead(
+    { name: 'Ada', email: 'ada@example.com' },
+    {},
+    async () => {
+      throw Object.assign(new Error('down'), { status: 502 })
+    },
+    async () => false,
+  )
+  assert.equal(result.status, 502)
+  assert.equal(result.payload.ok, false)
+})
+
+test('emailLead sends through the configured provider and reports whether it was accepted', async () => {
+  const { emailLead, leadEmailBody } = await import('../lib/leadEmail.mjs')
+  const lead = { name: 'Ada', email: 'ada@example.com', phone: '9415550123', notes: 'A new site', source: 'one-dollar' }
+  assert.match(leadEmailBody(lead), /Name: Ada/)
+  let request
+  const ok = async (url, options) => {
+    request = { url, options }
+    return new Response('{}', { status: 200 })
+  }
+  const base = { emailFrom: 'site@example.com', emailTo: 'studio@example.com' }
+  assert.equal(await emailLead(lead, { ...base, emailProvider: 'resend', resendKey: 'k' }, ok), true)
+  assert.equal(request.url, 'https://api.resend.com/emails')
+  assert.equal(JSON.parse(request.options.body).reply_to, 'ada@example.com')
+  assert.equal(await emailLead(lead, { ...base, emailProvider: 'postmark', postmarkToken: 't' }, ok), true)
+  assert.equal(request.url, 'https://api.postmarkapp.com/email')
+  assert.equal(await emailLead(lead, { ...base, emailProvider: 'sendgrid', sendgridKey: 'k' }, ok), true)
+  assert.equal(request.url, 'https://api.sendgrid.com/v3/mail/send')
+  assert.equal(await emailLead(lead, { ...base, emailProvider: 'resend', resendKey: 'k' }, async () => new Response('no', { status: 401 })), false)
+  assert.equal(await emailLead(lead, { emailProvider: 'resend', resendKey: 'k' }, ok), false)
+  assert.equal(await emailLead(lead, { ...base, emailProvider: 'smoke-signals' }, ok), false)
 })
