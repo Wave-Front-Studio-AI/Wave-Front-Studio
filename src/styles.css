@@ -2050,14 +2050,16 @@ body.menu-open .deal-banner, body.chat-open .deal-banner { display: none; }
 .eyebrow-label { margin-bottom: 14px; color: var(--cyan-deep); font-family: var(--display); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
 .one-dollar-hero { padding: clamp(28px, 5vw, 72px) 0 clamp(16px, 3vw, 32px); }
 .one-dollar-hero h1 { max-width: 14ch; font-size: clamp(2.4rem, 7vw, 4.2rem); }
-.one-dollar-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, 500px); grid-template-areas: "copy form" "deadline form"; column-gap: clamp(28px, 5vw, 72px); align-items: start; }
+.one-dollar-hero-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.25fr); grid-template-areas: "copy form" "deadline form"; column-gap: clamp(28px, 5vw, 72px); align-items: start; }
 .one-dollar-copy { grid-area: copy; }
 .one-dollar-formcard { grid-area: form; min-width: 0; scroll-margin-top: 88px; padding: clamp(18px, 3vw, 28px); border: 1px solid var(--line-strong); border-radius: var(--r-lg); background: var(--white); }
 .one-dollar-formcard h2 { font-size: clamp(1.35rem, 2.4vw, 1.75rem); }
-.one-dollar-formcard .one-dollar-form, .one-dollar-formcard .one-dollar-more-grid { grid-template-columns: 1fr; }
 .one-dollar-formcard .one-dollar-thanks { padding: 0; border: 0; }
 .one-dollar-formcard .enquiry-form { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
-.one-dollar-formcard .one-dollar-form { margin-top: 16px; }
+.one-dollar-formcard .one-dollar-form { margin-top: 12px; gap: 10px 14px; }
+.one-dollar-formcard .one-dollar-form label { gap: 4px; }
+.one-dollar-formcard .one-dollar-form textarea { min-height: 72px; }
+.one-dollar-formcard .one-dollar-form input, .one-dollar-formcard .one-dollar-form select { min-height: 42px; }
 .one-dollar-deadline-slot { grid-area: deadline; align-self: end; }
 .one-dollar-lede { max-width: 46ch; margin-top: 16px; color: var(--text); font-size: 1.15rem; line-height: 1.6; }
 .one-dollar-total { max-width: 52ch; margin-top: 16px; color: var(--muted); font-size: 0.95rem; line-height: 1.55; }
