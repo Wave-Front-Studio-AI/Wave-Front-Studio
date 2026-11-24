@@ -28,7 +28,7 @@ function timeLeft(now = new Date()) {
 // A dark strip with the deadline and a countdown. Space is held while the
 // browser works out the time left, so nothing shifts when it appears. The text
 // is there from the first paint; only the clock digits wait for the browser.
-export function OneDollarDeadline({ compact = false }) {
+export function OneDollarDeadline({ compact = false, label = 'Time left on the $1 setup' }) {
   const [state, setState] = useState(null)
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export function OneDollarDeadline({ compact = false }) {
       <p>
         <strong>Black Friday only.</strong> <span>Ends {ONE_DOLLAR_WINDOW.endsLabel}.</span>
       </p>
-      <div className="one-dollar-clock" role="timer" aria-label="Time left on the $1 setup">
+      <div className="one-dollar-clock" role="timer" aria-label={label}>
         <div>
           <b>{parts ? parts.days : '--'}</b>
           <small>Days</small>

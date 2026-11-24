@@ -1,9 +1,9 @@
 import { isLive } from './data/schedule.js'
 import { TEMPLATES } from './templates/list.js'
 
-// True for builds made from 2027-01-01 05:00Z. Only scripts/prerender.mjs
+// True for builds made from 2027-01-01 05:00Z (the $1 Website and 15% off pages). Only scripts/prerender.mjs
 // (Node) sets BUILD_TIME; in the browser there is no process, so it is false.
-const oneDollarRetired = () => {
+const blackFridayRetired = () => {
   const built = globalThis.process?.env?.BUILD_TIME
   return Boolean(built) && Date.parse(built) >= Date.parse('2027-01-01T05:00:00Z')
 }
@@ -104,9 +104,11 @@ export const routes = [
   { path: '/package-builder/', kind: 'packages' },
   // The $1 Website: the 15 designs and an intake form, then one preview page for each design.
   // From 2027-01-01 05:00Z (builds only) the ended offer page leaves search.
-  { path: '/1-dollar-website/', kind: 'one-dollar', ...(oneDollarRetired() ? { noindex: true } : {}) },
+  { path: '/1-dollar-website/', kind: 'one-dollar', ...(blackFridayRetired() ? { noindex: true } : {}) },
   { path: '/1-dollar-website/terms/', kind: 'one-dollar-terms' },
   ...TEMPLATES.map(({ slug }) => ({ path: `/1-dollar-website/${slug}/`, kind: 'one-dollar-template', slug, noindex: true })),
+  // 15% off paid ads and brand design: same Black Friday window and same retirement date as the $1 page.
+  { path: '/15-off/', kind: 'fifteen-off', ...(blackFridayRetired() ? { noindex: true } : {}) },
   { path: '/locations/', kind: 'locations' },
   { path: '/services/', kind: 'services-hub' },
   { path: '/platform/', kind: 'platform' },
