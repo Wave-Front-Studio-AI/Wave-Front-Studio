@@ -5,7 +5,7 @@
 import { readFile, stat } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { TEMPLATES } from '../src/templates/list.js'
-import { ONE_DOLLAR_AD, ONE_DOLLAR_FAQ } from '../src/data/oneDollarPage.js'
+import { ONE_DOLLAR_FAQ } from '../src/data/oneDollarPage.js'
 import { siteOrigin } from '../src/data/site.js'
 
 const ended = process.argv.includes('--ended')
@@ -60,19 +60,12 @@ check('no <video> element in prerendered HTML', (page.match(/<video/g) ?? []).le
 
 if (ended) {
   check('no Offer in JSON-LD', ofType('Offer').length === 0)
-  check('no VideoObject in JSON-LD', ofType('VideoObject').length === 0)
-  check('no poster preload', !page.includes(`as="image" fetchpriority="high"`) || !page.includes(ONE_DOLLAR_AD.poster))
-  check('ended page is not in the live sitemap video list', !sitemap.includes(ONE_DOLLAR_AD.video) )
 } else {
-  check('poster preload link present', new RegExp(`<link[^>]*rel="preload"[^>]*as="image"[^>]*href="${ONE_DOLLAR_AD.poster}"|<link[^>]*rel="preload"[^>]*href="${ONE_DOLLAR_AD.poster}"[^>]*as="image"`).test(page))
   check('JSON-LD has Offer', ofType('Offer').length > 0)
-  check('JSON-LD has VideoObject', ofType('VideoObject').length > 0)
   check('JSON-LD has one FAQPage', faqPages.length === 1, `${faqPages.length} found`)
   const marked = faqPages[0] ? [].concat(faqPages[0].mainEntity ?? []).length : 0
   const shown = ONE_DOLLAR_FAQ.filter(([question]) => visible.includes(decode(question))).length
   check('FAQPage count equals visible FAQ items', marked > 0 && marked === shown && shown === ONE_DOLLAR_FAQ.length, `schema ${marked}, visible ${shown}, source ${ONE_DOLLAR_FAQ.length}`)
-  check('sitemap has the video entry', new RegExp(`<loc>${siteOrigin}/1-dollar-website/</loc>[\\s\\S]*?${ONE_DOLLAR_AD.video}[\\s\\S]*?</url>`).test(sitemap.split('</url>').find((chunk) => chunk.includes(`<loc>${siteOrigin}/1-dollar-website/</loc>`)) + '</url>'))
-  check(`poster is 30 KB or less`, (await sizeOf(resolve(dist, `.${ONE_DOLLAR_AD.poster}`))) <= 30 * KB, `${((await sizeOf(resolve(dist, `.${ONE_DOLLAR_AD.poster}`))) / KB).toFixed(1)} KB`)
 }
 
 // Template preview pages: noindex, and not in the sitemap

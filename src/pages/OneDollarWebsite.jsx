@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import Layout from '../components/Layout.jsx'
-import AdVideo from '../components/AdVideo.jsx'
 import { ArrowIcon } from '../components/Icons.jsx'
 import { FaqAccordion, Honeypot, SmsConsentField } from '../components/shared.jsx'
 import { contact } from '../data/site.js'
@@ -43,7 +42,7 @@ const NOT_INCLUDED = [
 
 const FIRST_YEAR = `${money(ONE_DOLLAR.setup)} to set up. Hosting is ${money(ONE_DOLLAR.hosting)} a month for at least ${ONE_DOLLAR.minMonths} months, so ${money(ONE_DOLLAR.minTotal)} the first year, then ${money(ONE_DOLLAR.regularHosting)} a month.`
 
-// Moves the person to the form and into the first required box still empty.
+// Moves the person up to the hero form and into the first required box still empty.
 function goToForm(formEl) {
   if (!formEl) return
   formEl.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' })
@@ -301,16 +300,19 @@ export default function OneDollarWebsite() {
                   <ArrowIcon className="size-4" />
                 </span>
               </a>
-              <a className="text-link" href="#start">
-                Send my details
-              </a>
             </div>
             <p className="one-dollar-total">
               {FIRST_YEAR} <a href={ONE_DOLLAR_TERMS_PATH}>Read the $1 Website Agreement</a>
             </p>
           </div>
-          <div className="one-dollar-media">
-            <AdVideo />
+          <div className="one-dollar-formcard" id="start" ref={formRef}>
+            <h2>Send us your details</h2>
+            {chosen && !sent ? (
+              <p className="one-dollar-picked" role="status">
+                You picked {TEMPLATES.find((template) => label(template) === chosen)?.name}. Next: send your details.
+              </p>
+            ) : null}
+            <Intake chosen={chosen} onChoose={setChosen} onDone={() => setSent(true)} />
           </div>
           <div className="one-dollar-deadline-slot">
             <OneDollarDeadline />
@@ -367,18 +369,6 @@ export default function OneDollarWebsite() {
               )
             })}
           </ul>
-        </div>
-      </section>
-
-      <section className="one-dollar-section" id="start" ref={formRef}>
-        <div className="page-frame one-dollar-formwrap">
-          <h2>Send us your details</h2>
-          {chosen && !sent ? (
-            <p className="one-dollar-picked" role="status">
-              You picked {TEMPLATES.find((template) => label(template) === chosen)?.name}. Next: send your details.
-            </p>
-          ) : null}
-          <Intake chosen={chosen} onChoose={setChosen} onDone={() => setSent(true)} />
         </div>
       </section>
 

@@ -3,8 +3,8 @@
 // after the Black Friday deal closes the same page keeps its URL and a 200
 // status, but stops advertising an offer that no longer exists.
 import { ONE_DOLLAR } from './oneDollarSite.js'
-import { ONE_DOLLAR_AD, ONE_DOLLAR_FAQ } from './oneDollarPage.js'
-import { absoluteUrl, byOrganization, pageGraph, videoObject, webPage } from './seo.js'
+import { ONE_DOLLAR_FAQ } from './oneDollarPage.js'
+import { absoluteUrl, byOrganization, pageGraph, webPage } from './seo.js'
 
 const PATH = '/1-dollar-website/'
 const OG_IMAGE = '/images/1-dollar-website-og.png'
@@ -84,11 +84,9 @@ export function oneDollarSeo({ ended = false } = {}) {
     description,
     canonical: PATH,
     modified: '2026-11-24',
-    schema: pageGraph(page, service(), videoObject(ONE_DOLLAR_AD, PATH, ONE_DOLLAR_AD.alt), faqPage()),
+    schema: pageGraph(page, service(), faqPage()),
     image: OG_IMAGE,
     imageType: 'image/png',
     imageAlt: '$1 website. 15 designs. Ends Dec 1. Wavefront Studio',
-    preloadImage: ONE_DOLLAR_AD.poster,
-    sitemapVideo: ONE_DOLLAR_AD,
   }
 }

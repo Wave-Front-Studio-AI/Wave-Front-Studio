@@ -4,18 +4,6 @@ import { ONE_DOLLAR } from './oneDollarSite.js'
 
 const money = (n) => `$${n.toLocaleString('en-US')}`
 
-export const ONE_DOLLAR_AD = {
-  video: '/videos/1-dollar-website-ad.mp4',
-  poster: '/images/1-dollar-website-ad-poster.webp',
-  width: 540,
-  height: 960,
-  uploadDate: '2026-11-24',
-  duration: 'PT13S',
-  alt: '$1 website: Black Friday deal from Wavefront Studio',
-  description:
-    'A real website for $1 to set up. Pick one of 15 designs and we build it from your details. Then $99 a month hosting, 12 month minimum. Black Friday only.',
-}
-
 export const ONE_DOLLAR_FAQ = [
   ['Why is the setup only $1?', `The setup is $1 because the money comes from hosting. Hosting is ${money(ONE_DOLLAR.hosting)} a month and runs for at least ${ONE_DOLLAR.minMonths} months, so the first year comes to ${money(ONE_DOLLAR.minTotal)}. From month 13 hosting moves to our regular price of ${money(ONE_DOLLAR.regularHosting)} a month. We would rather you see the whole price up front than find it later.`],
   ['What does the 12 month minimum mean?', `Hosting runs for at least ${ONE_DOLLAR.minMonths} months from the day your site goes live. If you cancel before month ${ONE_DOLLAR.minMonths}, the remaining months of hosting are due. After that hosting is ${money(ONE_DOLLAR.regularHosting)} a month, our regular price, and you can cancel any time by telling us in writing.`],
