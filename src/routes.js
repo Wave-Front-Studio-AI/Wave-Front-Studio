@@ -78,6 +78,7 @@ const postSlugs = [
   'missed-call-text-back',
   'profile-photos-that-help',
   'wordpress-builder-or-custom',
+  'red-flags-in-an-agency-contract',
 ]
 
 // One list of every URL the site answers on. The router and the prerenderer
